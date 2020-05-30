@@ -1400,9 +1400,9 @@ armwave_fill_pixbuf2:
 @ armwave.c:301:             rr = (g_armwave_state.ch1_color.r * value) >> 8;
 	.loc 1 301 47 view .LVU368
 	ldrh	r1, [r7, #64]	@ g_armwave_state.ch1_color.r, g_armwave_state.ch1_color.r
-@ armwave.c:320:             xx = n / g_armwave_state.target_width;
+@ armwave.c:320:             xx = n % g_armwave_state.target_height;
 	.loc 1 320 37 view .LVU369
-	ldr	r10, [r7, #52]	@ _29, g_armwave_state.target_width
+	ldr	r10, [r7, #56]	@ _29, g_armwave_state.target_height
 @ armwave.c:303:             bb = (g_armwave_state.ch1_color.b * value) >> 8;
 	.loc 1 303 47 view .LVU370
 	smulbb	fp, fp, r3	@ tmp166, g_armwave_state.ch1_color.b, _3
@@ -1448,15 +1448,15 @@ armwave_fill_pixbuf2:
 	orr	fp, fp, #-16777216	@ word, tmp182,
 .LVL86:
 	.loc 1 320 13 is_stmt 1 view .LVU381
-@ armwave.c:322:             offset = xx + (yy * g_armwave_state.target_width); //((xx * g_armwave_state.target_height) + yy);
+@ armwave.c:322:             offset = yy + (xx * g_armwave_state.target_height); //((xx * g_armwave_state.target_height) + yy);
 	.loc 1 322 20 is_stmt 0 view .LVU382
 	mla	r10, r1, r10, r0	@ offset, divmod_tmp_86, _29, divmod_tmp_86
-	mov	r2, r0	@ divmod_tmp_86,
+	mov	r2, r1	@ divmod_tmp_86,
 .LVL87:
 	.loc 1 321 13 is_stmt 1 view .LVU383
 	.loc 1 322 13 view .LVU384
 	.loc 1 323 13 view .LVU385
-	mov	r3, r1	@, divmod_tmp_86
+	mov	r3, r0	@, divmod_tmp_86
 	str	r10, [sp]	@ offset,
 	mov	r1, r5	@, n
 .LVL88:
@@ -10990,15 +10990,15 @@ mod_depth:
 	.4byte	0
 .LVUS27:
 	.uleb128 .LVU383
-	.uleb128 .LVU387
-	.uleb128 .LVU387
+	.uleb128 .LVU386
+	.uleb128 .LVU386
 	.uleb128 .LVU388
 .LLST27:
 	.4byte	.LVL87
-	.4byte	.LVL89
+	.4byte	.LVL88
 	.2byte	0x1
-	.byte	0x50
-	.4byte	.LVL89
+	.byte	0x51
+	.4byte	.LVL88
 	.4byte	.LVL90-1
 	.2byte	0x1
 	.byte	0x52
@@ -11006,15 +11006,15 @@ mod_depth:
 	.4byte	0
 .LVUS28:
 	.uleb128 .LVU384
-	.uleb128 .LVU386
-	.uleb128 .LVU386
+	.uleb128 .LVU387
+	.uleb128 .LVU387
 	.uleb128 .LVU388
 .LLST28:
 	.4byte	.LVL87
-	.4byte	.LVL88
+	.4byte	.LVL89
 	.2byte	0x1
-	.byte	0x51
-	.4byte	.LVL88
+	.byte	0x50
+	.4byte	.LVL89
 	.4byte	.LVL90-1
 	.2byte	0x1
 	.byte	0x53

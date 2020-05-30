@@ -1941,9 +1941,9 @@
  317:armwave.c     ****             *(out_buffer_base + offset) = word;
  318:armwave.c     ****             */
  319:armwave.c     **** 
- 320:armwave.c     ****             xx = n / g_armwave_state.target_width;
- 321:armwave.c     ****             yy = n % g_armwave_state.target_width;
- 322:armwave.c     ****             offset = xx + (yy * g_armwave_state.target_width); //((xx * g_armwave_state.target_heig
+ 320:armwave.c     ****             xx = n % g_armwave_state.target_height;
+ 321:armwave.c     ****             yy = n / g_armwave_state.target_height;
+ 322:armwave.c     ****             offset = yy + (xx * g_armwave_state.target_height); //((xx * g_armwave_state.target_hei
  323:armwave.c     ****             printf("%d %d,%d (%d)\n", n, xx, yy, offset);
  1344              		.loc 1 323 13 view .LVU349
  1345 05fc BC909FE5 		ldr	r9, .L94+4	@ tmp187,
@@ -2027,10 +2027,10 @@
  301:armwave.c     ****             gg = (g_armwave_state.ch1_color.g * value) >> 8;
  1401              		.loc 1 301 47 view .LVU368
  1402 0630 B014D7E1 		ldrh	r1, [r7, #64]	@ g_armwave_state.ch1_color.r, g_armwave_state.ch1_color.r
- 1403              	@ armwave.c:320:             xx = n / g_armwave_state.target_width;
- 320:armwave.c     ****             yy = n % g_armwave_state.target_width;
+ 1403              	@ armwave.c:320:             xx = n % g_armwave_state.target_height;
+ 320:armwave.c     ****             yy = n / g_armwave_state.target_height;
  1404              		.loc 1 320 37 view .LVU369
- 1405 0634 34A097E5 		ldr	r10, [r7, #52]	@ _29, g_armwave_state.target_width
+ 1405 0634 38A097E5 		ldr	r10, [r7, #56]	@ _29, g_armwave_state.target_height
  1406              	@ armwave.c:303:             bb = (g_armwave_state.ch1_color.b * value) >> 8;
  303:armwave.c     **** 
  1407              		.loc 1 303 47 view .LVU370
@@ -2086,21 +2086,21 @@
  1447              		.loc 1 310 18 view .LVU380
  1448 0680 FFB48BE3 		orr	fp, fp, #-16777216	@ word, tmp182,
  1449              	.LVL86:
- 320:armwave.c     ****             yy = n % g_armwave_state.target_width;
+ 320:armwave.c     ****             yy = n / g_armwave_state.target_height;
  1450              		.loc 1 320 13 is_stmt 1 view .LVU381
- 1451              	@ armwave.c:322:             offset = xx + (yy * g_armwave_state.target_width); //((xx * g_armwave_
+ 1451              	@ armwave.c:322:             offset = yy + (xx * g_armwave_state.target_height); //((xx * g_armwave
  322:armwave.c     ****             printf("%d %d,%d (%d)\n", n, xx, yy, offset);
  1452              		.loc 1 322 20 is_stmt 0 view .LVU382
  1453 0684 910A2AE0 		mla	r10, r1, r10, r0	@ offset, divmod_tmp_86, _29, divmod_tmp_86
- 1454 0688 0020A0E1 		mov	r2, r0	@ divmod_tmp_86,
+ 1454 0688 0120A0E1 		mov	r2, r1	@ divmod_tmp_86,
  1455              	.LVL87:
- 321:armwave.c     ****             offset = xx + (yy * g_armwave_state.target_width); //((xx * g_armwave_state.target_heig
+ 321:armwave.c     ****             offset = yy + (xx * g_armwave_state.target_height); //((xx * g_armwave_state.target_hei
  1456              		.loc 1 321 13 is_stmt 1 view .LVU383
  322:armwave.c     ****             printf("%d %d,%d (%d)\n", n, xx, yy, offset);
  1457              		.loc 1 322 13 view .LVU384
  323:armwave.c     **** 
  1458              		.loc 1 323 13 view .LVU385
- 1459 068c 0130A0E1 		mov	r3, r1	@, divmod_tmp_86
+ 1459 068c 0030A0E1 		mov	r3, r0	@, divmod_tmp_86
  1460 0690 00A08DE5 		str	r10, [sp]	@ offset,
  1461 0694 0510A0E1 		mov	r1, r5	@, n
  1462              	.LVL88:
