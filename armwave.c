@@ -163,7 +163,7 @@ uint32_t *armwave_create_pixbuf()
 	uint8_t rr, gg, bb;
 	uint8_t *row_ptr = g_armwave_state.ch1_buffer;
 	uint32_t *out_buffer = malloc(sizeof(uint32_t) * g_armwave_state.size);
-	uint32_t *out_buffer_base;
+	uint32_t *out_buffer_base = out_buffer;
 
 	assert(out_buffer != NULL);
 	printf("out_buffer=0x%08x\n", out_buffer);
