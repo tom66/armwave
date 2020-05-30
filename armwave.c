@@ -170,6 +170,7 @@ uint32_t *armwave_create_pixbuf()
 
 	assert(out_buffer != NULL);
 	printf("out_buffer=0x%08x\n", out_buffer);
+	printf("out_buffer_size=%d\n", sizeof(uint32_t) * g_armwave_state.size);
 
 #if 0
     // Pixbuf tests
@@ -219,7 +220,7 @@ void armwave_dump_ppm_debug(uint32_t *buffer, char *fn)
 
 	for(yy = 0; yy < g_armwave_state.target_height; yy++) {
 		for(xx = 0; xx < g_armwave_state.target_width; xx++) {
-			data = *(buffer + ((xx + (yy * g_armwave_state.target_width)) / 4));
+			data = *(buffer + (xx + (yy * g_armwave_state.target_width));
 			//printf("xx,yy=%4d,%4d, word=0x%08x\n", xx, yy, data);
 
 			fprintf(fp, "%3d %3d %3d\n", (data >> 16) & 0xff, (data >> 8) & 0xff, data & 0xff);
