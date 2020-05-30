@@ -3788,47 +3788,13 @@ SWIGINTERNINLINE PyObject*
 }
 
 
-#include <float.h>
-
-
-#include <math.h>
-
-
-/* Getting isfinite working pre C99 across multiple platforms is non-trivial. Users can provide SWIG_isfinite on older platforms. */
-#ifndef SWIG_isfinite
-/* isfinite() is a macro for C99 */
-# if defined(isfinite)
-#  define SWIG_isfinite(X) (isfinite(X))
-# elif defined __cplusplus && __cplusplus >= 201103L
-/* Use a template so that this works whether isfinite() is std::isfinite() or
- * in the global namespace.  The reality seems to vary between compiler
- * versions.
- *
- * Make sure namespace std exists to avoid compiler warnings.
- *
- * extern "C++" is required as this fragment can end up inside an extern "C" { } block
- */
-namespace std { }
-extern "C++" template<typename T>
-inline int SWIG_isfinite_func(T x) {
-  using namespace std;
-  return isfinite(x);
-}
-#  define SWIG_isfinite(X) (SWIG_isfinite_func(X))
-# elif defined(_MSC_VER)
-#  define SWIG_isfinite(X) (_finite(X))
-# elif defined(__sun) && defined(__SVR4)
-#  include <ieeefp.h>
-#  define SWIG_isfinite(X) (finite(X))
+#include <limits.h>
+#if !defined(SWIG_NO_LLONG_MAX)
+# if !defined(LLONG_MAX) && defined(__GNUC__) && defined (__LONG_LONG_MAX__)
+#   define LLONG_MAX __LONG_LONG_MAX__
+#   define LLONG_MIN (-LLONG_MAX - 1LL)
+#   define ULLONG_MAX (LLONG_MAX * 2ULL + 1ULL)
 # endif
-#endif
-
-
-/* Accept infinite as a valid float value unless we are unable to check if a value is finite */
-#ifdef SWIG_isfinite
-# define SWIG_Float_Overflow_Check(X) ((X < -FLT_MAX || X > FLT_MAX) && SWIG_isfinite(X))
-#else
-# define SWIG_Float_Overflow_Check(X) ((X < -FLT_MAX || X > FLT_MAX))
 #endif
 
 
@@ -3878,40 +3844,10 @@ SWIG_AsVal_double (PyObject *obj, double *val)
 }
 
 
-SWIGINTERN int
-SWIG_AsVal_float (PyObject * obj, float *val)
-{
-  double v;
-  int res = SWIG_AsVal_double (obj, &v);
-  if (SWIG_IsOK(res)) {
-    if (SWIG_Float_Overflow_Check(v)) {
-      return SWIG_OverflowError;
-    } else {
-      if (val) *val = (float)(v);
-    }
-  }  
-  return res;
-}
+#include <float.h>
 
 
-  #define SWIG_From_double   PyFloat_FromDouble 
-
-
-SWIGINTERNINLINE PyObject *
-SWIG_From_float  (float value)
-{    
-  return SWIG_From_double  (value);
-}
-
-
-#include <limits.h>
-#if !defined(SWIG_NO_LLONG_MAX)
-# if !defined(LLONG_MAX) && defined(__GNUC__) && defined (__LONG_LONG_MAX__)
-#   define LLONG_MAX __LONG_LONG_MAX__
-#   define LLONG_MIN (-LLONG_MAX - 1LL)
-#   define ULLONG_MAX (LLONG_MAX * 2ULL + 1ULL)
-# endif
-#endif
+#include <math.h>
 
 
 SWIGINTERNINLINE int
@@ -3989,6 +3925,40 @@ SWIG_AsVal_unsigned_SS_long (PyObject *obj, unsigned long *val)
   }
 #endif
   return SWIG_TypeError;
+}
+
+
+SWIGINTERN int
+SWIG_AsVal_unsigned_SS_char (PyObject * obj, unsigned char *val)
+{
+  unsigned long v;
+  int res = SWIG_AsVal_unsigned_SS_long (obj, &v);
+  if (SWIG_IsOK(res)) {
+    if ((v > UCHAR_MAX)) {
+      return SWIG_OverflowError;
+    } else {
+      if (val) *val = (unsigned char)(v);
+    }
+  }  
+  return res;
+}
+
+
+  #define SWIG_From_long   PyInt_FromLong 
+
+
+SWIGINTERNINLINE PyObject* 
+SWIG_From_unsigned_SS_long  (unsigned long value)
+{
+  return (value > LONG_MAX) ?
+    PyLong_FromUnsignedLong(value) : PyInt_FromLong((long)(value));
+}
+
+
+SWIGINTERNINLINE PyObject *
+SWIG_From_unsigned_SS_char  (unsigned char value)
+{    
+  return SWIG_From_unsigned_SS_long  (value);
 }
 
 
@@ -4143,16 +4113,70 @@ SWIG_AsCharPtrAndSize(PyObject *obj, char** cptr, size_t* psize, int *alloc)
 
 
 
+
+/* Getting isfinite working pre C99 across multiple platforms is non-trivial. Users can provide SWIG_isfinite on older platforms. */
+#ifndef SWIG_isfinite
+/* isfinite() is a macro for C99 */
+# if defined(isfinite)
+#  define SWIG_isfinite(X) (isfinite(X))
+# elif defined __cplusplus && __cplusplus >= 201103L
+/* Use a template so that this works whether isfinite() is std::isfinite() or
+ * in the global namespace.  The reality seems to vary between compiler
+ * versions.
+ *
+ * Make sure namespace std exists to avoid compiler warnings.
+ *
+ * extern "C++" is required as this fragment can end up inside an extern "C" { } block
+ */
+namespace std { }
+extern "C++" template<typename T>
+inline int SWIG_isfinite_func(T x) {
+  using namespace std;
+  return isfinite(x);
+}
+#  define SWIG_isfinite(X) (SWIG_isfinite_func(X))
+# elif defined(_MSC_VER)
+#  define SWIG_isfinite(X) (_finite(X))
+# elif defined(__sun) && defined(__SVR4)
+#  include <ieeefp.h>
+#  define SWIG_isfinite(X) (finite(X))
+# endif
+#endif
+
+
+/* Accept infinite as a valid float value unless we are unable to check if a value is finite */
+#ifdef SWIG_isfinite
+# define SWIG_Float_Overflow_Check(X) ((X < -FLT_MAX || X > FLT_MAX) && SWIG_isfinite(X))
+#else
+# define SWIG_Float_Overflow_Check(X) ((X < -FLT_MAX || X > FLT_MAX))
+#endif
+
+
+SWIGINTERN int
+SWIG_AsVal_float (PyObject * obj, float *val)
+{
+  double v;
+  int res = SWIG_AsVal_double (obj, &v);
+  if (SWIG_IsOK(res)) {
+    if (SWIG_Float_Overflow_Check(v)) {
+      return SWIG_OverflowError;
+    } else {
+      if (val) *val = (float)(v);
+    }
+  }  
+  return res;
+}
+
 #ifdef __cplusplus
 extern "C" {
 #endif
 SWIGINTERN PyObject *_wrap_color_mix_t_r_set(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
   struct armwave_color_mix_t *arg1 = (struct armwave_color_mix_t *) 0 ;
-  float arg2 ;
+  uint8_t arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  float val2 ;
+  unsigned char val2 ;
   int ecode2 = 0 ;
   PyObject * obj1 = 0 ;
   
@@ -4162,11 +4186,11 @@ SWIGINTERN PyObject *_wrap_color_mix_t_r_set(PyObject *self, PyObject *args) {
     SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "color_mix_t_r_set" "', argument " "1"" of type '" "struct armwave_color_mix_t *""'"); 
   }
   arg1 = (struct armwave_color_mix_t *)(argp1);
-  ecode2 = SWIG_AsVal_float(obj1, &val2);
+  ecode2 = SWIG_AsVal_unsigned_SS_char(obj1, &val2);
   if (!SWIG_IsOK(ecode2)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "color_mix_t_r_set" "', argument " "2"" of type '" "float""'");
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "color_mix_t_r_set" "', argument " "2"" of type '" "uint8_t""'");
   } 
-  arg2 = (float)(val2);
+  arg2 = (uint8_t)(val2);
   if (arg1) (arg1)->r = arg2;
   resultobj = SWIG_Py_Void();
   return resultobj;
@@ -4180,7 +4204,7 @@ SWIGINTERN PyObject *_wrap_color_mix_t_r_get(PyObject *self, PyObject *args) {
   struct armwave_color_mix_t *arg1 = (struct armwave_color_mix_t *) 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  float result;
+  uint8_t result;
   
   if (args && PyTuple_Check(args) && PyTuple_GET_SIZE(args) > 0) SWIG_exception_fail(SWIG_TypeError, "color_mix_t_r_get takes no arguments");
   res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_armwave_color_mix_t, 0 |  0 );
@@ -4188,8 +4212,8 @@ SWIGINTERN PyObject *_wrap_color_mix_t_r_get(PyObject *self, PyObject *args) {
     SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "color_mix_t_r_get" "', argument " "1"" of type '" "struct armwave_color_mix_t *""'"); 
   }
   arg1 = (struct armwave_color_mix_t *)(argp1);
-  result = (float) ((arg1)->r);
-  resultobj = SWIG_From_float((float)(result));
+  result = (uint8_t) ((arg1)->r);
+  resultobj = SWIG_From_unsigned_SS_char((unsigned char)(result));
   return resultobj;
 fail:
   return NULL;
@@ -4199,10 +4223,10 @@ fail:
 SWIGINTERN PyObject *_wrap_color_mix_t_g_set(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
   struct armwave_color_mix_t *arg1 = (struct armwave_color_mix_t *) 0 ;
-  float arg2 ;
+  uint8_t arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  float val2 ;
+  unsigned char val2 ;
   int ecode2 = 0 ;
   PyObject * obj1 = 0 ;
   
@@ -4212,11 +4236,11 @@ SWIGINTERN PyObject *_wrap_color_mix_t_g_set(PyObject *self, PyObject *args) {
     SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "color_mix_t_g_set" "', argument " "1"" of type '" "struct armwave_color_mix_t *""'"); 
   }
   arg1 = (struct armwave_color_mix_t *)(argp1);
-  ecode2 = SWIG_AsVal_float(obj1, &val2);
+  ecode2 = SWIG_AsVal_unsigned_SS_char(obj1, &val2);
   if (!SWIG_IsOK(ecode2)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "color_mix_t_g_set" "', argument " "2"" of type '" "float""'");
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "color_mix_t_g_set" "', argument " "2"" of type '" "uint8_t""'");
   } 
-  arg2 = (float)(val2);
+  arg2 = (uint8_t)(val2);
   if (arg1) (arg1)->g = arg2;
   resultobj = SWIG_Py_Void();
   return resultobj;
@@ -4230,7 +4254,7 @@ SWIGINTERN PyObject *_wrap_color_mix_t_g_get(PyObject *self, PyObject *args) {
   struct armwave_color_mix_t *arg1 = (struct armwave_color_mix_t *) 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  float result;
+  uint8_t result;
   
   if (args && PyTuple_Check(args) && PyTuple_GET_SIZE(args) > 0) SWIG_exception_fail(SWIG_TypeError, "color_mix_t_g_get takes no arguments");
   res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_armwave_color_mix_t, 0 |  0 );
@@ -4238,8 +4262,8 @@ SWIGINTERN PyObject *_wrap_color_mix_t_g_get(PyObject *self, PyObject *args) {
     SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "color_mix_t_g_get" "', argument " "1"" of type '" "struct armwave_color_mix_t *""'"); 
   }
   arg1 = (struct armwave_color_mix_t *)(argp1);
-  result = (float) ((arg1)->g);
-  resultobj = SWIG_From_float((float)(result));
+  result = (uint8_t) ((arg1)->g);
+  resultobj = SWIG_From_unsigned_SS_char((unsigned char)(result));
   return resultobj;
 fail:
   return NULL;
@@ -4249,10 +4273,10 @@ fail:
 SWIGINTERN PyObject *_wrap_color_mix_t_b_set(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
   struct armwave_color_mix_t *arg1 = (struct armwave_color_mix_t *) 0 ;
-  float arg2 ;
+  uint8_t arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  float val2 ;
+  unsigned char val2 ;
   int ecode2 = 0 ;
   PyObject * obj1 = 0 ;
   
@@ -4262,11 +4286,11 @@ SWIGINTERN PyObject *_wrap_color_mix_t_b_set(PyObject *self, PyObject *args) {
     SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "color_mix_t_b_set" "', argument " "1"" of type '" "struct armwave_color_mix_t *""'"); 
   }
   arg1 = (struct armwave_color_mix_t *)(argp1);
-  ecode2 = SWIG_AsVal_float(obj1, &val2);
+  ecode2 = SWIG_AsVal_unsigned_SS_char(obj1, &val2);
   if (!SWIG_IsOK(ecode2)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "color_mix_t_b_set" "', argument " "2"" of type '" "float""'");
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "color_mix_t_b_set" "', argument " "2"" of type '" "uint8_t""'");
   } 
-  arg2 = (float)(val2);
+  arg2 = (uint8_t)(val2);
   if (arg1) (arg1)->b = arg2;
   resultobj = SWIG_Py_Void();
   return resultobj;
@@ -4280,7 +4304,7 @@ SWIGINTERN PyObject *_wrap_color_mix_t_b_get(PyObject *self, PyObject *args) {
   struct armwave_color_mix_t *arg1 = (struct armwave_color_mix_t *) 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  float result;
+  uint8_t result;
   
   if (args && PyTuple_Check(args) && PyTuple_GET_SIZE(args) > 0) SWIG_exception_fail(SWIG_TypeError, "color_mix_t_b_get takes no arguments");
   res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_armwave_color_mix_t, 0 |  0 );
@@ -4288,8 +4312,8 @@ SWIGINTERN PyObject *_wrap_color_mix_t_b_get(PyObject *self, PyObject *args) {
     SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "color_mix_t_b_get" "', argument " "1"" of type '" "struct armwave_color_mix_t *""'"); 
   }
   arg1 = (struct armwave_color_mix_t *)(argp1);
-  result = (float) ((arg1)->b);
-  resultobj = SWIG_From_float((float)(result));
+  result = (uint8_t) ((arg1)->b);
+  resultobj = SWIG_From_unsigned_SS_char((unsigned char)(result));
   return resultobj;
 fail:
   return NULL;
