@@ -281,8 +281,10 @@ void armwave_dump_ppm_debug(uint32_t *buffer, char *fn)
     fclose(fp);
 }
 
-void armwave_test_init()
+void armwave_test_init(float mod)
 {
+	mod_depth = mod;
+
     test_create_waveform();
     test_create_gamma();
 
@@ -294,13 +296,6 @@ void armwave_test_init()
 void armwave_test_generate()
 {
 	uint32_t yy;
-
-    test_create_waveform();
-    mod_depth += 0.05f;
-
-    if(mod_depth > 0.5f) {
-    	mod_depth = 0.0f;
-    }
 
     memset(g_armwave_state.ch1_buffer, 0, g_armwave_state.size);
 
