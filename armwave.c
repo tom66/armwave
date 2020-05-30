@@ -179,20 +179,18 @@ uint32_t *armwave_create_pixbuf()
 
 #if 1
 	// Buffer is sent non-rotated: we use GDK/GL to assemble and rotate it
-	for(yy = 0; yy < g_armwave_state.target_height; yy++) {
-		for(xx = 0; xx < g_armwave_state.target_width; xx++) {
+	for(xx = 0; xx < g_armwave_state.target_width; xx++) {
+		for(yy = 0; yy < g_armwave_state.target_height; yy++) {
 			//printf("xx,yy=%d,%d, row_ptr=0x%08x\n", xx, yy, row_ptr);
-
+			//value = *(row_ptr + xx + (yy * g_armwave_state.target_width));
 			value = yy / 4; // *(row_ptr + xx);
-			printf("xx,yy=%d,%d, value=%d\n", xx, yy, value);
-			
+			//printf("xx,yy=%d,%d, value=%d\n", xx, yy, value);
+
 			rr = g_armwave_state.ch1_color.r * value;  // We could also do a gamma LUT here
 			gg = g_armwave_state.ch1_color.g * value;
 			bb = g_armwave_state.ch1_color.b * value;
 			*out_buffer++ = (rr << 16) | (gg << 8) | bb;
 		}
-
-		row_ptr += g_armwave_state.target_width;
 	}
 #endif
 
@@ -235,10 +233,12 @@ int main()
 
 	printf("Wave buffer = 0x%08x (const ptr:0x%08x)\n", g_armwave_state.wave_buffer, &test_wave_buffer);
 
+	/*
 	for(yy = 0; yy < (1024 / g_armwave_state.slice_height); yy++) {
 		printf("Rendering slice y=%d at y_pos=%d\n", yy, yy * g_armwave_state.slice_height);
 		render_nonaa_to_buffer_1ch_slice(yy * g_armwave_state.slice_height, g_armwave_state.slice_record_height);
 	}
+	*/
 
 	printf("Creating pixbuf\n");
 	out_buffer = armwave_create_pixbuf();
