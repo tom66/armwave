@@ -26,11 +26,14 @@
 
 #define MAX(a,b) 		((a) > (b) ? (a) : (b))
 #define MIN(a,b) 		((a) < (b) ? (a) : (b))
+#define CLAMP(x,mi,mx)	MIN(MAX((x),mi),mx)
 
 struct armwave_state_t g_armwave_state;
 
 uint8_t test_wave_buffer[TEST_WAVE_SIZE * TEST_NWAVES];
 uint8_t gamma_table[256];
+
+float overall_scale = 3.0f;
 
 /*
  * Make a test AM waveform for render tests.
@@ -215,6 +218,11 @@ uint32_t *armwave_create_pixbuf()
 			rr = gamma_table[(uint8_t)(g_armwave_state.ch1_color.r * value)];  // We could also do a gamma LUT here
 			gg = gamma_table[(uint8_t)(g_armwave_state.ch1_color.g * value)];
 			bb = gamma_table[(uint8_t)(g_armwave_state.ch1_color.b * value)];
+
+			rr = CLAMP(rr * overall_scale, 0, 255);
+			gg = CLAMP(gg * overall_scale, 0, 255);
+			bb = CLAMP(bb * overall_scale, 0, 255);
+
 			word = (rr << 16) | (gg << 8) | bb;
 
 			//printf("xx,yy=%4d,%4d, value=%3d, word=0x%08x, rr=%3d, gg=%3d, bb=%3d\n", xx, yy, value, word, rr, gg, bb);
