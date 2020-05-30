@@ -287,23 +287,22 @@ void armwave_fill_pixbuf2(uint32_t *out_buffer)
     // Buffer is sent non-rotated: we use GDK/GL to assemble and rotate it
     for(yy = 0; yy < g_armwave_state.target_height; yy++) {
         for(xx = 0; xx < g_armwave_state.target_width; xx++) {
-            //printf("xx,yy=%d,%d, row_ptr=0x%08x\n", xx, yy, row_ptr);
             value = *(base_ptr + xx + (yy * g_armwave_state.target_width));
 
-            rr = (g_armwave_state.ch1_color.r * value) >> 8;
-            gg = (g_armwave_state.ch1_color.g * value) >> 8;
-            bb = (g_armwave_state.ch1_color.b * value) >> 8;
+            if(value > 0) {
+	            rr = (g_armwave_state.ch1_color.r * value) >> 8;
+	            gg = (g_armwave_state.ch1_color.g * value) >> 8;
+	            bb = (g_armwave_state.ch1_color.b * value) >> 8;
 
-            r = MIN(rr, 255);
-            g = MIN(gg, 255);
-            b = MIN(bb, 255);
+	            r = MIN(rr, 255);
+	            g = MIN(gg, 255);
+	            b = MIN(bb, 255);
 
-            //r = CLAMP(rr * overall_scale, 0, 255);
-            //g = CLAMP(gg * overall_scale, 0, 255);
-            //b = CLAMP(bb * overall_scale, 0, 255);
-
-            // ensure 100% alpha channel, if it is used
-            word = 0xff000000 | (b << 16) | (g << 8) | r;
+	            // ensure 100% alpha channel, if it is used
+	            word = 0xff000000 | (b << 16) | (g << 8) | r;
+	        } else {
+	        	word = 0x00000000;
+	        }
 
             *out_buffer++ = word;
         }
