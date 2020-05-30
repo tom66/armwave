@@ -177,10 +177,10 @@ armwave_setup_render.constprop.1:
 .LVL2:
 @ armwave.c:184:     g_armwave_state.ch1_color.r = 255 * overall_scale;
 	.loc 1 184 33 view .LVU37
-	ldr	r2, .L12+8	@ tmp150,
+	mvn	r2, #0	@ tmp150,
 @ armwave.c:186:     g_armwave_state.ch1_color.b = 25 * overall_scale;
 	.loc 1 186 33 view .LVU38
-	mov	r3, #9	@ tmp152,
+	mvn	r3, #5	@ tmp152,
 @ armwave.c:184:     g_armwave_state.ch1_color.r = 255 * overall_scale;
 	.loc 1 184 33 view .LVU39
 	strh	r2, [r4, #64]	@ movhi	@ tmp150, MEM[(unsigned char *)&g_armwave_state + 64B]
@@ -273,18 +273,18 @@ armwave_setup_render.constprop.1:
 .LVL8:
 .L10:
 	.loc 1 188 5 is_stmt 1 view .LVU72
-	ldr	r3, .L12+12	@,
+	ldr	r3, .L12+8	@,
 	mov	r2, #188	@,
-	ldr	r1, .L12+16	@,
-	ldr	r0, .L12+20	@,
+	ldr	r1, .L12+12	@,
+	ldr	r0, .L12+16	@,
 	bl	__assert_fail		@
 .LVL9:
 .L11:
 	.loc 1 196 5 view .LVU73
-	ldr	r3, .L12+12	@,
+	ldr	r3, .L12+8	@,
 	mov	r2, #196	@,
-	ldr	r1, .L12+16	@,
-	ldr	r0, .L12+24	@,
+	ldr	r1, .L12+12	@,
+	ldr	r0, .L12+20	@,
 	bl	__assert_fail		@
 .LVL10:
 .L13:
@@ -292,7 +292,6 @@ armwave_setup_render.constprop.1:
 .L12:
 	.word	g_armwave_state
 	.word	test_wave_buffer
-	.word	17764
 	.word	.LANCHOR0
 	.word	.LC0
 	.word	.LC1
@@ -1073,10 +1072,10 @@ armwave_setup_render:
 .LVL54:
 @ armwave.c:184:     g_armwave_state.ch1_color.r = 255 * overall_scale;
 	.loc 1 184 33 view .LVU280
-	ldr	r2, .L74+8	@ tmp166,
+	mvn	r2, #0	@ tmp166,
 @ armwave.c:186:     g_armwave_state.ch1_color.b = 25 * overall_scale;
 	.loc 1 186 33 view .LVU281
-	mov	r3, #9	@ tmp168,
+	mvn	r3, #5	@ tmp168,
 @ armwave.c:184:     g_armwave_state.ch1_color.r = 255 * overall_scale;
 	.loc 1 184 33 view .LVU282
 	strh	r2, [r5, #64]	@ movhi	@ tmp166, MEM[(unsigned char *)&g_armwave_state + 64B]
@@ -1196,40 +1195,40 @@ armwave_setup_render:
 .L70:
 	.cfi_restore_state
 	.loc 1 158 5 is_stmt 1 discriminator 1 view .LVU320
-	ldr	r3, .L74+12	@,
+	ldr	r3, .L74+8	@,
 .LVL63:
 	.loc 1 158 5 is_stmt 0 discriminator 1 view .LVU321
 	mov	r2, #158	@,
-	ldr	r1, .L74+16	@,
-	ldr	r0, .L74+20	@,
+	ldr	r1, .L74+12	@,
+	ldr	r0, .L74+16	@,
 .LVL64:
 	.loc 1 158 5 discriminator 1 view .LVU322
 	bl	__assert_fail		@
 .LVL65:
 .L73:
 	.loc 1 196 5 is_stmt 1 discriminator 1 view .LVU323
-	ldr	r3, .L74+12	@,
+	ldr	r3, .L74+8	@,
 	mov	r2, #196	@,
-	ldr	r1, .L74+16	@,
-	ldr	r0, .L74+24	@,
+	ldr	r1, .L74+12	@,
+	ldr	r0, .L74+20	@,
 	bl	__assert_fail		@
 .LVL66:
 .L72:
 	.loc 1 188 5 discriminator 1 view .LVU324
-	ldr	r3, .L74+12	@,
+	ldr	r3, .L74+8	@,
 	mov	r2, #188	@,
-	ldr	r1, .L74+16	@,
-	ldr	r0, .L74+28	@,
+	ldr	r1, .L74+12	@,
+	ldr	r0, .L74+24	@,
 	bl	__assert_fail		@
 .LVL67:
 .L71:
 	.loc 1 164 5 discriminator 1 view .LVU325
-	ldr	r3, .L74+12	@,
+	ldr	r3, .L74+8	@,
 .LVL68:
 	.loc 1 164 5 is_stmt 0 discriminator 1 view .LVU326
 	mov	r2, #164	@,
-	ldr	r1, .L74+16	@,
-	ldr	r0, .L74+32	@,
+	ldr	r1, .L74+12	@,
+	ldr	r0, .L74+28	@,
 .LVL69:
 	.loc 1 164 5 discriminator 1 view .LVU327
 	bl	__assert_fail		@
@@ -1240,7 +1239,6 @@ armwave_setup_render:
 .L74:
 	.word	1065353216
 	.word	g_armwave_state
-	.word	17764
 	.word	.LANCHOR0
 	.word	.LC0
 	.word	.LC3
@@ -2640,7 +2638,7 @@ __PRETTY_FUNCTION__.17018:
 	.type	overall_scale, %object
 	.size	overall_scale, 4
 overall_scale:
-	.word	1053345993
+	.word	1092616192
 	.bss
 	.align	2
 	.set	.LANCHOR1,. + 0
