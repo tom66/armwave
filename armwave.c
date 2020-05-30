@@ -223,7 +223,7 @@ int main()
 	out_buffer = armwave_create_pixbuf();
 
 	printf("Dumping pixbuf\n");
-	armwave_dump_ppm_debug(&out_buffer, "test.ppm");
+	armwave_dump_ppm_debug(out_buffer, "test.ppm");
 
 	return 0;
 }
