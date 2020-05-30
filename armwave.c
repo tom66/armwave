@@ -163,6 +163,7 @@ uint32_t *armwave_create_pixbuf()
 	uint8_t rr, gg, bb;
 	uint8_t *row_ptr = g_armwave_state.ch1_buffer;
 	uint32_t *out_buffer = malloc(sizeof(uint32_t) * g_armwave_state.size);
+	uint32_t *out_buffer_base;
 
 	assert(out_buffer != NULL);
 	printf("out_buffer=0x%08x\n", out_buffer);
@@ -198,7 +199,7 @@ uint32_t *armwave_create_pixbuf()
 	}
 #endif
 
-	return out_buffer;
+	return out_buffer_base;
 }
 
 void armwave_dump_ppm_debug(uint32_t *buffer, char *fn)
@@ -206,6 +207,8 @@ void armwave_dump_ppm_debug(uint32_t *buffer, char *fn)
 	FILE *fp = fopen(fn, "wb");
 	uint32_t data;
 	int xx, yy;
+
+	printf("in_buffer=0x%08x\n", buffer);
 
 	fputs("P3\n", fp);
 	fprintf(fp, "%d %d\n", g_armwave_state.target_height, g_armwave_state.target_width);
