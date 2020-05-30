@@ -194,7 +194,7 @@ uint32_t *armwave_create_pixbuf()
 
 			//printf("xx,yy=%4d,%4d, value=%3d, word=0x%08x, rr=%3d, gg=%3d, bb=%3d\n", xx, yy, value, word, rr, gg, bb);
 
-			*out_buffer++ = 0x55555555;
+			*out_buffer++ = word;
 		}
 	}
 #endif
