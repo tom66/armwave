@@ -57,7 +57,6 @@ void test_create_waveform()
                 noise = -noise;
 
             noise += 1.0f;
-
             xnoise = (rand() & 0xffff) / 6553500.0f;
 
             v = (sin((6.28f * x * (1.0f / TEST_WAVE_SIZE)) + xnoise) * mod) * noise;
@@ -195,6 +194,8 @@ void armwave_setup_render(uint8_t *wave_buffer, uint32_t start_point, uint32_t e
 
         // printf("xcoord_to_xpixel[%5d] = %5d (scale:%8.3f)\n", xx, g_armwave_state.xcoord_to_xpixel[xx], 1.0f / points_per_pixel);
     }
+
+    g_armwave_state.out_pixbuf = malloc(sizeof(uint32_t) * g_armwave_state.size);
 }
 
 void armwave_clear_buffer(uint32_t flags)
@@ -203,12 +204,11 @@ void armwave_clear_buffer(uint32_t flags)
     memset(g_armwave_state.ch1_buffer, 0, g_armwave_state.size);
 }
 
-uint32_t *armwave_create_pixbuf()
+void armwave_fill_pixbuf(uint32_t *out_buffer)
 {
     uint32_t xx, yy, addr, value, word;
     uint8_t rr, gg, bb;
     uint8_t *base_ptr = g_armwave_state.ch1_buffer;
-    uint32_t *out_buffer = malloc(sizeof(uint32_t) * g_armwave_state.size);
     uint32_t *out_buffer_base = out_buffer;
 
     assert(out_buffer != NULL);
@@ -250,8 +250,6 @@ uint32_t *armwave_create_pixbuf()
         }
     }
 #endif
-
-    return out_buffer_base;
 }
 
 void armwave_dump_ppm_debug(uint32_t *buffer, char *fn)
@@ -276,6 +274,43 @@ void armwave_dump_ppm_debug(uint32_t *buffer, char *fn)
     }
 
     fclose(fp);
+}
+
+void armwave_test_init()
+{
+    test_create_waveform();
+    test_create_gamma();
+
+    armwave_setup_render(&test_wave_buffer, 0, TEST_WAVE_SIZE, TEST_NWAVES, TEST_WAVE_SIZE, 2048, 256, 0x00000000);
+}
+
+void armwave_test_generate()
+{
+    for(yy = 0; yy < (2048 / g_armwave_state.slice_height); yy++) {
+        render_nonaa_to_buffer_1ch_slice(yy * g_armwave_state.slice_height, g_armwave_state.slice_record_height);
+    }
+}
+
+PyObject *armwave_test_get_buffer()
+{
+    PyObject *mv;
+    Py_buffer *buf = malloc(sizeof(Py_buffer));
+    
+    armwave_create_pixbuf(g_armwave_state.out_pixbuf);
+    PyBuffer_FillInfo(buf, NULL, out_buffer, sizeof(uint32_t) * g_armwave_state.size, true, PyBUF_ND);
+
+	mv = PyMemoryView_FromBuffer(buf);
+}
+
+void armwave_cleanup()
+{
+	free(g_armwave_state.out_pixbuf);
+	free(g_armwave_state.ch1_buffer);
+	free(g_armwave_state.xcoord_to_xpixel);
+
+	g_armwave_state.out_pixbuf = NULL;
+	g_armwave_state.ch1_buffer = NULL;
+	g_armwave_state.xcoord_to_xpixel = NULL;
 }
 
 int main(int argc, char *argv[])
@@ -306,11 +341,12 @@ int main(int argc, char *argv[])
 
     /*
     printf("Creating pixbuf\n");
-    out_buffer = armwave_create_pixbuf();
+    out_buffer = malloc(sizeof(uint32_t) * g_armwave_state.size);
+    armwave_create_pixbuf(out_buffer);
 
     printf("Dumping pixbuf\n");
     armwave_dump_ppm_debug(out_buffer, "test.ppm");
     */
-    
+
     return 0;
 }
