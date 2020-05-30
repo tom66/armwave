@@ -23,6 +23,10 @@
 #define TEST_WAVE_SIZE	2048
 #define TEST_NWAVES		64
 
+
+#define MAX(a,b) 		((a) > (b) ? (a) : (b))
+#define MIN(a,b) 		((a) < (b) ? (a) : (b))
+
 struct armwave_state_t g_armwave_state;
 
 uint8_t test_wave_buffer[TEST_WAVE_SIZE * TEST_NWAVES];
@@ -41,9 +45,9 @@ void test_create_waveform()
 		//mod = 1.0f;
 
 		for(x = 0; x < TEST_WAVE_SIZE; x++) {
-			v = sin(6.28f * x * (1.0f / TEST_WAVE_SIZE)) * mod;
+			v = (sin(6.28f * x * (1.0f / TEST_WAVE_SIZE)) * mod) + ((rand() & 0xffff) / 6553500.0f);
 			//v = ((x & 0xff) / 128.0f) - 1.0f;
-			test_wave_buffer[x + (w * TEST_WAVE_SIZE)] = 128 + (v * 127);
+			test_wave_buffer[x + (w * TEST_WAVE_SIZE)] = MIN(MAX(128 + (v * 127), 0), 255);
 		}
 	}
 }
