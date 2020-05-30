@@ -243,7 +243,8 @@ void armwave_fill_pixbuf(uint32_t *out_buffer)
             gg = CLAMP(gg * overall_scale, 0, 255);
             bb = CLAMP(bb * overall_scale, 0, 255);
 
-            word = (rr << 16) | (gg << 8) | bb;
+            // ensure 100% alpha channel, if it is used
+            word = 0xff000000 | (rr << 16) | (gg << 8) | bb;
 
             //printf("xx,yy=%4d,%4d, value=%3d, word=0x%08x, rr=%3d, gg=%3d, bb=%3d\n", xx, yy, value, word, rr, gg, bb);
 
