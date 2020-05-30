@@ -292,7 +292,7 @@ int main()
 
     //printf("Wave buffer = 0x%08x (const ptr:0x%08x)\n", g_armwave_state.wave_buffer, &test_wave_buffer);
 
-    for(n = 0; n < 500; n++) {
+    for(n = 0; n < 5000; n++) {
         for(yy = 0; yy < (2048 / g_armwave_state.slice_height); yy++) {
             //printf("Rendering slice y=%d at y_pos=%d\n", yy, yy * g_armwave_state.slice_height);
             render_nonaa_to_buffer_1ch_slice(yy * g_armwave_state.slice_height, g_armwave_state.slice_record_height);
