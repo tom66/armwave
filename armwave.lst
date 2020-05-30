@@ -1982,9 +1982,9 @@
  310:armwave.c     ****             word = 0xff000000 | (b << 16) | (g << 8) | r;
  311:armwave.c     **** 
  312:armwave.c     ****             // Is there a better way?
- 313:armwave.c     ****             xx = n % g_armwave_state.target_width;
- 314:armwave.c     ****             yy = n / g_armwave_state.target_width;
- 315:armwave.c     ****             offset = (yy + (xx * g_armwave_state.target_width));
+ 313:armwave.c     ****             yy = n % g_armwave_state.target_width;
+ 314:armwave.c     ****             xx = n / g_armwave_state.target_width;
+ 315:armwave.c     ****             offset = (xx + (yy * g_armwave_state.target_width));
  316:armwave.c     ****             *(out_buffer_base + offset) = word;
  317:armwave.c     **** 
  318:armwave.c     ****             //printf("%d %d,%d (w:%d,h:%d)\n", n, xx, yy, g_armwave_state.target_width, g_armwave_s
@@ -2014,21 +2014,21 @@
  1398              		.loc 1 307 13 view .LVU366
  310:armwave.c     **** 
  1399              		.loc 1 310 13 view .LVU367
- 313:armwave.c     ****             yy = n / g_armwave_state.target_width;
+ 313:armwave.c     ****             xx = n / g_armwave_state.target_width;
  1400              		.loc 1 313 13 view .LVU368
- 1401              	@ armwave.c:313:             xx = n % g_armwave_state.target_width;
- 313:armwave.c     ****             yy = n / g_armwave_state.target_width;
+ 1401              	@ armwave.c:313:             yy = n % g_armwave_state.target_width;
+ 313:armwave.c     ****             xx = n / g_armwave_state.target_width;
  1402              		.loc 1 313 37 is_stmt 0 view .LVU369
  1403 0630 349098E5 		ldr	r9, [r8, #52]	@ _29, g_armwave_state.target_width
  1404 0634 0600A0E1 		mov	r0, r6	@, n
  1405 0638 0910A0E1 		mov	r1, r9	@, _29
  1406 063c F020CDE1 		strd	r2, [sp]	@, %sfp
  1407              	.LVL84:
- 313:armwave.c     ****             yy = n / g_armwave_state.target_width;
+ 313:armwave.c     ****             xx = n / g_armwave_state.target_width;
  1408              		.loc 1 313 37 view .LVU370
  1409 0640 FEFFFFEB 		bl	__aeabi_uidivmod		@
  1410              	.LVL85:
- 314:armwave.c     ****             offset = (yy + (xx * g_armwave_state.target_width));
+ 314:armwave.c     ****             offset = (xx + (yy * g_armwave_state.target_width));
  1411              		.loc 1 314 13 is_stmt 1 view .LVU371
  315:armwave.c     ****             *(out_buffer_base + offset) = word;
  1412              		.loc 1 315 13 view .LVU372
