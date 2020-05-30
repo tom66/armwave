@@ -107,7 +107,7 @@ void armwave_setup_render(uint8_t *wave_buffer, uint32_t start_point, uint32_t e
 
 	// Calculate the size of each buffer.  Buffers are rotated by 90 degrees to improve cache coherency.
 	g_armwave_state.xstride = target_height;
-	g_armwave_state.vscale = 256 / target_height;
+	g_armwave_state.vscale = target_height / 256;
 	g_armwave_state.wave_stride = wave_stride;
 	g_armwave_state.waves = waves;
 	g_armwave_state.size = target_height * target_width;
