@@ -3881,6 +3881,75 @@ SWIG_CanCastAsInteger(double *d, double min, double max) {
 
 
 SWIGINTERN int
+SWIG_AsVal_long (PyObject *obj, long* val)
+{
+#if PY_VERSION_HEX < 0x03000000
+  if (PyInt_Check(obj)) {
+    if (val) *val = PyInt_AsLong(obj);
+    return SWIG_OK;
+  } else
+#endif
+  if (PyLong_Check(obj)) {
+    long v = PyLong_AsLong(obj);
+    if (!PyErr_Occurred()) {
+      if (val) *val = v;
+      return SWIG_OK;
+    } else {
+      PyErr_Clear();
+      return SWIG_OverflowError;
+    }
+  }
+#ifdef SWIG_PYTHON_CAST_MODE
+  {
+    int dispatch = 0;
+    long v = PyInt_AsLong(obj);
+    if (!PyErr_Occurred()) {
+      if (val) *val = v;
+      return SWIG_AddCast(SWIG_OK);
+    } else {
+      PyErr_Clear();
+    }
+    if (!dispatch) {
+      double d;
+      int res = SWIG_AddCast(SWIG_AsVal_double (obj,&d));
+      if (SWIG_IsOK(res) && SWIG_CanCastAsInteger(&d, LONG_MIN, LONG_MAX)) {
+	if (val) *val = (long)(d);
+	return res;
+      }
+    }
+  }
+#endif
+  return SWIG_TypeError;
+}
+
+
+SWIGINTERN int
+SWIG_AsVal_short (PyObject * obj, short *val)
+{
+  long v;
+  int res = SWIG_AsVal_long (obj, &v);
+  if (SWIG_IsOK(res)) {
+    if ((v < SHRT_MIN || v > SHRT_MAX)) {
+      return SWIG_OverflowError;
+    } else {
+      if (val) *val = (short)(v);
+    }
+  }  
+  return res;
+}
+
+
+  #define SWIG_From_long   PyInt_FromLong 
+
+
+SWIGINTERNINLINE PyObject *
+SWIG_From_short  (short value)
+{    
+  return SWIG_From_long  (value);
+}
+
+
+SWIGINTERN int
 SWIG_AsVal_unsigned_SS_long (PyObject *obj, unsigned long *val) 
 {
 #if PY_VERSION_HEX < 0x03000000
@@ -3925,40 +3994,6 @@ SWIG_AsVal_unsigned_SS_long (PyObject *obj, unsigned long *val)
   }
 #endif
   return SWIG_TypeError;
-}
-
-
-SWIGINTERN int
-SWIG_AsVal_unsigned_SS_char (PyObject * obj, unsigned char *val)
-{
-  unsigned long v;
-  int res = SWIG_AsVal_unsigned_SS_long (obj, &v);
-  if (SWIG_IsOK(res)) {
-    if ((v > UCHAR_MAX)) {
-      return SWIG_OverflowError;
-    } else {
-      if (val) *val = (unsigned char)(v);
-    }
-  }  
-  return res;
-}
-
-
-  #define SWIG_From_long   PyInt_FromLong 
-
-
-SWIGINTERNINLINE PyObject* 
-SWIG_From_unsigned_SS_long  (unsigned long value)
-{
-  return (value > LONG_MAX) ?
-    PyLong_FromUnsignedLong(value) : PyInt_FromLong((long)(value));
-}
-
-
-SWIGINTERNINLINE PyObject *
-SWIG_From_unsigned_SS_char  (unsigned char value)
-{    
-  return SWIG_From_unsigned_SS_long  (value);
 }
 
 
@@ -4173,10 +4208,10 @@ extern "C" {
 SWIGINTERN PyObject *_wrap_color_mix_t_r_set(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
   struct armwave_color_mix_t *arg1 = (struct armwave_color_mix_t *) 0 ;
-  uint8_t arg2 ;
+  int16_t arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  unsigned char val2 ;
+  short val2 ;
   int ecode2 = 0 ;
   PyObject * obj1 = 0 ;
   
@@ -4186,11 +4221,11 @@ SWIGINTERN PyObject *_wrap_color_mix_t_r_set(PyObject *self, PyObject *args) {
     SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "color_mix_t_r_set" "', argument " "1"" of type '" "struct armwave_color_mix_t *""'"); 
   }
   arg1 = (struct armwave_color_mix_t *)(argp1);
-  ecode2 = SWIG_AsVal_unsigned_SS_char(obj1, &val2);
+  ecode2 = SWIG_AsVal_short(obj1, &val2);
   if (!SWIG_IsOK(ecode2)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "color_mix_t_r_set" "', argument " "2"" of type '" "uint8_t""'");
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "color_mix_t_r_set" "', argument " "2"" of type '" "int16_t""'");
   } 
-  arg2 = (uint8_t)(val2);
+  arg2 = (int16_t)(val2);
   if (arg1) (arg1)->r = arg2;
   resultobj = SWIG_Py_Void();
   return resultobj;
@@ -4204,7 +4239,7 @@ SWIGINTERN PyObject *_wrap_color_mix_t_r_get(PyObject *self, PyObject *args) {
   struct armwave_color_mix_t *arg1 = (struct armwave_color_mix_t *) 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  uint8_t result;
+  int16_t result;
   
   if (args && PyTuple_Check(args) && PyTuple_GET_SIZE(args) > 0) SWIG_exception_fail(SWIG_TypeError, "color_mix_t_r_get takes no arguments");
   res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_armwave_color_mix_t, 0 |  0 );
@@ -4212,8 +4247,8 @@ SWIGINTERN PyObject *_wrap_color_mix_t_r_get(PyObject *self, PyObject *args) {
     SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "color_mix_t_r_get" "', argument " "1"" of type '" "struct armwave_color_mix_t *""'"); 
   }
   arg1 = (struct armwave_color_mix_t *)(argp1);
-  result = (uint8_t) ((arg1)->r);
-  resultobj = SWIG_From_unsigned_SS_char((unsigned char)(result));
+  result = (int16_t) ((arg1)->r);
+  resultobj = SWIG_From_short((short)(result));
   return resultobj;
 fail:
   return NULL;
@@ -4223,10 +4258,10 @@ fail:
 SWIGINTERN PyObject *_wrap_color_mix_t_g_set(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
   struct armwave_color_mix_t *arg1 = (struct armwave_color_mix_t *) 0 ;
-  uint8_t arg2 ;
+  int16_t arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  unsigned char val2 ;
+  short val2 ;
   int ecode2 = 0 ;
   PyObject * obj1 = 0 ;
   
@@ -4236,11 +4271,11 @@ SWIGINTERN PyObject *_wrap_color_mix_t_g_set(PyObject *self, PyObject *args) {
     SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "color_mix_t_g_set" "', argument " "1"" of type '" "struct armwave_color_mix_t *""'"); 
   }
   arg1 = (struct armwave_color_mix_t *)(argp1);
-  ecode2 = SWIG_AsVal_unsigned_SS_char(obj1, &val2);
+  ecode2 = SWIG_AsVal_short(obj1, &val2);
   if (!SWIG_IsOK(ecode2)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "color_mix_t_g_set" "', argument " "2"" of type '" "uint8_t""'");
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "color_mix_t_g_set" "', argument " "2"" of type '" "int16_t""'");
   } 
-  arg2 = (uint8_t)(val2);
+  arg2 = (int16_t)(val2);
   if (arg1) (arg1)->g = arg2;
   resultobj = SWIG_Py_Void();
   return resultobj;
@@ -4254,7 +4289,7 @@ SWIGINTERN PyObject *_wrap_color_mix_t_g_get(PyObject *self, PyObject *args) {
   struct armwave_color_mix_t *arg1 = (struct armwave_color_mix_t *) 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  uint8_t result;
+  int16_t result;
   
   if (args && PyTuple_Check(args) && PyTuple_GET_SIZE(args) > 0) SWIG_exception_fail(SWIG_TypeError, "color_mix_t_g_get takes no arguments");
   res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_armwave_color_mix_t, 0 |  0 );
@@ -4262,8 +4297,8 @@ SWIGINTERN PyObject *_wrap_color_mix_t_g_get(PyObject *self, PyObject *args) {
     SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "color_mix_t_g_get" "', argument " "1"" of type '" "struct armwave_color_mix_t *""'"); 
   }
   arg1 = (struct armwave_color_mix_t *)(argp1);
-  result = (uint8_t) ((arg1)->g);
-  resultobj = SWIG_From_unsigned_SS_char((unsigned char)(result));
+  result = (int16_t) ((arg1)->g);
+  resultobj = SWIG_From_short((short)(result));
   return resultobj;
 fail:
   return NULL;
@@ -4273,10 +4308,10 @@ fail:
 SWIGINTERN PyObject *_wrap_color_mix_t_b_set(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
   struct armwave_color_mix_t *arg1 = (struct armwave_color_mix_t *) 0 ;
-  uint8_t arg2 ;
+  int16_t arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  unsigned char val2 ;
+  short val2 ;
   int ecode2 = 0 ;
   PyObject * obj1 = 0 ;
   
@@ -4286,11 +4321,11 @@ SWIGINTERN PyObject *_wrap_color_mix_t_b_set(PyObject *self, PyObject *args) {
     SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "color_mix_t_b_set" "', argument " "1"" of type '" "struct armwave_color_mix_t *""'"); 
   }
   arg1 = (struct armwave_color_mix_t *)(argp1);
-  ecode2 = SWIG_AsVal_unsigned_SS_char(obj1, &val2);
+  ecode2 = SWIG_AsVal_short(obj1, &val2);
   if (!SWIG_IsOK(ecode2)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "color_mix_t_b_set" "', argument " "2"" of type '" "uint8_t""'");
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "color_mix_t_b_set" "', argument " "2"" of type '" "int16_t""'");
   } 
-  arg2 = (uint8_t)(val2);
+  arg2 = (int16_t)(val2);
   if (arg1) (arg1)->b = arg2;
   resultobj = SWIG_Py_Void();
   return resultobj;
@@ -4304,7 +4339,7 @@ SWIGINTERN PyObject *_wrap_color_mix_t_b_get(PyObject *self, PyObject *args) {
   struct armwave_color_mix_t *arg1 = (struct armwave_color_mix_t *) 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  uint8_t result;
+  int16_t result;
   
   if (args && PyTuple_Check(args) && PyTuple_GET_SIZE(args) > 0) SWIG_exception_fail(SWIG_TypeError, "color_mix_t_b_get takes no arguments");
   res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_armwave_color_mix_t, 0 |  0 );
@@ -4312,8 +4347,8 @@ SWIGINTERN PyObject *_wrap_color_mix_t_b_get(PyObject *self, PyObject *args) {
     SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "color_mix_t_b_get" "', argument " "1"" of type '" "struct armwave_color_mix_t *""'"); 
   }
   arg1 = (struct armwave_color_mix_t *)(argp1);
-  result = (uint8_t) ((arg1)->b);
-  resultobj = SWIG_From_unsigned_SS_char((unsigned char)(result));
+  result = (int16_t) ((arg1)->b);
+  resultobj = SWIG_From_short((short)(result));
   return resultobj;
 fail:
   return NULL;
@@ -5599,20 +5634,20 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_fill_pixbuf(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_fill_pixbuf2(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
   uint32_t *arg1 = (uint32_t *) 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject * obj0 = 0 ;
   
-  if (!PyArg_ParseTuple(args,(char *)"O:fill_pixbuf",&obj0)) SWIG_fail;
+  if (!PyArg_ParseTuple(args,(char *)"O:fill_pixbuf2",&obj0)) SWIG_fail;
   res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_unsigned_int, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "fill_pixbuf" "', argument " "1"" of type '" "uint32_t *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "fill_pixbuf2" "', argument " "1"" of type '" "uint32_t *""'"); 
   }
   arg1 = (uint32_t *)(argp1);
-  armwave_fill_pixbuf(arg1);
+  armwave_fill_pixbuf2(arg1);
   resultobj = SWIG_Py_Void();
   return resultobj;
 fail:
@@ -5742,7 +5777,7 @@ static PyMethodDef SwigMethods[] = {
 	 { "init", _wrap_init, METH_VARARGS, NULL},
 	 { "setup_render", _wrap_setup_render, METH_VARARGS, NULL},
 	 { "clear_buffer", _wrap_clear_buffer, METH_VARARGS, NULL},
-	 { "fill_pixbuf", _wrap_fill_pixbuf, METH_VARARGS, NULL},
+	 { "fill_pixbuf2", _wrap_fill_pixbuf2, METH_VARARGS, NULL},
 	 { "dump_ppm_debug", _wrap_dump_ppm_debug, METH_VARARGS, NULL},
 	 { "test_init", _wrap_test_init, METH_VARARGS, NULL},
 	 { "test_generate", _wrap_test_generate, METH_VARARGS, NULL},
