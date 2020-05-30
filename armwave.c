@@ -37,7 +37,7 @@ uint8_t test_wave_buffer[TEST_WAVE_SIZE * TEST_NWAVES];
 uint8_t gamma_table[256];
 
 // for now...
-const float overall_scale = 20.0f / 255.0f;
+const float overall_scale = 100.0f / 255.0f;
 
 float mod_depth = 0.0f;
 
