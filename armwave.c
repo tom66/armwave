@@ -85,7 +85,7 @@ void render_nonaa_to_buffer_1ch_slice(uint32_t slice_y, uint32_t height)
 				   wave_base + yy);
 #endif
 
-			//value = 127;
+			value = 127;
 			*(write_buffer + value) += 1;
 		}
 	}
