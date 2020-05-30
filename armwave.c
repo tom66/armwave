@@ -21,14 +21,19 @@
 
 #include "armwave.h"
 
-#define TEST_WAVE_SIZE		2048
-#define TEST_NWAVES			64
+#define TEST_WAVE_SIZE			2048
+#define TEST_NWAVES				64
 
-#define ARMWAVE_VER			"v0.0.1"
+#define ARMWAVE_VER				"v0.0.1"
 
-#define MAX(a,b)  			((a) > (b) ? (a) : (b))
-#define MIN(a,b)         	((a) < (b) ? (a) : (b))
-#define CLAMP(x,mi,mx)    	MIN(MAX((x),mi),mx)
+#define MAX(a,b)  				((a) > (b) ? (a) : (b))
+#define MIN(a,b)         		((a) < (b) ? (a) : (b))
+
+#define CLAMP(x,mi,mx)    		MIN(MAX((x),mi),mx)
+
+#define CLAMP_NEON(x,mi,mx)    	vmin_s32(vmax_s32(x, mx), mi)
+
+
 
 struct armwave_state_t g_armwave_state;
 
@@ -288,9 +293,9 @@ void armwave_fill_pixbuf2(uint32_t *out_buffer)
             gg = g_armwave_state.ch1_color.g * value;
             bb = g_armwave_state.ch1_color.b * value;
 
-            r = CLAMP(rr * overall_scale, 0, 255);
-            g = CLAMP(gg * overall_scale, 0, 255);
-            b = CLAMP(bb * overall_scale, 0, 255);
+            r = CLAMP_NEON(rr * overall_scale, 0, 255);
+            g = CLAMP_NEON(gg * overall_scale, 0, 255);
+            b = CLAMP_NEON(bb * overall_scale, 0, 255);
 
             // ensure 100% alpha channel, if it is used
             word = 0xff000000 | (b << 16) | (g << 8) | r;
