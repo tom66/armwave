@@ -40,7 +40,7 @@ float overall_scale = 3.0f;
  */
 void test_create_waveform()
 {
-	float v, mod, noise;
+	float v, mod, noise, xnoise;
 	int w, x;
 
 	for(w = 0; w < TEST_NWAVES; w++) {
