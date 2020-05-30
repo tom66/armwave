@@ -210,6 +210,7 @@ void armwave_clear_buffer(uint32_t flags)
     memset(g_armwave_state.ch1_buffer, 0, g_armwave_state.size);
 }
 
+/*
 void armwave_fill_pixbuf(uint32_t *out_buffer)
 {
     uint32_t xx, yy, addr, value, word;
@@ -251,24 +252,27 @@ void armwave_fill_pixbuf(uint32_t *out_buffer)
             //bb = CLAMP(bb * overall_scale, 0, 255);
 #endif
 
-            rr = (g_armwave_state.ch1_color.r * value) >> 8;
-            gg = (g_armwave_state.ch1_color.g * value) >> 8;
-            bb = (g_armwave_state.ch1_color.b * value) >> 8;
+            if(value != 0) {
+	            rr = (g_armwave_state.ch1_color.r * value) >> 8;
+	            gg = (g_armwave_state.ch1_color.g * value) >> 8;
+	            bb = (g_armwave_state.ch1_color.b * value) >> 8;
 
-            r = MIN(rr, 255);
-            g = MIN(gg, 255);
-            b = MIN(bb, 255);
+	            r = MIN(rr, 255);
+	            g = MIN(gg, 255);
+	            b = MIN(bb, 255);
 
-            // ensure 100% alpha channel, if it is used
-            word = 0xff000000 | (b << 16) | (g << 8) | r;
+	            // ensure 100% alpha channel, if it is used
+	            word = 0xff000000 | (b << 16) | (g << 8) | r;
 
-            //printf("xx,yy=%4d,%4d, value=%3d, word=0x%08x, rr=%3d, gg=%3d, bb=%3d\n", xx, yy, value, word, rr, gg, bb);
+	            //printf("xx,yy=%4d,%4d, value=%3d, word=0x%08x, rr=%3d, gg=%3d, bb=%3d\n", xx, yy, value, word, rr, gg, bb);
 
-            *out_buffer++ = word;
+	            *out_buffer++ = word;
+	        }
         }
     }
 #endif
 }
+*/
 
 void armwave_fill_pixbuf2(uint32_t *out_buffer)
 {
@@ -286,13 +290,17 @@ void armwave_fill_pixbuf2(uint32_t *out_buffer)
             //printf("xx,yy=%d,%d, row_ptr=0x%08x\n", xx, yy, row_ptr);
             value = *(base_ptr + xx + (yy * g_armwave_state.target_width));
 
-            rr = g_armwave_state.ch1_color.r * value;
-            gg = g_armwave_state.ch1_color.g * value;
-            bb = g_armwave_state.ch1_color.b * value;
+            rr = (g_armwave_state.ch1_color.r * value) >> 8;
+            gg = (g_armwave_state.ch1_color.g * value) >> 8;
+            bb = (g_armwave_state.ch1_color.b * value) >> 8;
 
-            r = CLAMP(rr * overall_scale, 0, 255);
-            g = CLAMP(gg * overall_scale, 0, 255);
-            b = CLAMP(bb * overall_scale, 0, 255);
+            r = MIN(rr, 255);
+            g = MIN(gg, 255);
+            b = MIN(bb, 255);
+            
+            //r = CLAMP(rr * overall_scale, 0, 255);
+            //g = CLAMP(gg * overall_scale, 0, 255);
+            //b = CLAMP(bb * overall_scale, 0, 255);
 
             // ensure 100% alpha channel, if it is used
             word = 0xff000000 | (b << 16) | (g << 8) | r;
