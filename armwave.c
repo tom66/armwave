@@ -310,8 +310,8 @@ void armwave_fill_pixbuf2(uint32_t *out_buffer)
             word = 0xff000000 | (b << 16) | (g << 8) | r;
 
             // Is there a better way?
-            xx = n % g_armwave_state.target_width;
-            yy = n / g_armwave_state.target_width;
+            xx = n % g_armwave_state.target_height;
+            yy = n / g_armwave_state.target_height;
             offset = (yy + (xx * g_armwave_state.target_height));
             *(out_buffer_base + offset) = word;
 
