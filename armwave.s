@@ -1398,9 +1398,9 @@ armwave_fill_pixbuf2:
 	.loc 1 307 13 view .LVU366
 	.loc 1 310 13 view .LVU367
 	.loc 1 320 13 view .LVU368
-@ armwave.c:320:             xx = n % g_armwave_state.target_width;
+@ armwave.c:320:             xx = n % g_armwave_state.target_height;
 	.loc 1 320 37 is_stmt 0 view .LVU369
-	ldr	r9, [r8, #52]	@ _29, g_armwave_state.target_width
+	ldr	r9, [r8, #56]	@ _29, g_armwave_state.target_height
 	mov	r0, r6	@, n
 	mov	r1, r9	@, _29
 	strd	r2, [sp]	@, %sfp
@@ -1460,7 +1460,7 @@ armwave_fill_pixbuf2:
 	orr	lr, lr, #-16777216	@ word, tmp179,
 @ armwave.c:323:             *(out_buffer_base + offset) = word;
 	.loc 1 323 31 view .LVU388
-	mla	r1, r9, r0, r1	@ tmp169, _29,,
+	mla	r1, r9, r1, r0	@ tmp169, _29,,
 .LVL87:
 @ armwave.c:323:             *(out_buffer_base + offset) = word;
 	.loc 1 323 41 view .LVU389
@@ -11401,12 +11401,12 @@ mod_depth:
 	.4byte	.LVL85
 	.4byte	.LVL87
 	.2byte	0x9
-	.byte	0x70
+	.byte	0x71
 	.sleb128 0
 	.byte	0x79
 	.sleb128 0
 	.byte	0x1e
-	.byte	0x71
+	.byte	0x70
 	.sleb128 0
 	.byte	0x22
 	.byte	0x9f
