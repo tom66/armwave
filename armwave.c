@@ -163,7 +163,7 @@ uint32_t *armwave_create_pixbuf()
 	assert(out_buffer != NULL);
 	printf("out_buffer=0x%08x\n", out_buffer);
 
-#if 0
+#if 1
     // Pixbuf tests
     for(xx = 0; xx < g_armwave_state.target_width; xx++) {
     	for(yy = 0; yy < g_armwave_state.target_height; yy++) {
@@ -173,7 +173,7 @@ uint32_t *armwave_create_pixbuf()
     }
 #endif
 
-#if 1
+#if 0
 	// Buffer is sent non-rotated: we use GDK/GL to assemble and rotate it
 	for(yy = 0; yy < g_armwave_state.target_height; yy++) {
 		for(xx = 0; xx < g_armwave_state.target_width; xx++) {
