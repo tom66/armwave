@@ -183,7 +183,7 @@ uint32_t *armwave_create_pixbuf()
 		for(xx = 0; xx < g_armwave_state.target_width; xx++) {
 			//printf("xx,yy=%d,%d, row_ptr=0x%08x\n", xx, yy, row_ptr);
 
-			value = *(row_ptr + xx);
+			value = yy / 4; // *(row_ptr + xx);
 			rr = g_armwave_state.ch1_color.r * value;  // We could also do a gamma LUT here
 			gg = g_armwave_state.ch1_color.g * value;
 			bb = g_armwave_state.ch1_color.b * value;
