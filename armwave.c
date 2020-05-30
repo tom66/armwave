@@ -80,7 +80,7 @@ void render_nonaa_to_buffer_1ch_slice(uint32_t slice_y, uint32_t height)
 				   yy, slice_y + yy, write_buffer, write_buffer - g_armwave_state.ch1_buffer, \
 				   value, g_armwave_state.xcoord_to_xpixel[slice_y + yy], \
 				   g_armwave_state.xcoord_to_xpixel[slice_y + yy], \
-				   wave_base + yy;
+				   wave_base + yy);
 
 			*(write_buffer + value) += 1;
 		}
