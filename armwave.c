@@ -41,7 +41,7 @@ void test_create_waveform()
 
 		for(x = 0; x < TEST_WAVE_SIZE; x++) {
 			//v = sin(3.1415f * x * (1.0f / TEST_WAVE_SIZE)) * mod;
-			v = (x & 0xff) / 255.0f;
+			v = ((x & 0xff) / 128.0f) - 1.0f;
 			test_wave_buffer[x + (w * TEST_WAVE_SIZE)] = 128 + (v * 127);
 		}
 	}
