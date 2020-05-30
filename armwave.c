@@ -61,7 +61,7 @@ void test_create_waveform()
 void test_create_gamma()
 {
 	int i;
-	float gamma = 1.0f;
+	float gamma = 0.9f;
 
 	for(i = 0; i < 256; i++) {
 		gamma_table[i] = pow(i / 255.0f, gamma) * 255.0f;
@@ -158,8 +158,8 @@ void armwave_setup_render(uint8_t *wave_buffer, uint32_t start_point, uint32_t e
 
     g_armwave_state.ch1_buffer = calloc(g_armwave_state.size, 1);
     g_armwave_state.ch1_color.r = 1.0f;
-    g_armwave_state.ch1_color.g = 0.8f;
-    g_armwave_state.ch1_color.b = 0.2f;
+    g_armwave_state.ch1_color.g = 0.7f;
+    g_armwave_state.ch1_color.b = 0.1f;
 
     assert(g_armwave_state.ch1_buffer != NULL);
 
