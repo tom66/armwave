@@ -1460,7 +1460,7 @@ armwave_fill_pixbuf2:
 	orr	lr, lr, #-16777216	@ word, tmp179,
 @ armwave.c:316:             *(out_buffer_base + offset) = word;
 	.loc 1 316 31 view .LVU388
-	mla	r1, r9, r1, r0	@ tmp169, _29,,
+	mla	r1, r9, r0, r1	@ tmp169, _29,,
 .LVL87:
 @ armwave.c:316:             *(out_buffer_base + offset) = word;
 	.loc 1 316 41 view .LVU389
@@ -11401,12 +11401,12 @@ mod_depth:
 	.4byte	.LVL85
 	.4byte	.LVL87
 	.2byte	0x9
-	.byte	0x71
+	.byte	0x70
 	.sleb128 0
 	.byte	0x79
 	.sleb128 0
 	.byte	0x1e
-	.byte	0x70
+	.byte	0x71
 	.sleb128 0
 	.byte	0x22
 	.byte	0x9f
