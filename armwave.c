@@ -48,7 +48,7 @@ void test_create_waveform()
 		mod = 1.0f;
 
 		for(x = 0; x < TEST_WAVE_SIZE; x++) {
-			noise  = ((rand() & 0xffff) / 65537.0f);
+			noise  = ((rand() & 0xffff) / 131072.0f);
 			noise *= noise;
 			noise *= noise;
 
