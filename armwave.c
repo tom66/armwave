@@ -305,6 +305,11 @@ PyObject *armwave_test_get_buffer()
 	mv = PyMemoryView_FromBuffer(buf);
 }
 
+void armwave_test_dump_buffer_to_ppm(char *fn)
+{
+	armwave_dump_ppm_debug(g_armwave_state.out_pixbuf, fn);
+}
+
 void armwave_cleanup()
 {
 	free(g_armwave_state.out_pixbuf);

@@ -66,3 +66,4 @@ void armwave_dump_ppm_debug(uint32_t *buffer, char *fn);
 void armwave_test_init(void);
 void armwave_test_generate(void);
 PyObject *armwave_test_get_buffer(void);
+void armwave_test_dump_buffer_to_ppm(char *fn);
