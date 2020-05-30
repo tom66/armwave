@@ -35,7 +35,7 @@ struct armwave_state_t g_armwave_state;
 uint8_t test_wave_buffer[TEST_WAVE_SIZE * TEST_NWAVES];
 uint8_t gamma_table[256];
 
-float overall_scale = 8.0f;
+float overall_scale = 20.0f;
 
 float mod_depth = 0.0f;
 
