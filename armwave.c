@@ -287,7 +287,8 @@ void armwave_fill_pixbuf2(uint32_t *out_buffer)
     // Buffer is sent non-rotated: we use GDK/GL to assemble and rotate it
     for(yy = 0; yy < g_armwave_state.target_height; yy++) {
         for(xx = 0; xx < g_armwave_state.target_width; xx++) {
-            value = *(base_ptr + xx + (yy * g_armwave_state.target_width));
+            //value = *(base_ptr + xx + (yy * g_armwave_state.target_width));
+            value = *base_ptr++;
 
             if(value > 0) {
 	            rr = (g_armwave_state.ch1_color.r * value) >> 8;
