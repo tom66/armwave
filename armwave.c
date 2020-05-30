@@ -299,7 +299,7 @@ PyObject *armwave_test_get_buffer()
     PyObject *mv;
     Py_buffer *buf = malloc(sizeof(Py_buffer));
     
-    armwave_create_pixbuf(g_armwave_state.out_pixbuf);
+    armwave_fill_pixbuf(g_armwave_state.out_pixbuf);
     PyBuffer_FillInfo(buf, NULL, g_armwave_state.out_pixbuf, sizeof(uint32_t) * g_armwave_state.size, true, PyBUF_ND);
 
 	mv = PyMemoryView_FromBuffer(buf);
