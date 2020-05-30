@@ -189,6 +189,9 @@ uint32_t *armwave_create_pixbuf()
 			rr = g_armwave_state.ch1_color.r * value;  // We could also do a gamma LUT here
 			gg = g_armwave_state.ch1_color.g * value;
 			bb = g_armwave_state.ch1_color.b * value;
+
+			printf("xx,yy=%d,%d, value=%3d, rr=%3d, gg=%3d, bb=%3d\n", xx, yy, value, rr, gg, bb);
+
 			*out_buffer++ = (rr << 16) | (gg << 8) | bb;
 		}
 	}
