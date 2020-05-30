@@ -238,13 +238,17 @@ void armwave_fill_pixbuf(uint32_t *out_buffer)
             //value = xx / 8; // *(row_ptr + xx);
             //printf("xx,yy=%d,%d, value=%d\n", xx, yy, value);
 
-            rr = gamma_table[(uint8_t)(g_armwave_state.ch1_color.r * value)];  // We could also do a gamma LUT here
-            gg = gamma_table[(uint8_t)(g_armwave_state.ch1_color.g * value)];
-            bb = gamma_table[(uint8_t)(g_armwave_state.ch1_color.b * value)];
+            //rr = gamma_table[(uint8_t)(g_armwave_state.ch1_color.r * value)];  // We could also do a gamma LUT here
+            //gg = gamma_table[(uint8_t)(g_armwave_state.ch1_color.g * value)];
+            //bb = gamma_table[(uint8_t)(g_armwave_state.ch1_color.b * value)];
 
-            rr = CLAMP(rr * overall_scale, 0, 255);
-            gg = CLAMP(gg * overall_scale, 0, 255);
-            bb = CLAMP(bb * overall_scale, 0, 255);
+            //rr = CLAMP(rr * overall_scale, 0, 255);
+            //gg = CLAMP(gg * overall_scale, 0, 255);
+            //bb = CLAMP(bb * overall_scale, 0, 255);
+
+            rr = g_armwave_state.ch1_color.r * value;
+            gg = g_armwave_state.ch1_color.g * value;
+            bb = g_armwave_state.ch1_color.b * value;
 
             // ensure 100% alpha channel, if it is used
             word = 0xff000000 | (bb << 16) | (gg << 8) | rr;
