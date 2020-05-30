@@ -21,13 +21,14 @@
 
 #include "armwave.h"
 
-#define TEST_WAVE_SIZE    2048
-#define TEST_NWAVES        64
+#define TEST_WAVE_SIZE		2048
+#define TEST_NWAVES			64
 
+#define ARMWAVE_VER			"v0.0.1"
 
-#define MAX(a,b)         ((a) > (b) ? (a) : (b))
-#define MIN(a,b)         ((a) < (b) ? (a) : (b))
-#define CLAMP(x,mi,mx)    MIN(MAX((x),mi),mx)
+#define MAX(a,b)  			((a) > (b) ? (a) : (b))
+#define MIN(a,b)         	((a) < (b) ? (a) : (b))
+#define CLAMP(x,mi,mx)    	MIN(MAX((x),mi),mx)
 
 struct armwave_state_t g_armwave_state;
 
@@ -286,6 +287,8 @@ void armwave_test_init()
     test_create_gamma();
 
     armwave_setup_render(&test_wave_buffer, 0, TEST_WAVE_SIZE, TEST_NWAVES, TEST_WAVE_SIZE, 2048, 256, 0x00000000);
+
+    printf("armwave version: %s\n", ARMWAVE_VER);
 }
 
 void armwave_test_generate()
