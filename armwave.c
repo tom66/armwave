@@ -31,16 +31,13 @@
 
 #define CLAMP(x,mi,mx)    		MIN(MAX((x),mi),mx)
 
-#define CLAMP_NEON(x,mi,mx)    	vmin_s32(vmax_s32(x, mx), mi)
-
-
-
 struct armwave_state_t g_armwave_state;
 
 uint8_t test_wave_buffer[TEST_WAVE_SIZE * TEST_NWAVES];
 uint8_t gamma_table[256];
 
-float overall_scale = 20.0f;
+// for now...
+const int overall_scale = 20;
 
 float mod_depth = 0.0f;
 
@@ -184,9 +181,9 @@ void armwave_setup_render(uint8_t *wave_buffer, uint32_t start_point, uint32_t e
         free(g_armwave_state.ch1_buffer);
 
     g_armwave_state.ch1_buffer = calloc(g_armwave_state.size, 1);
-    g_armwave_state.ch1_color.r = 1.0f;
-    g_armwave_state.ch1_color.g = 0.7f;
-    g_armwave_state.ch1_color.b = 0.1f;
+    g_armwave_state.ch1_color.r = 255 * overall_scale;
+    g_armwave_state.ch1_color.g = 178 * overall_scale;
+    g_armwave_state.ch1_color.b = 25 * overall_scale;
 
     assert(g_armwave_state.ch1_buffer != NULL);
 
@@ -254,13 +251,13 @@ void armwave_fill_pixbuf(uint32_t *out_buffer)
             //bb = CLAMP(bb * overall_scale, 0, 255);
 #endif
 
-            rr = g_armwave_state.ch1_color.r * value;
-            gg = g_armwave_state.ch1_color.g * value;
-            bb = g_armwave_state.ch1_color.b * value;
+            rr = (g_armwave_state.ch1_color.r * value) >> 8;
+            gg = (g_armwave_state.ch1_color.g * value) >> 8;
+            bb = (g_armwave_state.ch1_color.b * value) >> 8;
 
-            r = CLAMP(rr * overall_scale, 0, 255);
-            g = CLAMP(gg * overall_scale, 0, 255);
-            b = CLAMP(bb * overall_scale, 0, 255);
+            r = MIN(rr, 255);
+            g = MIN(gg, 255);
+            b = MIN(bb, 255);
 
             // ensure 100% alpha channel, if it is used
             word = 0xff000000 | (b << 16) | (g << 8) | r;
@@ -293,9 +290,9 @@ void armwave_fill_pixbuf2(uint32_t *out_buffer)
             gg = g_armwave_state.ch1_color.g * value;
             bb = g_armwave_state.ch1_color.b * value;
 
-            r = CLAMP_NEON(rr * overall_scale, 0, 255);
-            g = CLAMP_NEON(gg * overall_scale, 0, 255);
-            b = CLAMP_NEON(bb * overall_scale, 0, 255);
+            r = CLAMP(rr * overall_scale, 0, 255);
+            g = CLAMP(gg * overall_scale, 0, 255);
+            b = CLAMP(bb * overall_scale, 0, 255);
 
             // ensure 100% alpha channel, if it is used
             word = 0xff000000 | (b << 16) | (g << 8) | r;

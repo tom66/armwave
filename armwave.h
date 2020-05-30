@@ -18,7 +18,7 @@
 #define AM_FLAG_RENDER_PIX_AA       0x00000100
 
 struct armwave_color_mix_t {
-  float r, g, b;
+  uint8_t r, g, b;
 };
 
 struct armwave_state_t {
