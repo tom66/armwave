@@ -172,7 +172,7 @@ uint32_t *armwave_create_pixbuf()
 			*out_buffer++ = (rr << 16) | (gg << 8) | bb;
 		}
 
-		row_ptr += (yy * g_armwave_state.target_width);
+		row_ptr += g_armwave_state.target_width;
 	}
 
 	return out_buffer;
