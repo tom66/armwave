@@ -155,7 +155,7 @@ void armwave_setup_render(uint8_t *wave_buffer, uint32_t start_point, uint32_t e
 
     g_armwave_state.ch1_buffer = calloc(g_armwave_state.size, 1);
     g_armwave_state.ch1_color.r = 1.0f;
-    g_armwave_state.ch1_color.g = 0.5f;
+    g_armwave_state.ch1_color.g = 0.8f;
     g_armwave_state.ch1_color.b = 0.0f;
 
     assert(g_armwave_state.ch1_buffer != NULL);
