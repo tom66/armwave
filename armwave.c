@@ -284,7 +284,7 @@ void armwave_fill_pixbuf2(uint32_t *out_buffer)
     uint8_t r, g, b;
     uint8_t *base_ptr = g_armwave_state.ch1_buffer;
     uint32_t *out_buffer_base = out_buffer;
-    uint32_t npix, n;
+    uint32_t npix, n, offset;
 
     assert(out_buffer != NULL);
 
@@ -308,10 +308,11 @@ void armwave_fill_pixbuf2(uint32_t *out_buffer)
 
             // ensure 100% alpha channel, if it is used
             word = 0xff000000 | (b << 16) | (g << 8) | r;
-            xx = n % g_armwave_state.target_height;
-            yy = n / g_armwave_state.target_height;
-            //printf("%d %d,%d\n", n, xx, yy);
-            *(out_buffer_base + (xx + (yy * g_armwave_state.target_width))) = word;
+            xx = n % g_armwave_state.target_width;
+            yy = n / g_armwave_state.target_width;
+            offset = (xx + (yy * g_armwave_state.target_height));
+            printf("%d %d,%d (w:%d,h:%d)\n", n, xx, yy, g_armwave_state.target_width, g_armwave_state.target_height, offset);
+            *(out_buffer_base + (offset / 4)) = word;
         }
     }
 }
