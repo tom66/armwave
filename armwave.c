@@ -53,7 +53,7 @@ void test_create_waveform()
  */
 void render_nonaa_to_buffer_1ch_slice(uint32_t slice_y, uint32_t height)
 {
-	int yy, w, v, yy;
+	int yy, w, v;
 	uint8_t *wave_base;
 	uint8_t *write_buffer_base;
 	uint8_t *write_buffer;
@@ -109,8 +109,10 @@ void armwave_setup_render(uint8_t *wave_buffer, uint32_t start_point, uint32_t e
 	if(g_armwave_state.ch1_buffer != NULL)
 		free(g_armwave_state.ch1_buffer);
 
-    g_armwave_state.ch1_buffer = calloc(g_armwave_state.size);
-    g_armwave_state.ch1_color = { .r = 1.0f, .g = 0.5f, .b = 0.0f };  // Demo colour
+    g_armwave_state.ch1_buffer = calloc(g_armwave_state.size, 1);
+    g_armwave_state.ch1_color.r = 1.0f;
+    g_armwave_state.ch1_color.g = 0.5f;
+    g_armwave_state.ch1_color.b = 0.0f;
 
     assert(g_armwave_state.ch1_buffer != NULL);
 
@@ -159,16 +161,17 @@ uint32_t *armwave_create_pixbuf()
 void armwave_dump_ppm_debug(uint32_t *buffer, char *fn)
 {
 	FILE *fp = fopen(fn, "wb");
-	uint32_t data, yy;
+	uint32_t data;
+	int xx, yy;
 
 	fputs("P3\n", fp);
-	fprintf("%d %d\n", g_armwave_state.target_width, g_armwave_state.target_height, fp);
+	fprintf(fp, "%d %d\n", g_armwave_state.target_width, g_armwave_state.target_height);
 	fputs("255\n", fp);
 
 	for(yy = 0; yy < g_armwave_state.target_height; yy++) {
 		for(xx = 0; xx < g_armwave_state.target_width; xx++) {
 			data = *(buffer + xx + (yy * g_armwave_state.target_width));
-			fprintf("%3d %3d %3d\n", (data >> 16) & 0xff, (data >> 8) & 0xff, data & 0xff);
+			fprintf(fp, "%3d %3d %3d\n", (data >> 16) & 0xff, (data >> 8) & 0xff, data & 0xff);
 		}
 	}
 
@@ -184,13 +187,13 @@ int main()
 	test_create_waveform();
 
 	printf("Setting up render...");
-	armwave_setup_render(&test_wave_buffer, 0, TEST_WAVE_SIZE, TEST_NWAVES, 2048, 1024);
+	armwave_setup_render(&test_wave_buffer, 0, TEST_WAVE_SIZE, TEST_WAVE_SIZE, TEST_NWAVES, 2048, 1024);
 
 	for(yy = 0; yy < (1024 / g_armwave_state.slice_height); yy++) {
 		printf("Rendering slice y=%d at y_pos=%d\n", yy, yy * g_armwave_state.slice_height);
 		render_nonaa_to_buffer_1ch_slice(yy * g_armwave_state.slice_height, g_armwave_state.slice_record_height);
 	}
-	
+
 	printf("Creating pixbuf\n");
 	out_buffer = armwave_create_pixbuf();
 
