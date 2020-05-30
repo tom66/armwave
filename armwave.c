@@ -268,6 +268,38 @@ void armwave_fill_pixbuf(uint32_t *out_buffer)
 #endif
 }
 
+void armwave_fill_pixbuf2(uint32_t *out_buffer)
+{
+    uint32_t xx, yy, addr, value, word;
+    int rr, gg, bb;
+    uint8_t r, g, b;
+    uint8_t *base_ptr = g_armwave_state.ch1_buffer;
+    uint32_t *out_buffer_base = out_buffer;
+
+    assert(out_buffer != NULL);
+
+    // Buffer is sent non-rotated: we use GDK/GL to assemble and rotate it
+    for(yy = 0; yy < g_armwave_state.target_height; yy++) {
+        for(xx = 0; xx < g_armwave_state.target_width; xx++) {
+            //printf("xx,yy=%d,%d, row_ptr=0x%08x\n", xx, yy, row_ptr);
+            value = *(base_ptr + xx + (yy * g_armwave_state.target_width));
+
+            rr = g_armwave_state.ch1_color.r * value;
+            gg = g_armwave_state.ch1_color.g * value;
+            bb = g_armwave_state.ch1_color.b * value;
+
+            r = CLAMP(rr * overall_scale, 0, 255);
+            g = CLAMP(gg * overall_scale, 0, 255);
+            b = CLAMP(bb * overall_scale, 0, 255);
+
+            // ensure 100% alpha channel, if it is used
+            word = 0xff000000 | (b << 16) | (g << 8) | r;
+
+            *out_buffer++ = word;
+        }
+    }
+}
+
 void armwave_dump_ppm_debug(uint32_t *buffer, char *fn)
 {
     FILE *fp = fopen(fn, "wb");
@@ -320,7 +352,7 @@ PyObject *armwave_test_get_buffer()
     PyObject *mv;
     Py_buffer *buf = malloc(sizeof(Py_buffer));
     
-    armwave_fill_pixbuf(g_armwave_state.out_pixbuf);
+    armwave_fill_pixbuf2(g_armwave_state.out_pixbuf);
     PyBuffer_FillInfo(buf, NULL, g_armwave_state.out_pixbuf, sizeof(uint32_t) * g_armwave_state.size, true, PyBUF_ND);
 
 	mv = PyMemoryView_FromBuffer(buf);
