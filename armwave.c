@@ -15,6 +15,7 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <stdlib.h>
+#include <stdbool.h>
 #include <string.h>
 #include <math.h>
 
@@ -286,6 +287,8 @@ void armwave_test_init()
 
 void armwave_test_generate()
 {
+	uint32_t yy;
+
     for(yy = 0; yy < (2048 / g_armwave_state.slice_height); yy++) {
         render_nonaa_to_buffer_1ch_slice(yy * g_armwave_state.slice_height, g_armwave_state.slice_record_height);
     }
@@ -297,7 +300,7 @@ PyObject *armwave_test_get_buffer()
     Py_buffer *buf = malloc(sizeof(Py_buffer));
     
     armwave_create_pixbuf(g_armwave_state.out_pixbuf);
-    PyBuffer_FillInfo(buf, NULL, out_buffer, sizeof(uint32_t) * g_armwave_state.size, true, PyBUF_ND);
+    PyBuffer_FillInfo(buf, NULL, g_armwave_state.out_pixbuf, sizeof(uint32_t) * g_armwave_state.size, true, PyBUF_ND);
 
 	mv = PyMemoryView_FromBuffer(buf);
 }
