@@ -161,7 +161,7 @@ uint32_t *armwave_create_pixbuf()
 {
 	uint32_t xx, yy, addr, value, word;
 	uint8_t rr, gg, bb;
-	uint8_t *row_ptr = g_armwave_state.ch1_buffer;
+	uint8_t *base_ptr = g_armwave_state.ch1_buffer;
 	uint32_t *out_buffer = malloc(sizeof(uint32_t) * g_armwave_state.size);
 	uint32_t *out_buffer_base = out_buffer;
 
@@ -183,8 +183,8 @@ uint32_t *armwave_create_pixbuf()
 	for(xx = 0; xx < g_armwave_state.target_width; xx++) {
 		for(yy = 0; yy < g_armwave_state.target_height; yy++) {
 			//printf("xx,yy=%d,%d, row_ptr=0x%08x\n", xx, yy, row_ptr);
-			//value = *(row_ptr + xx + (yy * g_armwave_state.target_width));
-			value = xx / 4; // *(row_ptr + xx);
+			value = *(base_ptr + xx + (yy * g_armwave_state.target_width));
+			//value = xx / 4; // *(row_ptr + xx);
 			//printf("xx,yy=%d,%d, value=%d\n", xx, yy, value);
 
 			rr = g_armwave_state.ch1_color.r * value;  // We could also do a gamma LUT here
