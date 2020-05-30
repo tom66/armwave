@@ -166,7 +166,7 @@ uint32_t *armwave_create_pixbuf()
     // Pixbuf tests
     for(xx = 0; xx < g_armwave_state.target_width; xx++) {
     	for(yy = 0; yy < g_armwave_state.target_height; yy++) {
-			printf("xx=%d, yy=%d\n", xx, yy);
+			//printf("xx=%d, yy=%d\n", xx, yy);
     		*(out_buffer + ((xx + (yy * g_armwave_state.target_width)) / 4)) = (yy / 4);
     	}
     }
