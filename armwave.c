@@ -165,7 +165,7 @@ void armwave_setup_render(uint8_t *wave_buffer, uint32_t start_point, uint32_t e
     // In 1ch mode, target 1024 x 16 render buffer, reading 16 bytes at a time from each wave, retaining as much as possible in L1/L2 cache
     // In 2ch mode, target two 1024 x 8 render buffers, reading 16 bytes at a time from each wave
     // In 4ch mode, target four 1024 x 4 render buffers, reading 16 bytes at a time from each wave
-    g_armwave_state.slice_height = 1;  
+    g_armwave_state.slice_height = 64;  
 
     if(g_armwave_state.ch1_buffer != NULL)
         free(g_armwave_state.ch1_buffer);
@@ -292,18 +292,18 @@ int main(int argc, char *argv[])
 
     //printf("Wave buffer = 0x%08x (const ptr:0x%08x)\n", g_armwave_state.wave_buffer, &test_wave_buffer);
 
-    for(n = 0; n < 5000; n++) {
+    for(n = 0; n < 1; n++) {
         for(yy = 0; yy < (2048 / g_armwave_state.slice_height); yy++) {
             //printf("Rendering slice y=%d at y_pos=%d\n", yy, yy * g_armwave_state.slice_height);
             render_nonaa_to_buffer_1ch_slice(yy * g_armwave_state.slice_height, g_armwave_state.slice_record_height);
         }
     }
 
-    //printf("Creating pixbuf\n");
-    //out_buffer = armwave_create_pixbuf();
+    printf("Creating pixbuf\n");
+    out_buffer = armwave_create_pixbuf();
 
-    //printf("Dumping pixbuf\n");
-    //armwave_dump_ppm_debug(out_buffer, "test.ppm");
+    printf("Dumping pixbuf\n");
+    armwave_dump_ppm_debug(out_buffer, "test.ppm");
 
     return 0;
 }
