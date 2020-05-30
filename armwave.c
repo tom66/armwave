@@ -145,6 +145,13 @@ void armwave_setup_render(uint8_t *wave_buffer, uint32_t start_point, uint32_t e
 
 		// printf("xcoord_to_xpixel[%5d] = %5d (scale:%8.3f)\n", xx, g_armwave_state.xcoord_to_xpixel[xx], 1.0f / points_per_pixel);
     }
+
+    // Initial buffer tests
+    for(xx = 0; xx < g_armwave_state.target_width; xx++) {
+    	for(yy = 0; yy < g_armwave_state.target_height; yy++) {
+    		*(buffer + ((xx + (yy * g_armwave_state.target_width)) / 4)) = (yy / 4);
+    	}
+    }
 }
 
 void armwave_clear_buffer(uint32_t flags)
@@ -217,6 +224,7 @@ int main()
 
 	printf("Wave buffer = 0x%08x (const ptr:0x%08x)\n", g_armwave_state.wave_buffer, &test_wave_buffer);
 
+	/*
 	for(yy = 0; yy < (1024 / g_armwave_state.slice_height); yy++) {
 		printf("Rendering slice y=%d at y_pos=%d\n", yy, yy * g_armwave_state.slice_height);
 		render_nonaa_to_buffer_1ch_slice(yy * g_armwave_state.slice_height, g_armwave_state.slice_record_height);
@@ -224,6 +232,7 @@ int main()
 
 	printf("Creating pixbuf\n");
 	out_buffer = armwave_create_pixbuf();
+	*/
 
 	printf("Dumping pixbuf\n");
 	armwave_dump_ppm_debug(out_buffer, "test.ppm");
