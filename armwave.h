@@ -1,0 +1,45 @@
+#include <Python.h>
+
+#define AM_FLAG_RENDER_1CH_MODE     0x00000001
+#define AM_FLAG_RENDER_2CH_MODE     0x00000002
+#define AM_FLAG_RENDER_4CH_MODE     0x00000004
+#define AM_FLAG_DONT_RENDER_CH_1    0x00000010
+#define AM_FLAG_DONT_RENDER_CH_2    0x00000020
+#define AM_FLAG_DONT_RENDER_CH_3    0x00000040
+#define AM_FLAG_DONT_RENDER_CH_4    0x00000080
+#define AM_FLAG_RENDER_PIX_AA       0x00000100
+
+struct armwave_color_mix_t {
+  float r, g, b;
+};
+
+struct armwave_state_t {
+  uint32_t flags;
+
+  uint8_t *ch1_buffer;
+  uint8_t *ch2_buffer;
+  uint8_t *ch3_buffer;
+  uint8_t *ch4_buffer;
+
+  uint8_t *wave_buffer;
+
+  uint32_t xstride;
+  uint32_t vscale;
+  uint32_t wave_stride;
+  uint32_t waves;
+  uint32_t slice_height;
+  uint32_t size;
+
+  uint32_t target_width;
+  uint32_t target_height;
+
+  struct armwave_color_mix_t ch1_color;
+  struct armwave_color_mix_t ch2_color;
+  struct armwave_color_mix_t ch3_color;
+  struct armwave_color_mix_t ch4_color;
+
+  // Look up table to map xcoord to xpixel, after scaling is applied.
+  // This is probably suitable for up to ~100k points; beyond this RAM usage, and cache behaviour mean
+  // that using the ALU is probably less expensive.
+  uint16_t *xcoord_to_xpixel;
+};
