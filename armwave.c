@@ -89,7 +89,7 @@ void test_create_gamma()
  */
 void render_nonaa_to_buffer_1ch_slice(uint32_t slice_y, uint32_t height)
 {
-    int yy, ys, w;
+    int yy, ys, w, scale_value;
     uint32_t value, word;
     uint8_t *wave_base;
     uint8_t *write_buffer_base;
