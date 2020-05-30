@@ -26,6 +26,7 @@
 struct armwave_state_t g_armwave_state;
 
 uint8_t test_wave_buffer[TEST_WAVE_SIZE * TEST_NWAVES];
+uint8_t gamma_table[256];
 
 /*
  * Make a test AM waveform for render tests.
@@ -44,6 +45,19 @@ void test_create_waveform()
 			//v = ((x & 0xff) / 128.0f) - 1.0f;
 			test_wave_buffer[x + (w * TEST_WAVE_SIZE)] = 128 + (v * 127);
 		}
+	}
+}
+
+/*
+ * Create a gamma table.
+ */
+void test_create_gamma()
+{
+	int i;
+	float gamma = 0.5f; // Inverse gamma
+
+	for(i = 0; i < 256; i++) {
+		gamma_table[i] = pow(i / 255.0f, gamma) * 255.0f;
 	}
 }
 
@@ -194,9 +208,9 @@ uint32_t *armwave_create_pixbuf()
 			//value = xx / 8; // *(row_ptr + xx);
 			//printf("xx,yy=%d,%d, value=%d\n", xx, yy, value);
 
-			rr = g_armwave_state.ch1_color.r * value;  // We could also do a gamma LUT here
-			gg = g_armwave_state.ch1_color.g * value;
-			bb = g_armwave_state.ch1_color.b * value;
+			rr = gamma_table[g_armwave_state.ch1_color.r * value];  // We could also do a gamma LUT here
+			gg = gamma_table[g_armwave_state.ch1_color.g * value];
+			bb = gamma_table[g_armwave_state.ch1_color.b * value];
 			word = (rr << 16) | (gg << 8) | bb;
 
 			//printf("xx,yy=%4d,%4d, value=%3d, word=0x%08x, rr=%3d, gg=%3d, bb=%3d\n", xx, yy, value, word, rr, gg, bb);
@@ -243,6 +257,9 @@ int main()
 
 	printf("Creating test waveform...\n");
 	test_create_waveform();
+
+	printf("Creating gamma LUT...\n");
+	test_create_gamma();
 
 	printf("Setting up render...\n");
 	armwave_setup_render(&test_wave_buffer, 0, TEST_WAVE_SIZE, TEST_NWAVES, TEST_WAVE_SIZE, 2048, 1024, 0x00000000);
