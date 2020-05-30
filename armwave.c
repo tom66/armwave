@@ -208,9 +208,9 @@ uint32_t *armwave_create_pixbuf()
 			//value = xx / 8; // *(row_ptr + xx);
 			//printf("xx,yy=%d,%d, value=%d\n", xx, yy, value);
 
-			rr = gamma_table[g_armwave_state.ch1_color.r * value];  // We could also do a gamma LUT here
-			gg = gamma_table[g_armwave_state.ch1_color.g * value];
-			bb = gamma_table[g_armwave_state.ch1_color.b * value];
+			rr = gamma_table[(uint8_t)(g_armwave_state.ch1_color.r * value)];  // We could also do a gamma LUT here
+			gg = gamma_table[(uint8_t)(g_armwave_state.ch1_color.g * value)];
+			bb = gamma_table[(uint8_t)(g_armwave_state.ch1_color.b * value)];
 			word = (rr << 16) | (gg << 8) | bb;
 
 			//printf("xx,yy=%4d,%4d, value=%3d, word=0x%08x, rr=%3d, gg=%3d, bb=%3d\n", xx, yy, value, word, rr, gg, bb);
