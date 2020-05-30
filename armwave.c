@@ -44,8 +44,8 @@ void test_create_waveform()
 	int w, x;
 
 	for(w = 0; w < TEST_NWAVES; w++) {
-		mod = 0.5f + (((float)w / TEST_NWAVES) * 0.25f);
-		//mod = 1.0f;
+		//mod = 0.5f + (((float)w / TEST_NWAVES) * 0.25f);
+		mod = 1.0f;
 
 		for(x = 0; x < TEST_WAVE_SIZE; x++) {
 			v = (sin(6.28f * x * (1.0f / TEST_WAVE_SIZE)) * mod) + ((rand() & 0xffff) / 655350.0f);
@@ -61,7 +61,7 @@ void test_create_waveform()
 void test_create_gamma()
 {
 	int i;
-	float gamma = 0.9f;
+	float gamma = 0.90f;
 
 	for(i = 0; i < 256; i++) {
 		gamma_table[i] = pow(i / 255.0f, gamma) * 255.0f;
