@@ -65,8 +65,9 @@ void render_nonaa_to_buffer_1ch_slice(uint32_t slice_y, uint32_t height)
 		wave_base = g_armwave_state.wave_buffer + slice_y + (w * g_armwave_state.wave_stride);
 		write_buffer_base = g_armwave_state.ch1_buffer + (slice_y * g_armwave_state.target_width);
 
-		printf("Rendering wave %4d, wave_base=0x%08x (offs:%8d), buffer_base=0x%08x (offs:%8d)\n", \
-			w, wave_base, wave_base - g_armwave_state.wave_buffer, write_buffer_base, write_buffer_base - g_armwave_state.ch1_buffer);
+		printf("Rendering wave %4d, wave_base=0x%08x (offs:%8d) (%3d), buffer_base=0x%08x (offs:%8d)\n", \
+			w, wave_base, wave_base - g_armwave_state.wave_buffer, *g_armwave_state.wave_buffer, \
+			write_buffer_base, write_buffer_base - g_armwave_state.ch1_buffer);
 
 		// roll through y and render the slice into the out buffer
 		// buffer is rendered rotated by 90 degrees
