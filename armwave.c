@@ -40,7 +40,7 @@ float overall_scale = 3.0f;
  */
 void test_create_waveform()
 {
-	float v, mod;
+	float v, mod, noise;
 	int w, x;
 
 	for(w = 0; w < TEST_NWAVES; w++) {
@@ -48,7 +48,11 @@ void test_create_waveform()
 		mod = 1.0f;
 
 		for(x = 0; x < TEST_WAVE_SIZE; x++) {
-			v = (sin(6.28f * x * (1.0f / TEST_WAVE_SIZE)) * mod) + ((rand() & 0xffff) / 655350.0f);
+			noise  = ((rand() & 0xffff) / 655350.0f);
+			noise *= noise;
+			noise *= noise;
+
+			v = (sin(6.28f * x * (1.0f / TEST_WAVE_SIZE)) * mod) + noise;
 			//v = ((x & 0xff) / 128.0f) - 1.0f;
 			test_wave_buffer[x + (w * TEST_WAVE_SIZE)] = MIN(MAX(128 + (v * 127), 0), 255);
 		}
