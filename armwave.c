@@ -37,7 +37,7 @@ uint8_t test_wave_buffer[TEST_WAVE_SIZE * TEST_NWAVES];
 uint8_t gamma_table[256];
 
 // for now...
-const int overall_scale = 20;
+const int overall_scale = 1;
 
 float mod_depth = 0.0f;
 
@@ -251,9 +251,9 @@ void armwave_fill_pixbuf(uint32_t *out_buffer)
             //bb = CLAMP(bb * overall_scale, 0, 255);
 #endif
 
-            rr = (g_armwave_state.ch1_color.r * value) << 8;
-            gg = (g_armwave_state.ch1_color.g * value) << 8;
-            bb = (g_armwave_state.ch1_color.b * value) << 8;
+            rr = (g_armwave_state.ch1_color.r * value) / 256;
+            gg = (g_armwave_state.ch1_color.g * value) / 256;
+            bb = (g_armwave_state.ch1_color.b * value) / 256;
 
             r = MIN(rr, 255);
             g = MIN(gg, 255);
