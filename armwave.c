@@ -131,6 +131,8 @@ void armwave_setup_render(uint8_t *wave_buffer, uint32_t start_point, uint32_t e
 
     for(xx = 0; xx < length; xx++) {
     	g_armwave_state.xcoord_to_xpixel[xx] = (1.0f / points_per_pixel) * xx;
+
+		printf("xcoord_to_xpixel[%5d] = %5d (scale:%8.3f)\n", xx, g_armwave_state.xcoord_to_xpixel[xx], 1.0f / points_per_pixel);
     }
 }
 
