@@ -163,6 +163,15 @@ uint32_t *armwave_create_pixbuf()
 	assert(out_buffer != NULL);
 	printf("out_buffer=0x%08x\n", out_buffer);
 
+    // Pixbuf tests
+    for(xx = 0; xx < g_armwave_state.target_width; xx++) {
+    	for(yy = 0; yy < g_armwave_state.target_height; yy++) {
+			printf("xx=%d, yy=%d\n", xx, yy);
+    		*(out_buffer + ((xx + (yy * g_armwave_state.target_width)) / 4)) = (yy / 4);
+    	}
+    }
+
+#if 0
 	// Buffer is sent non-rotated: we use GDK/GL to assemble and rotate it
 	for(yy = 0; yy < g_armwave_state.target_height; yy++) {
 		for(xx = 0; xx < g_armwave_state.target_width; xx++) {
@@ -177,6 +186,7 @@ uint32_t *armwave_create_pixbuf()
 
 		row_ptr += g_armwave_state.target_width;
 	}
+#endif
 
 	return out_buffer;
 }
@@ -222,18 +232,10 @@ int main()
 		printf("Rendering slice y=%d at y_pos=%d\n", yy, yy * g_armwave_state.slice_height);
 		render_nonaa_to_buffer_1ch_slice(yy * g_armwave_state.slice_height, g_armwave_state.slice_record_height);
 	}
+	*/
 
 	printf("Creating pixbuf\n");
 	out_buffer = armwave_create_pixbuf();
-	*/
-
-    // Pixbuf tests
-    for(xx = 0; xx < g_armwave_state.target_width; xx++) {
-    	for(yy = 0; yy < g_armwave_state.target_height; yy++) {
-			printf("xx=%d, yy=%d\n", xx, yy);
-    		*(out_buffer + ((xx + (yy * g_armwave_state.target_width)) / 4)) = (yy / 4);
-    	}
-    }
 
 	printf("Dumping pixbuf\n");
 	armwave_dump_ppm_debug(out_buffer, "test.ppm");
