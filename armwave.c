@@ -31,6 +31,9 @@
 
 #define CLAMP(x,mi,mx)    		MIN(MAX((x),mi),mx)
 
+#define COND_UNLIKELY(expr)		__builtin_expect((expr), 0)
+#define COND_LIKELY(expr)		__builtin_expect((expr), 1)
+
 struct armwave_state_t g_armwave_state;
 
 uint8_t test_wave_buffer[TEST_WAVE_SIZE * TEST_NWAVES];
@@ -293,7 +296,8 @@ void armwave_fill_pixbuf2(uint32_t *out_buffer)
         //value = *(base_ptr + xx + (yy * g_armwave_state.target_width));
         value = *base_ptr++;
 
-        if(value != 0) {
+        // yup, this is generally not going to happen, for most waveforms
+        if(COND_UNLIKELY(value != 0)) {
             rr = (g_armwave_state.ch1_color.r * value) >> 8;
             gg = (g_armwave_state.ch1_color.g * value) >> 8;
             bb = (g_armwave_state.ch1_color.b * value) >> 8;
@@ -304,9 +308,9 @@ void armwave_fill_pixbuf2(uint32_t *out_buffer)
 
             // ensure 100% alpha channel, if it is used
             word = 0xff000000 | (b << 16) | (g << 8) | r;
-            *out_buffer++ = word;
-        } else {
-        	out_buffer++;
+            xx = npix % g_armwave_state.target_width;
+            yy = npix / g_armwave_state.target_width;
+            *(out_buffer_base + xx + (yy * g_armwave_state.target_height)) = word;
         }
     }
 }
