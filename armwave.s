@@ -180,7 +180,7 @@ armwave_setup_render.constprop.0:
 	ldr	r2, .L12+8	@ tmp150,
 @ armwave.c:186:     g_armwave_state.ch1_color.b = 25 * overall_scale;
 	.loc 1 186 33 view .LVU38
-	mov	r3, #1	@ tmp152,
+	mov	r3, #9	@ tmp152,
 @ armwave.c:184:     g_armwave_state.ch1_color.r = 255 * overall_scale;
 	.loc 1 184 33 view .LVU39
 	strh	r2, [r4, #64]	@ movhi	@ tmp150, MEM[(unsigned char *)&g_armwave_state + 64B]
@@ -292,7 +292,7 @@ armwave_setup_render.constprop.0:
 .L12:
 	.word	g_armwave_state
 	.word	test_wave_buffer
-	.word	3348
+	.word	17764
 	.word	.LANCHOR0
 	.word	.LC0
 	.word	.LC1
@@ -1076,7 +1076,7 @@ armwave_setup_render:
 	ldr	r2, .L74+8	@ tmp166,
 @ armwave.c:186:     g_armwave_state.ch1_color.b = 25 * overall_scale;
 	.loc 1 186 33 view .LVU281
-	mov	r3, #1	@ tmp168,
+	mov	r3, #9	@ tmp168,
 @ armwave.c:184:     g_armwave_state.ch1_color.r = 255 * overall_scale;
 	.loc 1 184 33 view .LVU282
 	strh	r2, [r5, #64]	@ movhi	@ tmp166, MEM[(unsigned char *)&g_armwave_state + 64B]
@@ -1240,7 +1240,7 @@ armwave_setup_render:
 .L74:
 	.word	1065353216
 	.word	g_armwave_state
-	.word	3348
+	.word	17764
 	.word	.LANCHOR0
 	.word	.LC0
 	.word	.LC3
@@ -1674,7 +1674,7 @@ armwave_fill_pixbuf2:
 .L128:
 	.align	2
 .L127:
-	.word	1033937057
+	.word	1053345993
 	.word	1132396544
 	.word	g_armwave_state
 	.word	.LANCHOR0+44
@@ -2880,7 +2880,7 @@ __PRETTY_FUNCTION__.17041:
 	.type	overall_scale, %object
 	.size	overall_scale, 4
 overall_scale:
-	.word	1033937057
+	.word	1053345993
 	.bss
 	.align	2
 	.set	.LANCHOR1,. + 0

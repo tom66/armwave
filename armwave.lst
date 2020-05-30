@@ -119,7 +119,7 @@
   37:armwave.c     **** uint8_t gamma_table[256];
   38:armwave.c     **** 
   39:armwave.c     **** // for now...
-  40:armwave.c     **** const float overall_scale = 20.0f / 255.0f;
+  40:armwave.c     **** const float overall_scale = 100.0f / 255.0f;
   41:armwave.c     **** 
   42:armwave.c     **** float mod_depth = 0.0f;
   43:armwave.c     **** 
@@ -388,7 +388,7 @@
  185:armwave.c     ****     g_armwave_state.ch1_color.g = 178 * overall_scale;
  186:armwave.c     ****     g_armwave_state.ch1_color.b = 25 * overall_scale;
  182              		.loc 1 186 33 view .LVU38
- 183 0068 0130A0E3 		mov	r3, #1	@ tmp152,
+ 183 0068 0930A0E3 		mov	r3, #9	@ tmp152,
  184              	@ armwave.c:184:     g_armwave_state.ch1_color.r = 255 * overall_scale;
  184:armwave.c     ****     g_armwave_state.ch1_color.r = 255 * overall_scale;
  185              		.loc 1 184 33 view .LVU39
@@ -533,7 +533,7 @@
  292              	.L12:
  293 0104 00000000 		.word	g_armwave_state
  294 0108 00000000 		.word	test_wave_buffer
- 295 010c 140D0000 		.word	3348
+ 295 010c 64450000 		.word	17764
  296 0110 00000000 		.word	.LANCHOR0
  297 0114 00000000 		.word	.LC0
  298 0118 0C000000 		.word	.LC1
@@ -1515,7 +1515,7 @@
  1077              	@ armwave.c:186:     g_armwave_state.ch1_color.b = 25 * overall_scale;
  186:armwave.c     **** 
  1078              		.loc 1 186 33 view .LVU281
- 1079 04a8 0130A0E3 		mov	r3, #1	@ tmp168,
+ 1079 04a8 0930A0E3 		mov	r3, #9	@ tmp168,
  1080              	@ armwave.c:184:     g_armwave_state.ch1_color.r = 255 * overall_scale;
  184:armwave.c     ****     g_armwave_state.ch1_color.g = 178 * overall_scale;
  1081              		.loc 1 184 33 view .LVU282
@@ -1724,7 +1724,7 @@
  1240              	.L74:
  1241 0594 0000803F 		.word	1065353216
  1242 0598 00000000 		.word	g_armwave_state
- 1243 059c 140D0000 		.word	3348
+ 1243 059c 64450000 		.word	17764
  1244 05a0 00000000 		.word	.LANCHOR0
  1245 05a4 00000000 		.word	.LC0
  1246 05a8 5C000000 		.word	.LC3
@@ -2304,7 +2304,7 @@
  1674              	.L128:
  1675              		.align	2
  1676              	.L127:
- 1677 07cc A1A0A03D 		.word	1033937057
+ 1677 07cc C9C8C83E 		.word	1053345993
  1678 07d0 00007F43 		.word	1132396544
  1679 07d4 00000000 		.word	g_armwave_state
  1680 07d8 2C000000 		.word	.LANCHOR0+44
@@ -3827,7 +3827,7 @@
  2878      62756632 
  2879 0041 000000   		.space	3
  2882              	overall_scale:
- 2883 0044 A1A0A03D 		.word	1033937057
+ 2883 0044 C9C8C83E 		.word	1053345993
  2884              		.bss
  2885              		.align	2
  2886              		.set	.LANCHOR1,. + 0
