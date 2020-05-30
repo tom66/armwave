@@ -167,7 +167,7 @@ uint32_t *armwave_create_pixbuf()
     for(xx = 0; xx < g_armwave_state.target_width; xx++) {
     	for(yy = 0; yy < g_armwave_state.target_height; yy++) {
 			//printf("xx=%d, yy=%d\n", xx, yy);
-    		*(out_buffer + ((xx + (yy * g_armwave_state.target_width)) / 4)) = (yy / 4);
+    		*(out_buffer + ((xx + (yy * g_armwave_state.target_width)) / 4)) = (yy / 4) | (((yy / 4)) << 8) | (((yy / 4)) << 16);
     	}
     }
 
