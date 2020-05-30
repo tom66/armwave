@@ -6,7 +6,7 @@
  * processor to render waveforms damn quickly.
  */
 
-#include <Python.h>
+//#include <Python.h>
 
 #define AM_FLAG_RENDER_1CH_MODE     0x00000001
 #define AM_FLAG_RENDER_2CH_MODE     0x00000002
