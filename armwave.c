@@ -36,7 +36,7 @@ void test_create_waveform()
 	int w, x;
 
 	for(w = 0; w < TEST_NWAVES; w++) {
-		mod = 0.5f + ((w / TEST_NWAVES) * 0.5f);
+		mod = 0.5f + (((float)w / TEST_NWAVES) * 0.5f);
 
 		for(x = 0; x < TEST_WAVE_SIZE; x++) {
 			v = sin(3.1415f * x * (1.0f / TEST_WAVE_SIZE)) * mod;
