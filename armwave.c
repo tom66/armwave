@@ -1,5 +1,9 @@
 /*
  * This file is part of YAOS and is licenced under the MIT Licence.
+ *
+ * armwave: an ARM-optimised waveform rendering engine for the Raspberry Pi 3.  
+ * This library attempts to use NEON tricks and architectural features of the Pi's
+ * processor to render waveforms damn quickly.
  */
 
 #define _GNU_SOURCE
@@ -18,6 +22,23 @@
 
 struct armwave_state_t armwave_state;
 uint8_t test_wave_buffer[TEST_WAVE_SIZE * TEST_NWAVES];
+
+/*
+ * Make a test AM waveform for render tests.
+ */
+void test_create_waveform()
+{
+	float v, mod;
+
+	for(w = 0; w < TEST_NWAVES; w++) {
+		mod = 0.5f + ((w / TEST_NWAVES) * 0.5f);
+
+		for(x = 0; x < TEST_WAVE_SIZE; x++) {
+			v = sin(3.1415f * x * (1.0f / TEST_WAVE_SIZE)) * mod;
+			test_wave_buffer[x + (w * TEST_WAVE_SIZE)] = 128 + (v * 127);
+		}
+	}
+}
 
 /*
  * 1ch renderer, renders up to slice-height buffer with X-coord of each waveaccess
@@ -45,20 +66,6 @@ void render_nonaa_to_buffer_1ch_slice(uint32_t slice_y, uint32_t height)
 			write_buffer = write_buffer_base + (armwave_state.xcoord_to_xpixel[slice_y + yy] * armwave_state.target_width);
 			value = (*(wave_base + (yy * armwave_state.wave_stride))) * armwave_state.vscale;
 			*(write_buffer + value) += 1;
-		}
-	}
-}
-
-void test_create_waveform()
-{
-	float v, mod;
-
-	for(w = 0; w < TEST_NWAVES; w++) {
-		mod = 0.5f + ((w / TEST_NWAVES) * 0.5f);
-
-		for(x = 0; x < TEST_WAVE_SIZE; x++) {
-			v = sin(3.1415f * x * (1.0f / TEST_WAVE_SIZE)) * mod;
-			test_wave_buffer[x + (w * TEST_WAVE_SIZE)] = 128 + (v * 127);
 		}
 	}
 }

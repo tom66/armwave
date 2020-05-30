@@ -10,13 +10,10 @@ armwave_wrap.c: armwave.i armwave.c
 test:
 	$(PYTHON) test.py
 
-pyg_test:
-	$(PYTHON) pyg_test.py
-
 clean:
 	-rm -f *.so *.o armwave_wrap.c
 
 armwave_test: armwave_test.c
-	cc -g -O2 -Wall -L/opt/vc/lib -I/opt/vc/include -lmmal -lbcm_host -lvcos -lmmal_core -lmmal_util -lmmal_vc_client armwave.c $< -o $@
+	cc -g -O2 -Wall -L/opt/vc/lib -I/opt/vc/include -lm armwave.c $< -o $@
 
 .PHONY: build clean

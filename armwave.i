@@ -1,11 +1,11 @@
-%module rawcam
+%module armwave
 
 %include "stdint.i"
 
-%rename("%(strip:[rawcam_])s") "";
+%rename("%(strip:[armwave_])s") "";
 %{
 #define SWIG_FILE_WITH_INIT
-#include "rawcam.h"
+#include "armwave.h"
 %}
 
-%include "rawcam.h"
+%include "armwave.h"

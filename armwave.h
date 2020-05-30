@@ -1,3 +1,11 @@
+/*
+ * This file is part of YAOS and is licenced under the MIT Licence.
+ *
+ * armwave: an ARM-optimised waveform rendering engine for the Raspberry Pi 3.  
+ * This library attempts to use NEON tricks and architectural features of the Pi's
+ * processor to render waveforms damn quickly.
+ */
+
 #include <Python.h>
 
 #define AM_FLAG_RENDER_1CH_MODE     0x00000001
@@ -43,3 +51,11 @@ struct armwave_state_t {
   // that using the ALU is probably less expensive.
   uint16_t *xcoord_to_xpixel;
 };
+
+void test_create_waveform(void);
+void render_nonaa_to_buffer_1ch_slice(uint32_t slice_y, uint32_t height);
+void armwave_init(void);
+void armwave_setup_render(uint8_t *wave_buffer, uint32_t start_point, uint32_t end_point, uint32_t waves, uint32_t wave_stride, uint32_t target_width, uint32_t target_height, uint32_t render_flags);
+void armwave_clear_buffer(uint32_t flags);
+uint32_t *armwave_create_pixbuf(void);
+void armwave_dump_ppm_debug(uint32_t *buffer, char *fn);
