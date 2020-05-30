@@ -345,7 +345,7 @@ int main(int argc, char *argv[])
     /*
     printf("Creating pixbuf\n");
     out_buffer = malloc(sizeof(uint32_t) * g_armwave_state.size);
-    armwave_create_pixbuf(out_buffer);
+    armwave_fill_pixbuf(out_buffer);
 
     printf("Dumping pixbuf\n");
     armwave_dump_ppm_debug(out_buffer, "test.ppm");
