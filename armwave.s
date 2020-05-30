@@ -1347,10 +1347,10 @@ armwave_fill_pixbuf:
 @ armwave.c:240:             value = *(base_ptr + xx + (yy * g_armwave_state.target_width));
 	.loc 1 240 21 is_stmt 0 discriminator 3 view .LVU350
 	mla	r5, lr, r3, r4	@ tmp152, yy, _28, base_ptr
-@ armwave.c:256:             bb = (g_armwave_state.ch1_color.b * value) / 256;
+@ armwave.c:256:             bb = (g_armwave_state.ch1_color.b * value) >> 8;
 	.loc 1 256 47 discriminator 3 view .LVU351
 	ldrb	r2, [r1, #66]	@ zero_extendqisi2	@ g_armwave_state.ch1_color.b, g_armwave_state.ch1_color.b
-@ armwave.c:255:             gg = (g_armwave_state.ch1_color.g * value) / 256;
+@ armwave.c:255:             gg = (g_armwave_state.ch1_color.g * value) >> 8;
 	.loc 1 255 47 discriminator 3 view .LVU352
 	ldrb	r3, [r1, #65]	@ zero_extendqisi2	@ g_armwave_state.ch1_color.g, g_armwave_state.ch1_color.g
 @ armwave.c:240:             value = *(base_ptr + xx + (yy * g_armwave_state.target_width));
@@ -1365,7 +1365,7 @@ armwave_fill_pixbuf:
 	.loc 1 260 13 discriminator 3 view .LVU359
 	.loc 1 263 13 discriminator 3 view .LVU360
 	.loc 1 267 13 discriminator 3 view .LVU361
-@ armwave.c:254:             rr = (g_armwave_state.ch1_color.r * value) / 256;
+@ armwave.c:254:             rr = (g_armwave_state.ch1_color.r * value) >> 8;
 	.loc 1 254 47 is_stmt 0 discriminator 3 view .LVU362
 	ldrb	r5, [r1, #64]	@ zero_extendqisi2	@ g_armwave_state.ch1_color.r, g_armwave_state.ch1_color.r
 .LVL80:
@@ -1373,17 +1373,17 @@ armwave_fill_pixbuf:
 	.loc 1 238 58 discriminator 3 view .LVU363
 	add	ip, ip, #1	@ xx, xx,
 .LVL81:
-@ armwave.c:256:             bb = (g_armwave_state.ch1_color.b * value) / 256;
+@ armwave.c:256:             bb = (g_armwave_state.ch1_color.b * value) >> 8;
 	.loc 1 256 47 discriminator 3 view .LVU364
 	smulbb	r2, r2, r6	@ tmp157, g_armwave_state.ch1_color.b, _5
-@ armwave.c:255:             gg = (g_armwave_state.ch1_color.g * value) / 256;
+@ armwave.c:255:             gg = (g_armwave_state.ch1_color.g * value) >> 8;
 	.loc 1 255 47 discriminator 3 view .LVU365
 	smulbb	r3, r3, r6	@ tmp163, g_armwave_state.ch1_color.g, _5
-@ armwave.c:254:             rr = (g_armwave_state.ch1_color.r * value) / 256;
+@ armwave.c:254:             rr = (g_armwave_state.ch1_color.r * value) >> 8;
 	.loc 1 254 47 discriminator 3 view .LVU366
 	smulbb	r5, r5, r6	@ tmp170, g_armwave_state.ch1_color.r, _5
 .LVL82:
-@ armwave.c:256:             bb = (g_armwave_state.ch1_color.b * value) / 256;
+@ armwave.c:256:             bb = (g_armwave_state.ch1_color.b * value) >> 8;
 	.loc 1 256 56 discriminator 3 view .LVU367
 	lsr	r2, r2, #8	@ bb, tmp157,
 @ armwave.c:263:             word = 0xff000000 | (b << 16) | (g << 8) | r;
