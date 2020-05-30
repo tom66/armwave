@@ -37,7 +37,7 @@ uint8_t test_wave_buffer[TEST_WAVE_SIZE * TEST_NWAVES];
 uint8_t gamma_table[256];
 
 // for now...
-const float overall_scale = 100.0f / 255.0f;
+const float overall_scale = 2550.0f / 255.0f;
 
 float mod_depth = 0.0f;
 
@@ -297,7 +297,7 @@ void armwave_fill_pixbuf2(uint32_t *out_buffer)
             r = MIN(rr, 255);
             g = MIN(gg, 255);
             b = MIN(bb, 255);
-            
+
             //r = CLAMP(rr * overall_scale, 0, 255);
             //g = CLAMP(gg * overall_scale, 0, 255);
             //b = CLAMP(bb * overall_scale, 0, 255);
