@@ -251,9 +251,9 @@ void armwave_fill_pixbuf(uint32_t *out_buffer)
             //bb = CLAMP(bb * overall_scale, 0, 255);
 #endif
 
-            rr = (g_armwave_state.ch1_color.r * value) >> 12;
-            gg = (g_armwave_state.ch1_color.g * value) >> 12;
-            bb = (g_armwave_state.ch1_color.b * value) >> 12;
+            rr = (g_armwave_state.ch1_color.r * value) << 8;
+            gg = (g_armwave_state.ch1_color.g * value) << 8;
+            bb = (g_armwave_state.ch1_color.b * value) << 8;
 
             r = MIN(rr, 255);
             g = MIN(gg, 255);
