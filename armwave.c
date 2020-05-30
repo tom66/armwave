@@ -53,7 +53,8 @@ void test_create_waveform()
  */
 void render_nonaa_to_buffer_1ch_slice(uint32_t slice_y, uint32_t height)
 {
-	int yy, w, v;
+	int yy, w;
+	uint32_t value;
 	uint8_t *wave_base;
 	uint8_t *write_buffer_base;
 	uint8_t *write_buffer;
@@ -137,7 +138,7 @@ void armwave_clear_buffer(uint32_t flags)
 
 uint32_t *armwave_create_pixbuf()
 {
-	uint32_t xx, yy, addr;
+	uint32_t xx, yy, addr, value;
 	uint8_t rr, gg, bb;
 	uint8_t *row_ptr = g_armwave_state.ch1_buffer;
 	uint32_t *out_buffer = malloc(sizeof(uint32_t) * g_armwave_state.size);
@@ -183,11 +184,14 @@ int main()
 	uint32_t *out_buffer;
 	uint32_t yy;
 
+	printf("Starting armwave...");
+	armwave_init();
+
 	printf("Creating test waveform...");
 	test_create_waveform();
 
 	printf("Setting up render...");
-	armwave_setup_render(&test_wave_buffer, 0, TEST_WAVE_SIZE, TEST_WAVE_SIZE, TEST_NWAVES, 2048, 1024);
+	armwave_setup_render(&test_wave_buffer, 0, TEST_WAVE_SIZE, TEST_NWAVES, TEST_WAVE_SIZE, 2048, 1024, 0x00000000);
 
 	for(yy = 0; yy < (1024 / g_armwave_state.slice_height); yy++) {
 		printf("Rendering slice y=%d at y_pos=%d\n", yy, yy * g_armwave_state.slice_height);
