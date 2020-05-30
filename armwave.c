@@ -311,7 +311,7 @@ void armwave_fill_pixbuf2(uint32_t *out_buffer)
             xx = n % g_armwave_state.target_width;
             yy = n / g_armwave_state.target_width;
             printf("%d %d,%d\n", n, xx, yy);
-            *(out_buffer_base + xx + (yy * g_armwave_state.target_height)) = word;
+            *(out_buffer_base + ((xx + (yy * g_armwave_state.target_height)) >> 2)) = word;
         }
     }
 }
