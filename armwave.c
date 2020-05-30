@@ -36,6 +36,8 @@ uint8_t gamma_table[256];
 
 float overall_scale = 3.0f;
 
+float mod_depth = 0.0f;
+
 /*
  * Make a test AM waveform for render tests.
  */
@@ -45,8 +47,8 @@ void test_create_waveform()
     int w, x;
 
     for(w = 0; w < TEST_NWAVES; w++) {
-        //mod = 0.5f + (((float)w / TEST_NWAVES) * 0.25f);
-        mod = 1.0f;
+        mod = 0.5f + (((float)w / TEST_NWAVES) * mod_depth);
+        //mod = 1.0f;
 
         for(x = 0; x < TEST_WAVE_SIZE; x++) {
             noise  = ((rand() & 0xffff) / 100000.0f);
@@ -290,7 +292,14 @@ void armwave_test_generate()
 {
 	uint32_t yy;
 
-	memset(g_armwave_state.ch1_buffer, 0, g_armwave_state.size);
+    test_create_waveform();
+    mod_depth += 0.05f;
+
+    if(mod_depth > 0.5f) {
+    	mod_depth = 0.0f;
+    }
+
+    memset(g_armwave_state.ch1_buffer, 0, g_armwave_state.size);
 
     for(yy = 0; yy < (2048 / g_armwave_state.slice_height); yy++) {
         render_nonaa_to_buffer_1ch_slice(yy * g_armwave_state.slice_height, g_armwave_state.slice_record_height);
