@@ -279,8 +279,8 @@ void armwave_fill_pixbuf2(uint32_t *out_buffer)
     assert(out_buffer != NULL);
 
     // Buffer is sent non-rotated: we use GDK/GL to assemble and rotate it
-    for(xx = 0; xx < g_armwave_state.target_width; xx++) {
-        for(yy = 0; yy < g_armwave_state.target_height; yy++) {
+    for(yy = 0; yy < g_armwave_state.target_height; yy++) {
+        for(xx = 0; xx < g_armwave_state.target_width; xx++) {
             //printf("xx,yy=%d,%d, row_ptr=0x%08x\n", xx, yy, row_ptr);
             value = *(base_ptr + xx + (yy * g_armwave_state.target_width));
 
