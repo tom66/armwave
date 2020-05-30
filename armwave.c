@@ -109,7 +109,7 @@ void render_nonaa_to_buffer_1ch_slice(uint32_t slice_y, uint32_t height)
 
         // roll through y and render the slice into the out buffer
         // buffer is rendered rotated by 90 degrees
-        for(yy = 0; yy < (height / 4); yy++) {
+        for(yy = 0; yy < height; yy += 4) {
             //write_buffer = write_buffer_base + (g_armwave_state.xcoord_to_xpixel[slice_y + yy] * g_armwave_state.target_width);
 
 #if 0
@@ -124,7 +124,7 @@ void render_nonaa_to_buffer_1ch_slice(uint32_t slice_y, uint32_t height)
 #endif
 
             //value = (*(wave_base + yy)) * g_armwave_state.vscale;
-            word = *(uint32_t*)(wave_base + (yy * 4));
+            word = *(uint32_t*)(wave_base + yy);
             //value = 4; // 5 * g_armwave_state.vscale;
             //*(write_buffer + value) = 0xff;
 
