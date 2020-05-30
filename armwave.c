@@ -8,7 +8,7 @@
 
 #define _GNU_SOURCE
 
-//#include <Python.h>
+#include <Python.h>
 
 #include <assert.h>
 #include <ctype.h>
