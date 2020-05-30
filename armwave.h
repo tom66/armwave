@@ -60,7 +60,7 @@ void render_nonaa_to_buffer_1ch_slice(uint32_t slice_y, uint32_t height);
 void armwave_init(void);
 void armwave_setup_render(uint8_t *wave_buffer, uint32_t start_point, uint32_t end_point, uint32_t waves, uint32_t wave_stride, uint32_t target_width, uint32_t target_height, uint32_t render_flags);
 void armwave_clear_buffer(uint32_t flags);
-void armwave_fill_pixbuf(uint32_t *out_buffer);
+void armwave_fill_pixbuf2(uint32_t *out_buffer);
 void armwave_dump_ppm_debug(uint32_t *buffer, char *fn);
 
 void armwave_test_init(float mod);
