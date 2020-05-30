@@ -56,7 +56,11 @@ void test_create_waveform()
 			if((rand() & 0xffff) > 0x7fff)
 				noise = -noise;
 
-			v = (sin(6.28f * x * (1.0f / TEST_WAVE_SIZE)) * mod) + noise;
+			noise += 1.0f;
+
+			xnoise = (rand() & 0xffff) / 6553500.0f;
+
+			v = (sin((6.28f * x * (1.0f / TEST_WAVE_SIZE)) + xnoise) * mod) * noise;
 			//v = ((x & 0xff) / 128.0f) - 1.0f;
 			test_wave_buffer[x + (w * TEST_WAVE_SIZE)] = MIN(MAX(128 + (v * 127), 0), 255);
 		}
