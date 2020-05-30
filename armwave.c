@@ -75,8 +75,6 @@ void render_nonaa_to_buffer_1ch_slice(uint32_t slice_y, uint32_t height)
 		for(yy = 0; yy < height; yy++) {
 			//write_buffer = write_buffer_base + (g_armwave_state.xcoord_to_xpixel[slice_y + yy] * g_armwave_state.target_width);
 
-			write_buffer_base += g_armwave_state.target_width;
-
 #if 0
 			value = (*(wave_base + yy)) * g_armwave_state.vscale;
 
@@ -89,7 +87,9 @@ void render_nonaa_to_buffer_1ch_slice(uint32_t slice_y, uint32_t height)
 #endif
 
 			value = 127 * g_armwave_state.vscale;
-			*(write_buffer_base + value) += 1;
+			*(write_buffer_base + value) = 0xff;
+
+			write_buffer_base += g_armwave_state.target_width;
 		}
 	}
 }
