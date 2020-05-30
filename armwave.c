@@ -304,11 +304,10 @@ void armwave_fill_pixbuf2(uint32_t *out_buffer)
 
             // ensure 100% alpha channel, if it is used
             word = 0xff000000 | (b << 16) | (g << 8) | r;
+            *out_buffer++ = word;
         } else {
-        	word = 0x00000000;
+        	out_buffer++;
         }
-
-        *out_buffer++ = word;
     }
 }
 
