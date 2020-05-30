@@ -184,8 +184,8 @@ uint32_t *armwave_create_pixbuf()
 
 #if 1
 	// Buffer is sent non-rotated: we use GDK/GL to assemble and rotate it
-	for(yy = 0; yy < g_armwave_state.target_height; yy++) {
-		for(xx = 0; xx < g_armwave_state.target_width; xx++) {
+	for(xx = 0; xx < g_armwave_state.target_width; xx++) {
+		for(yy = 0; yy < g_armwave_state.target_height; yy++) {
 			//printf("xx,yy=%d,%d, row_ptr=0x%08x\n", xx, yy, row_ptr);
 			//value = *(base_ptr + xx + (yy * g_armwave_state.target_width));
 			value = xx / 8; // *(row_ptr + xx);
