@@ -205,8 +205,8 @@ uint32_t *armwave_create_pixbuf()
 	uint32_t *out_buffer_base = out_buffer;
 
 	assert(out_buffer != NULL);
-	printf("out_buffer=0x%08x\n", out_buffer);
-	printf("out_buffer_size=%d\n", sizeof(uint32_t) * g_armwave_state.size);
+	//printf("out_buffer=0x%08x\n", out_buffer);
+	//printf("out_buffer_size=%d\n", sizeof(uint32_t) * g_armwave_state.size);
 
 #if 0
     // Pixbuf tests
@@ -253,7 +253,7 @@ void armwave_dump_ppm_debug(uint32_t *buffer, char *fn)
 	uint32_t data;
 	int xx, yy;
 
-	printf("in_buffer=0x%08x\n", buffer);
+	//printf("in_buffer=0x%08x\n", buffer);
 
 	fputs("P3\n", fp);
 	fprintf(fp, "%d %d\n", g_armwave_state.target_height, g_armwave_state.target_width);
@@ -274,32 +274,34 @@ void armwave_dump_ppm_debug(uint32_t *buffer, char *fn)
 int main()
 {
 	uint32_t *out_buffer;
-	uint32_t xx, yy;
+	uint32_t xx, yy, n;
 
-	printf("Starting armwave...\n");
+	//printf("Starting armwave...\n");
 	armwave_init();
 
-	printf("Creating test waveform...\n");
+	//printf("Creating test waveform...\n");
 	test_create_waveform();
 
-	printf("Creating gamma LUT...\n");
+	//printf("Creating gamma LUT...\n");
 	test_create_gamma();
 
-	printf("Setting up render...\n");
+	//printf("Setting up render...\n");
 	armwave_setup_render(&test_wave_buffer, 0, TEST_WAVE_SIZE, TEST_NWAVES, TEST_WAVE_SIZE, 2048, 256, 0x00000000);
 
-	printf("Wave buffer = 0x%08x (const ptr:0x%08x)\n", g_armwave_state.wave_buffer, &test_wave_buffer);
+	//printf("Wave buffer = 0x%08x (const ptr:0x%08x)\n", g_armwave_state.wave_buffer, &test_wave_buffer);
 
-	for(yy = 0; yy < (2048 / g_armwave_state.slice_height); yy++) {
-		//printf("Rendering slice y=%d at y_pos=%d\n", yy, yy * g_armwave_state.slice_height);
-		render_nonaa_to_buffer_1ch_slice(yy * g_armwave_state.slice_height, g_armwave_state.slice_record_height);
+	for(n = 0; n < 500; n++) {
+		for(yy = 0; yy < (2048 / g_armwave_state.slice_height); yy++) {
+			//printf("Rendering slice y=%d at y_pos=%d\n", yy, yy * g_armwave_state.slice_height);
+			render_nonaa_to_buffer_1ch_slice(yy * g_armwave_state.slice_height, g_armwave_state.slice_record_height);
+		}
 	}
 
-	printf("Creating pixbuf\n");
-	out_buffer = armwave_create_pixbuf();
+	//printf("Creating pixbuf\n");
+	//out_buffer = armwave_create_pixbuf();
 
-	printf("Dumping pixbuf\n");
-	armwave_dump_ppm_debug(out_buffer, "test.ppm");
+	//printf("Dumping pixbuf\n");
+	//armwave_dump_ppm_debug(out_buffer, "test.ppm");
 
 	return 0;
 }
