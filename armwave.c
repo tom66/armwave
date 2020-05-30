@@ -51,7 +51,9 @@ void test_create_waveform()
 			noise  = ((rand() & 0xffff) / 131072.0f);
 			noise *= noise;
 			noise *= noise;
-			noise -= (0.5f * 0.5f * 0.5f) / 2;
+
+			if((rand() & 0xffff) > 0x7fff)
+				noise = -noise;
 
 			v = (sin(6.28f * x * (1.0f / TEST_WAVE_SIZE)) * mod) + noise;
 			//v = ((x & 0xff) / 128.0f) - 1.0f;
