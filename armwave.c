@@ -58,7 +58,7 @@ void test_create_waveform()
 void test_create_gamma()
 {
 	int i;
-	float gamma = 0.9f;
+	float gamma = 0.8f;
 
 	for(i = 0; i < 256; i++) {
 		gamma_table[i] = pow(i / 255.0f, gamma) * 255.0f;
