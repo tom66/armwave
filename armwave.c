@@ -36,7 +36,8 @@ void test_create_waveform()
 	int w, x;
 
 	for(w = 0; w < TEST_NWAVES; w++) {
-		mod = 0.5f + (((float)w / TEST_NWAVES) * 0.5f);
+		//mod = 0.5f + (((float)w / TEST_NWAVES) * 0.5f);
+		mod = 1.0f;
 
 		for(x = 0; x < TEST_WAVE_SIZE; x++) {
 			v = sin(3.1415f * x * (1.0f / TEST_WAVE_SIZE)) * mod;
@@ -84,7 +85,7 @@ void render_nonaa_to_buffer_1ch_slice(uint32_t slice_y, uint32_t height)
 				   wave_base + yy);
 #endif
 
-			value = 127;
+			//value = 127;
 			*(write_buffer + value) += 1;
 		}
 	}
@@ -163,7 +164,7 @@ uint32_t *armwave_create_pixbuf()
 	assert(out_buffer != NULL);
 	printf("out_buffer=0x%08x\n", out_buffer);
 
-#if 1
+#if 0
     // Pixbuf tests
     for(xx = 0; xx < g_armwave_state.target_width; xx++) {
     	for(yy = 0; yy < g_armwave_state.target_height; yy++) {
@@ -173,7 +174,7 @@ uint32_t *armwave_create_pixbuf()
     }
 #endif
 
-#if 0
+#if 1
 	// Buffer is sent non-rotated: we use GDK/GL to assemble and rotate it
 	for(yy = 0; yy < g_armwave_state.target_height; yy++) {
 		for(xx = 0; xx < g_armwave_state.target_width; xx++) {
