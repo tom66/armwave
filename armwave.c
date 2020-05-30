@@ -196,6 +196,8 @@ int main()
 	printf("Setting up render...\n");
 	armwave_setup_render(&test_wave_buffer, 0, TEST_WAVE_SIZE, TEST_NWAVES, TEST_WAVE_SIZE, 2048, 1024, 0x00000000);
 
+	printf("Wave buffer = 0x%08x (const ptr:0x%08x)\n", g_armwave_state.wave_buffer, &test_wave_buffer);
+
 	for(yy = 0; yy < (1024 / g_armwave_state.slice_height); yy++) {
 		printf("Rendering slice y=%d at y_pos=%d\n", yy, yy * g_armwave_state.slice_height);
 		render_nonaa_to_buffer_1ch_slice(yy * g_armwave_state.slice_height, g_armwave_state.slice_record_height);
