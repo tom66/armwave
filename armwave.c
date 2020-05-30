@@ -204,7 +204,7 @@ void armwave_dump_ppm_debug(uint32_t *buffer, char *fn)
 int main()
 {
 	uint32_t *out_buffer;
-	uint32_t yy;
+	uint32_t xx, yy;
 
 	printf("Starting armwave...\n");
 	armwave_init();
