@@ -93,7 +93,7 @@ void render_nonaa_to_buffer_1ch_slice(uint32_t slice_y, uint32_t height)
 			value = (*(wave_base + yy)) * g_armwave_state.vscale;
 			//value = 4; // 5 * g_armwave_state.vscale;
 			//*(write_buffer + value) = 0xff;
-			*(write_buffer + value)++;
+			*(write_buffer + value) += 1;
 
 			//write_buffer_base += g_armwave_state.target_width;
 		}
