@@ -35,7 +35,7 @@ struct armwave_state_t g_armwave_state;
 uint8_t test_wave_buffer[TEST_WAVE_SIZE * TEST_NWAVES];
 uint8_t gamma_table[256];
 
-float overall_scale = 3.0f;
+float overall_scale = 8.0f;
 
 float mod_depth = 0.0f;
 
@@ -211,7 +211,8 @@ void armwave_clear_buffer(uint32_t flags)
 void armwave_fill_pixbuf(uint32_t *out_buffer)
 {
     uint32_t xx, yy, addr, value, word;
-    uint8_t rr, gg, bb;
+    int rr, gg, bb;
+    uint8_t r, g, b;
     uint8_t *base_ptr = g_armwave_state.ch1_buffer;
     uint32_t *out_buffer_base = out_buffer;
 
@@ -238,6 +239,7 @@ void armwave_fill_pixbuf(uint32_t *out_buffer)
             //value = xx / 8; // *(row_ptr + xx);
             //printf("xx,yy=%d,%d, value=%d\n", xx, yy, value);
 
+#if 0
             //rr = gamma_table[(uint8_t)(g_armwave_state.ch1_color.r * value)];  // We could also do a gamma LUT here
             //gg = gamma_table[(uint8_t)(g_armwave_state.ch1_color.g * value)];
             //bb = gamma_table[(uint8_t)(g_armwave_state.ch1_color.b * value)];
@@ -245,13 +247,18 @@ void armwave_fill_pixbuf(uint32_t *out_buffer)
             //rr = CLAMP(rr * overall_scale, 0, 255);
             //gg = CLAMP(gg * overall_scale, 0, 255);
             //bb = CLAMP(bb * overall_scale, 0, 255);
+#endif
 
             rr = g_armwave_state.ch1_color.r * value;
             gg = g_armwave_state.ch1_color.g * value;
             bb = g_armwave_state.ch1_color.b * value;
 
+            r = CLAMP(rr * overall_scale, 0, 255);
+            g = CLAMP(gg * overall_scale, 0, 255);
+            b = CLAMP(bb * overall_scale, 0, 255);
+
             // ensure 100% alpha channel, if it is used
-            word = 0xff000000 | (bb << 16) | (gg << 8) | rr;
+            word = 0xff000000 | (b << 16) | (g << 8) | r;
 
             //printf("xx,yy=%4d,%4d, value=%3d, word=0x%08x, rr=%3d, gg=%3d, bb=%3d\n", xx, yy, value, word, rr, gg, bb);
 
