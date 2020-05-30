@@ -244,7 +244,7 @@ void armwave_fill_pixbuf(uint32_t *out_buffer)
             bb = CLAMP(bb * overall_scale, 0, 255);
 
             // ensure 100% alpha channel, if it is used
-            word = 0xff000000 | (rr << 16) | (gg << 8) | bb;
+            word = 0xff000000 | (bb << 16) | (gg << 8) | rr;
 
             //printf("xx,yy=%4d,%4d, value=%3d, word=0x%08x, rr=%3d, gg=%3d, bb=%3d\n", xx, yy, value, word, rr, gg, bb);
 
@@ -271,7 +271,7 @@ void armwave_dump_ppm_debug(uint32_t *buffer, char *fn)
             data = *(buffer + (xx + (yy * g_armwave_state.target_width)));
             //printf("xx,yy=%4d,%4d, word=0x%08x\n", xx, yy, data);
 
-            fprintf(fp, "%3d %3d %3d\n", (data >> 16) & 0xff, (data >> 8) & 0xff, data & 0xff);
+            fprintf(fp, "%3d %3d %3d\n", data & 0xff, (data >> 8) & 0xff, (data >> 16) & 0xff);
         }
     }
 
