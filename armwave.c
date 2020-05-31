@@ -21,18 +21,18 @@
 
 #include "armwave.h"
 
-#define TEST_WAVE_SIZE			2048
-#define TEST_NWAVES				64
+#define TEST_WAVE_SIZE            2048
+#define TEST_NWAVES                64
 
-#define ARMWAVE_VER				"v0.0.1"
+#define ARMWAVE_VER                "v0.0.1"
 
-#define MAX(a,b)  				((a) > (b) ? (a) : (b))
-#define MIN(a,b)         		((a) < (b) ? (a) : (b))
+#define MAX(a,b)                  ((a) > (b) ? (a) : (b))
+#define MIN(a,b)                 ((a) < (b) ? (a) : (b))
 
-#define CLAMP(x,mi,mx)    		MIN(MAX((x),mi),mx)
+#define CLAMP(x,mi,mx)            MIN(MAX((x),mi),mx)
 
-#define COND_UNLIKELY(expr)		__builtin_expect((expr), 0)
-#define COND_LIKELY(expr)		__builtin_expect((expr), 1)
+#define COND_UNLIKELY(expr)        __builtin_expect((expr), 0)
+#define COND_LIKELY(expr)        __builtin_expect((expr), 1)
 
 struct armwave_state_t g_armwave_state;
 
@@ -137,11 +137,11 @@ void render_nonaa_to_buffer_1ch_slice(uint32_t slice_y, uint32_t height)
             //*(write_buffer + value) = 0xff;
 
             for(ys = 0; ys < 4; ys++) {
-            	scale_value = (word & 0xff) * g_armwave_state.vscale;
-            	write_buffer = write_buffer_base + ((yy + ys) * g_armwave_state.target_height);
-            	*(write_buffer + scale_value) += 1;
-            	word >>= 8;
-    		}
+                scale_value = (word & 0xff) * g_armwave_state.vscale;
+                write_buffer = write_buffer_base + ((yy + ys) * g_armwave_state.target_height);
+                *(write_buffer + scale_value) += 1;
+                word >>= 8;
+            }
 
             //write_buffer_base += g_armwave_state.target_width;
         }
@@ -167,17 +167,17 @@ void armwave_setup_render(uint8_t *wave_buffer, uint32_t start_point, uint32_t e
     assert(target_height == 256 || target_height == 512 || target_height == 1024 || target_height == 2048);
 
     if(target_height == 256) {
-    	g_armwave_state.row_shift = 8;
-    	g_armwave_state.row_mask = 0x0ff;
+        g_armwave_state.row_shift = 8;
+        g_armwave_state.row_mask = 0x0ff;
     } else if(target_height == 512) {
-    	g_armwave_state.row_shift = 9;
-    	g_armwave_state.row_mask = 0x1ff;
+        g_armwave_state.row_shift = 9;
+        g_armwave_state.row_mask = 0x1ff;
     } else if(target_height == 1024) {
-    	g_armwave_state.row_shift = 10;
-    	g_armwave_state.row_mask = 0x3ff;
+        g_armwave_state.row_shift = 10;
+        g_armwave_state.row_mask = 0x3ff;
     } else if(target_height == 2048) {
-    	g_armwave_state.row_shift = 11;
-    	g_armwave_state.row_mask = 0x7ff;
+        g_armwave_state.row_shift = 11;
+        g_armwave_state.row_mask = 0x7ff;
     } 
 
     // Calculate the size of each buffer.  Buffers are rotated by 90 degrees to improve cache coherency.
@@ -228,76 +228,67 @@ void armwave_clear_buffer(uint32_t flags)
 }
 
 /*
-void armwave_fill_pixbuf(uint32_t *out_buffer)
+ * Fill a pixbuf with a 256-height waveform.
+ */
+void armwave_fill_pixbuf_256(uint32_t *out_buffer)
 {
-    uint32_t xx, yy, addr, value, word;
-    int rr, gg, bb;
-    uint8_t r, g, b;
-    uint8_t *base_ptr = g_armwave_state.ch1_buffer;
+    uint32_t xx, yy, word, wave_word;
+    int rr, gg, bb, n, nsub, npix, i;
+    uint8_t r, g, , value;
+    uint32_t *base_32ptr = (uint32_t*)g_armwave_state.ch1_buffer;
     uint32_t *out_buffer_base = out_buffer;
+    uint32_t offset;
 
     assert(out_buffer != NULL);
-    //printf("out_buffer=0x%08x\n", out_buffer);
-    //printf("out_buffer_size=%d\n", sizeof(uint32_t) * g_armwave_state.size);
 
-#if 0
-    // Pixbuf tests
-    for(xx = 0; xx < g_armwave_state.target_width; xx++) {
-        for(yy = 0; yy < g_armwave_state.target_height; yy++) {
-            //printf("xx=%d, yy=%d\n", xx, yy);
-            *(out_buffer + ((xx + (yy * g_armwave_state.target_width)) / 4)) = (yy / 4) | (((yy / 4)) << 8) | (((yy / 4)) << 16);
-        }
-    }
-#endif
-
-#if 1
     // Buffer is sent non-rotated: we use GDK/GL to assemble and rotate it
-    for(yy = 0; yy < g_armwave_state.target_height; yy++) {
-        for(xx = 0; xx < g_armwave_state.target_width; xx++) {
-            //printf("xx,yy=%d,%d, row_ptr=0x%08x\n", xx, yy, row_ptr);
-            value = *(base_ptr + xx + (yy * g_armwave_state.target_width));
-            //value = xx / 8; // *(row_ptr + xx);
-            //printf("xx,yy=%d,%d, value=%d\n", xx, yy, value);
 
-#if 0
-            //rr = gamma_table[(uint8_t)(g_armwave_state.ch1_color.r * value)];  // We could also do a gamma LUT here
-            //gg = gamma_table[(uint8_t)(g_armwave_state.ch1_color.g * value)];
-            //bb = gamma_table[(uint8_t)(g_armwave_state.ch1_color.b * value)];
+    npix = g_armwave_state.target_width * 256;
 
-            //rr = CLAMP(rr * overall_scale, 0, 255);
-            //gg = CLAMP(gg * overall_scale, 0, 255);
-            //bb = CLAMP(bb * overall_scale, 0, 255);
-#endif
+    for(n = 0; n < npix; n += 4) {
+        // Read a 32-bit word at a time.  If any bits are nonzero, we need to process
+        // each byte.  We can afford to do this because most pixels will be blank for
+        // most normal waveforms.
+        wave_word = *base_32ptr++;
 
-            if(value != 0) {
-	            rr = (g_armwave_state.ch1_color.r * value) >> 8;
-	            gg = (g_armwave_state.ch1_color.g * value) >> 8;
-	            bb = (g_armwave_state.ch1_color.b * value) >> 8;
+        if(COND_UNLIKELY(wave_word != 0)) {
+            for(i = 0; i < 4; i++) {
+                value = wave_word & 0xff;
+                wave_word >>= 8;
 
-	            r = MIN(rr, 255);
-	            g = MIN(gg, 255);
-	            b = MIN(bb, 255);
+                if(value != 0) {
+                    rr = (g_armwave_state.ch1_color.r * value) >> 8;
+                    gg = (g_armwave_state.ch1_color.g * value) >> 8;
+                    bb = (g_armwave_state.ch1_color.b * value) >> 8;
 
-	            // ensure 100% alpha channel, if it is used
-	            word = 0xff000000 | (b << 16) | (g << 8) | r;
+                    r = MIN(rr, 255);
+                    g = MIN(gg, 255);
+                    b = MIN(bb, 255);
 
-	            //printf("xx,yy=%4d,%4d, value=%3d, word=0x%08x, rr=%3d, gg=%3d, bb=%3d\n", xx, yy, value, word, rr, gg, bb);
+                    // Ensure 100% alpha channel, if it is used
+                    word = 0xff000000 | (b << 16) | (g << 8) | r;
 
-	            *out_buffer++ = word;
-	        }
-        }
+                    // Is there a better way?
+                    nsub = n + i;
+                    xx = nsub & 0xff;
+                    yy = nsub >> 8;
+                    offset = yy + (xx * g_armwave_state.target_width);
+                    *(out_buffer_base + offset) = word;
+                }
+            }
+        } 
     }
-#endif
 }
-*/
 
-void armwave_fill_pixbuf2(uint32_t *out_buffer)
+/*
+ * Fill a pixbuf with a multiple of a 256-height waveform.
+ * Rows are repeated as necessary.
+ */
+void armwave_fill_pixbuf_scaled(uint32_t *out_buffer)
 {
-    uint32_t xx, yy, addr, word, wave_word;
+    uint32_t xx, yy, ysub, word, wave_word;
     int rr, gg, bb, n, nsub, npix, i;
-    uint8_t r, g, b;
-    uint8_t *base_ptr = g_armwave_state.ch1_buffer;
-    uint8_t value;
+    uint8_t r, g, b, value;
     uint32_t *base_32ptr = (uint32_t*)g_armwave_state.ch1_buffer;
     uint32_t *out_buffer_base = out_buffer;
     uint32_t offset;
@@ -307,51 +298,42 @@ void armwave_fill_pixbuf2(uint32_t *out_buffer)
     // Buffer is sent non-rotated: we use GDK/GL to assemble and rotate it
 
     npix = g_armwave_state.target_width * g_armwave_state.target_height;
+    vscale = g_armwave_state.target_height >> 8;
 
     for(n = 0; n < npix; n += 4) {
-    	// Read a 32-bit word at a time.  If any bits are nonzero, we need to process
-    	// each byte.  We can afford to do this because most pixels will be blank for
-    	// most normal waveforms.
+        // Read a 32-bit word at a time.  If any bits are nonzero, we need to process
+        // each byte.  We can afford to do this because most pixels will be blank for
+        // most normal waveforms.
         wave_word = *base_32ptr++;
 
         if(COND_UNLIKELY(wave_word != 0)) {
-        	for(i = 0; i < 4; i++) {
-        		value = wave_word & 0xff;
-        		wave_word >>= 8;
+            for(i = 0; i < 4; i++) {
+                value = wave_word & 0xff;
+                wave_word >>= 8;
 
-        		if(value != 0) {
-		            rr = (g_armwave_state.ch1_color.r * value) >> 8;
-		            gg = (g_armwave_state.ch1_color.g * value) >> 8;
-		            bb = (g_armwave_state.ch1_color.b * value) >> 8;
+                if(value != 0) {
+                    rr = (g_armwave_state.ch1_color.r * value) >> 8;
+                    gg = (g_armwave_state.ch1_color.g * value) >> 8;
+                    bb = (g_armwave_state.ch1_color.b * value) >> 8;
 
-		            r = MIN(rr, 255);
-		            g = MIN(gg, 255);
-		            b = MIN(bb, 255);
+                    r = MIN(rr, 255);
+                    g = MIN(gg, 255);
+                    b = MIN(bb, 255);
 
-		            // ensure 100% alpha channel, if it is used
-		            word = 0xff000000 | (b << 16) | (g << 8) | r;
+                    // Ensure 100% alpha channel, if it is used
+                    word = 0xff000000 | (b << 16) | (g << 8) | r;
 
-		            // Is there a better way?
-		            /** works but wrong orientation **
-		            xx = n % g_armwave_state.target_width;
-		            yy = n / g_armwave_state.target_width;
-		            offset = (xx + (yy * g_armwave_state.target_width));
-		            *(out_buffer_base + offset) = word;
-		            */
+                    // Do line scaling as necessary.
+                    nsub = n + i;
+                    xx = nsub & 0xff;
 
-		            // Since height is probably guaranteed to be one of 256 or 1024, we could probably simplify
-		            // this and strip out the division ops
-		            //xx = n % g_armwave_state.target_height;
-		            //yy = n / g_armwave_state.target_height;
-		            nsub = n + i;
-		            xx = nsub & g_armwave_state.row_mask;
-		            yy = nsub >> g_armwave_state.row_shift;
-		            offset = yy + (xx * g_armwave_state.target_width); //((xx * g_armwave_state.target_height) + yy);
-		            //printf("%d %d,%d (%d)\n", n, xx, yy, offset);
-
-		            *(out_buffer_base + offset) = word;
-		        }
-	        }
+                    for(ysub = 0; ysub < vscale; ysub++) {
+                        yy = ((nsub >> 8) * vscale) + ysub;
+                        offset = yy + (xx * g_armwave_state.target_width);
+                        *(out_buffer_base + offset) = word;
+                    }
+                }
+            }
         } 
     }
 }
@@ -382,7 +364,7 @@ void armwave_dump_ppm_debug(uint32_t *buffer, char *fn)
 
 void armwave_test_init(float mod)
 {
-	mod_depth = mod;
+    mod_depth = mod;
 
     test_create_waveform();
     test_create_gamma();
@@ -394,7 +376,7 @@ void armwave_test_init(float mod)
 
 void armwave_test_generate()
 {
-	uint32_t yy;
+    uint32_t yy;
 
     memset(g_armwave_state.ch1_buffer, 0, g_armwave_state.size);
 
@@ -408,26 +390,31 @@ PyObject *armwave_test_get_buffer()
     PyObject *mv;
     Py_buffer *buf = malloc(sizeof(Py_buffer));
     
-    armwave_fill_pixbuf2(g_armwave_state.out_pixbuf);
+    if(g_armwave_state.target_height == 256) {
+ 	   armwave_fill_pixbuf_256(g_armwave_state.out_pixbuf);
+    } else {
+ 	   armwave_fill_pixbuf_scaled(g_armwave_state.out_pixbuf);
+	}
+
     PyBuffer_FillInfo(buf, NULL, g_armwave_state.out_pixbuf, sizeof(uint32_t) * g_armwave_state.size, true, PyBUF_ND);
 
-	mv = PyMemoryView_FromBuffer(buf);
+    mv = PyMemoryView_FromBuffer(buf);
 }
 
 void armwave_test_dump_buffer_to_ppm(char *fn)
 {
-	armwave_dump_ppm_debug(g_armwave_state.out_pixbuf, fn);
+    armwave_dump_ppm_debug(g_armwave_state.out_pixbuf, fn);
 }
 
 void armwave_cleanup()
 {
-	free(g_armwave_state.out_pixbuf);
-	free(g_armwave_state.ch1_buffer);
-	free(g_armwave_state.xcoord_to_xpixel);
+    free(g_armwave_state.out_pixbuf);
+    free(g_armwave_state.ch1_buffer);
+    free(g_armwave_state.xcoord_to_xpixel);
 
-	g_armwave_state.out_pixbuf = NULL;
-	g_armwave_state.ch1_buffer = NULL;
-	g_armwave_state.xcoord_to_xpixel = NULL;
+    g_armwave_state.out_pixbuf = NULL;
+    g_armwave_state.ch1_buffer = NULL;
+    g_armwave_state.xcoord_to_xpixel = NULL;
 }
 
 int main(int argc, char *argv[])
