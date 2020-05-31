@@ -334,10 +334,10 @@ void armwave_fill_pixbuf_scaled(uint32_t *out_buffer)
                     //*(out_buffer_base + offset) = word;
                 }
             }
-        } 
+        }
+         
+        *(out_buffer++) = n;
     }
-
-    *(out_buffer++) = n;
 }
 
 void armwave_dump_ppm_debug(uint32_t *buffer, char *fn)
