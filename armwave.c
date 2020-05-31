@@ -362,14 +362,14 @@ void armwave_dump_ppm_debug(uint32_t *buffer, char *fn)
     fclose(fp);
 }
 
-void armwave_test_init(float mod)
+void armwave_test_init(float mod, int render_width, int render_height)
 {
     mod_depth = mod;
 
     test_create_waveform();
     test_create_gamma();
 
-    armwave_setup_render(&test_wave_buffer, 0, TEST_WAVE_SIZE, TEST_NWAVES, TEST_WAVE_SIZE, 2048, 256, 0x00000000);
+    armwave_setup_render(&test_wave_buffer, 0, TEST_WAVE_SIZE, TEST_NWAVES, TEST_WAVE_SIZE, render_width, render_height, 0x00000000);
 
     printf("armwave version: %s\n", ARMWAVE_VER);
 }
