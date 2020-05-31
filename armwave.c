@@ -388,24 +388,16 @@ void armwave_test_generate()
     }
 }
 
-PyObject *armwave_test_get_buffer()
+void armwave_test_fill_gdkbuf(PyObject *buf)
 {
     PyObject *mv;
     Py_buffer *buf = malloc(sizeof(Py_buffer));
+
+    // Holy jesus dear mother of God, what have we done?
+    void *out_pixbuf = ((uint32_t ***)buf)[2][10];
     
- 	armwave_fill_pixbuf_scaled(g_armwave_state.out_pixbuf);
-
-    /*
-    if(g_armwave_state.target_height == 256) {
-        armwave_fill_pixbuf_256(g_armwave_state.out_pixbuf);
-    } else {
-        armwave_fill_pixbuf_scaled(g_armwave_state.out_pixbuf);
-    }
-    */
-
-    PyBuffer_FillInfo(buf, NULL, g_armwave_state.out_pixbuf, sizeof(uint32_t) * g_armwave_state.size, true, PyBUF_ND);
-
-    mv = PyMemoryView_FromBuffer(buf);
+    // TODO: use armwave_fill_pixbuf_256 for 256-height buffers for performance?
+ 	armwave_fill_pixbuf_scaled(out_pixbuf);
 }
 
 void armwave_test_dump_buffer_to_ppm(char *fn)
