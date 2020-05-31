@@ -109,32 +109,10 @@ void render_nonaa_to_buffer_1ch_slice(uint32_t slice_y, uint32_t height)
     for(w = 0; w < g_armwave_state.waves; w++) {
         wave_base = g_armwave_state.wave_buffer + slice_y + (w * g_armwave_state.wave_stride);
 
-#if 0
-        printf("Rendering wave %4d, wave_base=0x%08x (offs:%8d) (%3d), buffer_base=0x%08x (offs:%8d)\n", \
-            w, wave_base, wave_base - g_armwave_state.wave_buffer, *g_armwave_state.wave_buffer, \
-            write_buffer_base, write_buffer_base - g_armwave_state.ch1_buffer);
-#endif
-
         // roll through y and render the slice into the out buffer
         // buffer is rendered rotated by 90 degrees
         for(yy = 0; yy < height; yy += 4) {
-            //write_buffer = write_buffer_base + (g_armwave_state.xcoord_to_xpixel[slice_y + yy] * g_armwave_state.target_width);
-
-#if 0
-            value = (*(wave_base + yy)) * g_armwave_state.vscale;
-
-            printf("Rendering row %5d, sum-y %5d, address=0x%08x (offs:%8d), value_at_pixel=%3d, xcooord_to_xpixel=%5d, "
-                   "scaled_xcoord_to_xpixel=%5d, wave_base=0x%08x\n", \
-                   yy, slice_y + yy, write_buffer, write_buffer - g_armwave_state.ch1_buffer, \
-                   value, g_armwave_state.xcoord_to_xpixel[slice_y + yy], \
-                   g_armwave_state.xcoord_to_xpixel[slice_y + yy], \
-                   wave_base + yy);
-#endif
-
-            //value = (*(wave_base + yy)) * g_armwave_state.vscale;
             word = *(uint32_t*)(wave_base + yy);
-            //value = 4; // 5 * g_armwave_state.vscale;
-            //*(write_buffer + value) = 0xff;
 
             for(ys = 0; ys < 4; ys++) {
                 scale_value = (word & 0xff) * g_armwave_state.vscale;
@@ -142,8 +120,6 @@ void render_nonaa_to_buffer_1ch_slice(uint32_t slice_y, uint32_t height)
                 *(write_buffer + scale_value) += 1;
                 word >>= 8;
             }
-
-            //write_buffer_base += g_armwave_state.target_width;
         }
     }
 }
@@ -306,6 +282,7 @@ void armwave_fill_pixbuf_scaled(uint32_t *out_buffer)
         // Read a 32-bit word at a time.  If any bits are nonzero, we need to process
         // each byte.  We can afford to do this because most pixels will be blank for
         // most normal waveforms.
+        /*
         wave_word = *base_32ptr++;
 
         if(COND_UNLIKELY(wave_word != 0)) {
@@ -337,6 +314,7 @@ void armwave_fill_pixbuf_scaled(uint32_t *out_buffer)
         }
 
         //printf("0x%08x, %d\n", out_buffer_base, n);
+        */
 
         *out_buffer_base++ = 0xff000000 | n;
     }
