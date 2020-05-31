@@ -293,8 +293,8 @@ void armwave_fill_pixbuf(uint32_t *out_buffer)
 
 void armwave_fill_pixbuf2(uint32_t *out_buffer)
 {
-    uint32_t xx, yy, addr, value, word, wave_word;
-    int rr, gg, bb, n, nsub, npix;
+    uint32_t xx, yy, addr, word, wave_word;
+    int rr, gg, bb, n, nsub, npix, i;
     uint8_t r, g, b;
     uint8_t *base_ptr = g_armwave_state.ch1_buffer;
     uint8_t value;
