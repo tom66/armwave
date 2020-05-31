@@ -390,8 +390,8 @@ void armwave_test_generate()
 
 void armwave_test_fill_gdkbuf(PyObject *buf)
 {
-    PyObject *mv;
-    Py_buffer *buf = malloc(sizeof(Py_buffer));
+    //PyObject *mv;
+    //Py_buffer *buf = malloc(sizeof(Py_buffer));
 
     // Holy jesus dear mother of God, what have we done?
     void *out_pixbuf = ((uint32_t ***)buf)[2][10];
