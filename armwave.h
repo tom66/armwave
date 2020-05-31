@@ -42,6 +42,9 @@ struct armwave_state_t {
   uint32_t target_width;
   uint32_t target_height;
 
+  uint32_t row_shift;
+  uint32_t row_mask;
+
   uint32_t *out_pixbuf;
 
   struct armwave_color_mix_t ch1_color;

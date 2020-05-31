@@ -163,8 +163,22 @@ void armwave_setup_render(uint8_t *wave_buffer, uint32_t start_point, uint32_t e
     // Pretend we're in 1ch, 8-bit mode only for now
     g_armwave_state.wave_buffer = wave_buffer;
 
-    // target_height must be multiple of 256 (8-bit samples);  other sizes should be scaled somehow
-    assert((target_height % 256) == 0);
+    // target_height must be a power of two.  Only 256, 512, 1024 and 2048 height buffers are supported.
+    assert(target_height == 256 || target_height == 512 || target_height == 1024 || target_height == 2048);
+
+    if(target_height == 256) {
+    	g_armwave_state.row_shift = 8;
+    	g_armwave_state.row_mask = 0x0ff;
+    } else if(target_height == 512) {
+    	g_armwave_state.row_shift = 9;
+    	g_armwave_state.row_mask = 0x1ff;
+    } else if(target_height == 1024) {
+    	g_armwave_state.row_shift = 10;
+    	g_armwave_state.row_mask = 0x3ff;
+    } else if(target_height == 2048) {
+    	g_armwave_state.row_shift = 11;
+    	g_armwave_state.row_mask = 0x7ff;
+    } 
 
     // Calculate the size of each buffer.  Buffers are rotated by 90 degrees to improve cache coherency.
     g_armwave_state.xstride = target_height;
@@ -317,10 +331,13 @@ void armwave_fill_pixbuf2(uint32_t *out_buffer)
             *(out_buffer_base + offset) = word;
             */
 
-            xx = n % g_armwave_state.target_height;
-            yy = n / g_armwave_state.target_height;
+            // Since height is probably guaranteed to be one of 256 or 1024, we could probably simplify
+            // this and strip out the division ops
+            //xx = n % g_armwave_state.target_height;
+            //yy = n / g_armwave_state.target_height;
+            xx = n & g_armwave_state.row_mask;
+            yy = n >> g_armwave_state.row_shift;
             offset = yy + (xx * g_armwave_state.target_width); //((xx * g_armwave_state.target_height) + yy);
-            
             //printf("%d %d,%d (%d)\n", n, xx, yy, offset);
 
             *(out_buffer_base + offset) = word;
