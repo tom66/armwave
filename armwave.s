@@ -18192,8 +18192,8 @@ __PRETTY_FUNCTION__.17115:
 	.ascii	"sq_repeat\000"
 .LASF66:
 	.ascii	"__environ\000"
-.LASF387:
-	.ascii	"curexc_value\000"
+.LASF625:
+	.ascii	"/home/pi/git/scopeapp/ZynqScope/armwave\000"
 .LASF364:
 	.ascii	"_frame\000"
 .LASF105:
@@ -18532,8 +18532,8 @@ __PRETTY_FUNCTION__.17115:
 	.ascii	"_IO_write_ptr\000"
 .LASF114:
 	.ascii	"tp_as_mapping\000"
-.LASF625:
-	.ascii	"/home/pi/git/armwave\000"
+.LASF170:
+	.ascii	"setattrfunc\000"
 .LASF579:
 	.ascii	"armwave_set_channel_colour\000"
 .LASF593:
@@ -18636,8 +18636,8 @@ __PRETTY_FUNCTION__.17115:
 	.ascii	"PyFilter_Type\000"
 .LASF433:
 	.ascii	"PyStructSequence_UnnamedField\000"
-.LASF170:
-	.ascii	"setattrfunc\000"
+.LASF561:
+	.ascii	"armwave_test_create_am_sine\000"
 .LASF456:
 	.ascii	"PyExc_NameError\000"
 .LASF97:
@@ -18796,6 +18796,8 @@ __PRETTY_FUNCTION__.17115:
 	.ascii	"PyModule_Type\000"
 .LASF570:
 	.ascii	"armwave_test_init\000"
+.LASF387:
+	.ascii	"curexc_value\000"
 .LASF342:
 	.ascii	"PyEnum_Type\000"
 .LASF138:
@@ -19011,8 +19013,6 @@ __PRETTY_FUNCTION__.17115:
 	.ascii	"ndim\000"
 .LASF161:
 	.ascii	"ssizeobjargproc\000"
-.LASF561:
-	.ascii	"armwave_test_create_am_sine\000"
 .LASF150:
 	.ascii	"tp_vectorcall\000"
 .LASF459:
