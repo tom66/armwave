@@ -241,9 +241,8 @@ void armwave_fill_pixbuf_256(uint32_t *out_buffer)
 
     assert(out_buffer != NULL);
 
-    // Buffer is sent non-rotated: we use GDK/GL to assemble and rotate it
-
     npix = g_armwave_state.target_width * 256;
+    printf("%d %d", npix, g_armwave_state.target_width);
 
     for(n = 0; n < npix; n += 4) {
         // Read a 32-bit word at a time.  If any bits are nonzero, we need to process
@@ -294,8 +293,6 @@ void armwave_fill_pixbuf_scaled(uint32_t *out_buffer)
     uint32_t offset;
 
     assert(out_buffer != NULL);
-
-    // Buffer is sent non-rotated: we use GDK/GL to assemble and rotate it
 
     npix = g_armwave_state.target_width * 256; //g_armwave_state.target_height;
     vscale = g_armwave_state.target_height / 256;
