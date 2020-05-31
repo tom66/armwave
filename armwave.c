@@ -318,7 +318,7 @@ void armwave_fill_pixbuf_scaled(uint32_t *out_buffer)
 
                     // Do line scaling as necessary.
                     nsub = n + w;
-                    yy = ((nsub & 0xff) * vscale);
+                    yy = (nsub & 0xff);
                     xx = nsub >> 8;
                     offset = (xx + (yy * g_armwave_state.target_width));
                     *(out_buffer_base + offset) = word;
