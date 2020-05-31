@@ -116,6 +116,7 @@ void render_nonaa_to_buffer_1ch_slice(uint32_t slice_y, uint32_t height)
             word = *(uint32_t*)(wave_base + yy);
 
             for(ys = 0; ys < 4; ys++) {
+                printf("write %d,%d ht %d", yy, ys, g_armwave_state.bitdepth_height);
                 scale_value = (word & 0xff);
                 write_buffer = write_buffer_base + ((yy + ys) * g_armwave_state.bitdepth_height);
                 *(write_buffer + scale_value) += 1;
