@@ -93,7 +93,8 @@ void test_create_gamma()
  * pre-computed.
  *
  * @param    slice_y        Slice to render at
- * @param    height         Number of wave points to render
+ * @param    height         Number of wave points to render (adjust for performance, 
+ *                          accounting for cache behaviour, etc.)
  */
 void render_nonaa_to_buffer_1ch_slice(uint32_t slice_y, uint32_t height)
 {
@@ -320,8 +321,8 @@ void armwave_fill_pixbuf_scaled(uint32_t *out_buffer)
 
                     // Do line scaling as necessary.
                     nsub = n + w;
-                    yy = (nsub & 0xff) + 256;
-                    xx = (nsub >> 9);
+                    yy = (nsub & 0xff);
+                    xx = (nsub >> 8);
                     offset = (xx + (yy * g_armwave_state.target_width)); 
                     *(out_buffer_base + offset) = word;
                 }
