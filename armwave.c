@@ -163,10 +163,12 @@ void armwave_setup_render(uint8_t *wave_buffer, uint32_t start_point, uint32_t e
     g_armwave_state.wave_stride = wave_stride;
     g_armwave_state.waves = waves;
     g_armwave_state.size = target_height * target_width;
-    g_armwave_state.bitdepth_height = 256;
+    g_armwave_state.bitdepth_height = 256;  // Always 256 possible levels in 8-bit mode
     g_armwave_state.ch_buff_size = g_armwave_state.bitdepth_height * target_width;
     g_armwave_state.target_width = target_width;
     g_armwave_state.target_height = target_height;
+
+    printf("ch_buff_size=%d\n", g_armwave_state.ch_buff_size);
 
     // In 1ch mode, target 1024 x 16 render buffer, reading 16 bytes at a time from each wave, retaining as much as possible in L1/L2 cache
     // In 2ch mode, target two 1024 x 8 render buffers, reading 16 bytes at a time from each wave
