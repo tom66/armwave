@@ -299,6 +299,16 @@ void armwave_set_wave_pointer_as_testbuf()
 }
 
 /*
+ * Set wave buffer pointer from a 32-bit uint.  This needs to be changed to support 
+ * disjointed buffers in the future.
+ */
+void armwave_set_wave_pointer(uint32_t wave_buffer_ptr)
+{
+    assert(wave_buffer_ptr != 0);
+    g_armwave_state.wave_buffer = (uint8_t*)wave_buffer_ptr;
+}
+
+/*
  * Clear the working buffer (fill it with all zeros.)
  */
 void armwave_clear_buffer(uint32_t flags)
