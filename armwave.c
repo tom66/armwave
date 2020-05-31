@@ -389,11 +389,15 @@ PyObject *armwave_test_get_buffer()
     PyObject *mv;
     Py_buffer *buf = malloc(sizeof(Py_buffer));
     
+ 	armwave_fill_pixbuf_scaled(g_armwave_state.out_pixbuf);
+
+    /*
     if(g_armwave_state.target_height == 256) {
- 	   armwave_fill_pixbuf_256(g_armwave_state.out_pixbuf);
+        armwave_fill_pixbuf_256(g_armwave_state.out_pixbuf);
     } else {
- 	   armwave_fill_pixbuf_scaled(g_armwave_state.out_pixbuf);
-	}
+        armwave_fill_pixbuf_scaled(g_armwave_state.out_pixbuf);
+    }
+    */
 
     PyBuffer_FillInfo(buf, NULL, g_armwave_state.out_pixbuf, sizeof(uint32_t) * g_armwave_state.size, true, PyBUF_ND);
 
