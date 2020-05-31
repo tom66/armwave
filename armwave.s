@@ -3041,11 +3041,11 @@ armwave_test_generate:
 	.cfi_offset 5, -12
 	.cfi_offset 6, -8
 	.cfi_offset 14, -4
-@ armwave.c:381:     memset(g_armwave_state.ch1_buffer, 0, g_armwave_state.size);
+@ armwave.c:381:     memset(g_armwave_state.ch1_buffer, 0, g_armwave_state.ch_buff_size);
 	.loc 1 381 5 view .LVU882
 	mov	r1, #0	@,
 	ldr	r6, .L178	@ tmp133,
-	ldr	r2, [r6, #56]	@, g_armwave_state.size
+	ldr	r2, [r6, #52]	@, g_armwave_state.ch_buff_size
 	ldr	r0, [r6, #4]	@, g_armwave_state.ch1_buffer
 	bl	memset		@
 .LVL225:

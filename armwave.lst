@@ -4142,7 +4142,7 @@
  379:armwave.c     ****     uint32_t yy;
  3034              		.loc 1 379 5 view .LVU879
  380:armwave.c     **** 
- 381:armwave.c     ****     memset(g_armwave_state.ch1_buffer, 0, g_armwave_state.size);
+ 381:armwave.c     ****     memset(g_armwave_state.ch1_buffer, 0, g_armwave_state.ch_buff_size);
  3035              		.loc 1 381 5 view .LVU880
  3036              	@ armwave.c:378: {
  378:armwave.c     ****     uint32_t yy;
@@ -4153,11 +4153,11 @@
  3041              		.cfi_offset 5, -12
  3042              		.cfi_offset 6, -8
  3043              		.cfi_offset 14, -4
- 3044              	@ armwave.c:381:     memset(g_armwave_state.ch1_buffer, 0, g_armwave_state.size);
+ 3044              	@ armwave.c:381:     memset(g_armwave_state.ch1_buffer, 0, g_armwave_state.ch_buff_size);
  3045              		.loc 1 381 5 view .LVU882
  3046 0dc0 0010A0E3 		mov	r1, #0	@,
  3047 0dc4 44609FE5 		ldr	r6, .L178	@ tmp133,
- 3048 0dc8 382096E5 		ldr	r2, [r6, #56]	@, g_armwave_state.size
+ 3048 0dc8 342096E5 		ldr	r2, [r6, #52]	@, g_armwave_state.ch_buff_size
  3049 0dcc 040096E5 		ldr	r0, [r6, #4]	@, g_armwave_state.ch1_buffer
  3050 0dd0 FEFFFFEB 		bl	memset		@
  3051              	.LVL225:
