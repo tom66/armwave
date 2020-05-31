@@ -103,7 +103,7 @@ void render_nonaa_to_buffer_1ch_slice(uint32_t slice_y, uint32_t height)
     uint8_t *write_buffer_base;
     uint8_t *write_buffer;
     
-    write_buffer_base = g_armwave_state.ch1_buffer + (slice_y * g_armwave_state.target_height);
+    write_buffer_base = g_armwave_state.ch1_buffer + (slice_y * g_armwave_state.bitdepth_height);
 
     // roll through each waveform
     for(w = 0; w < g_armwave_state.waves; w++) {
@@ -116,7 +116,7 @@ void render_nonaa_to_buffer_1ch_slice(uint32_t slice_y, uint32_t height)
 
             for(ys = 0; ys < 4; ys++) {
                 scale_value = (word & 0xff) * g_armwave_state.vscale;
-                write_buffer = write_buffer_base + ((yy + ys) * g_armwave_state.target_height);
+                write_buffer = write_buffer_base + ((yy + ys) * g_armwave_state.bitdepth_height);
                 *(write_buffer + scale_value) += 1;
                 word >>= 8;
             }
@@ -162,6 +162,8 @@ void armwave_setup_render(uint8_t *wave_buffer, uint32_t start_point, uint32_t e
     g_armwave_state.wave_stride = wave_stride;
     g_armwave_state.waves = waves;
     g_armwave_state.size = target_height * target_width;
+    g_armwave_state.bitdepth_height = 256;
+    g_armwave_state.ch_buff_size = g_armwave_state.bitdepth_height * target_width;
     g_armwave_state.target_width = target_width;
     g_armwave_state.target_height = target_height;
 
@@ -173,7 +175,7 @@ void armwave_setup_render(uint8_t *wave_buffer, uint32_t start_point, uint32_t e
     if(g_armwave_state.ch1_buffer != NULL)
         free(g_armwave_state.ch1_buffer);
 
-    g_armwave_state.ch1_buffer = calloc(g_armwave_state.size, 1);
+    g_armwave_state.ch1_buffer = calloc(g_armwave_state.ch_buff_size, 1);
     g_armwave_state.ch1_color.r = 255 * overall_scale;
     g_armwave_state.ch1_color.g = 178 * overall_scale;
     g_armwave_state.ch1_color.b = 25 * overall_scale;
