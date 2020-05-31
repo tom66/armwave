@@ -35,6 +35,7 @@ struct armwave_state_t {
   uint32_t vscale;
   uint32_t wave_stride;
   uint32_t waves;
+  uint32_t waves_max;
   uint32_t bitdepth_height;
   uint32_t slice_height;
   uint32_t slice_record_height;
@@ -62,7 +63,8 @@ struct armwave_state_t {
 
 void render_nonaa_to_buffer_1ch_slice(uint32_t slice_y, uint32_t height);
 void armwave_init(void);
-void armwave_setup_render(uint8_t *wave_buffer, uint32_t start_point, uint32_t end_point, uint32_t waves, uint32_t wave_stride, uint32_t target_width, uint32_t target_height, uint32_t render_flags);
+void armwave_setup_render(uint32_t start_point, uint32_t end_point, uint32_t waves_max, uint32_t wave_stride, uint32_t target_width, uint32_t target_height, uint32_t render_flags);
+void armwave_set_wave_pointer(uint8_t *wave_buffer);
 void armwave_set_channel_colour(int ch, int r, int g, int b);
 void armwave_clear_buffer(uint32_t flags);
 void armwave_fill_pixbuf_256(uint32_t *out_buffer);

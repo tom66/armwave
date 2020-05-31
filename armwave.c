@@ -93,17 +93,16 @@ void render_nonaa_to_buffer_1ch_slice(uint32_t slice_y, uint32_t height)
 void armwave_init()
 {
     g_armwave_state.flags = 0;
+
+    printf("armwave version: %s\n", ARMWAVE_VER);
 }
 
-void armwave_setup_render(uint8_t *wave_buffer, uint32_t start_point, uint32_t end_point, uint32_t waves, uint32_t wave_stride, uint32_t target_width, uint32_t target_height, uint32_t render_flags)
+void armwave_setup_render(uint32_t start_point, uint32_t end_point, uint32_t waves_max, uint32_t wave_stride, uint32_t target_width, uint32_t target_height, uint32_t render_flags)
 {
     uint32_t length, xx;
     float points_per_pixel;
 
     assert(start_point < end_point);
-
-    // Pretend we're in 1ch, 8-bit mode only for now
-    g_armwave_state.wave_buffer = wave_buffer;
 
     // target_height must be a power of two.  Only 256, 512, 1024 and 2048 height buffers are supported.
     assert(target_height == 256 || target_height == 512 || target_height == 1024 || target_height == 2048);
@@ -126,7 +125,8 @@ void armwave_setup_render(uint8_t *wave_buffer, uint32_t start_point, uint32_t e
     g_armwave_state.xstride = target_height;
     g_armwave_state.vscale = target_height / 256;
     g_armwave_state.wave_stride = wave_stride;
-    g_armwave_state.waves = waves;
+    g_armwave_state.waves_max = waves_max;
+    g_armwave_state.waves = waves_max;  // Need a function to be able to change this on the fly
     g_armwave_state.size = target_height * target_width;
     g_armwave_state.bitdepth_height = 256;  // Always 256 possible levels in 8-bit mode
     g_armwave_state.ch_buff_size = g_armwave_state.bitdepth_height * target_width;
@@ -162,6 +162,12 @@ void armwave_setup_render(uint8_t *wave_buffer, uint32_t start_point, uint32_t e
     }
 
     g_armwave_state.out_pixbuf = malloc(sizeof(uint32_t) * g_armwave_state.size);
+}
+
+void armwave_set_wave_pointer(uint8_t *wave_buffer)
+{
+    assert(wave_buffer != NULL);
+    g_armwave_state.wave_buffer = wave_buffer;
 }
 
 void armwave_clear_buffer(uint32_t flags)
@@ -350,7 +356,16 @@ void armwave_test_fill_gdkbuf(PyObject *buf)
     void *out_pixbuf = ((uint32_t ***)buf)[2][10];
     
     // TODO: use armwave_fill_pixbuf_256 for 256-height buffers for performance?
- 	armwave_fill_pixbuf_scaled(out_pixbuf);
+    armwave_fill_pixbuf_scaled(out_pixbuf);
+}
+
+void fill_pixbuf_into_pybuffer(PyObject *buf_obj)
+{
+    Py_buffer buffer;
+    PyObject_GetBuffer(buf_obj, &buffer, PyBUF_SIMPLE | PyBUF_WRITABLE);
+
+    armwave_fill_pixbuf_scaled(buffer.buf);
+    PyBuffer_Release(buffer);
 }
 
 void armwave_test_dump_buffer_to_ppm(char *fn)
