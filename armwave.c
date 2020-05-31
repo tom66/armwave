@@ -104,7 +104,7 @@ void render_nonaa_to_buffer_1ch_slice(uint32_t slice_y, uint32_t height)
     uint8_t *write_buffer_base;
     uint8_t *write_buffer;
     
-    write_buffer_base = g_armwave_state.ch1_buffer + (slice_y * g_armwave_state.bitdepth_height);
+    write_buffer_base = g_armwave_state.ch1_buffer + (slice_y * g_armwave_state.slice_height);
 
     // roll through each waveform
     for(w = 0; w < g_armwave_state.waves; w++) {
@@ -116,8 +116,8 @@ void render_nonaa_to_buffer_1ch_slice(uint32_t slice_y, uint32_t height)
             word = *(uint32_t*)(wave_base + yy);
 
             for(ys = 0; ys < 4; ys++) {
-                scale_value = (word & 0xff) * g_armwave_state.vscale;
-                write_buffer = write_buffer_base + ((yy + ys) * g_armwave_state.bitdepth_height);
+                scale_value = (word & 0xff);
+                write_buffer = write_buffer_base + ((yy + ys) * g_armwave_state.slice_height);
                 *(write_buffer + scale_value) += 1;
                 word >>= 8;
             }
