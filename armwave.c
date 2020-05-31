@@ -414,7 +414,7 @@ void armwave_test_create_square(float noise_fraction)
             if((rand() & 0xff) > 0x7f)
                 noise = -noise;
 
-            noise += 1.0f;
+            //noise += 1.0f;
 
             if(x > (TEST_WAVE_SIZE * 0.75f)) {
                 new_level = 0.2f;
