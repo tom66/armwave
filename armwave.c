@@ -378,7 +378,7 @@ void armwave_test_generate()
 {
     uint32_t yy;
 
-    memset(g_armwave_state.ch1_buffer, 0, g_armwave_state.size);
+    memset(g_armwave_state.ch1_buffer, 0, g_armwave_state.ch_buff_size);
 
     for(yy = 0; yy < (2048 / g_armwave_state.slice_height); yy++) {
         render_nonaa_to_buffer_1ch_slice(yy * g_armwave_state.slice_height, g_armwave_state.slice_record_height);
