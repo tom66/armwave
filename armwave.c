@@ -26,13 +26,13 @@
 
 #define ARMWAVE_VER                 "v0.0.1"
 
-#define MAX(a,b)                    ((a) > (b) ? (a) : (b))
-#define MIN(a,b)                    ((a) < (b) ? (a) : (b))
+#define MAX(a,b)                  	((a) > (b) ? (a) : (b))
+#define MIN(a,b)                 	((a) < (b) ? (a) : (b))
 
-#define CLAMP(x,mi,mx)              MIN(MAX((x),mi),mx)
+#define CLAMP(x,mi,mx)            	MIN(MAX((x),mi),mx)
 
-#define COND_UNLIKELY(expr)         __builtin_expect((expr), 0)
-#define COND_LIKELY(expr)           __builtin_expect((expr), 1)
+#define COND_UNLIKELY(expr)       	__builtin_expect((expr), 0)
+#define COND_LIKELY(expr)        	__builtin_expect((expr), 1)
 
 struct armwave_state_t g_armwave_state;
 
@@ -241,8 +241,9 @@ void armwave_fill_pixbuf_256(uint32_t *out_buffer)
 
     assert(out_buffer != NULL);
 
+    // Buffer is sent non-rotated: we use GDK/GL to assemble and rotate it
+
     npix = g_armwave_state.target_width * 256;
-    printf("%d %d", npix, g_armwave_state.target_width);
 
     for(n = 0; n < npix; n += 4) {
         // Read a 32-bit word at a time.  If any bits are nonzero, we need to process
@@ -294,8 +295,12 @@ void armwave_fill_pixbuf_scaled(uint32_t *out_buffer)
 
     assert(out_buffer != NULL);
 
+    // Buffer is sent non-rotated: we use GDK/GL to assemble and rotate it
+
     npix = g_armwave_state.target_width * 256; //g_armwave_state.target_height;
     vscale = g_armwave_state.target_height / 256;
+
+    printf("np=%d w=%d v=%d\n", npix, g_armwave_state.target_width, vscale);
 
     for(n = 0; n < npix; n += 4) {
         // Read a 32-bit word at a time.  If any bits are nonzero, we need to process
