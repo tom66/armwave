@@ -21,18 +21,18 @@
 
 #include "armwave.h"
 
-#define TEST_WAVE_SIZE            2048
-#define TEST_NWAVES                64
+#define TEST_WAVE_SIZE              2048
+#define TEST_NWAVES                 64
 
-#define ARMWAVE_VER                "v0.0.1"
+#define ARMWAVE_VER                 "v0.0.1"
 
-#define MAX(a,b)                  ((a) > (b) ? (a) : (b))
-#define MIN(a,b)                 ((a) < (b) ? (a) : (b))
+#define MAX(a,b)                    ((a) > (b) ? (a) : (b))
+#define MIN(a,b)                    ((a) < (b) ? (a) : (b))
 
-#define CLAMP(x,mi,mx)            MIN(MAX((x),mi),mx)
+#define CLAMP(x,mi,mx)              MIN(MAX((x),mi),mx)
 
-#define COND_UNLIKELY(expr)        __builtin_expect((expr), 0)
-#define COND_LIKELY(expr)        __builtin_expect((expr), 1)
+#define COND_UNLIKELY(expr)         __builtin_expect((expr), 0)
+#define COND_LIKELY(expr)           __builtin_expect((expr), 1)
 
 struct armwave_state_t g_armwave_state;
 
@@ -327,7 +327,7 @@ void armwave_fill_pixbuf_scaled(uint32_t *out_buffer)
                     nsub = n + i;
                     xx = nsub & 0xff;
                     yy = nsub >> 8;
-                    offset = (yy + (xx * g_armwave_state.target_width)) * vscale;
+                    offset = (yy + (xx * g_armwave_state.target_width));
                     *(out_buffer_base + offset) = word;
                 }
             }
