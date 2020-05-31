@@ -56,16 +56,18 @@ while True:
 
 	#print(buf, type(buf))
 
+	#"""
 	t0 = time.time()
 	bybuf = buf.tobytes()
 	t1 = time.time()
 	print("buf_tobytes:             %5.1f ms" % ((t1 - t0) * 1000))
-
+	
 	t0 = time.time()
 	gbytes = GLib.Bytes.new(bybuf)
 	t1 = time.time()
 	print("Glib_bytes_new:          %5.1f ms" % ((t1 - t0) * 1000))
-
+	#"""
+	
 	#stream = Gio.MemoryInputStream.new_from_data(buf)
 	#pbuf = GdkPixbuf.Pixbuf.new_from_bytes(gbytes, GdkPixbuf.Colorspace.RGB, True, 8, 256, 2048, 1024)
 	t0 = time.time()
@@ -73,13 +75,10 @@ while True:
 	t1 = time.time()
 	print("GdkPixbuf new_from_bytes:%5.1f ms" % ((t1 - t0) * 1000))
 	
-	t0 = time.time()
-	pbuf = pbuf.scale_simple(2048, 1024, GdkPixbuf.InterpType.TILES)
-	t1 = time.time()
-	print("GdkPixbuf scaling:       %5.1f ms" % ((t1 - t0) * 1000))
-
 	#pbuf = GdkPixbuf.Pixbuf.new_from_stream(
 	#pbuf = pbuf.rotate_simple(90)
+
+	pbuf = 
 	
 	t0 = time.time()
 	img.set_from_pixbuf(pbuf)
