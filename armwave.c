@@ -39,42 +39,6 @@ struct armwave_state_t g_armwave_state;
 uint8_t test_wave_buffer[TEST_WAVE_SIZE * TEST_NWAVES];
 uint8_t gamma_table[256];
 
-// for now...
-const float overall_scale = 2550.0f / 255.0f;
-
-float mod_depth = 0.0f;
-
-/*
- * Make a test AM waveform for render tests.
- */
-void test_create_waveform()
-{
-    float v, mod, noise, xnoise;
-    int w, x;
-
-    for(w = 0; w < TEST_NWAVES; w++) {
-        mod = 0.5f + (((float)w / TEST_NWAVES) * mod_depth);
-        //mod = 1.0f;
-
-        for(x = 0; x < TEST_WAVE_SIZE; x++) {
-            noise  = ((rand() & 0xffff) / 100000.0f);
-            noise *= noise;
-            noise *= noise;
-            noise *= noise;
-
-            if((rand() & 0xffff) > 0x7fff)
-                noise = -noise;
-
-            noise += 1.0f;
-            xnoise = (rand() & 0xffff) / 6553500.0f;
-
-            v = (sin((6.28f * x * (1.0f / TEST_WAVE_SIZE)) + xnoise) * mod) * noise;
-            //v = ((x & 0xff) / 128.0f) - 1.0f;
-            test_wave_buffer[x + (w * TEST_WAVE_SIZE)] = MIN(MAX(128 + (v * 127), 0), 255);
-        }
-    }
-}
-
 /*
  * Create a gamma table.
  */
@@ -180,9 +144,6 @@ void armwave_setup_render(uint8_t *wave_buffer, uint32_t start_point, uint32_t e
         free(g_armwave_state.ch1_buffer);
 
     g_armwave_state.ch1_buffer = calloc(g_armwave_state.ch_buff_size, 1);
-    g_armwave_state.ch1_color.r = 255 * overall_scale;
-    g_armwave_state.ch1_color.g = 178 * overall_scale;
-    g_armwave_state.ch1_color.b = 25 * overall_scale;
 
     assert(g_armwave_state.ch1_buffer != NULL);
 
@@ -207,6 +168,21 @@ void armwave_clear_buffer(uint32_t flags)
 {
     // Flags ignored, only one buffer cleared
     memset(g_armwave_state.ch1_buffer, 0, g_armwave_state.size);
+}
+
+/*
+ * Set the render colour for a channel.  R/G/B may exceed 255 for saturation effects.
+ */
+void armwave_set_channel_colour(int ch, int r, int g, int b)
+{
+    // Only 1ch supported for now
+    switch(ch) {
+        case 1:
+            g_armwave_state.ch1_color.r = r;
+            g_armwave_state.ch1_color.g = g;
+            g_armwave_state.ch1_color.b = b;
+            break;
+    }
 }
 
 /*
@@ -277,27 +253,8 @@ void armwave_fill_pixbuf_scaled(uint32_t *out_buffer)
 
     assert(out_buffer != NULL);
 
-    // Buffer is sent non-rotated: we use GDK/GL to assemble and rotate it
-
-    npix = g_armwave_state.target_width * 256; //g_armwave_state.target_height;
+    npix = g_armwave_state.target_width * 256; 
     vscale = g_armwave_state.target_height >> 8;
-
-    //printf("np=%d w=%d v=%d\n", npix, g_armwave_state.target_width, vscale);
-
-    /*
-    for(n = 0; n < npix; n += 1) {
-        for(i = 0; i < 4; i++) {
-            yy = ((n & 0xff) * 4) + i;
-            xx = n >> 8;
-
-            //offset = (yy + (xx * g_armwave_state.target_width));
-            //*(out_buffer_base + offset) = 0xff000000 | (yy << 8) | xx;
-
-            offset = (xx + (yy * g_armwave_state.target_width));
-            *(out_buffer_base + offset) = 0xff000000 | ((i * 64) << 16); // | (yy << 8) | xx;
-        }
-    }
-    */
 
     for(n = 0; n < npix; n += 4) {
         // Read a 32-bit word at a time.  If any bits are nonzero, we need to process
@@ -334,10 +291,6 @@ void armwave_fill_pixbuf_scaled(uint32_t *out_buffer)
                 }
             }
         }
-
-        //printf("0x%08x, %d\n", out_buffer_base, n);
-
-        //*out_buffer_base++ = 0xff000000 | n;
     }
 }
 
@@ -365,12 +318,12 @@ void armwave_dump_ppm_debug(uint32_t *buffer, char *fn)
     fclose(fp);
 }
 
-void armwave_test_init(float mod, int render_width, int render_height)
+void armwave_test_init(int render_width, int render_height)
 {
     mod_depth = mod;
 
-    test_create_waveform();
     test_create_gamma();
+    armwave_set_channel_colour(2550, 1780, 250);
 
     armwave_setup_render(&test_wave_buffer, 0, TEST_WAVE_SIZE, TEST_NWAVES, TEST_WAVE_SIZE, render_width, render_height, 0x00000000);
 
@@ -405,6 +358,84 @@ void armwave_test_dump_buffer_to_ppm(char *fn)
     armwave_dump_ppm_debug(g_armwave_state.out_pixbuf, fn);
 }
 
+/*
+ * Make a test AM waveform for render tests.
+ *
+ * @param   mod                 modulation depth
+ * @param   noise_fraction      typically 1e-6
+ */
+void armwave_test_create_am_sine(float mod, float noise_fraction)
+{
+    float v, mod, noise, xnoise;
+    int w, x;
+
+    for(w = 0; w < TEST_NWAVES; w++) {
+        mod = 0.5f + (((float)w / TEST_NWAVES) * mod);
+        //mod = 1.0f;
+
+        for(x = 0; x < TEST_WAVE_SIZE; x++) {
+            noise  = ((rand() & 0xffff) * noise_fraction);
+            noise *= noise;
+            noise *= noise;
+            noise *= noise;
+
+            if((rand() & 0xffff) > 0x7fff)
+                noise = -noise;
+
+            noise += 1.0f;
+            xnoise = (rand() & 0xffff) / 6553500.0f;
+
+            v = (sin((6.28f * x * (1.0f / TEST_WAVE_SIZE)) + xnoise) * mod) * noise;
+            //v = ((x & 0xff) / 128.0f) - 1.0f;
+            test_wave_buffer[x + (w * TEST_WAVE_SIZE)] = MIN(MAX(128 + (v * 127), 0), 255);
+        }
+    }
+}
+
+/*
+ * Make a test square waveform.
+ *
+ * @param   noise_fraction      typically 1e-6
+ */
+void armwave_test_create_square(float noise_fraction)
+{
+    float v, mod, noise, xnoise;
+    float level = 0.8f, new_level = 0.8f;
+    int w, x;
+
+    for(w = 0; w < TEST_NWAVES; w++) {
+        mod = 0.5f + (((float)w / TEST_NWAVES) * mod_depth);
+        //mod = 1.0f;
+
+        for(x = 0; x < TEST_WAVE_SIZE; x++) {
+            noise  = ((rand() & 0xffff) * noise_fraction);
+            noise *= noise;
+            noise *= noise;
+            noise *= noise;
+
+            if((rand() & 0xff) > 0x7f)
+                noise = -noise;
+
+            noise += 1.0f;
+
+            if(x > (TEST_WAVE_SIZE * 0.75f)) {
+                new_level = 0.2f;
+            } else if(x > (TEST_WAVE_SIZE * 0.5f)) {
+                new_level = 0.8f;
+            } else if(x > (TEST_WAVE_SIZE * 0.25f)) {
+                new_level = 0.2f;
+            } else {
+                new_level = 0.8f;
+            }
+
+            level = ((level * 3) + new_level) * 0.25f;
+
+            v = (uint8_t)(CLAMP(level + noise, 0.0f, 1.0f) * 255);
+            test_wave_buffer[x + (w * TEST_WAVE_SIZE)] = v;
+        }
+    }
+}
+
 void armwave_cleanup()
 {
     free(g_armwave_state.out_pixbuf);
@@ -425,7 +456,7 @@ int main(int argc, char *argv[])
     armwave_init();
 
     //printf("Creating test waveform...\n");
-    test_create_waveform();
+    armwave_test_create_am_sine(0.5f, 1e-6f);
 
     //printf("Creating gamma LUT...\n");
     test_create_gamma();

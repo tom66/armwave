@@ -60,18 +60,21 @@ struct armwave_state_t {
   uint16_t *xcoord_to_xpixel;
 };
 
-void test_create_waveform(void);
 void render_nonaa_to_buffer_1ch_slice(uint32_t slice_y, uint32_t height);
 void armwave_init(void);
 void armwave_setup_render(uint8_t *wave_buffer, uint32_t start_point, uint32_t end_point, uint32_t waves, uint32_t wave_stride, uint32_t target_width, uint32_t target_height, uint32_t render_flags);
+void armwave_set_channel_colour(int ch, int r, int g, int b);
 void armwave_clear_buffer(uint32_t flags);
 void armwave_fill_pixbuf_256(uint32_t *out_buffer);
 void armwave_fill_pixbuf_scaled(uint32_t *out_buffer);
 void armwave_dump_ppm_debug(uint32_t *buffer, char *fn);
+
+void armwave_test_create_square(float noise_fraction);
+void armwave_test_create_am_sine(float mod, float noise_fraction);
 
 void armwave_test_init(float mod, int render_width, int render_height);
 void armwave_test_generate(void);
 void armwave_test_fill_gdkbuf(PyObject *buf);
 void armwave_test_dump_buffer_to_ppm(char *fn);
 
-void armwave_cleanup();
+void armwave_cleanup(void);
