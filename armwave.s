@@ -2128,15 +2128,15 @@ armwave_fill_pixbuf_scaled:
 .LVL139:
 .L125:
 	.loc 1 282 9 is_stmt 1 discriminator 3 view .LVU627
-@ armwave.c:282:         yy = (n & 0xff) * 2;
+@ armwave.c:282:         yy = (n & 0xff) * 4;
 	.loc 1 282 17 is_stmt 0 discriminator 3 view .LVU628
 	uxtb	r2, r1	@ n, n
 @ armwave.c:288:         offset = (xx + (yy * g_armwave_state.target_width));
 	.loc 1 288 28 discriminator 3 view .LVU629
 	ldr	ip, [r5, #52]	@ g_armwave_state.target_width, g_armwave_state.target_width
-@ armwave.c:282:         yy = (n & 0xff) * 2;
+@ armwave.c:282:         yy = (n & 0xff) * 4;
 	.loc 1 282 25 discriminator 3 view .LVU630
-	lsl	r0, r2, #1	@ yy, n,
+	lsl	r0, r2, #2	@ yy, n,
 .LVL140:
 	.loc 1 283 9 is_stmt 1 discriminator 3 view .LVU631
 @ armwave.c:283:         xx = n >> 8;
@@ -2155,7 +2155,7 @@ armwave_fill_pixbuf_scaled:
 .LVL143:
 @ armwave.c:289:         *(out_buffer_base + offset) = 0xff000000 | (yy << 8) | xx;
 	.loc 1 289 62 discriminator 3 view .LVU637
-	orr	r3, r3, r2, lsl #9	@ tmp146, xx, n,
+	orr	r3, r3, r2, lsl #10	@ tmp146, xx, n,
 .LVL144:
 	.loc 1 289 62 discriminator 3 view .LVU638
 	orr	r3, r3, #-16777216	@ tmp147, tmp146,
@@ -2947,15 +2947,15 @@ armwave_test_get_buffer:
 .LVL208:
 .L174:
 	.loc 1 282 9 is_stmt 1 view .LVU840
-@ armwave.c:282:         yy = (n & 0xff) * 2;
+@ armwave.c:282:         yy = (n & 0xff) * 4;
 	.loc 1 282 17 is_stmt 0 view .LVU841
 	uxtb	r0, r2	@ n, n
 @ armwave.c:288:         offset = (xx + (yy * g_armwave_state.target_width));
 	.loc 1 288 28 view .LVU842
 	ldr	ip, [r4, #52]	@ g_armwave_state.target_width, g_armwave_state.target_width
-@ armwave.c:282:         yy = (n & 0xff) * 2;
+@ armwave.c:282:         yy = (n & 0xff) * 4;
 	.loc 1 282 25 view .LVU843
-	lsl	r1, r0, #1	@ yy, n,
+	lsl	r1, r0, #2	@ yy, n,
 .LVL209:
 	.loc 1 283 9 is_stmt 1 view .LVU844
 @ armwave.c:283:         xx = n >> 8;
@@ -2974,7 +2974,7 @@ armwave_test_get_buffer:
 .LVL212:
 @ armwave.c:289:         *(out_buffer_base + offset) = 0xff000000 | (yy << 8) | xx;
 	.loc 1 289 62 view .LVU850
-	orr	r3, r3, r0, lsl #9	@ tmp154, xx, n,
+	orr	r3, r3, r0, lsl #10	@ tmp154, xx, n,
 .LVL213:
 	.loc 1 289 62 view .LVU851
 	orr	r3, r3, #-16777216	@ tmp155, tmp154,
@@ -11963,7 +11963,7 @@ mod_depth:
 	.2byte	0x5
 	.byte	0x70
 	.sleb128 0
-	.byte	0x31
+	.byte	0x32
 	.byte	0x24
 	.byte	0x9f
 	.4byte	0
@@ -17114,7 +17114,7 @@ mod_depth:
 	.2byte	0x5
 	.byte	0x72
 	.sleb128 0
-	.byte	0x31
+	.byte	0x32
 	.byte	0x24
 	.byte	0x9f
 	.4byte	0

@@ -2929,9 +2929,9 @@
  2127 098c 0010A0E3 		mov	r1, #0	@ n,
  2128              	.LVL139:
  2129              	.L125:
- 282:armwave.c     ****         yy = (n & 0xff) * 2;
+ 282:armwave.c     ****         yy = (n & 0xff) * 4;
  2130              		.loc 1 282 9 is_stmt 1 discriminator 3 view .LVU627
- 2131              	@ armwave.c:282:         yy = (n & 0xff) * 2;
+ 2131              	@ armwave.c:282:         yy = (n & 0xff) * 4;
  2132              		.loc 1 282 17 is_stmt 0 discriminator 3 view .LVU628
  2133 0990 7120EFE6 		uxtb	r2, r1	@ n, n
  2134              	@ armwave.c:288:         offset = (xx + (yy * g_armwave_state.target_width));
@@ -2943,10 +2943,10 @@
  288:armwave.c     ****         offset = (xx + (yy * g_armwave_state.target_width));
  2135              		.loc 1 288 28 discriminator 3 view .LVU629
  2136 0994 34C095E5 		ldr	ip, [r5, #52]	@ g_armwave_state.target_width, g_armwave_state.target_width
- 2137              	@ armwave.c:282:         yy = (n & 0xff) * 2;
- 282:armwave.c     ****         yy = (n & 0xff) * 2;
+ 2137              	@ armwave.c:282:         yy = (n & 0xff) * 4;
+ 282:armwave.c     ****         yy = (n & 0xff) * 4;
  2138              		.loc 1 282 25 discriminator 3 view .LVU630
- 2139 0998 8200A0E1 		lsl	r0, r2, #1	@ yy, n,
+ 2139 0998 0201A0E1 		lsl	r0, r2, #2	@ yy, n,
  2140              	.LVL140:
  283:armwave.c     ****         xx = n >> 8;
  2141              		.loc 1 283 9 is_stmt 1 discriminator 3 view .LVU631
@@ -2963,25 +2963,25 @@
  2150 09a0 9C3020E0 		mla	r0, ip, r0, r3	@ tmp144, g_armwave_state.target_width, yy, xx
  2151              	.LVL142:
  2152              	@ armwave.c:281:     for(n = 0; n < npix; n += 1) {
- 281:armwave.c     ****         yy = (n & 0xff) * 2;
+ 281:armwave.c     ****         yy = (n & 0xff) * 4;
  2153              		.loc 1 281 28 discriminator 3 view .LVU636
  2154 09a4 011081E2 		add	r1, r1, #1	@ n, n,
  2155              	.LVL143:
  2156              	@ armwave.c:289:         *(out_buffer_base + offset) = 0xff000000 | (yy << 8) | xx;
  2157              		.loc 1 289 62 discriminator 3 view .LVU637
- 2158 09a8 823483E1 		orr	r3, r3, r2, lsl #9	@ tmp146, xx, n,
+ 2158 09a8 023583E1 		orr	r3, r3, r2, lsl #10	@ tmp146, xx, n,
  2159              	.LVL144:
  2160              		.loc 1 289 62 discriminator 3 view .LVU638
  2161 09ac FF3483E3 		orr	r3, r3, #-16777216	@ tmp147, tmp146,
  2162              	@ armwave.c:281:     for(n = 0; n < npix; n += 1) {
- 281:armwave.c     ****         yy = (n & 0xff) * 2;
+ 281:armwave.c     ****         yy = (n & 0xff) * 4;
  2163              		.loc 1 281 5 discriminator 3 view .LVU639
  2164 09b0 010054E1 		cmp	r4, r1	@ npix, n
  2165              	@ armwave.c:289:         *(out_buffer_base + offset) = 0xff000000 | (yy << 8) | xx;
  2166              		.loc 1 289 37 discriminator 3 view .LVU640
  2167 09b4 003186E7 		str	r3, [r6, r0, lsl #2]	@ tmp147, *_13
  2168              	@ armwave.c:281:     for(n = 0; n < npix; n += 1) {
- 281:armwave.c     ****         yy = (n & 0xff) * 2;
+ 281:armwave.c     ****         yy = (n & 0xff) * 4;
  2169              		.loc 1 281 5 discriminator 3 view .LVU641
  2170 09b8 F4FFFF1A 		bne	.L125		@,
  2171 09bc 7080BDE8 		pop	{r4, r5, r6, pc}	@
@@ -3988,21 +3988,21 @@
  2937              		.loc 1 279 5 view .LVU836
  2938 0d3c FEFFFFEB 		bl	printf		@
  2939              	.LVL207:
- 281:armwave.c     ****         yy = (n & 0xff) * 2;
+ 281:armwave.c     ****         yy = (n & 0xff) * 4;
  2940              		.loc 1 281 5 is_stmt 1 view .LVU837
- 281:armwave.c     ****         yy = (n & 0xff) * 2;
+ 281:armwave.c     ****         yy = (n & 0xff) * 4;
  2941              		.loc 1 281 5 is_stmt 0 view .LVU838
  2942 0d40 000055E3 		cmp	r5, #0	@ npix,
  2943 0d44 0B0000DA 		ble	.L173		@,
  2944              	@ armwave.c:281:     for(n = 0; n < npix; n += 1) {
- 281:armwave.c     ****         yy = (n & 0xff) * 2;
+ 281:armwave.c     ****         yy = (n & 0xff) * 4;
  2945              		.loc 1 281 11 view .LVU839
  2946 0d48 0020A0E3 		mov	r2, #0	@ n,
  2947              	.LVL208:
  2948              	.L174:
  282:armwave.c     ****         xx = n >> 8;
  2949              		.loc 1 282 9 is_stmt 1 view .LVU840
- 2950              	@ armwave.c:282:         yy = (n & 0xff) * 2;
+ 2950              	@ armwave.c:282:         yy = (n & 0xff) * 4;
  282:armwave.c     ****         xx = n >> 8;
  2951              		.loc 1 282 17 is_stmt 0 view .LVU841
  2952 0d4c 7200EFE6 		uxtb	r0, r2	@ n, n
@@ -4010,10 +4010,10 @@
  288:armwave.c     ****         *(out_buffer_base + offset) = 0xff000000 | (yy << 8) | xx;
  2954              		.loc 1 288 28 view .LVU842
  2955 0d50 34C094E5 		ldr	ip, [r4, #52]	@ g_armwave_state.target_width, g_armwave_state.target_width
- 2956              	@ armwave.c:282:         yy = (n & 0xff) * 2;
+ 2956              	@ armwave.c:282:         yy = (n & 0xff) * 4;
  282:armwave.c     ****         xx = n >> 8;
  2957              		.loc 1 282 25 view .LVU843
- 2958 0d54 8010A0E1 		lsl	r1, r0, #1	@ yy, n,
+ 2958 0d54 0011A0E1 		lsl	r1, r0, #2	@ yy, n,
  2959              	.LVL209:
  283:armwave.c     **** 
  2960              		.loc 1 283 9 is_stmt 1 view .LVU844
@@ -4032,20 +4032,20 @@
  2969 0d5c 9C3121E0 		mla	r1, ip, r1, r3	@ tmp152, g_armwave_state.target_width, yy, xx
  2970              	.LVL211:
  2971              	@ armwave.c:281:     for(n = 0; n < npix; n += 1) {
- 281:armwave.c     ****         yy = (n & 0xff) * 2;
+ 281:armwave.c     ****         yy = (n & 0xff) * 4;
  2972              		.loc 1 281 28 view .LVU849
  2973 0d60 012082E2 		add	r2, r2, #1	@ n, n,
  2974              	.LVL212:
  2975              	@ armwave.c:289:         *(out_buffer_base + offset) = 0xff000000 | (yy << 8) | xx;
  289:armwave.c     ****     }
  2976              		.loc 1 289 62 view .LVU850
- 2977 0d64 803483E1 		orr	r3, r3, r0, lsl #9	@ tmp154, xx, n,
+ 2977 0d64 003583E1 		orr	r3, r3, r0, lsl #10	@ tmp154, xx, n,
  2978              	.LVL213:
  289:armwave.c     ****     }
  2979              		.loc 1 289 62 view .LVU851
  2980 0d68 FF3483E3 		orr	r3, r3, #-16777216	@ tmp155, tmp154,
  2981              	@ armwave.c:281:     for(n = 0; n < npix; n += 1) {
- 281:armwave.c     ****         yy = (n & 0xff) * 2;
+ 281:armwave.c     ****         yy = (n & 0xff) * 4;
  2982              		.loc 1 281 5 view .LVU852
  2983 0d6c 020055E1 		cmp	r5, r2	@ npix, n
  2984              	@ armwave.c:289:         *(out_buffer_base + offset) = 0xff000000 | (yy << 8) | xx;
@@ -4053,12 +4053,12 @@
  2985              		.loc 1 289 37 view .LVU853
  2986 0d70 013186E7 		str	r3, [r6, r1, lsl #2]	@ tmp155, *_30
  2987              	@ armwave.c:281:     for(n = 0; n < npix; n += 1) {
- 281:armwave.c     ****         yy = (n & 0xff) * 2;
+ 281:armwave.c     ****         yy = (n & 0xff) * 4;
  2988              		.loc 1 281 5 view .LVU854
  2989 0d74 F4FFFF1A 		bne	.L174		@,
  2990              	.LVL214:
  2991              	.L173:
- 281:armwave.c     ****         yy = (n & 0xff) * 2;
+ 281:armwave.c     ****         yy = (n & 0xff) * 4;
  2992              		.loc 1 281 5 view .LVU855
  2993              	.LBE25:
  2994              	.LBE24:
