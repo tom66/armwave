@@ -3034,7 +3034,7 @@
  329:armwave.c     ****                     nsub = n + i;
  330:armwave.c     ****                     xx = nsub & 0xff;
  331:armwave.c     ****                     yy = nsub >> 8;
- 332:armwave.c     ****                     offset = (yy + (xx * g_armwave_state.target_width * 2));
+ 332:armwave.c     ****                     offset = (yy + (xx * g_armwave_state.target_width * 4));
  333:armwave.c     ****                     *(out_buffer_base + offset) = word;
  334:armwave.c     ****                 }
  335:armwave.c     ****             }
@@ -3088,7 +3088,7 @@
  2205              		.loc 1 329 21 view .LVU652
  330:armwave.c     ****                     yy = nsub >> 8;
  2206              		.loc 1 330 21 view .LVU653
- 331:armwave.c     ****                     offset = (yy + (xx * g_armwave_state.target_width * 2));
+ 331:armwave.c     ****                     offset = (yy + (xx * g_armwave_state.target_width * 4));
  2207              		.loc 1 331 21 view .LVU654
  332:armwave.c     ****                     *(out_buffer_base + offset) = word;
  2208              		.loc 1 332 21 view .LVU655
@@ -3126,7 +3126,7 @@
  2232              		.loc 1 323 25 view .LVU663
  2233 09ec FF00A0A3 		movge	r0, #255	@ bb,
  2234              	.LVL151:
- 2235              	@ armwave.c:332:                     offset = (yy + (xx * g_armwave_state.target_width * 2));
+ 2235              	@ armwave.c:332:                     offset = (yy + (xx * g_armwave_state.target_width * 4));
  332:armwave.c     ****                     *(out_buffer_base + offset) = word;
  2236              		.loc 1 332 71 view .LVU664
  2237 09f0 347096E5 		ldr	r7, [r6, #52]	@ tmp387, g_armwave_state.target_width
@@ -3149,7 +3149,7 @@
  321:armwave.c     ****                     g = MIN(gg, 255);
  2251              		.loc 1 321 25 view .LVU668
  2252 0a04 FF005CE3 		cmp	ip, #255	@ rr,
- 2253              	@ armwave.c:332:                     offset = (yy + (xx * g_armwave_state.target_width * 2));
+ 2253              	@ armwave.c:332:                     offset = (yy + (xx * g_armwave_state.target_width * 4));
  332:armwave.c     ****                     *(out_buffer_base + offset) = word;
  2254              		.loc 1 332 71 view .LVU669
  2255 0a08 970808E0 		mul	r8, r7, r8	@ tmp282, tmp387, xx
@@ -3189,7 +3189,7 @@
  2281              	@ armwave.c:333:                     *(out_buffer_base + offset) = word;
  333:armwave.c     ****                 }
  2282              		.loc 1 333 39 view .LVU678
- 2283 0a2c 8880A0E1 		lsl	r8, r8, #1	@ tmp285, tmp282,
+ 2283 0a2c 0881A0E1 		lsl	r8, r8, #2	@ tmp285, tmp282,
  2284              	@ armwave.c:333:                     *(out_buffer_base + offset) = word;
  333:armwave.c     ****                 }
  2285              		.loc 1 333 49 view .LVU679
@@ -3282,7 +3282,7 @@
  2347 0a68 01E083E2 		add	lr, r3, #1	@ _255, n,
  330:armwave.c     ****                     yy = nsub >> 8;
  2348              		.loc 1 330 21 is_stmt 1 view .LVU705
- 331:armwave.c     ****                     offset = (yy + (xx * g_armwave_state.target_width * 2));
+ 331:armwave.c     ****                     offset = (yy + (xx * g_armwave_state.target_width * 4));
  2349              		.loc 1 331 21 view .LVU706
  332:armwave.c     ****                     *(out_buffer_base + offset) = word;
  2350              		.loc 1 332 21 view .LVU707
@@ -3293,7 +3293,7 @@
  2353              		.loc 1 323 25 is_stmt 0 view .LVU709
  2354 0a6c FFC0A0A3 		movge	ip, #255	@ bb,
  2355              	.LVL163:
- 2356              	@ armwave.c:332:                     offset = (yy + (xx * g_armwave_state.target_width * 2));
+ 2356              	@ armwave.c:332:                     offset = (yy + (xx * g_armwave_state.target_width * 4));
  332:armwave.c     ****                     *(out_buffer_base + offset) = word;
  2357              		.loc 1 332 71 view .LVU710
  2358 0a70 347096E5 		ldr	r7, [r6, #52]	@ tmp389, g_armwave_state.target_width
@@ -3316,7 +3316,7 @@
  321:armwave.c     ****                     g = MIN(gg, 255);
  2372              		.loc 1 321 25 view .LVU714
  2373 0a84 FF0051E3 		cmp	r1, #255	@ rr,
- 2374              	@ armwave.c:332:                     offset = (yy + (xx * g_armwave_state.target_width * 2));
+ 2374              	@ armwave.c:332:                     offset = (yy + (xx * g_armwave_state.target_width * 4));
  332:armwave.c     ****                     *(out_buffer_base + offset) = word;
  2375              		.loc 1 332 71 view .LVU715
  2376 0a88 970808E0 		mul	r8, r7, r8	@ tmp306, tmp389, xx
@@ -3353,7 +3353,7 @@
  2400              	@ armwave.c:333:                     *(out_buffer_base + offset) = word;
  333:armwave.c     ****                 }
  2401              		.loc 1 333 39 view .LVU723
- 2402 0aac 8880A0E1 		lsl	r8, r8, #1	@ tmp309, tmp306,
+ 2402 0aac 0881A0E1 		lsl	r8, r8, #2	@ tmp309, tmp306,
  2403              	@ armwave.c:333:                     *(out_buffer_base + offset) = word;
  333:armwave.c     ****                 }
  2404              		.loc 1 333 49 view .LVU724
@@ -3441,7 +3441,7 @@
  2462 0ae8 028083E2 		add	r8, r3, #2	@ _118, n,
  330:armwave.c     ****                     yy = nsub >> 8;
  2463              		.loc 1 330 21 is_stmt 1 view .LVU749
- 331:armwave.c     ****                     offset = (yy + (xx * g_armwave_state.target_width * 2));
+ 331:armwave.c     ****                     offset = (yy + (xx * g_armwave_state.target_width * 4));
  2464              		.loc 1 331 21 view .LVU750
  332:armwave.c     ****                     *(out_buffer_base + offset) = word;
  2465              		.loc 1 332 21 view .LVU751
@@ -3452,7 +3452,7 @@
  2468              		.loc 1 323 25 is_stmt 0 view .LVU753
  2469 0aec FF00A0A3 		movge	r0, #255	@ bb,
  2470              	.LVL173:
- 2471              	@ armwave.c:332:                     offset = (yy + (xx * g_armwave_state.target_width * 2));
+ 2471              	@ armwave.c:332:                     offset = (yy + (xx * g_armwave_state.target_width * 4));
  332:armwave.c     ****                     *(out_buffer_base + offset) = word;
  2472              		.loc 1 332 71 view .LVU754
  2473 0af0 347096E5 		ldr	r7, [r6, #52]	@ tmp391, g_armwave_state.target_width
@@ -3475,7 +3475,7 @@
  321:armwave.c     ****                     g = MIN(gg, 255);
  2487              		.loc 1 321 25 view .LVU758
  2488 0b04 FF0051E3 		cmp	r1, #255	@ rr,
- 2489              	@ armwave.c:332:                     offset = (yy + (xx * g_armwave_state.target_width * 2));
+ 2489              	@ armwave.c:332:                     offset = (yy + (xx * g_armwave_state.target_width * 4));
  332:armwave.c     ****                     *(out_buffer_base + offset) = word;
  2490              		.loc 1 332 71 view .LVU759
  2491 0b08 970E0EE0 		mul	lr, r7, lr	@ tmp330, tmp391, xx
@@ -3512,7 +3512,7 @@
  2515              	@ armwave.c:333:                     *(out_buffer_base + offset) = word;
  333:armwave.c     ****                 }
  2516              		.loc 1 333 39 view .LVU767
- 2517 0b2c 8EE0A0E1 		lsl	lr, lr, #1	@ tmp333, tmp330,
+ 2517 0b2c 0EE1A0E1 		lsl	lr, lr, #2	@ tmp333, tmp330,
  2518              	@ armwave.c:333:                     *(out_buffer_base + offset) = word;
  333:armwave.c     ****                 }
  2519              		.loc 1 333 49 view .LVU768
@@ -3582,7 +3582,7 @@
  2563 0b58 03C083E2 		add	ip, r3, #3	@ _68, n,
  330:armwave.c     ****                     yy = nsub >> 8;
  2564              		.loc 1 330 21 is_stmt 1 view .LVU789
- 331:armwave.c     ****                     offset = (yy + (xx * g_armwave_state.target_width * 2));
+ 331:armwave.c     ****                     offset = (yy + (xx * g_armwave_state.target_width * 4));
  2565              		.loc 1 331 21 view .LVU790
  332:armwave.c     ****                     *(out_buffer_base + offset) = word;
  2566              		.loc 1 332 21 view .LVU791
@@ -3602,7 +3602,7 @@
  2576              		.loc 1 318 24 view .LVU795
  2577 0b64 4884A0E1 		asr	r8, r8, #8	@ gg, tmp362,
  2578              	.LVL182:
- 2579              	@ armwave.c:332:                     offset = (yy + (xx * g_armwave_state.target_width * 2));
+ 2579              	@ armwave.c:332:                     offset = (yy + (xx * g_armwave_state.target_width * 4));
  332:armwave.c     ****                     *(out_buffer_base + offset) = word;
  2580              		.loc 1 332 71 view .LVU796
  2581 0b68 342096E5 		ldr	r2, [r6, #52]	@ tmp392, g_armwave_state.target_width
@@ -3621,7 +3621,7 @@
  2591 0b74 FF0058E3 		cmp	r8, #255	@ gg,
  2592 0b78 FF80A0A3 		movge	r8, #255	@ gg,
  2593              	.LVL184:
- 2594              	@ armwave.c:332:                     offset = (yy + (xx * g_armwave_state.target_width * 2));
+ 2594              	@ armwave.c:332:                     offset = (yy + (xx * g_armwave_state.target_width * 4));
  332:armwave.c     ****                     *(out_buffer_base + offset) = word;
  2595              		.loc 1 332 71 view .LVU800
  2596 0b7c 920E0EE0 		mul	lr, r2, lr	@ tmp352, tmp392, xx
@@ -3661,7 +3661,7 @@
  2622              	@ armwave.c:333:                     *(out_buffer_base + offset) = word;
  333:armwave.c     ****                 }
  2623              		.loc 1 333 39 view .LVU809
- 2624 0ba0 8EE0A0E1 		lsl	lr, lr, #1	@ tmp355, tmp352,
+ 2624 0ba0 0EE1A0E1 		lsl	lr, lr, #2	@ tmp355, tmp352,
  2625              	@ armwave.c:333:                     *(out_buffer_base + offset) = word;
  333:armwave.c     ****                 }
  2626              		.loc 1 333 49 view .LVU810
