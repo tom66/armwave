@@ -2279,9 +2279,9 @@ armwave_fill_pixbuf_scaled:
 @ armwave.c:317:                     word = 0xff000000 | (b << 16) | (g << 8) | r;
 	.loc 1 317 51 view .LVU676
 	orr	r1, r7, r1	@ tmp298, tmp292, tmp296
-@ armwave.c:322:                     xx = (nsub >> 7);
+@ armwave.c:322:                     xx = (nsub >> 9);
 	.loc 1 322 32 view .LVU677
-	asr	r7, r3, #7	@ xx, n,
+	asr	r7, r3, #9	@ xx, n,
 .LVL155:
 @ armwave.c:324:                     *(out_buffer_base + offset) = word;
 	.loc 1 324 39 view .LVU678
@@ -2387,9 +2387,9 @@ armwave_fill_pixbuf_scaled:
 @ armwave.c:312:                     r = MIN(rr, 255);
 	.loc 1 312 25 view .LVU717
 	cmp	r0, #255	@ rr,
-@ armwave.c:322:                     xx = (nsub >> 7);
+@ armwave.c:322:                     xx = (nsub >> 9);
 	.loc 1 322 32 view .LVU718
-	asr	r7, r7, #7	@ xx, _71,
+	asr	r7, r7, #9	@ xx, _71,
 @ armwave.c:324:                     *(out_buffer_base + offset) = word;
 	.loc 1 324 39 view .LVU719
 	mla	r7, ip, r8, r7	@ tmp312, tmp397, yy, xx
@@ -2513,9 +2513,9 @@ armwave_fill_pixbuf_scaled:
 	.loc 1 312 25 view .LVU764
 	movge	r1, #255	@ rr,
 .LVL177:
-@ armwave.c:322:                     xx = (nsub >> 7);
+@ armwave.c:322:                     xx = (nsub >> 9);
 	.loc 1 322 32 view .LVU765
-	asr	lr, lr, #7	@ xx, _67,
+	asr	lr, lr, #9	@ xx, _67,
 @ armwave.c:317:                     word = 0xff000000 | (b << 16) | (g << 8) | r;
 	.loc 1 317 44 view .LVU766
 	and	r0, r0, #16711680	@ tmp340, tmp339,
@@ -2626,9 +2626,9 @@ armwave_fill_pixbuf_scaled:
 	.loc 1 312 25 view .LVU808
 	movge	r2, #255	@ rr,
 .LVL186:
-@ armwave.c:322:                     xx = (nsub >> 7);
+@ armwave.c:322:                     xx = (nsub >> 9);
 	.loc 1 322 32 view .LVU809
-	asr	ip, ip, #7	@ xx, _57,
+	asr	ip, ip, #9	@ xx, _57,
 @ armwave.c:317:                     word = 0xff000000 | (b << 16) | (g << 8) | r;
 	.loc 1 317 44 view .LVU810
 	and	r1, r1, #16711680	@ tmp362, tmp361,
@@ -12607,7 +12607,7 @@ mod_depth:
 	.2byte	0x5
 	.byte	0x73
 	.sleb128 0
-	.byte	0x37
+	.byte	0x39
 	.byte	0x26
 	.byte	0x9f
 	.4byte	.LVL155
@@ -15588,7 +15588,7 @@ mod_depth:
 	.byte	0x1e
 	.byte	0x73
 	.sleb128 0
-	.byte	0x37
+	.byte	0x39
 	.byte	0x26
 	.byte	0x22
 	.byte	0x9f

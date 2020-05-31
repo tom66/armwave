@@ -3033,7 +3033,7 @@
  319:armwave.c     ****                     // Do line scaling as necessary.
  320:armwave.c     ****                     nsub = n + w;
  321:armwave.c     ****                     yy = ((nsub & 0xff) * vscale);
- 322:armwave.c     ****                     xx = (nsub >> 7);
+ 322:armwave.c     ****                     xx = (nsub >> 9);
  323:armwave.c     ****                     offset = (xx + (yy * g_armwave_state.target_width)); 
  324:armwave.c     ****                     *(out_buffer_base + offset) = word;
  325:armwave.c     ****                 }
@@ -3090,7 +3090,7 @@
  2210              		.loc 1 317 21 view .LVU652
  320:armwave.c     ****                     yy = ((nsub & 0xff) * vscale);
  2211              		.loc 1 320 21 view .LVU653
- 321:armwave.c     ****                     xx = (nsub >> 7);
+ 321:armwave.c     ****                     xx = (nsub >> 9);
  2212              		.loc 1 321 21 view .LVU654
  322:armwave.c     ****                     offset = (xx + (yy * g_armwave_state.target_width)); 
  2213              		.loc 1 322 21 view .LVU655
@@ -3141,7 +3141,7 @@
  2247 0a04 FF10A0A3 		movge	r1, #255	@ gg,
  2248              	.LVL152:
  2249              	@ armwave.c:321:                     yy = ((nsub & 0xff) * vscale);
- 321:armwave.c     ****                     xx = (nsub >> 7);
+ 321:armwave.c     ****                     xx = (nsub >> 9);
  2250              		.loc 1 321 33 view .LVU667
  2251 0a08 73E0EFE6 		uxtb	lr, r3	@ n, n
  2252              	@ armwave.c:308:                     rr = (g_armwave_state.ch1_color.r * value) >> 8;
@@ -3150,7 +3150,7 @@
  2254 0a0c 4CC4A0E1 		asr	ip, ip, #8	@ rr, tmp300,
  2255              	.LVL153:
  2256              	@ armwave.c:321:                     yy = ((nsub & 0xff) * vscale);
- 321:armwave.c     ****                     xx = (nsub >> 7);
+ 321:armwave.c     ****                     xx = (nsub >> 9);
  2257              		.loc 1 321 41 view .LVU669
  2258 0a10 990E0EE0 		mul	lr, r9, lr	@ yy, vscale, n
  2259              	@ armwave.c:317:                     word = 0xff000000 | (b << 16) | (g << 8) | r;
@@ -3183,10 +3183,10 @@
  317:armwave.c     **** 
  2280              		.loc 1 317 51 view .LVU676
  2281 0a30 011087E1 		orr	r1, r7, r1	@ tmp298, tmp292, tmp296
- 2282              	@ armwave.c:322:                     xx = (nsub >> 7);
+ 2282              	@ armwave.c:322:                     xx = (nsub >> 9);
  322:armwave.c     ****                     offset = (xx + (yy * g_armwave_state.target_width)); 
  2283              		.loc 1 322 32 view .LVU677
- 2284 0a34 C373A0E1 		asr	r7, r3, #7	@ xx, n,
+ 2284 0a34 C374A0E1 		asr	r7, r3, #9	@ xx, n,
  2285              	.LVL155:
  2286              	@ armwave.c:324:                     *(out_buffer_base + offset) = word;
  324:armwave.c     ****                 }
@@ -3284,7 +3284,7 @@
  2352              		.loc 1 313 25 view .LVU704
  2353 0a78 FF005CE3 		cmp	ip, #255	@ gg,
  2354 0a7c 017083E2 		add	r7, r3, #1	@ _71, n,
- 321:armwave.c     ****                     xx = (nsub >> 7);
+ 321:armwave.c     ****                     xx = (nsub >> 9);
  2355              		.loc 1 321 21 is_stmt 1 view .LVU705
  322:armwave.c     ****                     offset = (xx + (yy * g_armwave_state.target_width)); 
  2356              		.loc 1 322 21 view .LVU706
@@ -3298,7 +3298,7 @@
  2361 0a80 FFC0A0A3 		movge	ip, #255	@ gg,
  2362              	.LVL163:
  2363              	@ armwave.c:321:                     yy = ((nsub & 0xff) * vscale);
- 321:armwave.c     ****                     xx = (nsub >> 7);
+ 321:armwave.c     ****                     xx = (nsub >> 9);
  2364              		.loc 1 321 33 view .LVU710
  2365 0a84 7780EFE6 		uxtb	r8, r7	@ _71, _71
  2366              	@ armwave.c:308:                     rr = (g_armwave_state.ch1_color.r * value) >> 8;
@@ -3311,7 +3311,7 @@
  2371              		.loc 1 317 56 view .LVU712
  2372 0a8c 0CC4A0E1 		lsl	ip, ip, #8	@ tmp319, gg,
  2373              	@ armwave.c:321:                     yy = ((nsub & 0xff) * vscale);
- 321:armwave.c     ****                     xx = (nsub >> 7);
+ 321:armwave.c     ****                     xx = (nsub >> 9);
  2374              		.loc 1 321 41 view .LVU713
  2375 0a90 990808E0 		mul	r8, r9, r8	@ yy, vscale, _71
  2376              	@ armwave.c:317:                     word = 0xff000000 | (b << 16) | (g << 8) | r;
@@ -3332,10 +3332,10 @@
  312:armwave.c     ****                     g = MIN(gg, 255);
  2388              		.loc 1 312 25 view .LVU717
  2389 0aa4 FF0050E3 		cmp	r0, #255	@ rr,
- 2390              	@ armwave.c:322:                     xx = (nsub >> 7);
+ 2390              	@ armwave.c:322:                     xx = (nsub >> 9);
  322:armwave.c     ****                     offset = (xx + (yy * g_armwave_state.target_width)); 
  2391              		.loc 1 322 32 view .LVU718
- 2392 0aa8 C773A0E1 		asr	r7, r7, #7	@ xx, _71,
+ 2392 0aa8 C774A0E1 		asr	r7, r7, #9	@ xx, _71,
  2393              	@ armwave.c:324:                     *(out_buffer_base + offset) = word;
  324:armwave.c     ****                 }
  2394              		.loc 1 324 39 view .LVU719
@@ -3433,7 +3433,7 @@
  2459              		.loc 1 309 55 view .LVU746
  2460 0aec 910C0CE0 		mul	ip, r1, ip	@ tmp342, _171, _81
  2461 0af0 02E083E2 		add	lr, r3, #2	@ _67, n,
- 321:armwave.c     ****                     xx = (nsub >> 7);
+ 321:armwave.c     ****                     xx = (nsub >> 9);
  2462              		.loc 1 321 21 is_stmt 1 view .LVU747
  322:armwave.c     ****                     offset = (xx + (yy * g_armwave_state.target_width)); 
  2463              		.loc 1 322 21 view .LVU748
@@ -3461,7 +3461,7 @@
  2479 0b00 4CC4A0E1 		asr	ip, ip, #8	@ gg, tmp342,
  2480              	.LVL173:
  2481              	@ armwave.c:321:                     yy = ((nsub & 0xff) * vscale);
- 321:armwave.c     ****                     xx = (nsub >> 7);
+ 321:armwave.c     ****                     xx = (nsub >> 9);
  2482              		.loc 1 321 33 view .LVU755
  2483 0b04 7E70EFE6 		uxtb	r7, lr	@ _67, _67
  2484              	@ armwave.c:314:                     b = MIN(bb, 255);
@@ -3476,7 +3476,7 @@
  2491 0b10 FFC0A0A3 		movge	ip, #255	@ gg,
  2492              	.LVL175:
  2493              	@ armwave.c:321:                     yy = ((nsub & 0xff) * vscale);
- 321:armwave.c     ****                     xx = (nsub >> 7);
+ 321:armwave.c     ****                     xx = (nsub >> 9);
  2494              		.loc 1 321 41 view .LVU758
  2495 0b14 990707E0 		mul	r7, r9, r7	@ yy, vscale, _67
  2496              	@ armwave.c:308:                     rr = (g_armwave_state.ch1_color.r * value) >> 8;
@@ -3505,10 +3505,10 @@
  2513              		.loc 1 312 25 view .LVU764
  2514 0b2c FF10A0A3 		movge	r1, #255	@ rr,
  2515              	.LVL177:
- 2516              	@ armwave.c:322:                     xx = (nsub >> 7);
+ 2516              	@ armwave.c:322:                     xx = (nsub >> 9);
  322:armwave.c     ****                     offset = (xx + (yy * g_armwave_state.target_width)); 
  2517              		.loc 1 322 32 view .LVU765
- 2518 0b30 CEE3A0E1 		asr	lr, lr, #7	@ xx, _67,
+ 2518 0b30 CEE4A0E1 		asr	lr, lr, #9	@ xx, _67,
  2519              	@ armwave.c:317:                     word = 0xff000000 | (b << 16) | (g << 8) | r;
  317:armwave.c     **** 
  2520              		.loc 1 317 44 view .LVU766
@@ -3595,7 +3595,7 @@
  310:armwave.c     **** 
  2577              		.loc 1 310 24 view .LVU791
  2578 0b70 03C083E2 		add	ip, r3, #3	@ _57, n,
- 321:armwave.c     ****                     xx = (nsub >> 7);
+ 321:armwave.c     ****                     xx = (nsub >> 9);
  2579              		.loc 1 321 21 is_stmt 1 view .LVU792
  322:armwave.c     ****                     offset = (xx + (yy * g_armwave_state.target_width)); 
  2580              		.loc 1 322 21 view .LVU793
@@ -3618,7 +3618,7 @@
  2592 0b7c 4004A0E1 		asr	r0, r0, #8	@ gg, tmp364,
  2593              	.LVL182:
  2594              	@ armwave.c:321:                     yy = ((nsub & 0xff) * vscale);
- 321:armwave.c     ****                     xx = (nsub >> 7);
+ 321:armwave.c     ****                     xx = (nsub >> 9);
  2595              		.loc 1 321 33 view .LVU799
  2596 0b80 7CE0EFE6 		uxtb	lr, ip	@ _57, _57
  2597              	@ armwave.c:314:                     b = MIN(bb, 255);
@@ -3638,7 +3638,7 @@
  2608 0b90 4224A0E1 		asr	r2, r2, #8	@ rr, tmp370,
  2609              	.LVL185:
  2610              	@ armwave.c:321:                     yy = ((nsub & 0xff) * vscale);
- 321:armwave.c     ****                     xx = (nsub >> 7);
+ 321:armwave.c     ****                     xx = (nsub >> 9);
  2611              		.loc 1 321 41 view .LVU803
  2612 0b94 990E0EE0 		mul	lr, r9, lr	@ yy, vscale, _57
  2613              	@ armwave.c:312:                     r = MIN(rr, 255);
@@ -3662,10 +3662,10 @@
  2626              		.loc 1 312 25 view .LVU808
  2627 0ba8 FF20A0A3 		movge	r2, #255	@ rr,
  2628              	.LVL186:
- 2629              	@ armwave.c:322:                     xx = (nsub >> 7);
+ 2629              	@ armwave.c:322:                     xx = (nsub >> 9);
  322:armwave.c     ****                     offset = (xx + (yy * g_armwave_state.target_width)); 
  2630              		.loc 1 322 32 view .LVU809
- 2631 0bac CCC3A0E1 		asr	ip, ip, #7	@ xx, _57,
+ 2631 0bac CCC4A0E1 		asr	ip, ip, #9	@ xx, _57,
  2632              	@ armwave.c:317:                     word = 0xff000000 | (b << 16) | (g << 8) | r;
  317:armwave.c     **** 
  2633              		.loc 1 317 44 view .LVU810
