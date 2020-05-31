@@ -2900,7 +2900,7 @@
  2087              		.cfi_offset 14, -4
  2088              	@ armwave.c:296:     assert(out_buffer != NULL);
  2089              		.loc 1 296 5 view .LVU613
- 2090 0958 005050E2 		subs	r5, r0, #0	@ out_buffer, out_buffer
+ 2090 0958 004050E2 		subs	r4, r0, #0	@ out_buffer, out_buffer
  2091 095c 4800000A 		beq	.L134		@,
  297:armwave.c     **** 
  298:armwave.c     ****     // Buffer is sent non-rotated: we use GDK/GL to assemble and rotate it
@@ -2920,18 +2920,18 @@
  2100              	@ armwave.c:300:     npix = g_armwave_state.target_width * 256; //g_armwave_state.target_height;
  300:armwave.c     ****     vscale = g_armwave_state.target_height / 256;
  2101              		.loc 1 300 27 view .LVU617
- 2102 0968 344093E5 		ldr	r4, [r3, #52]	@ _1, g_armwave_state.target_width
+ 2102 0968 345093E5 		ldr	r5, [r3, #52]	@ _1, g_armwave_state.target_width
  2103              	@ armwave.c:301:     vscale = g_armwave_state.target_height / 256;
  301:armwave.c     ****     vscale = g_armwave_state.target_height / 256;
  2104              		.loc 1 301 44 view .LVU618
  2105 096c 383093E5 		ldr	r3, [r3, #56]	@ g_armwave_state.target_height, g_armwave_state.target_height
  2106              	@ armwave.c:303:     printf("np=%d w=%d v=%d\n", npix, g_armwave_state.target_width, vscale);
  2107              		.loc 1 303 5 view .LVU619
- 2108 0970 0420A0E1 		mov	r2, r4	@, _1
+ 2108 0970 0520A0E1 		mov	r2, r5	@, _1
  2109              	@ armwave.c:300:     npix = g_armwave_state.target_width * 256; //g_armwave_state.target_height;
  300:armwave.c     ****     vscale = g_armwave_state.target_height / 256;
  2110              		.loc 1 300 41 view .LVU620
- 2111 0974 0444A0E1 		lsl	r4, r4, #8	@ npix, _1,
+ 2111 0974 0554A0E1 		lsl	r5, r5, #8	@ npix, _1,
  2112              	.LVL136:
  301:armwave.c     ****     vscale = g_armwave_state.target_height / 256;
  2113              		.loc 1 301 5 is_stmt 1 view .LVU621
@@ -2939,18 +2939,18 @@
  2115 0978 2334A0E1 		lsr	r3, r3, #8	@, g_armwave_state.target_height,
  2116              	.LVL137:
  2117              		.loc 1 303 5 is_stmt 0 view .LVU623
- 2118 097c 0410A0E1 		mov	r1, r4	@, npix
+ 2118 097c 0510A0E1 		mov	r1, r5	@, npix
  2119 0980 FEFFFFEB 		bl	printf		@
  2120              	.LVL138:
  304:armwave.c     **** 
  305:armwave.c     ****     for(n = 0; n < npix; n += 4) {
  2121              		.loc 1 305 5 is_stmt 1 view .LVU624
  2122              		.loc 1 305 5 is_stmt 0 view .LVU625
- 2123 0984 000054E3 		cmp	r4, #0	@ npix,
+ 2123 0984 000055E3 		cmp	r5, #0	@ npix,
  2124 0988 7080BDD8 		pople	{r4, r5, r6, pc}	@
- 2125 098c 012044E2 		sub	r2, r4, #1	@ _9, npix,
+ 2125 098c 012045E2 		sub	r2, r5, #1	@ _9, npix,
  2126 0990 1F0052E3 		cmp	r2, #31	@ _9,
- 2127 0994 2531A0E1 		lsr	r3, r5, #2	@ tmp170, out_buffer,
+ 2127 0994 2431A0E1 		lsr	r3, r4, #2	@ tmp170, out_buffer,
  2128 0998 2221A0E1 		lsr	r2, r2, #2	@ tmp169, _9,
  2129 099c 012082E2 		add	r2, r2, #1	@ niters.87, tmp169,
  2130 09a0 013003E2 		and	r3, r3, #1	@ prolog_loop_niters.89, tmp170,
@@ -2992,33 +2992,33 @@
  335:armwave.c     ****                 }
  336:armwave.c     ****             }
  337:armwave.c     ****         }
- 338:armwave.c     ****          
- 339:armwave.c     ****         *(out_buffer++) = n;
+ 338:armwave.c     **** 
+ 339:armwave.c     ****         *out_buffer_base++ = n;
  2137              		.loc 1 339 9 view .LVU628
- 2138              	@ armwave.c:339:         *(out_buffer++) = n;
- 2139              		.loc 1 339 21 is_stmt 0 view .LVU629
- 2140 09b0 0560A0E1 		mov	r6, r5	@ out_buffer, out_buffer
- 2141 09b4 A2C0A0E1 		lsr	ip, r2, #1	@ bnd.91, niters.90,
+ 2138              	@ armwave.c:339:         *out_buffer_base++ = n;
+ 2139              		.loc 1 339 25 is_stmt 0 view .LVU629
+ 2140 09b0 0460A0E1 		mov	r6, r4	@ out_buffer_base, out_buffer
+ 2141 09b4 A2E0A0E1 		lsr	lr, r2, #1	@ bnd.91, niters.90,
  2142              	@ armwave.c:305:     for(n = 0; n < npix; n += 4) {
  305:armwave.c     ****         // Read a 32-bit word at a time.  If any bits are nonzero, we need to process
  2143              		.loc 1 305 11 view .LVU630
- 2144 09b8 03E0A001 		moveq	lr, r3	@ n, prolog_loop_niters.89
- 2145              	@ armwave.c:339:         *(out_buffer++) = n;
- 2146              		.loc 1 339 25 view .LVU631
+ 2144 09b8 03C0A001 		moveq	ip, r3	@ n, prolog_loop_niters.89
+ 2145              	@ armwave.c:339:         *out_buffer_base++ = n;
+ 2146              		.loc 1 339 28 view .LVU631
  2147 09bc 0010A013 		movne	r1, #0	@ tmp172,
  2148              	@ armwave.c:305:     for(n = 0; n < npix; n += 4) {
  305:armwave.c     ****         // Read a 32-bit word at a time.  If any bits are nonzero, we need to process
  2149              		.loc 1 305 11 view .LVU632
- 2150 09c0 04E0A013 		movne	lr, #4	@ n,
- 2151 09c4 033185E0 		add	r3, r5, r3, lsl #2	@ vectp_out_buffer.98, out_buffer, prolog_loop_niters.89,
- 2152              	@ armwave.c:339:         *(out_buffer++) = n;
- 2153              		.loc 1 339 25 view .LVU633
+ 2150 09c0 04C0A013 		movne	ip, #4	@ n,
+ 2151 09c4 033184E0 		add	r3, r4, r3, lsl #2	@ vectp_out_buffer.98, out_buffer, prolog_loop_niters.89,
+ 2152              	@ armwave.c:339:         *out_buffer_base++ = n;
+ 2153              		.loc 1 339 28 view .LVU633
  2154 09c8 04108614 		strne	r1, [r6], #4	@ tmp172, *out_buffer_11(D)
  2155              	.LVL140:
- 2156              		.loc 1 339 25 view .LVU634
- 2157 09cc 0E00A0E1 		mov	r0, lr	@ vect_vec_iv_.95, n
- 2158 09d0 8CC183E0 		add	ip, r3, ip, lsl #3	@ _34, vectp_out_buffer.98, bnd.91,
- 2159 09d4 04108EE2 		add	r1, lr, #4	@ vect_vec_iv_.95, n,
+ 2156              		.loc 1 339 28 view .LVU634
+ 2157 09cc 0C00A0E1 		mov	r0, ip	@ vect_vec_iv_.95, n
+ 2158 09d0 8EE183E0 		add	lr, r3, lr, lsl #3	@ _34, vectp_out_buffer.98, bnd.91,
+ 2159 09d4 04108CE2 		add	r1, ip, #4	@ vect_vec_iv_.95, n,
  2160              	.LVL141:
  2161              	.L127:
  309:armwave.c     **** 
@@ -3026,22 +3026,22 @@
  311:armwave.c     ****             for(i = 0; i < 4; i++) {
  2163              		.loc 1 311 9 discriminator 2 view .LVU636
  2164              		.loc 1 339 9 discriminator 2 view .LVU637
- 2165              	@ armwave.c:339:         *(out_buffer++) = n;
- 2166              		.loc 1 339 25 is_stmt 0 discriminator 2 view .LVU638
+ 2165              	@ armwave.c:339:         *out_buffer_base++ = n;
+ 2166              		.loc 1 339 28 is_stmt 0 discriminator 2 view .LVU638
  2167 09d8 F000C3E1 		strd	r0, [r3]	@, MEM[base: vectp_out_buffer.97_71, offset: 0B]
- 2168              		.loc 1 339 25 discriminator 2 view .LVU639
+ 2168              		.loc 1 339 28 discriminator 2 view .LVU639
  2169 09dc 083083E2 		add	r3, r3, #8	@ vectp_out_buffer.98, vectp_out_buffer.98,
- 2170 09e0 03005CE1 		cmp	ip, r3	@ _34, vectp_out_buffer.98
+ 2170 09e0 03005EE1 		cmp	lr, r3	@ _34, vectp_out_buffer.98
  2171 09e4 080080E2 		add	r0, r0, #8	@ vect_vec_iv_.95, vect_vec_iv_.95,
  2172 09e8 081081E2 		add	r1, r1, #8	@ vect_vec_iv_.95, vect_vec_iv_.95,
  2173 09ec F9FFFF1A 		bne	.L127		@,
  2174 09f0 0130C2E3 		bic	r3, r2, #1	@ niters_vector_mult_vf.92, niters.90,
  2175 09f4 030052E1 		cmp	r2, r3	@ niters.90, niters_vector_mult_vf.92
  2176 09f8 0331A0E1 		lsl	r3, r3, #2	@ tmp179, niters_vector_mult_vf.92,
- 2177 09fc 035086E0 		add	r5, r6, r3	@ out_buffer, out_buffer, tmp179
- 2178              	.LVL142:
- 2179              		.loc 1 339 25 discriminator 2 view .LVU640
- 2180 0a00 0E3083E0 		add	r3, r3, lr	@ tmp.94, tmp179, n
+ 2177 09fc 0C2083E0 		add	r2, r3, ip	@ tmp.93, tmp179, n
+ 2178 0a00 034086E0 		add	r4, r6, r3	@ out_buffer, out_buffer_base, tmp179
+ 2179              	.LVL142:
+ 2180              		.loc 1 339 28 discriminator 2 view .LVU640
  2181 0a04 7080BD08 		popeq	{r4, r5, r6, pc}	@
  2182              	.L125:
  2183              	.LVL143:
@@ -3053,15 +3053,15 @@
  2187              	@ armwave.c:305:     for(n = 0; n < npix; n += 4) {
  305:armwave.c     ****         // Read a 32-bit word at a time.  If any bits are nonzero, we need to process
  2188              		.loc 1 305 28 is_stmt 0 view .LVU644
- 2189 0a08 042083E2 		add	r2, r3, #4	@ n, tmp.94,
+ 2189 0a08 043082E2 		add	r3, r2, #4	@ n, tmp.93,
  2190              	.LVL144:
  2191              	@ armwave.c:305:     for(n = 0; n < npix; n += 4) {
  305:armwave.c     ****         // Read a 32-bit word at a time.  If any bits are nonzero, we need to process
  2192              		.loc 1 305 5 view .LVU645
- 2193 0a0c 020054E1 		cmp	r4, r2	@ npix, n
- 2194              	@ armwave.c:339:         *(out_buffer++) = n;
- 2195              		.loc 1 339 25 view .LVU646
- 2196 0a10 003085E5 		str	r3, [r5]	@ tmp.94, *out_buffer_52
+ 2193 0a0c 030055E1 		cmp	r5, r3	@ npix, n
+ 2194              	@ armwave.c:339:         *out_buffer_base++ = n;
+ 2195              		.loc 1 339 28 view .LVU646
+ 2196 0a10 002084E5 		str	r2, [r4]	@ tmp.93, *out_buffer_base_53
  2197              	@ armwave.c:305:     for(n = 0; n < npix; n += 4) {
  305:armwave.c     ****         // Read a 32-bit word at a time.  If any bits are nonzero, we need to process
  2198              		.loc 1 305 5 view .LVU647
@@ -3075,15 +3075,15 @@
  2204              	@ armwave.c:305:     for(n = 0; n < npix; n += 4) {
  305:armwave.c     ****         // Read a 32-bit word at a time.  If any bits are nonzero, we need to process
  2205              		.loc 1 305 28 is_stmt 0 view .LVU651
- 2206 0a18 081083E2 		add	r1, r3, #8	@ n, tmp.94,
+ 2206 0a18 081082E2 		add	r1, r2, #8	@ n, tmp.93,
  2207              	.LVL146:
  2208              	@ armwave.c:305:     for(n = 0; n < npix; n += 4) {
  305:armwave.c     ****         // Read a 32-bit word at a time.  If any bits are nonzero, we need to process
  2209              		.loc 1 305 5 view .LVU652
- 2210 0a1c 010054E1 		cmp	r4, r1	@ npix, n
- 2211              	@ armwave.c:339:         *(out_buffer++) = n;
- 2212              		.loc 1 339 25 view .LVU653
- 2213 0a20 042085E5 		str	r2, [r5, #4]	@ n, MEM[(uint32_t *)out_buffer_52 + 4B]
+ 2210 0a1c 010055E1 		cmp	r5, r1	@ npix, n
+ 2211              	@ armwave.c:339:         *out_buffer_base++ = n;
+ 2212              		.loc 1 339 28 view .LVU653
+ 2213 0a20 043084E5 		str	r3, [r4, #4]	@ n, MEM[(uint32_t *)out_buffer_base_53 + 4B]
  2214              	@ armwave.c:305:     for(n = 0; n < npix; n += 4) {
  305:armwave.c     ****         // Read a 32-bit word at a time.  If any bits are nonzero, we need to process
  2215              		.loc 1 305 5 view .LVU654
@@ -3097,15 +3097,15 @@
  2221              	@ armwave.c:305:     for(n = 0; n < npix; n += 4) {
  305:armwave.c     ****         // Read a 32-bit word at a time.  If any bits are nonzero, we need to process
  2222              		.loc 1 305 28 is_stmt 0 view .LVU658
- 2223 0a28 0C2083E2 		add	r2, r3, #12	@ n, tmp.94,
+ 2223 0a28 0C3082E2 		add	r3, r2, #12	@ n, tmp.93,
  2224              	.LVL148:
  2225              	@ armwave.c:305:     for(n = 0; n < npix; n += 4) {
  305:armwave.c     ****         // Read a 32-bit word at a time.  If any bits are nonzero, we need to process
  2226              		.loc 1 305 5 view .LVU659
- 2227 0a2c 020054E1 		cmp	r4, r2	@ npix, n
- 2228              	@ armwave.c:339:         *(out_buffer++) = n;
- 2229              		.loc 1 339 25 view .LVU660
- 2230 0a30 081085E5 		str	r1, [r5, #8]	@ n, MEM[(uint32_t *)out_buffer_52 + 8B]
+ 2227 0a2c 030055E1 		cmp	r5, r3	@ npix, n
+ 2228              	@ armwave.c:339:         *out_buffer_base++ = n;
+ 2229              		.loc 1 339 28 view .LVU660
+ 2230 0a30 081084E5 		str	r1, [r4, #8]	@ n, MEM[(uint32_t *)out_buffer_base_53 + 8B]
  2231              	@ armwave.c:305:     for(n = 0; n < npix; n += 4) {
  305:armwave.c     ****         // Read a 32-bit word at a time.  If any bits are nonzero, we need to process
  2232              		.loc 1 305 5 view .LVU661
@@ -3119,15 +3119,15 @@
  2238              	@ armwave.c:305:     for(n = 0; n < npix; n += 4) {
  305:armwave.c     ****         // Read a 32-bit word at a time.  If any bits are nonzero, we need to process
  2239              		.loc 1 305 28 is_stmt 0 view .LVU665
- 2240 0a38 101083E2 		add	r1, r3, #16	@ n, tmp.94,
+ 2240 0a38 101082E2 		add	r1, r2, #16	@ n, tmp.93,
  2241              	.LVL150:
  2242              	@ armwave.c:305:     for(n = 0; n < npix; n += 4) {
  305:armwave.c     ****         // Read a 32-bit word at a time.  If any bits are nonzero, we need to process
  2243              		.loc 1 305 5 view .LVU666
- 2244 0a3c 010054E1 		cmp	r4, r1	@ npix, n
- 2245              	@ armwave.c:339:         *(out_buffer++) = n;
- 2246              		.loc 1 339 25 view .LVU667
- 2247 0a40 0C2085E5 		str	r2, [r5, #12]	@ n, MEM[(uint32_t *)out_buffer_52 + 12B]
+ 2244 0a3c 010055E1 		cmp	r5, r1	@ npix, n
+ 2245              	@ armwave.c:339:         *out_buffer_base++ = n;
+ 2246              		.loc 1 339 28 view .LVU667
+ 2247 0a40 0C3084E5 		str	r3, [r4, #12]	@ n, MEM[(uint32_t *)out_buffer_base_53 + 12B]
  2248              	@ armwave.c:305:     for(n = 0; n < npix; n += 4) {
  305:armwave.c     ****         // Read a 32-bit word at a time.  If any bits are nonzero, we need to process
  2249              		.loc 1 305 5 view .LVU668
@@ -3141,15 +3141,15 @@
  2255              	@ armwave.c:305:     for(n = 0; n < npix; n += 4) {
  305:armwave.c     ****         // Read a 32-bit word at a time.  If any bits are nonzero, we need to process
  2256              		.loc 1 305 28 is_stmt 0 view .LVU672
- 2257 0a48 142083E2 		add	r2, r3, #20	@ n, tmp.94,
+ 2257 0a48 143082E2 		add	r3, r2, #20	@ n, tmp.93,
  2258              	.LVL152:
  2259              	@ armwave.c:305:     for(n = 0; n < npix; n += 4) {
  305:armwave.c     ****         // Read a 32-bit word at a time.  If any bits are nonzero, we need to process
  2260              		.loc 1 305 5 view .LVU673
- 2261 0a4c 020054E1 		cmp	r4, r2	@ npix, n
- 2262              	@ armwave.c:339:         *(out_buffer++) = n;
- 2263              		.loc 1 339 25 view .LVU674
- 2264 0a50 101085E5 		str	r1, [r5, #16]	@ n, MEM[(uint32_t *)out_buffer_52 + 16B]
+ 2261 0a4c 030055E1 		cmp	r5, r3	@ npix, n
+ 2262              	@ armwave.c:339:         *out_buffer_base++ = n;
+ 2263              		.loc 1 339 28 view .LVU674
+ 2264 0a50 101084E5 		str	r1, [r4, #16]	@ n, MEM[(uint32_t *)out_buffer_base_53 + 16B]
  2265              	@ armwave.c:305:     for(n = 0; n < npix; n += 4) {
  305:armwave.c     ****         // Read a 32-bit word at a time.  If any bits are nonzero, we need to process
  2266              		.loc 1 305 5 view .LVU675
@@ -3163,15 +3163,15 @@
  2272              	@ armwave.c:305:     for(n = 0; n < npix; n += 4) {
  305:armwave.c     ****         // Read a 32-bit word at a time.  If any bits are nonzero, we need to process
  2273              		.loc 1 305 28 is_stmt 0 view .LVU679
- 2274 0a58 181083E2 		add	r1, r3, #24	@ n, tmp.94,
+ 2274 0a58 181082E2 		add	r1, r2, #24	@ n, tmp.93,
  2275              	.LVL154:
  2276              	@ armwave.c:305:     for(n = 0; n < npix; n += 4) {
  305:armwave.c     ****         // Read a 32-bit word at a time.  If any bits are nonzero, we need to process
  2277              		.loc 1 305 5 view .LVU680
- 2278 0a5c 010054E1 		cmp	r4, r1	@ npix, n
- 2279              	@ armwave.c:339:         *(out_buffer++) = n;
- 2280              		.loc 1 339 25 view .LVU681
- 2281 0a60 142085E5 		str	r2, [r5, #20]	@ n, MEM[(uint32_t *)out_buffer_52 + 20B]
+ 2278 0a5c 010055E1 		cmp	r5, r1	@ npix, n
+ 2279              	@ armwave.c:339:         *out_buffer_base++ = n;
+ 2280              		.loc 1 339 28 view .LVU681
+ 2281 0a60 143084E5 		str	r3, [r4, #20]	@ n, MEM[(uint32_t *)out_buffer_base_53 + 20B]
  2282              	@ armwave.c:305:     for(n = 0; n < npix; n += 4) {
  305:armwave.c     ****         // Read a 32-bit word at a time.  If any bits are nonzero, we need to process
  2283              		.loc 1 305 5 view .LVU682
@@ -3185,23 +3185,23 @@
  2289              	@ armwave.c:305:     for(n = 0; n < npix; n += 4) {
  305:armwave.c     ****         // Read a 32-bit word at a time.  If any bits are nonzero, we need to process
  2290              		.loc 1 305 28 is_stmt 0 view .LVU686
- 2291 0a68 1C3083E2 		add	r3, r3, #28	@ n, tmp.94,
+ 2291 0a68 1C2082E2 		add	r2, r2, #28	@ n, tmp.93,
  2292              	@ armwave.c:305:     for(n = 0; n < npix; n += 4) {
  305:armwave.c     ****         // Read a 32-bit word at a time.  If any bits are nonzero, we need to process
  2293              		.loc 1 305 5 view .LVU687
- 2294 0a6c 030054E1 		cmp	r4, r3	@ npix, n
- 2295              	@ armwave.c:339:         *(out_buffer++) = n;
- 2296              		.loc 1 339 25 view .LVU688
- 2297 0a70 181085E5 		str	r1, [r5, #24]	@ n, MEM[(uint32_t *)out_buffer_52 + 24B]
+ 2294 0a6c 020055E1 		cmp	r5, r2	@ npix, n
+ 2295              	@ armwave.c:339:         *out_buffer_base++ = n;
+ 2296              		.loc 1 339 28 view .LVU688
+ 2297 0a70 181084E5 		str	r1, [r4, #24]	@ n, MEM[(uint32_t *)out_buffer_base_53 + 24B]
  2298              	.LVL156:
  309:armwave.c     **** 
  2299              		.loc 1 309 9 is_stmt 1 view .LVU689
  311:armwave.c     ****             for(i = 0; i < 4; i++) {
  2300              		.loc 1 311 9 view .LVU690
  2301              		.loc 1 339 9 view .LVU691
- 2302              	@ armwave.c:339:         *(out_buffer++) = n;
- 2303              		.loc 1 339 25 is_stmt 0 view .LVU692
- 2304 0a74 1C3085C5 		strgt	r3, [r5, #28]	@ n, MEM[(uint32_t *)out_buffer_52 + 28B]
+ 2302              	@ armwave.c:339:         *out_buffer_base++ = n;
+ 2303              		.loc 1 339 28 is_stmt 0 view .LVU692
+ 2304 0a74 1C2084C5 		strgt	r2, [r4, #28]	@ n, MEM[(uint32_t *)out_buffer_base_53 + 28B]
  2305              	.LVL157:
  2306              	@ armwave.c:341: }
  340:armwave.c     ****     }
@@ -3213,7 +3213,7 @@
  2311              	@ armwave.c:305:     for(n = 0; n < npix; n += 4) {
  305:armwave.c     ****         // Read a 32-bit word at a time.  If any bits are nonzero, we need to process
  2312              		.loc 1 305 11 view .LVU694
- 2313 0a7c 0030A0E3 		mov	r3, #0	@ tmp.94,
+ 2313 0a7c 0020A0E3 		mov	r2, #0	@ tmp.93,
  2314 0a80 E0FFFFEA 		b	.L125		@
  2315              	.LVL159:
  2316              	.L134:
@@ -4201,28 +4201,28 @@
  305:armwave.c     ****         // Read a 32-bit word at a time.  If any bits are nonzero, we need to process
  3101              		.loc 1 305 11 is_stmt 0 view .LVU895
  3102 0e2c 03C0A001 		moveq	ip, r3	@ n, prolog_loop_niters.133
- 3103              	@ armwave.c:339:         *(out_buffer++) = n;
+ 3103              	@ armwave.c:339:         *out_buffer_base++ = n;
  339:armwave.c     ****     }
- 3104              		.loc 1 339 21 view .LVU896
- 3105 0e30 07E0A0E1 		mov	lr, r7	@ out_buffer, tmp.137
+ 3104              		.loc 1 339 25 view .LVU896
+ 3105 0e30 07E0A0E1 		mov	lr, r7	@ out_buffer_base, tmp.137
  3106 0e34 033187E0 		add	r3, r7, r3, lsl #2	@ vectp.142, tmp.137, prolog_loop_niters.133,
  3107 0e38 A270A0E1 		lsr	r7, r2, #1	@ bnd.135, niters.134,
  3108              	.LVL223:
- 3109              	@ armwave.c:339:         *(out_buffer++) = n;
+ 3109              	@ armwave.c:339:         *out_buffer_base++ = n;
  339:armwave.c     ****     }
- 3110              		.loc 1 339 25 view .LVU897
+ 3110              		.loc 1 339 28 view .LVU897
  3111 0e3c 0010A013 		movne	r1, #0	@ tmp180,
  3112              	@ armwave.c:305:     for(n = 0; n < npix; n += 4) {
  305:armwave.c     ****         // Read a 32-bit word at a time.  If any bits are nonzero, we need to process
  3113              		.loc 1 305 11 view .LVU898
  3114 0e40 04C0A013 		movne	ip, #4	@ n,
- 3115              	@ armwave.c:339:         *(out_buffer++) = n;
+ 3115              	@ armwave.c:339:         *out_buffer_base++ = n;
  339:armwave.c     ****     }
- 3116              		.loc 1 339 25 view .LVU899
+ 3116              		.loc 1 339 28 view .LVU899
  3117 0e44 04108E14 		strne	r1, [lr], #4	@ tmp180, *_1
  3118              	.LVL224:
  339:armwave.c     ****     }
- 3119              		.loc 1 339 25 view .LVU900
+ 3119              		.loc 1 339 28 view .LVU900
  3120 0e48 0C00A0E1 		mov	r0, ip	@ vect_vec_iv_.139, n
  3121 0e4c 877183E0 		add	r7, r3, r7, lsl #3	@ _42, vectp.142, bnd.135,
  3122 0e50 04108CE2 		add	r1, ip, #4	@ vect_vec_iv_.139, n,
@@ -4234,12 +4234,12 @@
  3126              		.loc 1 311 9 view .LVU902
  339:armwave.c     ****     }
  3127              		.loc 1 339 9 view .LVU903
- 3128              	@ armwave.c:339:         *(out_buffer++) = n;
+ 3128              	@ armwave.c:339:         *out_buffer_base++ = n;
  339:armwave.c     ****     }
- 3129              		.loc 1 339 25 is_stmt 0 view .LVU904
+ 3129              		.loc 1 339 28 is_stmt 0 view .LVU904
  3130 0e54 F000C3E1 		strd	r0, [r3]	@, MEM[base: vectp.141_79, offset: 0B]
  339:armwave.c     ****     }
- 3131              		.loc 1 339 25 view .LVU905
+ 3131              		.loc 1 339 28 view .LVU905
  3132 0e58 083083E2 		add	r3, r3, #8	@ vectp.142, vectp.142,
  3133 0e5c 030057E1 		cmp	r7, r3	@ _42, vectp.142
  3134 0e60 080080E2 		add	r0, r0, #8	@ vect_vec_iv_.139, vect_vec_iv_.139,
@@ -4248,7 +4248,7 @@
  3137 0e6c 0130C2E3 		bic	r3, r2, #1	@ niters_vector_mult_vf.136, niters.134,
  3138 0e70 030052E1 		cmp	r2, r3	@ niters.134, niters_vector_mult_vf.136
  3139 0e74 0331A0E1 		lsl	r3, r3, #2	@ tmp187, niters_vector_mult_vf.136,
- 3140 0e78 03708EE0 		add	r7, lr, r3	@ tmp.137, out_buffer, tmp187
+ 3140 0e78 03708EE0 		add	r7, lr, r3	@ tmp.137, out_buffer_base, tmp187
  3141 0e7c 0C3083E0 		add	r3, r3, ip	@ tmp.138, tmp187, n
  3142 0e80 1B00000A 		beq	.L179		@,
  3143              	.L180:
@@ -4268,10 +4268,10 @@
  305:armwave.c     ****         // Read a 32-bit word at a time.  If any bits are nonzero, we need to process
  3153              		.loc 1 305 5 view .LVU910
  3154 0e88 020054E1 		cmp	r4, r2	@ npix, n
- 3155              	@ armwave.c:339:         *(out_buffer++) = n;
+ 3155              	@ armwave.c:339:         *out_buffer_base++ = n;
  339:armwave.c     ****     }
- 3156              		.loc 1 339 25 view .LVU911
- 3157 0e8c 003087E5 		str	r3, [r7]	@ tmp.138, *out_buffer_60
+ 3156              		.loc 1 339 28 view .LVU911
+ 3157 0e8c 003087E5 		str	r3, [r7]	@ tmp.138, *out_buffer_base_60
  3158              	@ armwave.c:305:     for(n = 0; n < npix; n += 4) {
  305:armwave.c     ****         // Read a 32-bit word at a time.  If any bits are nonzero, we need to process
  3159              		.loc 1 305 5 view .LVU912
@@ -4292,10 +4292,10 @@
  305:armwave.c     ****         // Read a 32-bit word at a time.  If any bits are nonzero, we need to process
  3170              		.loc 1 305 5 view .LVU917
  3171 0e98 010054E1 		cmp	r4, r1	@ npix, n
- 3172              	@ armwave.c:339:         *(out_buffer++) = n;
+ 3172              	@ armwave.c:339:         *out_buffer_base++ = n;
  339:armwave.c     ****     }
- 3173              		.loc 1 339 25 view .LVU918
- 3174 0e9c 042087E5 		str	r2, [r7, #4]	@ n, MEM[(uint32_t *)out_buffer_60 + 4B]
+ 3173              		.loc 1 339 28 view .LVU918
+ 3174 0e9c 042087E5 		str	r2, [r7, #4]	@ n, MEM[(uint32_t *)out_buffer_base_60 + 4B]
  3175              	@ armwave.c:305:     for(n = 0; n < npix; n += 4) {
  305:armwave.c     ****         // Read a 32-bit word at a time.  If any bits are nonzero, we need to process
  3176              		.loc 1 305 5 view .LVU919
@@ -4316,10 +4316,10 @@
  305:armwave.c     ****         // Read a 32-bit word at a time.  If any bits are nonzero, we need to process
  3187              		.loc 1 305 5 view .LVU924
  3188 0ea8 020054E1 		cmp	r4, r2	@ npix, n
- 3189              	@ armwave.c:339:         *(out_buffer++) = n;
+ 3189              	@ armwave.c:339:         *out_buffer_base++ = n;
  339:armwave.c     ****     }
- 3190              		.loc 1 339 25 view .LVU925
- 3191 0eac 081087E5 		str	r1, [r7, #8]	@ n, MEM[(uint32_t *)out_buffer_60 + 8B]
+ 3190              		.loc 1 339 28 view .LVU925
+ 3191 0eac 081087E5 		str	r1, [r7, #8]	@ n, MEM[(uint32_t *)out_buffer_base_60 + 8B]
  3192              	@ armwave.c:305:     for(n = 0; n < npix; n += 4) {
  305:armwave.c     ****         // Read a 32-bit word at a time.  If any bits are nonzero, we need to process
  3193              		.loc 1 305 5 view .LVU926
@@ -4340,10 +4340,10 @@
  305:armwave.c     ****         // Read a 32-bit word at a time.  If any bits are nonzero, we need to process
  3204              		.loc 1 305 5 view .LVU931
  3205 0eb8 010054E1 		cmp	r4, r1	@ npix, n
- 3206              	@ armwave.c:339:         *(out_buffer++) = n;
+ 3206              	@ armwave.c:339:         *out_buffer_base++ = n;
  339:armwave.c     ****     }
- 3207              		.loc 1 339 25 view .LVU932
- 3208 0ebc 0C2087E5 		str	r2, [r7, #12]	@ n, MEM[(uint32_t *)out_buffer_60 + 12B]
+ 3207              		.loc 1 339 28 view .LVU932
+ 3208 0ebc 0C2087E5 		str	r2, [r7, #12]	@ n, MEM[(uint32_t *)out_buffer_base_60 + 12B]
  3209              	@ armwave.c:305:     for(n = 0; n < npix; n += 4) {
  305:armwave.c     ****         // Read a 32-bit word at a time.  If any bits are nonzero, we need to process
  3210              		.loc 1 305 5 view .LVU933
@@ -4364,10 +4364,10 @@
  305:armwave.c     ****         // Read a 32-bit word at a time.  If any bits are nonzero, we need to process
  3221              		.loc 1 305 5 view .LVU938
  3222 0ec8 020054E1 		cmp	r4, r2	@ npix, n
- 3223              	@ armwave.c:339:         *(out_buffer++) = n;
+ 3223              	@ armwave.c:339:         *out_buffer_base++ = n;
  339:armwave.c     ****     }
- 3224              		.loc 1 339 25 view .LVU939
- 3225 0ecc 101087E5 		str	r1, [r7, #16]	@ n, MEM[(uint32_t *)out_buffer_60 + 16B]
+ 3224              		.loc 1 339 28 view .LVU939
+ 3225 0ecc 101087E5 		str	r1, [r7, #16]	@ n, MEM[(uint32_t *)out_buffer_base_60 + 16B]
  3226              	@ armwave.c:305:     for(n = 0; n < npix; n += 4) {
  305:armwave.c     ****         // Read a 32-bit word at a time.  If any bits are nonzero, we need to process
  3227              		.loc 1 305 5 view .LVU940
@@ -4388,10 +4388,10 @@
  305:armwave.c     ****         // Read a 32-bit word at a time.  If any bits are nonzero, we need to process
  3238              		.loc 1 305 5 view .LVU945
  3239 0ed8 010054E1 		cmp	r4, r1	@ npix, n
- 3240              	@ armwave.c:339:         *(out_buffer++) = n;
+ 3240              	@ armwave.c:339:         *out_buffer_base++ = n;
  339:armwave.c     ****     }
- 3241              		.loc 1 339 25 view .LVU946
- 3242 0edc 142087E5 		str	r2, [r7, #20]	@ n, MEM[(uint32_t *)out_buffer_60 + 20B]
+ 3241              		.loc 1 339 28 view .LVU946
+ 3242 0edc 142087E5 		str	r2, [r7, #20]	@ n, MEM[(uint32_t *)out_buffer_base_60 + 20B]
  3243              	@ armwave.c:305:     for(n = 0; n < npix; n += 4) {
  305:armwave.c     ****         // Read a 32-bit word at a time.  If any bits are nonzero, we need to process
  3244              		.loc 1 305 5 view .LVU947
@@ -4411,10 +4411,10 @@
  305:armwave.c     ****         // Read a 32-bit word at a time.  If any bits are nonzero, we need to process
  3254              		.loc 1 305 5 view .LVU952
  3255 0ee8 030054E1 		cmp	r4, r3	@ npix, n
- 3256              	@ armwave.c:339:         *(out_buffer++) = n;
+ 3256              	@ armwave.c:339:         *out_buffer_base++ = n;
  339:armwave.c     ****     }
- 3257              		.loc 1 339 25 view .LVU953
- 3258 0eec 181087E5 		str	r1, [r7, #24]	@ n, MEM[(uint32_t *)out_buffer_60 + 24B]
+ 3257              		.loc 1 339 28 view .LVU953
+ 3258 0eec 181087E5 		str	r1, [r7, #24]	@ n, MEM[(uint32_t *)out_buffer_base_60 + 24B]
  3259              	.LVL239:
  309:armwave.c     **** 
  3260              		.loc 1 309 9 is_stmt 1 view .LVU954
@@ -4422,14 +4422,14 @@
  3261              		.loc 1 311 9 view .LVU955
  339:armwave.c     ****     }
  3262              		.loc 1 339 9 view .LVU956
- 3263              	@ armwave.c:339:         *(out_buffer++) = n;
+ 3263              	@ armwave.c:339:         *out_buffer_base++ = n;
  339:armwave.c     ****     }
- 3264              		.loc 1 339 25 is_stmt 0 view .LVU957
- 3265 0ef0 1C3087C5 		strgt	r3, [r7, #28]	@ n, MEM[(uint32_t *)out_buffer_60 + 28B]
+ 3264              		.loc 1 339 28 is_stmt 0 view .LVU957
+ 3265 0ef0 1C3087C5 		strgt	r3, [r7, #28]	@ n, MEM[(uint32_t *)out_buffer_base_60 + 28B]
  3266              	.LVL240:
  3267              	.L179:
  339:armwave.c     ****     }
- 3268              		.loc 1 339 25 view .LVU958
+ 3268              		.loc 1 339 28 view .LVU958
  3269              	.LBE25:
  3270              	.LBE24:
  396:armwave.c     **** 
