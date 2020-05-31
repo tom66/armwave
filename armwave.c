@@ -408,11 +408,12 @@ void armwave_test_fill_gdkbuf(PyObject *buf)
  */
 void armwave_fill_pixbuf_into_pybuffer(PyObject *buf_obj)
 {
-    Py_buffer buffer;
-    assert(PyObject_GetBuffer(buf_obj, &buffer, PyBUF_SIMPLE | PyBUF_WRITABLE) != 0);
+    Py_buffer *buffer = malloc(sizeof(Py_buffer));
+    assert(buffer != NULL);
+    assert(PyObject_GetBuffer(buf_obj, buffer, PyBUF_SIMPLE | PyBUF_WRITABLE) != 0);
 
-    armwave_fill_pixbuf_scaled(buffer.buf);
-    PyBuffer_Release(&buffer);
+    armwave_fill_pixbuf_scaled(buffer->buf);
+    PyBuffer_Release(buffer);
 }
 
 /*
