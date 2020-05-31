@@ -65,10 +65,12 @@ void render_nonaa_to_buffer_1ch_slice(uint32_t slice_y, uint32_t height);
 void armwave_init(void);
 void armwave_setup_render(uint32_t start_point, uint32_t end_point, uint32_t waves_max, uint32_t wave_stride, uint32_t target_width, uint32_t target_height, uint32_t render_flags);
 void armwave_set_wave_pointer(uint8_t *wave_buffer);
+void armwave_set_wave_pointer_as_testbuf(void);
 void armwave_set_channel_colour(int ch, int r, int g, int b);
 void armwave_clear_buffer(uint32_t flags);
 void armwave_fill_pixbuf_256(uint32_t *out_buffer);
 void armwave_fill_pixbuf_scaled(uint32_t *out_buffer);
+void armwave_fill_pixbuf_into_pybuffer(PyObject *buf_obj);
 void armwave_dump_ppm_debug(uint32_t *buffer, char *fn);
 
 void armwave_test_create_square(float noise_fraction);

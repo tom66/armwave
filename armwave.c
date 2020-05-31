@@ -53,6 +53,16 @@ void test_create_gamma()
 }
 
 /*
+ * Initialise things.  STUB, mostly.
+ */
+void armwave_init()
+{
+    g_armwave_state.flags = 0;
+
+    printf("armwave version: %s\n", ARMWAVE_VER);
+}
+
+/*
  * 1ch renderer, renders up to slice-height buffer with X-coord of each waveaccess
  * pre-computed.
  *
@@ -87,107 +97,6 @@ void render_nonaa_to_buffer_1ch_slice(uint32_t slice_y, uint32_t height)
                 word >>= 8;
             }
         }
-    }
-}
-
-void armwave_init()
-{
-    g_armwave_state.flags = 0;
-
-    printf("armwave version: %s\n", ARMWAVE_VER);
-}
-
-void armwave_setup_render(uint32_t start_point, uint32_t end_point, uint32_t waves_max, uint32_t wave_stride, uint32_t target_width, uint32_t target_height, uint32_t render_flags)
-{
-    uint32_t length, xx;
-    float points_per_pixel;
-
-    assert(start_point < end_point);
-
-    // target_height must be a power of two.  Only 256, 512, 1024 and 2048 height buffers are supported.
-    assert(target_height == 256 || target_height == 512 || target_height == 1024 || target_height == 2048);
-
-    if(target_height == 256) {
-        g_armwave_state.row_shift = 8;
-        g_armwave_state.row_mask = 0x0ff;
-    } else if(target_height == 512) {
-        g_armwave_state.row_shift = 9;
-        g_armwave_state.row_mask = 0x1ff;
-    } else if(target_height == 1024) {
-        g_armwave_state.row_shift = 10;
-        g_armwave_state.row_mask = 0x3ff;
-    } else if(target_height == 2048) {
-        g_armwave_state.row_shift = 11;
-        g_armwave_state.row_mask = 0x7ff;
-    } 
-
-    // Calculate the size of each buffer.  Buffers are rotated by 90 degrees to improve cache coherency.
-    g_armwave_state.xstride = target_height;
-    g_armwave_state.vscale = target_height / 256;
-    g_armwave_state.wave_stride = wave_stride;
-    g_armwave_state.waves_max = waves_max;
-    g_armwave_state.waves = waves_max;  // Need a function to be able to change this on the fly
-    g_armwave_state.size = target_height * target_width;
-    g_armwave_state.bitdepth_height = 256;  // Always 256 possible levels in 8-bit mode
-    g_armwave_state.ch_buff_size = g_armwave_state.bitdepth_height * target_width;
-    g_armwave_state.target_width = target_width;
-    g_armwave_state.target_height = target_height;
-
-    printf("ch_buff_size=%d\n", g_armwave_state.ch_buff_size);
-
-    // In 1ch mode, target 1024 x 16 render buffer, reading 16 bytes at a time from each wave, retaining as much as possible in L1/L2 cache
-    // In 2ch mode, target two 1024 x 8 render buffers, reading 16 bytes at a time from each wave
-    // In 4ch mode, target four 1024 x 4 render buffers, reading 16 bytes at a time from each wave
-    g_armwave_state.slice_height = 64;  
-
-    if(g_armwave_state.ch1_buffer != NULL)
-        free(g_armwave_state.ch1_buffer);
-
-    g_armwave_state.ch1_buffer = calloc(g_armwave_state.ch_buff_size, 1);
-
-    assert(g_armwave_state.ch1_buffer != NULL);
-
-    // Precompute the x-coord to pixel lookup to reduce ALU load
-    length = end_point - start_point;
-    points_per_pixel = length / ((float)(target_width));
-    g_armwave_state.slice_record_height = points_per_pixel * g_armwave_state.slice_height;
-    g_armwave_state.xcoord_to_xpixel = malloc(length * sizeof(uint16_t));
-
-    assert(g_armwave_state.xcoord_to_xpixel != NULL);
-
-    for(xx = 0; xx < length; xx++) {
-        g_armwave_state.xcoord_to_xpixel[xx] = (1.0f / points_per_pixel) * xx;
-
-        // printf("xcoord_to_xpixel[%5d] = %5d (scale:%8.3f)\n", xx, g_armwave_state.xcoord_to_xpixel[xx], 1.0f / points_per_pixel);
-    }
-
-    g_armwave_state.out_pixbuf = malloc(sizeof(uint32_t) * g_armwave_state.size);
-}
-
-void armwave_set_wave_pointer(uint8_t *wave_buffer)
-{
-    assert(wave_buffer != NULL);
-    g_armwave_state.wave_buffer = wave_buffer;
-}
-
-void armwave_clear_buffer(uint32_t flags)
-{
-    // Flags ignored, only one buffer cleared
-    memset(g_armwave_state.ch1_buffer, 0, g_armwave_state.size);
-}
-
-/*
- * Set the render colour for a channel.  R/G/B may exceed 255 for saturation effects.
- */
-void armwave_set_channel_colour(int ch, int r, int g, int b)
-{
-    // Only 1ch supported for now
-    switch(ch) {
-        case 1:
-            g_armwave_state.ch1_color.r = r;
-            g_armwave_state.ch1_color.g = g;
-            g_armwave_state.ch1_color.b = b;
-            break;
     }
 }
 
@@ -300,6 +209,122 @@ void armwave_fill_pixbuf_scaled(uint32_t *out_buffer)
     }
 }
 
+/*
+ * Setup the renderer with passed parameters.
+ */
+void armwave_setup_render(uint32_t start_point, uint32_t end_point, uint32_t waves_max, uint32_t wave_stride, uint32_t target_width, uint32_t target_height, uint32_t render_flags)
+{
+    uint32_t length, xx;
+    float points_per_pixel;
+
+    assert(start_point < end_point);
+
+    // target_height must be a power of two.  Only 256, 512, 1024 and 2048 height buffers are supported.
+    assert(target_height == 256 || target_height == 512 || target_height == 1024 || target_height == 2048);
+
+    if(target_height == 256) {
+        g_armwave_state.row_shift = 8;
+        g_armwave_state.row_mask = 0x0ff;
+    } else if(target_height == 512) {
+        g_armwave_state.row_shift = 9;
+        g_armwave_state.row_mask = 0x1ff;
+    } else if(target_height == 1024) {
+        g_armwave_state.row_shift = 10;
+        g_armwave_state.row_mask = 0x3ff;
+    } else if(target_height == 2048) {
+        g_armwave_state.row_shift = 11;
+        g_armwave_state.row_mask = 0x7ff;
+    } 
+
+    // Calculate the size of each buffer.  Buffers are rotated by 90 degrees to improve cache coherency.
+    g_armwave_state.xstride = target_height;
+    g_armwave_state.vscale = target_height / 256;
+    g_armwave_state.wave_stride = wave_stride;
+    g_armwave_state.waves_max = waves_max;
+    g_armwave_state.waves = waves_max;  // Need a function to be able to change this on the fly
+    g_armwave_state.size = target_height * target_width;
+    g_armwave_state.bitdepth_height = 256;  // Always 256 possible levels in 8-bit mode
+    g_armwave_state.ch_buff_size = g_armwave_state.bitdepth_height * target_width;
+    g_armwave_state.target_width = target_width;
+    g_armwave_state.target_height = target_height;
+
+    printf("ch_buff_size=%d\n", g_armwave_state.ch_buff_size);
+
+    // In 1ch mode, target 1024 x 16 render buffer, reading 16 bytes at a time from each wave, retaining as much as possible in L1/L2 cache
+    // In 2ch mode, target two 1024 x 8 render buffers, reading 16 bytes at a time from each wave
+    // In 4ch mode, target four 1024 x 4 render buffers, reading 16 bytes at a time from each wave
+    g_armwave_state.slice_height = 64;  
+
+    if(g_armwave_state.ch1_buffer != NULL)
+        free(g_armwave_state.ch1_buffer);
+
+    g_armwave_state.ch1_buffer = calloc(g_armwave_state.ch_buff_size, 1);
+
+    assert(g_armwave_state.ch1_buffer != NULL);
+
+    // Precompute the x-coord to pixel lookup to reduce ALU load
+    length = end_point - start_point;
+    points_per_pixel = length / ((float)(target_width));
+    g_armwave_state.slice_record_height = points_per_pixel * g_armwave_state.slice_height;
+    g_armwave_state.xcoord_to_xpixel = malloc(length * sizeof(uint16_t));
+
+    assert(g_armwave_state.xcoord_to_xpixel != NULL);
+
+    for(xx = 0; xx < length; xx++) {
+        g_armwave_state.xcoord_to_xpixel[xx] = (1.0f / points_per_pixel) * xx;
+
+        // printf("xcoord_to_xpixel[%5d] = %5d (scale:%8.3f)\n", xx, g_armwave_state.xcoord_to_xpixel[xx], 1.0f / points_per_pixel);
+    }
+
+    g_armwave_state.out_pixbuf = malloc(sizeof(uint32_t) * g_armwave_state.size);
+}
+
+/*
+ * Set wave buffer pointer.  This needs to be changed to support disjointed buffers
+ * in the future.
+ */
+void armwave_set_wave_pointer(uint8_t *wave_buffer)
+{
+    assert(wave_buffer != NULL);
+    g_armwave_state.wave_buffer = wave_buffer;
+}
+
+/*
+ * Set the wave buffer pointer as the test waveform buffer filled by such functions
+ * as `armwave_test_create_square` and `armwave_test_create_am_sine`.
+ */
+void armwave_set_wave_pointer_as_testbuf()
+{
+    g_armwave_state.wave_buffer = &test_wave_buffer;
+}
+
+/*
+ * Clear the working buffer (fill it with all zeros.)
+ */
+void armwave_clear_buffer(uint32_t flags)
+{
+    // Flags ignored, only one buffer cleared
+    memset(g_armwave_state.ch1_buffer, 0, g_armwave_state.size);
+}
+
+/*
+ * Set the render colour for a channel.  R/G/B may exceed 255 for saturation effects.
+ */
+void armwave_set_channel_colour(int ch, int r, int g, int b)
+{
+    // Only 1ch supported for now
+    switch(ch) {
+        case 1:
+            g_armwave_state.ch1_color.r = r;
+            g_armwave_state.ch1_color.g = g;
+            g_armwave_state.ch1_color.b = b;
+            break;
+    }
+}
+
+/*
+ * Dump a ppm of a buffer to a file.
+ */
 void armwave_dump_ppm_debug(uint32_t *buffer, char *fn)
 {
     FILE *fp = fopen(fn, "wb");
@@ -324,6 +349,9 @@ void armwave_dump_ppm_debug(uint32_t *buffer, char *fn)
     fclose(fp);
 }
 
+/*
+ * Initialise some test functionry.
+ */
 void armwave_test_init(int render_width, int render_height)
 {
     test_create_gamma();
@@ -331,11 +359,14 @@ void armwave_test_init(int render_width, int render_height)
     // make ch1 yellowish by default
     armwave_set_channel_colour(1, 2550, 1780, 250);
 
-    armwave_setup_render(&test_wave_buffer, 0, TEST_WAVE_SIZE, TEST_NWAVES, TEST_WAVE_SIZE, render_width, render_height, 0x00000000);
+    armwave_setup_render(0, TEST_WAVE_SIZE, TEST_NWAVES, TEST_WAVE_SIZE, render_width, render_height, 0x00000000);
 
     printf("armwave version: %s\n", ARMWAVE_VER);
 }
 
+/*
+ * Fill buffers with test funtionry.
+ */
 void armwave_test_generate()
 {
     uint32_t yy;
@@ -347,6 +378,9 @@ void armwave_test_generate()
     }
 }
 
+/*
+ * Render GDK buffer with test funtionry.
+ */
 void armwave_test_fill_gdkbuf(PyObject *buf)
 {
     //PyObject *mv;
@@ -359,15 +393,21 @@ void armwave_test_fill_gdkbuf(PyObject *buf)
     armwave_fill_pixbuf_scaled(out_pixbuf);
 }
 
-void fill_pixbuf_into_pybuffer(PyObject *buf_obj)
+/*
+ * Fill a pixbuf PyBuffer with a rendered waveform.
+ */
+void armwave_fill_pixbuf_into_pybuffer(PyObject *buf_obj)
 {
     Py_buffer buffer;
-    PyObject_GetBuffer(buf_obj, &buffer, PyBUF_SIMPLE | PyBUF_WRITABLE);
+    assert(PyObject_GetBuffer(buf_obj, &buffer, PyBUF_SIMPLE | PyBUF_WRITABLE) != 0);
 
     armwave_fill_pixbuf_scaled(buffer.buf);
-    PyBuffer_Release(buffer);
+    PyBuffer_Release(&buffer);
 }
 
+/*
+ * Dump a ppm of the working output buffer to a file.
+ */
 void armwave_test_dump_buffer_to_ppm(char *fn)
 {
     armwave_dump_ppm_debug(g_armwave_state.out_pixbuf, fn);
@@ -449,6 +489,9 @@ void armwave_test_create_square(float noise_fraction)
     }
 }
 
+/*
+ * Free all buffers and set to NULL, ready to be reinitialised or stopped.
+ */
 void armwave_cleanup()
 {
     free(g_armwave_state.out_pixbuf);
@@ -458,42 +501,4 @@ void armwave_cleanup()
     g_armwave_state.out_pixbuf = NULL;
     g_armwave_state.ch1_buffer = NULL;
     g_armwave_state.xcoord_to_xpixel = NULL;
-}
-
-int main(int argc, char *argv[])
-{
-    uint32_t *out_buffer;
-    uint32_t xx, yy, n;
-
-    //printf("Starting armwave...\n");
-    armwave_init();
-
-    //printf("Creating test waveform...\n");
-    armwave_test_create_am_sine(0.5f, 1e-6f);
-
-    //printf("Creating gamma LUT...\n");
-    test_create_gamma();
-
-    //printf("Setting up render...\n");
-    armwave_setup_render(&test_wave_buffer, 0, TEST_WAVE_SIZE, TEST_NWAVES, TEST_WAVE_SIZE, 2048, 256, 0x00000000);
-
-    //printf("Wave buffer = 0x%08x (const ptr:0x%08x)\n", g_armwave_state.wave_buffer, &test_wave_buffer);
-
-    for(n = 0; n < 5000; n++) {
-        for(yy = 0; yy < (2048 / g_armwave_state.slice_height); yy++) {
-            //printf("Rendering slice y=%d at y_pos=%d\n", yy, yy * g_armwave_state.slice_height);
-            render_nonaa_to_buffer_1ch_slice(yy * g_armwave_state.slice_height, g_armwave_state.slice_record_height);
-        }
-    }
-
-    /*
-    printf("Creating pixbuf\n");
-    out_buffer = malloc(sizeof(uint32_t) * g_armwave_state.size);
-    armwave_fill_pixbuf(out_buffer);
-
-    printf("Dumping pixbuf\n");
-    armwave_dump_ppm_debug(out_buffer, "test.ppm");
-    */
-
-    return 0;
 }
