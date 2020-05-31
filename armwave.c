@@ -279,13 +279,13 @@ void armwave_fill_pixbuf_scaled(uint32_t *out_buffer)
     printf("np=%d w=%d v=%d\n", npix, g_armwave_state.target_width, vscale);
 
     for(n = 0; n < npix; n += 1) {
-        xx = n & 0xff;
-        yy = n >> 8;
+        yy = (n & 0xff) * 2;
+        xx = n >> 8;
 
         //offset = (yy + (xx * g_armwave_state.target_width));
         //*(out_buffer_base + offset) = 0xff000000 | (yy << 8) | xx;
 
-        offset = (yy + ((xx + 128) * g_armwave_state.target_width));
+        offset = (xx + (yy * g_armwave_state.target_width));
         *(out_buffer_base + offset) = 0xff000000 | (yy << 8) | xx;
     }
 
