@@ -293,12 +293,14 @@ void armwave_fill_pixbuf(uint32_t *out_buffer)
 
 void armwave_fill_pixbuf2(uint32_t *out_buffer)
 {
-    uint32_t xx, yy, addr, value, word;
-    int rr, gg, bb;
+    uint32_t xx, yy, addr, value, word, wave_word;
+    int rr, gg, bb, n, nsub, npix;
     uint8_t r, g, b;
     uint8_t *base_ptr = g_armwave_state.ch1_buffer;
+    uint8_t value;
+    uint32_t *base_32ptr = (uint32_t*)g_armwave_state.ch1_buffer;
     uint32_t *out_buffer_base = out_buffer;
-    uint32_t npix, n, offset;
+    uint32_t offset;
 
     assert(out_buffer != NULL);
 
@@ -306,41 +308,48 @@ void armwave_fill_pixbuf2(uint32_t *out_buffer)
 
     npix = g_armwave_state.target_width * g_armwave_state.target_height;
 
-    for(n = 0; n < npix; n++) {
-        //value = *(base_ptr + xx + (yy * g_armwave_state.target_width));
-        value = *base_ptr++;
+    for(n = 0; n < npix; n += 4) {
+    	// Read a 32-bit word at a time.  If any bits are nonzero, backtrack and process
+    	// each byte.  We can afford to do this because most pixels will be blank for
+    	// most normal waveforms.
+        wave_word = *base_32ptr++;
 
-        // yup, this is generally not going to happen, for most waveforms
-        if(COND_UNLIKELY(value != 0)) {
-            rr = (g_armwave_state.ch1_color.r * value) >> 8;
-            gg = (g_armwave_state.ch1_color.g * value) >> 8;
-            bb = (g_armwave_state.ch1_color.b * value) >> 8;
+        if(COND_UNLIKELY(wave_word != 0)) {
+        	for(i = 0; i < 4; i++) {
+        		value = wave_word & 0xff;
+        		wave_word >>= 8;
 
-            r = MIN(rr, 255);
-            g = MIN(gg, 255);
-            b = MIN(bb, 255);
+	            rr = (g_armwave_state.ch1_color.r * value) >> 8;
+	            gg = (g_armwave_state.ch1_color.g * value) >> 8;
+	            bb = (g_armwave_state.ch1_color.b * value) >> 8;
 
-            // ensure 100% alpha channel, if it is used
-            word = 0xff000000 | (b << 16) | (g << 8) | r;
+	            r = MIN(rr, 255);
+	            g = MIN(gg, 255);
+	            b = MIN(bb, 255);
 
-            // Is there a better way?
-            /** works but wrong orientation **
-            xx = n % g_armwave_state.target_width;
-            yy = n / g_armwave_state.target_width;
-            offset = (xx + (yy * g_armwave_state.target_width));
-            *(out_buffer_base + offset) = word;
-            */
+	            // ensure 100% alpha channel, if it is used
+	            word = 0xff000000 | (b << 16) | (g << 8) | r;
 
-            // Since height is probably guaranteed to be one of 256 or 1024, we could probably simplify
-            // this and strip out the division ops
-            //xx = n % g_armwave_state.target_height;
-            //yy = n / g_armwave_state.target_height;
-            xx = n & g_armwave_state.row_mask;
-            yy = n >> g_armwave_state.row_shift;
-            offset = yy + (xx * g_armwave_state.target_width); //((xx * g_armwave_state.target_height) + yy);
-            //printf("%d %d,%d (%d)\n", n, xx, yy, offset);
+	            // Is there a better way?
+	            /** works but wrong orientation **
+	            xx = n % g_armwave_state.target_width;
+	            yy = n / g_armwave_state.target_width;
+	            offset = (xx + (yy * g_armwave_state.target_width));
+	            *(out_buffer_base + offset) = word;
+	            */
 
-            *(out_buffer_base + offset) = word;
+	            // Since height is probably guaranteed to be one of 256 or 1024, we could probably simplify
+	            // this and strip out the division ops
+	            //xx = n % g_armwave_state.target_height;
+	            //yy = n / g_armwave_state.target_height;
+	            nsub = n + i;
+	            xx = nsub & g_armwave_state.row_mask;
+	            yy = nsub >> g_armwave_state.row_shift;
+	            offset = yy + (xx * g_armwave_state.target_width); //((xx * g_armwave_state.target_height) + yy);
+	            //printf("%d %d,%d (%d)\n", n, xx, yy, offset);
+
+	            *(out_buffer_base + offset) = word;
+	        }
         } 
     }
 }
