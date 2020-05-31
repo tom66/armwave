@@ -2931,12 +2931,12 @@
  2109              	@ armwave.c:300:     npix = g_armwave_state.target_width * 256; //g_armwave_state.target_height;
  2110              		.loc 1 300 41 is_stmt 0 view .LVU618
  2111 096c 34C09EE5 		ldr	ip, [lr, #52]	@ g_armwave_state.target_width, g_armwave_state.target_width
- 2112              	@ armwave.c:301:     vscale = g_armwave_state.target_height >> 8;
- 301:armwave.c     ****     vscale = g_armwave_state.target_height >> 8;
+ 2112              	@ armwave.c:301:     vscale = g_armwave_state.target_height / 256;
+ 301:armwave.c     ****     vscale = g_armwave_state.target_height / 256;
  2113              		.loc 1 301 44 view .LVU619
  2114 0970 38709EE5 		ldr	r7, [lr, #56]	@ g_armwave_state.target_height, g_armwave_state.target_height
  2115              	@ armwave.c:300:     npix = g_armwave_state.target_width * 256; //g_armwave_state.target_height;
- 300:armwave.c     ****     vscale = g_armwave_state.target_height >> 8;
+ 300:armwave.c     ****     vscale = g_armwave_state.target_height / 256;
  2116              		.loc 1 300 41 view .LVU620
  2117 0974 0CC4A0E1 		lsl	ip, ip, #8	@ npix, g_armwave_state.target_width,
  2118              	.LVL136:
@@ -2946,7 +2946,7 @@
  303:armwave.c     ****     for(n = 0; n < npix; n += 4) {
  2121              		.loc 1 303 5 is_stmt 0 view .LVU622
  2122 0978 00005CE3 		cmp	ip, #0	@ npix,
- 2123              	@ armwave.c:301:     vscale = g_armwave_state.target_height >> 8;
+ 2123              	@ armwave.c:301:     vscale = g_armwave_state.target_height / 256;
  301:armwave.c     **** 
  2124              		.loc 1 301 44 view .LVU623
  2125 097c 2774A0E1 		lsr	r7, r7, #8	@ _4, g_armwave_state.target_height,

@@ -2109,7 +2109,7 @@ armwave_fill_pixbuf_scaled:
 @ armwave.c:300:     npix = g_armwave_state.target_width * 256; //g_armwave_state.target_height;
 	.loc 1 300 41 is_stmt 0 view .LVU618
 	ldr	ip, [lr, #52]	@ g_armwave_state.target_width, g_armwave_state.target_width
-@ armwave.c:301:     vscale = g_armwave_state.target_height >> 8;
+@ armwave.c:301:     vscale = g_armwave_state.target_height / 256;
 	.loc 1 301 44 view .LVU619
 	ldr	r7, [lr, #56]	@ g_armwave_state.target_height, g_armwave_state.target_height
 @ armwave.c:300:     npix = g_armwave_state.target_width * 256; //g_armwave_state.target_height;
@@ -2120,7 +2120,7 @@ armwave_fill_pixbuf_scaled:
 @ armwave.c:303:     for(n = 0; n < npix; n += 4) {
 	.loc 1 303 5 is_stmt 0 view .LVU622
 	cmp	ip, #0	@ npix,
-@ armwave.c:301:     vscale = g_armwave_state.target_height >> 8;
+@ armwave.c:301:     vscale = g_armwave_state.target_height / 256;
 	.loc 1 301 44 view .LVU623
 	lsr	r7, r7, #8	@ _4, g_armwave_state.target_height,
 .LVL137:
