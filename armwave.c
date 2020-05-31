@@ -320,10 +320,10 @@ void armwave_dump_ppm_debug(uint32_t *buffer, char *fn)
 
 void armwave_test_init(int render_width, int render_height)
 {
-    mod_depth = mod;
-
     test_create_gamma();
-    armwave_set_channel_colour(2550, 1780, 250);
+
+    // make ch1 yellowish by default
+    armwave_set_channel_colour(1, 2550, 1780, 250);
 
     armwave_setup_render(&test_wave_buffer, 0, TEST_WAVE_SIZE, TEST_NWAVES, TEST_WAVE_SIZE, render_width, render_height, 0x00000000);
 
@@ -366,7 +366,7 @@ void armwave_test_dump_buffer_to_ppm(char *fn)
  */
 void armwave_test_create_am_sine(float mod, float noise_fraction)
 {
-    float v, mod, noise, xnoise;
+    float v, noise, xnoise;
     int w, x;
 
     for(w = 0; w < TEST_NWAVES; w++) {
@@ -399,7 +399,8 @@ void armwave_test_create_am_sine(float mod, float noise_fraction)
  */
 void armwave_test_create_square(float noise_fraction)
 {
-    float v, mod, noise, xnoise;
+    uint8_t v;
+    float noise, xnoise;
     float level = 0.8f, new_level = 0.8f;
     int w, x;
 
