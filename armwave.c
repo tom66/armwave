@@ -336,6 +336,8 @@ void armwave_fill_pixbuf_scaled(uint32_t *out_buffer)
             }
         }
 
+        printf("0x%08x, %d\n", out_buffer_base, n);
+
         *out_buffer_base++ = n;
     }
 }
