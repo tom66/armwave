@@ -20,7 +20,8 @@ print("test_init()")
 width = 2048
 height = 1024
 
-armwave.test_init(25, width, height)
+armwave.test_init()
+armwave.test_create_am_sine(0.5f)
 
 img = Gtk.Image()
 
