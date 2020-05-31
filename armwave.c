@@ -26,13 +26,13 @@
 
 #define ARMWAVE_VER                 "v0.0.1"
 
-#define MAX(a,b)                  	((a) > (b) ? (a) : (b))
-#define MIN(a,b)                 	((a) < (b) ? (a) : (b))
+#define MAX(a,b)                    ((a) > (b) ? (a) : (b))
+#define MIN(a,b)                    ((a) < (b) ? (a) : (b))
 
-#define CLAMP(x,mi,mx)            	MIN(MAX((x),mi),mx)
+#define CLAMP(x,mi,mx)              MIN(MAX((x),mi),mx)
 
-#define COND_UNLIKELY(expr)       	__builtin_expect((expr), 0)
-#define COND_LIKELY(expr)        	__builtin_expect((expr), 1)
+#define COND_UNLIKELY(expr)         __builtin_expect((expr), 0)
+#define COND_LIKELY(expr)           __builtin_expect((expr), 1)
 
 struct armwave_state_t g_armwave_state;
 
@@ -104,7 +104,7 @@ void render_nonaa_to_buffer_1ch_slice(uint32_t slice_y, uint32_t height)
     uint8_t *write_buffer_base;
     uint8_t *write_buffer;
     
-    write_buffer_base = g_armwave_state.ch1_buffer + (slice_y * g_armwave_state.slice_height);
+    write_buffer_base = g_armwave_state.ch1_buffer + (slice_y * g_armwave_state.bitdepth_height);
 
     // roll through each waveform
     for(w = 0; w < g_armwave_state.waves; w++) {
@@ -117,7 +117,7 @@ void render_nonaa_to_buffer_1ch_slice(uint32_t slice_y, uint32_t height)
 
             for(ys = 0; ys < 4; ys++) {
                 scale_value = (word & 0xff);
-                write_buffer = write_buffer_base + ((yy + ys) * g_armwave_state.slice_height);
+                write_buffer = write_buffer_base + ((yy + ys) * g_armwave_state.bitdepth_height);
                 *(write_buffer + scale_value) += 1;
                 word >>= 8;
             }
