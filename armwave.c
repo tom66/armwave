@@ -287,7 +287,7 @@ void armwave_fill_pixbuf_scaled(uint32_t *out_buffer)
             //*(out_buffer_base + offset) = 0xff000000 | (yy << 8) | xx;
 
             offset = (xx + (yy * g_armwave_state.target_width));
-            *(out_buffer_base + offset) = 0xff000000 | ((i * 64) << 8) | (yy << 8) | xx;
+            *(out_buffer_base + offset) = 0xff000000 | ((i * 64) << 16); // | (yy << 8) | xx;
         }
     }
 
