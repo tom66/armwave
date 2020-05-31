@@ -297,7 +297,7 @@ void armwave_fill_pixbuf_scaled(uint32_t *out_buffer)
 
     // Buffer is sent non-rotated: we use GDK/GL to assemble and rotate it
 
-    npix = g_armwave_state.target_width * g_armwave_state.target_height;
+    npix = g_armwave_state.target_width * 256; //g_armwave_state.target_height;
     vscale = g_armwave_state.target_height >> 8;
 
     for(n = 0; n < npix; n += 4) {
