@@ -309,7 +309,7 @@ void armwave_fill_pixbuf2(uint32_t *out_buffer)
     npix = g_armwave_state.target_width * g_armwave_state.target_height;
 
     for(n = 0; n < npix; n += 4) {
-    	// Read a 32-bit word at a time.  If any bits are nonzero, backtrack and process
+    	// Read a 32-bit word at a time.  If any bits are nonzero, we need to process
     	// each byte.  We can afford to do this because most pixels will be blank for
     	// most normal waveforms.
         wave_word = *base_32ptr++;
@@ -319,36 +319,38 @@ void armwave_fill_pixbuf2(uint32_t *out_buffer)
         		value = wave_word & 0xff;
         		wave_word >>= 8;
 
-	            rr = (g_armwave_state.ch1_color.r * value) >> 8;
-	            gg = (g_armwave_state.ch1_color.g * value) >> 8;
-	            bb = (g_armwave_state.ch1_color.b * value) >> 8;
+        		if(value != 0) {
+		            rr = (g_armwave_state.ch1_color.r * value) >> 8;
+		            gg = (g_armwave_state.ch1_color.g * value) >> 8;
+		            bb = (g_armwave_state.ch1_color.b * value) >> 8;
 
-	            r = MIN(rr, 255);
-	            g = MIN(gg, 255);
-	            b = MIN(bb, 255);
+		            r = MIN(rr, 255);
+		            g = MIN(gg, 255);
+		            b = MIN(bb, 255);
 
-	            // ensure 100% alpha channel, if it is used
-	            word = 0xff000000 | (b << 16) | (g << 8) | r;
+		            // ensure 100% alpha channel, if it is used
+		            word = 0xff000000 | (b << 16) | (g << 8) | r;
 
-	            // Is there a better way?
-	            /** works but wrong orientation **
-	            xx = n % g_armwave_state.target_width;
-	            yy = n / g_armwave_state.target_width;
-	            offset = (xx + (yy * g_armwave_state.target_width));
-	            *(out_buffer_base + offset) = word;
-	            */
+		            // Is there a better way?
+		            /** works but wrong orientation **
+		            xx = n % g_armwave_state.target_width;
+		            yy = n / g_armwave_state.target_width;
+		            offset = (xx + (yy * g_armwave_state.target_width));
+		            *(out_buffer_base + offset) = word;
+		            */
 
-	            // Since height is probably guaranteed to be one of 256 or 1024, we could probably simplify
-	            // this and strip out the division ops
-	            //xx = n % g_armwave_state.target_height;
-	            //yy = n / g_armwave_state.target_height;
-	            nsub = n + i;
-	            xx = nsub & g_armwave_state.row_mask;
-	            yy = nsub >> g_armwave_state.row_shift;
-	            offset = yy + (xx * g_armwave_state.target_width); //((xx * g_armwave_state.target_height) + yy);
-	            //printf("%d %d,%d (%d)\n", n, xx, yy, offset);
+		            // Since height is probably guaranteed to be one of 256 or 1024, we could probably simplify
+		            // this and strip out the division ops
+		            //xx = n % g_armwave_state.target_height;
+		            //yy = n / g_armwave_state.target_height;
+		            nsub = n + i;
+		            xx = nsub & g_armwave_state.row_mask;
+		            yy = nsub >> g_armwave_state.row_shift;
+		            offset = yy + (xx * g_armwave_state.target_width); //((xx * g_armwave_state.target_height) + yy);
+		            //printf("%d %d,%d (%d)\n", n, xx, yy, offset);
 
-	            *(out_buffer_base + offset) = word;
+		            *(out_buffer_base + offset) = word;
+		        }
 	        }
         } 
     }
