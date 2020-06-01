@@ -415,7 +415,7 @@ void armwave_fill_pixbuf_into_pybuffer(PyObject *buf_obj)
     printf("buffer is not null\n");
 
     assert(PyObject_GetBuffer(buf_obj, buffer, PyBUF_SIMPLE | PyBUF_WRITABLE) != 0);
-    printf("PyObject_GetBuffer did not trigger assert, buffer=0x%08x\n", buffer->buf);
+    printf("PyObject_GetBuffer did not trigger assert: buffer->buf=0x%08x, buffer->obj=0x%08x, buffer->len=%d\n", buffer->buf, buffer->obj, buffer->len);
 
     armwave_fill_pixbuf_scaled(buffer->buf);
     printf("buffer fill done\n");
