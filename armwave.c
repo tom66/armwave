@@ -299,6 +299,16 @@ void armwave_set_wave_pointer_as_testbuf()
 }
 
 /*
+ * Set wave buffer pointer from a 32-bit uint.  This needs to be changed to support 
+ * disjointed buffers in the future.
+ */
+void armwave_set_wave_pointer_u32(uint32_t wave_buffer_ptr)
+{
+    assert(wave_buffer_ptr != 0);
+    g_armwave_state.wave_buffer = (uint8_t*)wave_buffer_ptr;
+}
+
+/*
  * Clear the working buffer (fill it with all zeros.)
  */
 void armwave_clear_buffer(uint32_t flags)
@@ -398,11 +408,20 @@ void armwave_test_fill_gdkbuf(PyObject *buf)
  */
 void armwave_fill_pixbuf_into_pybuffer(PyObject *buf_obj)
 {
-    Py_buffer buffer;
-    assert(PyObject_GetBuffer(buf_obj, &buffer, PyBUF_SIMPLE | PyBUF_WRITABLE) != 0);
+    Py_buffer *buffer = malloc(sizeof(Py_buffer));
+    printf("buffer=0x%08x\n", buffer);
 
-    armwave_fill_pixbuf_scaled(buffer.buf);
-    PyBuffer_Release(&buffer);
+    assert(buffer != NULL);
+    printf("buffer is not null\n");
+
+    assert(PyObject_GetBuffer(buf_obj, buffer, PyBUF_SIMPLE | PyBUF_WRITABLE) != 0);
+    printf("PyObject_GetBuffer did not trigger assert: buffer->buf=0x%08x, buffer->obj=0x%08x, buffer->len=%d\n", buffer->buf, buffer->obj, buffer->len);
+
+    armwave_fill_pixbuf_scaled(buffer->buf);
+    printf("buffer fill done\n");
+
+    PyBuffer_Release(buffer);
+    printf("buffer released from reality\n");
 }
 
 /*
