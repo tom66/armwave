@@ -409,11 +409,19 @@ void armwave_test_fill_gdkbuf(PyObject *buf)
 void armwave_fill_pixbuf_into_pybuffer(PyObject *buf_obj)
 {
     Py_buffer *buffer = malloc(sizeof(Py_buffer));
+    printf("buffer=0x%08x\n", buffer);
+
     assert(buffer != NULL);
+    printf("buffer is not null\n");
+
     assert(PyObject_GetBuffer(buf_obj, buffer, PyBUF_SIMPLE | PyBUF_WRITABLE) != 0);
+    printf("PyObject_GetBuffer did not trigger assert, buffer=0x%08x\n", buffer->buf);
 
     armwave_fill_pixbuf_scaled(buffer->buf);
+    printf("buffer fill done\n");
+
     PyBuffer_Release(buffer);
+    printf("buffer released\n");
 }
 
 /*
