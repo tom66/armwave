@@ -421,7 +421,7 @@ void armwave_fill_pixbuf_into_pybuffer(PyObject *buf_obj)
     printf("buffer fill done\n");
 
     PyBuffer_Release(buffer);
-    printf("buffer released\n");
+    printf("buffer released from reality\n");
 }
 
 /*
