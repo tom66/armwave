@@ -389,6 +389,22 @@ void armwave_test_generate()
 }
 
 /*
+ * Render image to the local allocated buffer.
+ */
+void armwave_test_fill_outbuf()
+{
+    armwave_fill_pixbuf_scaled(g_armwave_state.out_pixbuf);
+}
+
+/*
+ * Dump the working local allocated buffer to a ppm file for debug.
+ */
+void armwave_test_dump_buffer_to_ppm(char *fn)
+{
+    armwave_dump_ppm_debug(g_armwave_state.out_pixbuf, fn);
+}
+
+/*
  * Render GDK buffer with test funtionry.
  */
 void armwave_test_fill_gdkbuf(PyObject *buf)
@@ -422,14 +438,6 @@ void armwave_fill_pixbuf_into_pybuffer(PyObject *buf_obj)
 
     PyBuffer_Release(buffer);
     printf("buffer released from reality\n");
-}
-
-/*
- * Dump a ppm of the working output buffer to a file.
- */
-void armwave_test_dump_buffer_to_ppm(char *fn)
-{
-    armwave_dump_ppm_debug(g_armwave_state.out_pixbuf, fn);
 }
 
 /*
