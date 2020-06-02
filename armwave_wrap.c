@@ -4020,6 +4020,22 @@ SWIGINTERNINLINE PyObject*
 }
 
 
+SWIGINTERN int
+SWIG_AsVal_int (PyObject * obj, int *val)
+{
+  long v;
+  int res = SWIG_AsVal_long (obj, &v);
+  if (SWIG_IsOK(res)) {
+    if ((v < INT_MIN || v > INT_MAX)) {
+      return SWIG_OverflowError;
+    } else {
+      if (val) *val = (int)(v);
+    }
+  }  
+  return res;
+}
+
+
 SWIGINTERN swig_type_info*
 SWIG_pchar_descriptor(void)
 {
@@ -4197,22 +4213,6 @@ SWIG_AsVal_float (PyObject * obj, float *val)
       return SWIG_OverflowError;
     } else {
       if (val) *val = (float)(v);
-    }
-  }  
-  return res;
-}
-
-
-SWIGINTERN int
-SWIG_AsVal_int (PyObject * obj, int *val)
-{
-  long v;
-  int res = SWIG_AsVal_long (obj, &v);
-  if (SWIG_IsOK(res)) {
-    if ((v < INT_MIN || v > INT_MAX)) {
-      return SWIG_OverflowError;
-    } else {
-      if (val) *val = (int)(v);
     }
   }  
   return res;
@@ -4899,6 +4899,56 @@ SWIGINTERN PyObject *_wrap_state_t_waves_get(PyObject *self, PyObject *args) {
   }
   arg1 = (struct armwave_state_t *)(argp1);
   result = (uint32_t) ((arg1)->waves);
+  resultobj = SWIG_From_unsigned_SS_int((unsigned int)(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_state_t_waves_max_set(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  struct armwave_state_t *arg1 = (struct armwave_state_t *) 0 ;
+  uint32_t arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  unsigned int val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:state_t_waves_max_set",&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_armwave_state_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "state_t_waves_max_set" "', argument " "1"" of type '" "struct armwave_state_t *""'"); 
+  }
+  arg1 = (struct armwave_state_t *)(argp1);
+  ecode2 = SWIG_AsVal_unsigned_SS_int(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "state_t_waves_max_set" "', argument " "2"" of type '" "uint32_t""'");
+  } 
+  arg2 = (uint32_t)(val2);
+  if (arg1) (arg1)->waves_max = arg2;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_state_t_waves_max_get(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  struct armwave_state_t *arg1 = (struct armwave_state_t *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  uint32_t result;
+  
+  if (args && PyTuple_Check(args) && PyTuple_GET_SIZE(args) > 0) SWIG_exception_fail(SWIG_TypeError, "state_t_waves_max_get takes no arguments");
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_armwave_state_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "state_t_waves_max_get" "', argument " "1"" of type '" "struct armwave_state_t *""'"); 
+  }
+  arg1 = (struct armwave_state_t *)(argp1);
+  result = (uint32_t) ((arg1)->waves_max);
   resultobj = SWIG_From_unsigned_SS_int((unsigned int)(result));
   return resultobj;
 fail:
@@ -5691,18 +5741,6 @@ fail:
 
 SWIGPY_DESTRUCTOR_CLOSURE(_wrap_delete_state_t) /* defines _wrap_delete_state_t_destructor_closure */
 
-SWIGINTERN PyObject *_wrap_test_create_waveform(PyObject *self, PyObject *args) {
-  PyObject *resultobj = 0;
-  
-  if (!PyArg_ParseTuple(args,(char *)":test_create_waveform")) SWIG_fail;
-  test_create_waveform();
-  resultobj = SWIG_Py_Void();
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
 SWIGINTERN PyObject *_wrap_render_nonaa_to_buffer_1ch_slice(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
   uint32_t arg1 ;
@@ -5747,16 +5785,15 @@ fail:
 
 SWIGINTERN PyObject *_wrap_setup_render(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
-  uint8_t *arg1 = (uint8_t *) 0 ;
+  uint32_t arg1 ;
   uint32_t arg2 ;
   uint32_t arg3 ;
   uint32_t arg4 ;
   uint32_t arg5 ;
   uint32_t arg6 ;
   uint32_t arg7 ;
-  uint32_t arg8 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
+  unsigned int val1 ;
+  int ecode1 = 0 ;
   unsigned int val2 ;
   int ecode2 = 0 ;
   unsigned int val3 ;
@@ -5769,8 +5806,6 @@ SWIGINTERN PyObject *_wrap_setup_render(PyObject *self, PyObject *args) {
   int ecode6 = 0 ;
   unsigned int val7 ;
   int ecode7 = 0 ;
-  unsigned int val8 ;
-  int ecode8 = 0 ;
   PyObject * obj0 = 0 ;
   PyObject * obj1 = 0 ;
   PyObject * obj2 = 0 ;
@@ -5778,14 +5813,13 @@ SWIGINTERN PyObject *_wrap_setup_render(PyObject *self, PyObject *args) {
   PyObject * obj4 = 0 ;
   PyObject * obj5 = 0 ;
   PyObject * obj6 = 0 ;
-  PyObject * obj7 = 0 ;
   
-  if (!PyArg_ParseTuple(args,(char *)"OOOOOOOO:setup_render",&obj0,&obj1,&obj2,&obj3,&obj4,&obj5,&obj6,&obj7)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_unsigned_char, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "setup_render" "', argument " "1"" of type '" "uint8_t *""'"); 
-  }
-  arg1 = (uint8_t *)(argp1);
+  if (!PyArg_ParseTuple(args,(char *)"OOOOOOO:setup_render",&obj0,&obj1,&obj2,&obj3,&obj4,&obj5,&obj6)) SWIG_fail;
+  ecode1 = SWIG_AsVal_unsigned_SS_int(obj0, &val1);
+  if (!SWIG_IsOK(ecode1)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "setup_render" "', argument " "1"" of type '" "uint32_t""'");
+  } 
+  arg1 = (uint32_t)(val1);
   ecode2 = SWIG_AsVal_unsigned_SS_int(obj1, &val2);
   if (!SWIG_IsOK(ecode2)) {
     SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "setup_render" "', argument " "2"" of type '" "uint32_t""'");
@@ -5816,12 +5850,109 @@ SWIGINTERN PyObject *_wrap_setup_render(PyObject *self, PyObject *args) {
     SWIG_exception_fail(SWIG_ArgError(ecode7), "in method '" "setup_render" "', argument " "7"" of type '" "uint32_t""'");
   } 
   arg7 = (uint32_t)(val7);
-  ecode8 = SWIG_AsVal_unsigned_SS_int(obj7, &val8);
-  if (!SWIG_IsOK(ecode8)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode8), "in method '" "setup_render" "', argument " "8"" of type '" "uint32_t""'");
+  armwave_setup_render(arg1,arg2,arg3,arg4,arg5,arg6,arg7);
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_set_wave_pointer(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  uint8_t *arg1 = (uint8_t *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:set_wave_pointer",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_unsigned_char, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "set_wave_pointer" "', argument " "1"" of type '" "uint8_t *""'"); 
+  }
+  arg1 = (uint8_t *)(argp1);
+  armwave_set_wave_pointer(arg1);
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_set_wave_pointer_as_testbuf(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  
+  if (!PyArg_ParseTuple(args,(char *)":set_wave_pointer_as_testbuf")) SWIG_fail;
+  armwave_set_wave_pointer_as_testbuf();
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_set_wave_pointer_u32(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  uint32_t arg1 ;
+  unsigned int val1 ;
+  int ecode1 = 0 ;
+  PyObject * obj0 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:set_wave_pointer_u32",&obj0)) SWIG_fail;
+  ecode1 = SWIG_AsVal_unsigned_SS_int(obj0, &val1);
+  if (!SWIG_IsOK(ecode1)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "set_wave_pointer_u32" "', argument " "1"" of type '" "uint32_t""'");
   } 
-  arg8 = (uint32_t)(val8);
-  armwave_setup_render(arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8);
+  arg1 = (uint32_t)(val1);
+  armwave_set_wave_pointer_u32(arg1);
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_set_channel_colour(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  int arg1 ;
+  int arg2 ;
+  int arg3 ;
+  int arg4 ;
+  int val1 ;
+  int ecode1 = 0 ;
+  int val2 ;
+  int ecode2 = 0 ;
+  int val3 ;
+  int ecode3 = 0 ;
+  int val4 ;
+  int ecode4 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  PyObject * obj3 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OOOO:set_channel_colour",&obj0,&obj1,&obj2,&obj3)) SWIG_fail;
+  ecode1 = SWIG_AsVal_int(obj0, &val1);
+  if (!SWIG_IsOK(ecode1)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "set_channel_colour" "', argument " "1"" of type '" "int""'");
+  } 
+  arg1 = (int)(val1);
+  ecode2 = SWIG_AsVal_int(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "set_channel_colour" "', argument " "2"" of type '" "int""'");
+  } 
+  arg2 = (int)(val2);
+  ecode3 = SWIG_AsVal_int(obj2, &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "set_channel_colour" "', argument " "3"" of type '" "int""'");
+  } 
+  arg3 = (int)(val3);
+  ecode4 = SWIG_AsVal_int(obj3, &val4);
+  if (!SWIG_IsOK(ecode4)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "set_channel_colour" "', argument " "4"" of type '" "int""'");
+  } 
+  arg4 = (int)(val4);
+  armwave_set_channel_colour(arg1,arg2,arg3,arg4);
   resultobj = SWIG_Py_Void();
   return resultobj;
 fail:
@@ -5892,6 +6023,21 @@ fail:
 }
 
 
+SWIGINTERN PyObject *_wrap_fill_pixbuf_into_pybuffer(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  PyObject *arg1 = (PyObject *) 0 ;
+  PyObject * obj0 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:fill_pixbuf_into_pybuffer",&obj0)) SWIG_fail;
+  arg1 = obj0;
+  armwave_fill_pixbuf_into_pybuffer(arg1);
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
 SWIGINTERN PyObject *_wrap_dump_ppm_debug(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
   uint32_t *arg1 = (uint32_t *) 0 ;
@@ -5925,38 +6071,80 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_test_init(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_test_create_square(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
   float arg1 ;
-  int arg2 ;
-  int arg3 ;
   float val1 ;
+  int ecode1 = 0 ;
+  PyObject * obj0 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:test_create_square",&obj0)) SWIG_fail;
+  ecode1 = SWIG_AsVal_float(obj0, &val1);
+  if (!SWIG_IsOK(ecode1)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "test_create_square" "', argument " "1"" of type '" "float""'");
+  } 
+  arg1 = (float)(val1);
+  armwave_test_create_square(arg1);
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_test_create_am_sine(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  float arg1 ;
+  float arg2 ;
+  float val1 ;
+  int ecode1 = 0 ;
+  float val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:test_create_am_sine",&obj0,&obj1)) SWIG_fail;
+  ecode1 = SWIG_AsVal_float(obj0, &val1);
+  if (!SWIG_IsOK(ecode1)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "test_create_am_sine" "', argument " "1"" of type '" "float""'");
+  } 
+  arg1 = (float)(val1);
+  ecode2 = SWIG_AsVal_float(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "test_create_am_sine" "', argument " "2"" of type '" "float""'");
+  } 
+  arg2 = (float)(val2);
+  armwave_test_create_am_sine(arg1,arg2);
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_test_init(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  int arg1 ;
+  int arg2 ;
+  int val1 ;
   int ecode1 = 0 ;
   int val2 ;
   int ecode2 = 0 ;
-  int val3 ;
-  int ecode3 = 0 ;
   PyObject * obj0 = 0 ;
   PyObject * obj1 = 0 ;
-  PyObject * obj2 = 0 ;
   
-  if (!PyArg_ParseTuple(args,(char *)"OOO:test_init",&obj0,&obj1,&obj2)) SWIG_fail;
-  ecode1 = SWIG_AsVal_float(obj0, &val1);
+  if (!PyArg_ParseTuple(args,(char *)"OO:test_init",&obj0,&obj1)) SWIG_fail;
+  ecode1 = SWIG_AsVal_int(obj0, &val1);
   if (!SWIG_IsOK(ecode1)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "test_init" "', argument " "1"" of type '" "float""'");
+    SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "test_init" "', argument " "1"" of type '" "int""'");
   } 
-  arg1 = (float)(val1);
+  arg1 = (int)(val1);
   ecode2 = SWIG_AsVal_int(obj1, &val2);
   if (!SWIG_IsOK(ecode2)) {
     SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "test_init" "', argument " "2"" of type '" "int""'");
   } 
   arg2 = (int)(val2);
-  ecode3 = SWIG_AsVal_int(obj2, &val3);
-  if (!SWIG_IsOK(ecode3)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "test_init" "', argument " "3"" of type '" "int""'");
-  } 
-  arg3 = (int)(val3);
-  armwave_test_init(arg1,arg2,arg3);
+  armwave_test_init(arg1,arg2);
   resultobj = SWIG_Py_Void();
   return resultobj;
 fail:
@@ -6029,14 +6217,20 @@ fail:
 
 static PyMethodDef SwigMethods[] = {
 	 { "SWIG_PyInstanceMethod_New", SWIG_PyInstanceMethod_New, METH_O, NULL},
-	 { "test_create_waveform", _wrap_test_create_waveform, METH_VARARGS, NULL},
 	 { "render_nonaa_to_buffer_1ch_slice", _wrap_render_nonaa_to_buffer_1ch_slice, METH_VARARGS, NULL},
 	 { "init", _wrap_init, METH_VARARGS, NULL},
 	 { "setup_render", _wrap_setup_render, METH_VARARGS, NULL},
+	 { "set_wave_pointer", _wrap_set_wave_pointer, METH_VARARGS, NULL},
+	 { "set_wave_pointer_as_testbuf", _wrap_set_wave_pointer_as_testbuf, METH_VARARGS, NULL},
+	 { "set_wave_pointer_u32", _wrap_set_wave_pointer_u32, METH_VARARGS, NULL},
+	 { "set_channel_colour", _wrap_set_channel_colour, METH_VARARGS, NULL},
 	 { "clear_buffer", _wrap_clear_buffer, METH_VARARGS, NULL},
 	 { "fill_pixbuf_256", _wrap_fill_pixbuf_256, METH_VARARGS, NULL},
 	 { "fill_pixbuf_scaled", _wrap_fill_pixbuf_scaled, METH_VARARGS, NULL},
+	 { "fill_pixbuf_into_pybuffer", _wrap_fill_pixbuf_into_pybuffer, METH_VARARGS, NULL},
 	 { "dump_ppm_debug", _wrap_dump_ppm_debug, METH_VARARGS, NULL},
+	 { "test_create_square", _wrap_test_create_square, METH_VARARGS, NULL},
+	 { "test_create_am_sine", _wrap_test_create_am_sine, METH_VARARGS, NULL},
 	 { "test_init", _wrap_test_init, METH_VARARGS, NULL},
 	 { "test_generate", _wrap_test_generate, METH_VARARGS, NULL},
 	 { "test_fill_gdkbuf", _wrap_test_fill_gdkbuf, METH_VARARGS, NULL},
@@ -6277,6 +6471,7 @@ SWIGINTERN SwigPyClientData SwigPyBuiltin__armwave_color_mix_t_clientdata = {0, 
 static SwigPyGetSet state_t_waves_getset = { _wrap_state_t_waves_get, _wrap_state_t_waves_set };
 static SwigPyGetSet state_t_vscale_getset = { _wrap_state_t_vscale_get, _wrap_state_t_vscale_set };
 static SwigPyGetSet state_t_ch_buff_size_getset = { _wrap_state_t_ch_buff_size_get, _wrap_state_t_ch_buff_size_set };
+static SwigPyGetSet state_t_waves_max_getset = { _wrap_state_t_waves_max_get, _wrap_state_t_waves_max_set };
 static SwigPyGetSet state_t_wave_buffer_getset = { _wrap_state_t_wave_buffer_get, _wrap_state_t_wave_buffer_set };
 static SwigPyGetSet state_t_ch4_buffer_getset = { _wrap_state_t_ch4_buffer_get, _wrap_state_t_ch4_buffer_set };
 static SwigPyGetSet state_t_ch3_buffer_getset = { _wrap_state_t_ch3_buffer_get, _wrap_state_t_ch3_buffer_set };
@@ -6285,10 +6480,10 @@ static SwigPyGetSet state_t_ch1_buffer_getset = { _wrap_state_t_ch1_buffer_get, 
 static SwigPyGetSet state_t_size_getset = { _wrap_state_t_size_get, _wrap_state_t_size_set };
 static SwigPyGetSet state_t_target_width_getset = { _wrap_state_t_target_width_get, _wrap_state_t_target_width_set };
 static SwigPyGetSet state_t_xstride_getset = { _wrap_state_t_xstride_get, _wrap_state_t_xstride_set };
-static SwigPyGetSet state_t_slice_record_height_getset = { _wrap_state_t_slice_record_height_get, _wrap_state_t_slice_record_height_set };
 static SwigPyGetSet state_t_slice_height_getset = { _wrap_state_t_slice_height_get, _wrap_state_t_slice_height_set };
 static SwigPyGetSet state_t_bitdepth_height_getset = { _wrap_state_t_bitdepth_height_get, _wrap_state_t_bitdepth_height_set };
 static SwigPyGetSet state_t___dict___getset = { SwigPyObject_get___dict__, 0 };
+static SwigPyGetSet state_t_slice_record_height_getset = { _wrap_state_t_slice_record_height_get, _wrap_state_t_slice_record_height_set };
 static SwigPyGetSet state_t_target_height_getset = { _wrap_state_t_target_height_get, _wrap_state_t_target_height_set };
 static SwigPyGetSet state_t_row_mask_getset = { _wrap_state_t_row_mask_get, _wrap_state_t_row_mask_set };
 static SwigPyGetSet state_t_out_pixbuf_getset = { _wrap_state_t_out_pixbuf_get, _wrap_state_t_out_pixbuf_set };
@@ -6307,6 +6502,8 @@ SWIGINTERN PyGetSetDef SwigPyBuiltin__armwave_state_t_getset[] = {
 ,
     { (char *) "ch_buff_size", (getter) SwigPyBuiltin_GetterClosure, (setter) SwigPyBuiltin_SetterClosure, (char *)"armwave_state_t.ch_buff_size", (void *) &state_t_ch_buff_size_getset }
 ,
+    { (char *) "waves_max", (getter) SwigPyBuiltin_GetterClosure, (setter) SwigPyBuiltin_SetterClosure, (char *)"armwave_state_t.waves_max", (void *) &state_t_waves_max_getset }
+,
     { (char *) "wave_buffer", (getter) SwigPyBuiltin_GetterClosure, (setter) SwigPyBuiltin_SetterClosure, (char *)"armwave_state_t.wave_buffer", (void *) &state_t_wave_buffer_getset }
 ,
     { (char *) "ch4_buffer", (getter) SwigPyBuiltin_GetterClosure, (setter) SwigPyBuiltin_SetterClosure, (char *)"armwave_state_t.ch4_buffer", (void *) &state_t_ch4_buffer_getset }
@@ -6323,13 +6520,13 @@ SWIGINTERN PyGetSetDef SwigPyBuiltin__armwave_state_t_getset[] = {
 ,
     { (char *) "xstride", (getter) SwigPyBuiltin_GetterClosure, (setter) SwigPyBuiltin_SetterClosure, (char *)"armwave_state_t.xstride", (void *) &state_t_xstride_getset }
 ,
-    { (char *) "slice_record_height", (getter) SwigPyBuiltin_GetterClosure, (setter) SwigPyBuiltin_SetterClosure, (char *)"armwave_state_t.slice_record_height", (void *) &state_t_slice_record_height_getset }
-,
     { (char *) "slice_height", (getter) SwigPyBuiltin_GetterClosure, (setter) SwigPyBuiltin_SetterClosure, (char *)"armwave_state_t.slice_height", (void *) &state_t_slice_height_getset }
 ,
     { (char *) "bitdepth_height", (getter) SwigPyBuiltin_GetterClosure, (setter) SwigPyBuiltin_SetterClosure, (char *)"armwave_state_t.bitdepth_height", (void *) &state_t_bitdepth_height_getset }
 ,
     { (char *) "__dict__", (getter) SwigPyBuiltin_GetterClosure, (setter) 0, (char *)"armwave_state_t.__dict__", (void *) &state_t___dict___getset }
+,
+    { (char *) "slice_record_height", (getter) SwigPyBuiltin_GetterClosure, (setter) SwigPyBuiltin_SetterClosure, (char *)"armwave_state_t.slice_record_height", (void *) &state_t_slice_record_height_getset }
 ,
     { (char *) "target_height", (getter) SwigPyBuiltin_GetterClosure, (setter) SwigPyBuiltin_SetterClosure, (char *)"armwave_state_t.target_height", (void *) &state_t_target_height_getset }
 ,
