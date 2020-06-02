@@ -344,7 +344,7 @@ void armwave_dump_ppm_debug(uint32_t *buffer, char *fn)
     //printf("in_buffer=0x%08x\n", buffer);
 
     fputs("P3\n", fp);
-    fprintf(fp, "%d %d\n", g_armwave_state.target_height, g_armwave_state.target_width);
+    fprintf(fp, "%d %d\n", g_armwave_state.target_width, g_armwave_state.target_height);
     fputs("255\n", fp);
 
     for(yy = 0; yy < g_armwave_state.target_height; yy++) {
