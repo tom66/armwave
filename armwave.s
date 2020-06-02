@@ -1936,7 +1936,7 @@ armwave_dump_ppm_debug:
 	.loc 1 340 16 view .LVU551
 	bl	fopen64		@
 .LVL145:
-@ armwave.c:347:     fprintf(fp, "%d %d\n", g_armwave_state.target_height, g_armwave_state.target_width);
+@ armwave.c:347:     fprintf(fp, "%d %d\n", g_armwave_state.target_width, g_armwave_state.target_height);
 	.loc 1 347 5 view .LVU552
 	ldr	r6, .L144+4	@ tmp154,
 @ armwave.c:346:     fputs("P3\n", fp);
@@ -1957,8 +1957,7 @@ armwave_dump_ppm_debug:
 	bl	fwrite		@
 .LVL148:
 	.loc 1 347 5 is_stmt 1 view .LVU559
-	ldr	r3, [r6, #64]	@, g_armwave_state.target_width
-	ldr	r2, [r6, #68]	@, g_armwave_state.target_height
+	ldrd	r2, [r6, #64]	@, tmp154,
 	ldr	r1, .L144+12	@,
 	mov	r0, r7	@, fp
 	bl	fprintf		@
