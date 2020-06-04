@@ -314,7 +314,7 @@ void armwave_set_wave_pointer_u32(uint32_t wave_buffer_ptr)
 void armwave_clear_buffer(uint32_t flags)
 {
     // Flags ignored, only one buffer cleared
-    memset(g_armwave_state.ch1_buffer, 0, g_armwave_state.size);
+    memset(g_armwave_state.ch1_buffer, 0, g_armwave_state.ch_buff_size);
 }
 
 /*
