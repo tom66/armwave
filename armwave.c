@@ -217,6 +217,8 @@ void armwave_setup_render(uint32_t start_point, uint32_t end_point, uint32_t wav
     uint32_t length, xx;
     float points_per_pixel;
 
+    printf("s=%d e=%d w=%d ws=%d tw=%d th=%d rf=0x%08x\n", start_point, end_point, waves_max, wave_stride, target_width, target_height, render_flags);
+
     // TODO these asserts should instead raise PyExc
     assert(start_point < end_point);
 
