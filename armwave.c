@@ -436,6 +436,8 @@ void armwave_test_buffer_alloc()
         free(g_armwave_state.test_wave_buffer);
     }
 
+    printf("armwave_test_buffer_alloc: length=%d max=%d\n", g_armwave_state.wave_length, g_armwave_state.waves_max);
+
     g_armwave_state.test_wave_buffer = calloc(g_armwave_state.wave_length * g_armwave_state.waves_max, 1);
 
     if(g_armwave_state.test_wave_buffer == NULL) {
