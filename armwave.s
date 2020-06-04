@@ -249,13 +249,13 @@ render_nonaa_to_buffer_1ch_slice:
 @ armwave.c:74: {
 	.loc 1 74 1 view .LVU32
 	mov	r7, r0	@ slice_y, slice_y
-@ armwave.c:81:     printf("ch1_buffer=0x%08x", g_armwave_state.ch1_buffer);
+@ armwave.c:81:     printf("ch1_buffer=0x%08x\n", g_armwave_state.ch1_buffer);
 	.loc 1 81 5 view .LVU33
 	ldr	r5, .L25	@ tmp247,
 @ armwave.c:74: {
 	.loc 1 74 1 view .LVU34
 	mov	r9, r1	@ height, height
-@ armwave.c:81:     printf("ch1_buffer=0x%08x", g_armwave_state.ch1_buffer);
+@ armwave.c:81:     printf("ch1_buffer=0x%08x\n", g_armwave_state.ch1_buffer);
 	.loc 1 81 5 view .LVU35
 	ldr	r0, .L25+4	@,
 .LVL7:
@@ -285,7 +285,7 @@ render_nonaa_to_buffer_1ch_slice:
 	.loc 1 85 5 is_stmt 1 view .LVU44
 	.loc 1 85 5 is_stmt 0 view .LVU45
 	popeq	{r3, r4, r5, r6, r7, r8, r9, r10, fp, pc}	@
-@ armwave.c:86:         printf("wave_buffer=0x%08x", g_armwave_state.wave_buffer);
+@ armwave.c:86:         printf("wave_buffer=0x%08x\n", g_armwave_state.wave_buffer);
 	.loc 1 86 9 view .LVU46
 	ldr	r8, .L25+8	@ tmp249,
 	sub	r7, r7, #4	@ _36, slice_y,
@@ -3981,11 +3981,10 @@ __PRETTY_FUNCTION__.17082:
 	.ascii	"armwave version: %s\012\000"
 	.space	3
 .LC2:
-	.ascii	"ch1_buffer=0x%08x\000"
-	.space	2
-.LC3:
-	.ascii	"wave_buffer=0x%08x\000"
+	.ascii	"ch1_buffer=0x%08x\012\000"
 	.space	1
+.LC3:
+	.ascii	"wave_buffer=0x%08x\012\000"
 .LC4:
 	.ascii	"armwave.c\000"
 	.space	2

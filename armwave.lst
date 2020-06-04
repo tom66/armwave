@@ -309,7 +309,7 @@
   79:armwave.c     ****     uint8_t *write_buffer;
  233              		.loc 1 79 5 view .LVU29
   80:armwave.c     **** 
-  81:armwave.c     ****     printf("ch1_buffer=0x%08x", g_armwave_state.ch1_buffer);
+  81:armwave.c     ****     printf("ch1_buffer=0x%08x\n", g_armwave_state.ch1_buffer);
  234              		.loc 1 81 5 view .LVU30
  235              	@ armwave.c:74: {
   74:armwave.c     ****     int yy, ys, w, scale_value;
@@ -330,14 +330,14 @@
   74:armwave.c     ****     int yy, ys, w, scale_value;
  250              		.loc 1 74 1 view .LVU32
  251 00a0 0070A0E1 		mov	r7, r0	@ slice_y, slice_y
- 252              	@ armwave.c:81:     printf("ch1_buffer=0x%08x", g_armwave_state.ch1_buffer);
+ 252              	@ armwave.c:81:     printf("ch1_buffer=0x%08x\n", g_armwave_state.ch1_buffer);
  253              		.loc 1 81 5 view .LVU33
  254 00a4 F4509FE5 		ldr	r5, .L25	@ tmp247,
  255              	@ armwave.c:74: {
   74:armwave.c     ****     int yy, ys, w, scale_value;
  256              		.loc 1 74 1 view .LVU34
  257 00a8 0190A0E1 		mov	r9, r1	@ height, height
- 258              	@ armwave.c:81:     printf("ch1_buffer=0x%08x", g_armwave_state.ch1_buffer);
+ 258              	@ armwave.c:81:     printf("ch1_buffer=0x%08x\n", g_armwave_state.ch1_buffer);
  259              		.loc 1 81 5 view .LVU35
  260 00ac F0009FE5 		ldr	r0, .L25+4	@,
  261              	.LVL7:
@@ -374,14 +374,14 @@
  285              		.loc 1 85 5 is_stmt 1 view .LVU44
  286              		.loc 1 85 5 is_stmt 0 view .LVU45
  287 00cc F88FBD08 		popeq	{r3, r4, r5, r6, r7, r8, r9, r10, fp, pc}	@
- 288              	@ armwave.c:86:         printf("wave_buffer=0x%08x", g_armwave_state.wave_buffer);
-  86:armwave.c     ****         printf("wave_buffer=0x%08x", g_armwave_state.wave_buffer);
+ 288              	@ armwave.c:86:         printf("wave_buffer=0x%08x\n", g_armwave_state.wave_buffer);
+  86:armwave.c     ****         printf("wave_buffer=0x%08x\n", g_armwave_state.wave_buffer);
  289              		.loc 1 86 9 view .LVU46
  290 00d0 D0809FE5 		ldr	r8, .L25+8	@ tmp249,
  291 00d4 047047E2 		sub	r7, r7, #4	@ _36, slice_y,
  292              	.LVL11:
  293              	@ armwave.c:85:     for(w = 0; w < g_armwave_state.waves; w++) {
-  85:armwave.c     ****         printf("wave_buffer=0x%08x", g_armwave_state.wave_buffer);
+  85:armwave.c     ****         printf("wave_buffer=0x%08x\n", g_armwave_state.wave_buffer);
  294              		.loc 1 85 11 view .LVU47
  295 00d8 00A0A0E3 		mov	r10, #0	@ w,
  296              	.LVL12:
@@ -555,16 +555,16 @@
  425              	.LVL25:
  426              	.L13:
  427              	@ armwave.c:85:     for(w = 0; w < g_armwave_state.waves; w++) {
-  85:armwave.c     ****         printf("wave_buffer=0x%08x", g_armwave_state.wave_buffer);
+  85:armwave.c     ****         printf("wave_buffer=0x%08x\n", g_armwave_state.wave_buffer);
  428              		.loc 1 85 5 view .LVU95
  429 018c 243095E5 		ldr	r3, [r5, #36]	@ g_armwave_state.waves, g_armwave_state.waves
  430              	@ armwave.c:85:     for(w = 0; w < g_armwave_state.waves; w++) {
-  85:armwave.c     ****         printf("wave_buffer=0x%08x", g_armwave_state.wave_buffer);
+  85:armwave.c     ****         printf("wave_buffer=0x%08x\n", g_armwave_state.wave_buffer);
  431              		.loc 1 85 44 view .LVU96
  432 0190 01A08AE2 		add	r10, r10, #1	@ w, w,
  433              	.LVL26:
  434              	@ armwave.c:85:     for(w = 0; w < g_armwave_state.waves; w++) {
-  85:armwave.c     ****         printf("wave_buffer=0x%08x", g_armwave_state.wave_buffer);
+  85:armwave.c     ****         printf("wave_buffer=0x%08x\n", g_armwave_state.wave_buffer);
  435              		.loc 1 85 5 view .LVU97
  436 0194 0A0053E1 		cmp	r3, r10	@ g_armwave_state.waves, w
  437 0198 CFFFFF8A 		bhi	.L15		@,
@@ -5698,228 +5698,227 @@
  3981      2025730A 
  3982 001d 000000   		.space	3
  3983              	.LC2:
- 3984 0020 6368315F 		.ascii	"ch1_buffer=0x%08x\000"
+ 3984 0020 6368315F 		.ascii	"ch1_buffer=0x%08x\012\000"
  3984      62756666 
  3984      65723D30 
  3984      78253038 
- 3984      7800
- 3985 0032 0000     		.space	2
+ 3984      780A00
+ 3985 0033 00       		.space	1
  3986              	.LC3:
- 3987 0034 77617665 		.ascii	"wave_buffer=0x%08x\000"
+ 3987 0034 77617665 		.ascii	"wave_buffer=0x%08x\012\000"
  3987      5F627566 
  3987      6665723D 
  3987      30782530 
- 3987      387800
- 3988 0047 00       		.space	1
- 3989              	.LC4:
- 3990 0048 61726D77 		.ascii	"armwave.c\000"
- 3990      6176652E 
- 3990      6300
- 3991 0052 0000     		.space	2
- 3992              	.LC5:
- 3993 0054 6F75745F 		.ascii	"out_buffer != NULL\000"
- 3993      62756666 
- 3993      65722021 
- 3993      3D204E55 
- 3993      4C4C00
- 3994 0067 00       		.space	1
- 3995              	.LC6:
- 3996 0068 733D2564 		.ascii	"s=%d e=%d w=%d ws=%d tw=%d th=%d rf=0x%08x\012\000"
- 3996      20653D25 
- 3996      6420773D 
- 3996      25642077 
- 3996      733D2564 
- 3997              	.LC7:
- 3998 0094 73746172 		.ascii	"start_point < end_point\000"
- 3998      745F706F 
- 3998      696E7420 
- 3998      3C20656E 
- 3998      645F706F 
- 3999              	.LC8:
- 4000 00ac 74617267 		.ascii	"target_height == 256 || target_height == 512 || tar"
- 4000      65745F68 
- 4000      65696768 
- 4000      74203D3D 
- 4000      20323536 
- 4001 00df 6765745F 		.ascii	"get_height == 1024 || target_height == 2048\000"
- 4001      68656967 
- 4001      6874203D 
- 4001      3D203130 
- 4001      3234207C 
- 4002 010b 00       		.space	1
- 4003              	.LC9:
- 4004 010c 63685F62 		.ascii	"ch_buff_size=%d\012\000"
- 4004      7566665F 
- 4004      73697A65 
- 4004      3D25640A 
- 4004      00
- 4005 011d 000000   		.space	3
- 4006              	.LC10:
- 4007 0120 675F6172 		.ascii	"g_armwave_state.ch1_buffer != NULL\000"
- 4007      6D776176 
- 4007      655F7374 
- 4007      6174652E 
- 4007      6368315F 
- 4008 0143 00       		.space	1
- 4009              	.LC11:
- 4010 0144 675F6172 		.ascii	"g_armwave_state.xcoord_to_xpixel != NULL\000"
- 4010      6D776176 
- 4010      655F7374 
- 4010      6174652E 
- 4010      78636F6F 
- 4011 016d 000000   		.space	3
- 4012              	.LC12:
- 4013 0170 77617665 		.ascii	"wave_buffer != NULL\000"
- 4013      5F627566 
- 4013      66657220 
- 4013      213D204E 
- 4013      554C4C00 
- 4014              	.LC13:
- 4015 0184 77617665 		.ascii	"wave_buffer_ptr != 0\000"
- 4015      5F627566 
- 4015      6665725F 
- 4015      70747220 
- 4015      213D2030 
- 4016 0199 000000   		.space	3
- 4017              	.LC14:
- 4018 019c 776200   		.ascii	"wb\000"
- 4019 019f 00       		.space	1
- 4020              	.LC15:
- 4021 01a0 50330A00 		.ascii	"P3\012\000"
- 4022              	.LC16:
- 4023 01a4 25642025 		.ascii	"%d %d\012\000"
- 4023      640A00
- 4024 01ab 00       		.space	1
- 4025              	.LC17:
- 4026 01ac 3235350A 		.ascii	"255\012\000"
- 4026      00
- 4027 01b1 000000   		.space	3
- 4028              	.LC18:
- 4029 01b4 25336420 		.ascii	"%3d %3d %3d\012\000"
- 4029      25336420 
- 4029      2533640A 
- 4029      00
- 4030 01c1 000000   		.space	3
- 4031              	.LC19:
- 4032 01c4 61726D77 		.ascii	"armwave_test_init: failed to allocate test wave buf"
- 4032      6176655F 
- 4032      74657374 
- 4032      5F696E69 
- 4032      743A2066 
- 4033 01f7 66657220 		.ascii	"fer (%d bytes)\012\000"
- 4033      28256420 
- 4033      62797465 
- 4033      73290A00 
- 4034 0207 00       		.space	1
- 4035              	.LC20:
- 4036 0208 61726D77 		.ascii	"armwave_test_generate: slice %d (y=%d, h=%d)\012\000"
- 4036      6176655F 
- 4036      74657374 
- 4036      5F67656E 
- 4036      65726174 
- 4037 0236 0000     		.space	2
- 4038              	.LC21:
- 4039 0238 61726D77 		.ascii	"armwave_fill_pixbuf_into_pybuffer: start\000"
- 4039      6176655F 
- 4039      66696C6C 
- 4039      5F706978 
- 4039      6275665F 
- 4040 0261 000000   		.space	3
- 4041              	.LC22:
- 4042 0264 61726D77 		.ascii	"armwave_fill_pixbuf_into_pybuffer: PyObject_GetBuff"
- 4042      6176655F 
- 4042      66696C6C 
- 4042      5F706978 
- 4042      6275665F 
- 4043 0297 65722829 		.ascii	"er() failed, returning PyFalse\000"
- 4043      20666169 
- 4043      6C65642C 
- 4043      20726574 
- 4043      75726E69 
- 4044 02b6 0000     		.space	2
- 4045              	.LC23:
- 4046 02b8 61726D77 		.ascii	"armwave_fill_pixbuf_into_pybuffer: buffer fill done"
- 4046      6176655F 
- 4046      66696C6C 
- 4046      5F706978 
- 4046      6275665F 
- 4047 02eb 00       		.ascii	"\000"
- 4048              	.LC24:
- 4049 02ec 61726D77 		.ascii	"armwave_fill_pixbuf_into_pybuffer: done\000"
- 4049      6176655F 
- 4049      66696C6C 
- 4049      5F706978 
- 4049      6275665F 
- 4050              		.text
- 4051              	.Letext0:
- 4052              		.file 3 "/usr/lib/gcc/arm-linux-gnueabihf/8/include/stddef.h"
- 4053              		.file 4 "/usr/include/arm-linux-gnueabihf/bits/types.h"
- 4054              		.file 5 "/usr/include/arm-linux-gnueabihf/bits/types/struct_FILE.h"
- 4055              		.file 6 "/usr/include/arm-linux-gnueabihf/bits/types/FILE.h"
- 4056              		.file 7 "/usr/include/stdio.h"
- 4057              		.file 8 "/usr/include/arm-linux-gnueabihf/bits/sys_errlist.h"
- 4058              		.file 9 "/usr/include/errno.h"
- 4059              		.file 10 "/usr/include/arm-linux-gnueabihf/bits/stdint-intn.h"
- 4060              		.file 11 "/usr/include/unistd.h"
- 4061              		.file 12 "/usr/include/arm-linux-gnueabihf/bits/getopt_core.h"
- 4062              		.file 13 "/usr/include/arm-linux-gnueabihf/bits/stdint-uintn.h"
- 4063              		.file 14 "/usr/local/include/python3.8/pyport.h"
- 4064              		.file 15 "/usr/include/math.h"
- 4065              		.file 16 "/usr/include/arm-linux-gnueabihf/sys/time.h"
- 4066              		.file 17 "/usr/include/time.h"
- 4067              		.file 18 "/usr/local/include/python3.8/pymem.h"
- 4068              		.file 19 "/usr/local/include/python3.8/cpython/object.h"
- 4069              		.file 20 "/usr/local/include/python3.8/methodobject.h"
- 4070              		.file 21 "/usr/local/include/python3.8/descrobject.h"
- 4071              		.file 22 "/usr/local/include/python3.8/pyhash.h"
- 4072              		.file 23 "/usr/local/include/python3.8/pydebug.h"
- 4073              		.file 24 "/usr/local/include/python3.8/bytearrayobject.h"
- 4074              		.file 25 "/usr/local/include/python3.8/bytesobject.h"
- 4075              		.file 26 "/usr/local/include/python3.8/unicodeobject.h"
- 4076              		.file 27 "/usr/local/include/python3.8/cpython/unicodeobject.h"
- 4077              		.file 28 "/usr/local/include/python3.8/longintrepr.h"
- 4078              		.file 29 "/usr/local/include/python3.8/longobject.h"
- 4079              		.file 30 "/usr/local/include/python3.8/boolobject.h"
- 4080              		.file 31 "/usr/local/include/python3.8/floatobject.h"
- 4081              		.file 32 "/usr/local/include/python3.8/complexobject.h"
- 4082              		.file 33 "/usr/local/include/python3.8/rangeobject.h"
- 4083              		.file 34 "/usr/local/include/python3.8/memoryobject.h"
- 4084              		.file 35 "/usr/local/include/python3.8/tupleobject.h"
- 4085              		.file 36 "/usr/local/include/python3.8/listobject.h"
- 4086              		.file 37 "/usr/local/include/python3.8/dictobject.h"
- 4087              		.file 38 "/usr/local/include/python3.8/odictobject.h"
- 4088              		.file 39 "/usr/local/include/python3.8/enumobject.h"
- 4089              		.file 40 "/usr/local/include/python3.8/setobject.h"
- 4090              		.file 41 "/usr/local/include/python3.8/moduleobject.h"
- 4091              		.file 42 "/usr/local/include/python3.8/funcobject.h"
- 4092              		.file 43 "/usr/local/include/python3.8/classobject.h"
- 4093              		.file 44 "/usr/local/include/python3.8/fileobject.h"
- 4094              		.file 45 "/usr/local/include/python3.8/cpython/fileobject.h"
- 4095              		.file 46 "/usr/local/include/python3.8/pycapsule.h"
- 4096              		.file 47 "/usr/local/include/python3.8/traceback.h"
- 4097              		.file 48 "/usr/local/include/python3.8/sliceobject.h"
- 4098              		.file 49 "/usr/local/include/python3.8/cellobject.h"
- 4099              		.file 50 "/usr/local/include/python3.8/iterobject.h"
- 4100              		.file 51 "/usr/local/include/python3.8/pystate.h"
- 4101              		.file 52 "/usr/local/include/python3.8/cpython/pystate.h"
- 4102              		.file 53 "/usr/local/include/python3.8/genobject.h"
- 4103              		.file 54 "/usr/local/include/python3.8/weakrefobject.h"
- 4104              		.file 55 "/usr/local/include/python3.8/structseq.h"
- 4105              		.file 56 "/usr/local/include/python3.8/namespaceobject.h"
- 4106              		.file 57 "/usr/local/include/python3.8/picklebufobject.h"
- 4107              		.file 58 "/usr/local/include/python3.8/codecs.h"
- 4108              		.file 59 "/usr/local/include/python3.8/pyerrors.h"
- 4109              		.file 60 "/usr/local/include/python3.8/context.h"
- 4110              		.file 61 "/usr/local/include/python3.8/modsupport.h"
- 4111              		.file 62 "/usr/local/include/python3.8/code.h"
- 4112              		.file 63 "/usr/local/include/python3.8/pythonrun.h"
- 4113              		.file 64 "/usr/local/include/python3.8/ceval.h"
- 4114              		.file 65 "/usr/local/include/python3.8/import.h"
- 4115              		.file 66 "/usr/local/include/python3.8/bltinmodule.h"
- 4116              		.file 67 "/usr/local/include/python3.8/pyctype.h"
- 4117              		.file 68 "armwave.h"
- 4118              		.file 69 "/usr/include/stdlib.h"
- 4119              		.file 70 "/usr/local/include/python3.8/cpython/abstract.h"
- 4120              		.file 71 "/usr/include/assert.h"
- 4121              		.file 72 "<built-in>"
- 4122              		.file 73 "/usr/include/arm-linux-gnueabihf/bits/mathcalls.h"
+ 3987      38780A00 
+ 3988              	.LC4:
+ 3989 0048 61726D77 		.ascii	"armwave.c\000"
+ 3989      6176652E 
+ 3989      6300
+ 3990 0052 0000     		.space	2
+ 3991              	.LC5:
+ 3992 0054 6F75745F 		.ascii	"out_buffer != NULL\000"
+ 3992      62756666 
+ 3992      65722021 
+ 3992      3D204E55 
+ 3992      4C4C00
+ 3993 0067 00       		.space	1
+ 3994              	.LC6:
+ 3995 0068 733D2564 		.ascii	"s=%d e=%d w=%d ws=%d tw=%d th=%d rf=0x%08x\012\000"
+ 3995      20653D25 
+ 3995      6420773D 
+ 3995      25642077 
+ 3995      733D2564 
+ 3996              	.LC7:
+ 3997 0094 73746172 		.ascii	"start_point < end_point\000"
+ 3997      745F706F 
+ 3997      696E7420 
+ 3997      3C20656E 
+ 3997      645F706F 
+ 3998              	.LC8:
+ 3999 00ac 74617267 		.ascii	"target_height == 256 || target_height == 512 || tar"
+ 3999      65745F68 
+ 3999      65696768 
+ 3999      74203D3D 
+ 3999      20323536 
+ 4000 00df 6765745F 		.ascii	"get_height == 1024 || target_height == 2048\000"
+ 4000      68656967 
+ 4000      6874203D 
+ 4000      3D203130 
+ 4000      3234207C 
+ 4001 010b 00       		.space	1
+ 4002              	.LC9:
+ 4003 010c 63685F62 		.ascii	"ch_buff_size=%d\012\000"
+ 4003      7566665F 
+ 4003      73697A65 
+ 4003      3D25640A 
+ 4003      00
+ 4004 011d 000000   		.space	3
+ 4005              	.LC10:
+ 4006 0120 675F6172 		.ascii	"g_armwave_state.ch1_buffer != NULL\000"
+ 4006      6D776176 
+ 4006      655F7374 
+ 4006      6174652E 
+ 4006      6368315F 
+ 4007 0143 00       		.space	1
+ 4008              	.LC11:
+ 4009 0144 675F6172 		.ascii	"g_armwave_state.xcoord_to_xpixel != NULL\000"
+ 4009      6D776176 
+ 4009      655F7374 
+ 4009      6174652E 
+ 4009      78636F6F 
+ 4010 016d 000000   		.space	3
+ 4011              	.LC12:
+ 4012 0170 77617665 		.ascii	"wave_buffer != NULL\000"
+ 4012      5F627566 
+ 4012      66657220 
+ 4012      213D204E 
+ 4012      554C4C00 
+ 4013              	.LC13:
+ 4014 0184 77617665 		.ascii	"wave_buffer_ptr != 0\000"
+ 4014      5F627566 
+ 4014      6665725F 
+ 4014      70747220 
+ 4014      213D2030 
+ 4015 0199 000000   		.space	3
+ 4016              	.LC14:
+ 4017 019c 776200   		.ascii	"wb\000"
+ 4018 019f 00       		.space	1
+ 4019              	.LC15:
+ 4020 01a0 50330A00 		.ascii	"P3\012\000"
+ 4021              	.LC16:
+ 4022 01a4 25642025 		.ascii	"%d %d\012\000"
+ 4022      640A00
+ 4023 01ab 00       		.space	1
+ 4024              	.LC17:
+ 4025 01ac 3235350A 		.ascii	"255\012\000"
+ 4025      00
+ 4026 01b1 000000   		.space	3
+ 4027              	.LC18:
+ 4028 01b4 25336420 		.ascii	"%3d %3d %3d\012\000"
+ 4028      25336420 
+ 4028      2533640A 
+ 4028      00
+ 4029 01c1 000000   		.space	3
+ 4030              	.LC19:
+ 4031 01c4 61726D77 		.ascii	"armwave_test_init: failed to allocate test wave buf"
+ 4031      6176655F 
+ 4031      74657374 
+ 4031      5F696E69 
+ 4031      743A2066 
+ 4032 01f7 66657220 		.ascii	"fer (%d bytes)\012\000"
+ 4032      28256420 
+ 4032      62797465 
+ 4032      73290A00 
+ 4033 0207 00       		.space	1
+ 4034              	.LC20:
+ 4035 0208 61726D77 		.ascii	"armwave_test_generate: slice %d (y=%d, h=%d)\012\000"
+ 4035      6176655F 
+ 4035      74657374 
+ 4035      5F67656E 
+ 4035      65726174 
+ 4036 0236 0000     		.space	2
+ 4037              	.LC21:
+ 4038 0238 61726D77 		.ascii	"armwave_fill_pixbuf_into_pybuffer: start\000"
+ 4038      6176655F 
+ 4038      66696C6C 
+ 4038      5F706978 
+ 4038      6275665F 
+ 4039 0261 000000   		.space	3
+ 4040              	.LC22:
+ 4041 0264 61726D77 		.ascii	"armwave_fill_pixbuf_into_pybuffer: PyObject_GetBuff"
+ 4041      6176655F 
+ 4041      66696C6C 
+ 4041      5F706978 
+ 4041      6275665F 
+ 4042 0297 65722829 		.ascii	"er() failed, returning PyFalse\000"
+ 4042      20666169 
+ 4042      6C65642C 
+ 4042      20726574 
+ 4042      75726E69 
+ 4043 02b6 0000     		.space	2
+ 4044              	.LC23:
+ 4045 02b8 61726D77 		.ascii	"armwave_fill_pixbuf_into_pybuffer: buffer fill done"
+ 4045      6176655F 
+ 4045      66696C6C 
+ 4045      5F706978 
+ 4045      6275665F 
+ 4046 02eb 00       		.ascii	"\000"
+ 4047              	.LC24:
+ 4048 02ec 61726D77 		.ascii	"armwave_fill_pixbuf_into_pybuffer: done\000"
+ 4048      6176655F 
+ 4048      66696C6C 
+ 4048      5F706978 
+ 4048      6275665F 
+ 4049              		.text
+ 4050              	.Letext0:
+ 4051              		.file 3 "/usr/lib/gcc/arm-linux-gnueabihf/8/include/stddef.h"
+ 4052              		.file 4 "/usr/include/arm-linux-gnueabihf/bits/types.h"
+ 4053              		.file 5 "/usr/include/arm-linux-gnueabihf/bits/types/struct_FILE.h"
+ 4054              		.file 6 "/usr/include/arm-linux-gnueabihf/bits/types/FILE.h"
+ 4055              		.file 7 "/usr/include/stdio.h"
+ 4056              		.file 8 "/usr/include/arm-linux-gnueabihf/bits/sys_errlist.h"
+ 4057              		.file 9 "/usr/include/errno.h"
+ 4058              		.file 10 "/usr/include/arm-linux-gnueabihf/bits/stdint-intn.h"
+ 4059              		.file 11 "/usr/include/unistd.h"
+ 4060              		.file 12 "/usr/include/arm-linux-gnueabihf/bits/getopt_core.h"
+ 4061              		.file 13 "/usr/include/arm-linux-gnueabihf/bits/stdint-uintn.h"
+ 4062              		.file 14 "/usr/local/include/python3.8/pyport.h"
+ 4063              		.file 15 "/usr/include/math.h"
+ 4064              		.file 16 "/usr/include/arm-linux-gnueabihf/sys/time.h"
+ 4065              		.file 17 "/usr/include/time.h"
+ 4066              		.file 18 "/usr/local/include/python3.8/pymem.h"
+ 4067              		.file 19 "/usr/local/include/python3.8/cpython/object.h"
+ 4068              		.file 20 "/usr/local/include/python3.8/methodobject.h"
+ 4069              		.file 21 "/usr/local/include/python3.8/descrobject.h"
+ 4070              		.file 22 "/usr/local/include/python3.8/pyhash.h"
+ 4071              		.file 23 "/usr/local/include/python3.8/pydebug.h"
+ 4072              		.file 24 "/usr/local/include/python3.8/bytearrayobject.h"
+ 4073              		.file 25 "/usr/local/include/python3.8/bytesobject.h"
+ 4074              		.file 26 "/usr/local/include/python3.8/unicodeobject.h"
+ 4075              		.file 27 "/usr/local/include/python3.8/cpython/unicodeobject.h"
+ 4076              		.file 28 "/usr/local/include/python3.8/longintrepr.h"
+ 4077              		.file 29 "/usr/local/include/python3.8/longobject.h"
+ 4078              		.file 30 "/usr/local/include/python3.8/boolobject.h"
+ 4079              		.file 31 "/usr/local/include/python3.8/floatobject.h"
+ 4080              		.file 32 "/usr/local/include/python3.8/complexobject.h"
+ 4081              		.file 33 "/usr/local/include/python3.8/rangeobject.h"
+ 4082              		.file 34 "/usr/local/include/python3.8/memoryobject.h"
+ 4083              		.file 35 "/usr/local/include/python3.8/tupleobject.h"
+ 4084              		.file 36 "/usr/local/include/python3.8/listobject.h"
+ 4085              		.file 37 "/usr/local/include/python3.8/dictobject.h"
+ 4086              		.file 38 "/usr/local/include/python3.8/odictobject.h"
+ 4087              		.file 39 "/usr/local/include/python3.8/enumobject.h"
+ 4088              		.file 40 "/usr/local/include/python3.8/setobject.h"
+ 4089              		.file 41 "/usr/local/include/python3.8/moduleobject.h"
+ 4090              		.file 42 "/usr/local/include/python3.8/funcobject.h"
+ 4091              		.file 43 "/usr/local/include/python3.8/classobject.h"
+ 4092              		.file 44 "/usr/local/include/python3.8/fileobject.h"
+ 4093              		.file 45 "/usr/local/include/python3.8/cpython/fileobject.h"
+ 4094              		.file 46 "/usr/local/include/python3.8/pycapsule.h"
+ 4095              		.file 47 "/usr/local/include/python3.8/traceback.h"
+ 4096              		.file 48 "/usr/local/include/python3.8/sliceobject.h"
+ 4097              		.file 49 "/usr/local/include/python3.8/cellobject.h"
+ 4098              		.file 50 "/usr/local/include/python3.8/iterobject.h"
+ 4099              		.file 51 "/usr/local/include/python3.8/pystate.h"
+ 4100              		.file 52 "/usr/local/include/python3.8/cpython/pystate.h"
+ 4101              		.file 53 "/usr/local/include/python3.8/genobject.h"
+ 4102              		.file 54 "/usr/local/include/python3.8/weakrefobject.h"
+ 4103              		.file 55 "/usr/local/include/python3.8/structseq.h"
+ 4104              		.file 56 "/usr/local/include/python3.8/namespaceobject.h"
+ 4105              		.file 57 "/usr/local/include/python3.8/picklebufobject.h"
+ 4106              		.file 58 "/usr/local/include/python3.8/codecs.h"
+ 4107              		.file 59 "/usr/local/include/python3.8/pyerrors.h"
+ 4108              		.file 60 "/usr/local/include/python3.8/context.h"
+ 4109              		.file 61 "/usr/local/include/python3.8/modsupport.h"
+ 4110              		.file 62 "/usr/local/include/python3.8/code.h"
+ 4111              		.file 63 "/usr/local/include/python3.8/pythonrun.h"
+ 4112              		.file 64 "/usr/local/include/python3.8/ceval.h"
+ 4113              		.file 65 "/usr/local/include/python3.8/import.h"
+ 4114              		.file 66 "/usr/local/include/python3.8/bltinmodule.h"
+ 4115              		.file 67 "/usr/local/include/python3.8/pyctype.h"
+ 4116              		.file 68 "armwave.h"
+ 4117              		.file 69 "/usr/include/stdlib.h"
+ 4118              		.file 70 "/usr/local/include/python3.8/cpython/abstract.h"
+ 4119              		.file 71 "/usr/include/assert.h"
+ 4120              		.file 72 "<built-in>"
+ 4121              		.file 73 "/usr/include/arm-linux-gnueabihf/bits/mathcalls.h"
