@@ -160,7 +160,7 @@ void armwave_fill_pixbuf_256(uint32_t *out_buffer)
  */
 void armwave_fill_pixbuf_scaled(uint32_t *out_buffer)
 {
-    uint32_t xx, yy, ysub, word, wave_word;
+    uint32_t xx, yy, ye, y, ysub, word, wave_word;
     int rr, gg, bb, n, nsub, npix, w, vscale;
     uint8_t r, g, b, value, row;
     uint32_t *base_32ptr = (uint32_t*)g_armwave_state.ch1_buffer;
@@ -197,11 +197,19 @@ void armwave_fill_pixbuf_scaled(uint32_t *out_buffer)
 
                     // Do line scaling as necessary.
                     nsub = n + w;
-                    yy = (nsub & 0xff) * g_armwave_state.vscale;
+                    yy = (nsub & 0xff) * g_armwave_state.vscale_frac;
+                    ye = ((nsub & 0xff) + 1) * g_armwave_state.vscale_frac;
                     xx = (nsub >> 8);
 
+                    /*
                     for(row = 0; row < g_armwave_state.vscale; row++) {
                         offset = (xx + ((yy + row) * g_armwave_state.target_width)); 
+                        *(out_buffer_base + offset) = word;
+                    }
+                    */
+
+                    for(y = yy; y < ye; y++) {
+                        offset = (xx + (y * g_armwave_state.target_width)); 
                         *(out_buffer_base + offset) = word;
                     }
                 }
@@ -223,6 +231,7 @@ void armwave_setup_render(uint32_t start_point, uint32_t end_point, uint32_t wav
     // TODO these asserts should instead raise PyExc
     assert(start_point < end_point);
 
+    /*
     // target_height must be a power of two.  Only 256, 512, 1024 and 2048 height buffers are supported.
     assert(target_height == 256 || target_height == 512 || target_height == 1024 || target_height == 2048);
 
@@ -238,11 +247,13 @@ void armwave_setup_render(uint32_t start_point, uint32_t end_point, uint32_t wav
     } else if(target_height == 2048) {
         g_armwave_state.row_shift = 11;
         g_armwave_state.row_mask = 0x7ff;
-    } 
+    }
+    */
 
     // Calculate the size of each buffer.  Buffers are rotated by 90 degrees to improve cache coherency.
     g_armwave_state.xstride = target_height;
-    g_armwave_state.vscale = target_height / 256;
+    g_armwave_state.vscale_frac = target_height / 256.0f;
+    g_armwave_state.vscale = (int)g_armwave_state.vscale_frac;
     g_armwave_state.wave_stride = wave_stride;
     g_armwave_state.waves_max = waves_max;
     g_armwave_state.waves = waves_max;  // Need a function to be able to change this on the fly

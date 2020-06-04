@@ -32,6 +32,8 @@ struct armwave_state_t {
   uint8_t *wave_buffer;
   uint8_t *test_wave_buffer;
 
+  float vscale_frac;
+
   uint32_t xstride;
   uint32_t vscale;
   uint32_t wave_stride;
