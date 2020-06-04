@@ -36,7 +36,6 @@
 
 struct armwave_state_t g_armwave_state;
 
-uint8_t *test_wave_buffer; //[TEST_WAVE_SIZE * TEST_NWAVES];
 uint8_t gamma_table[256];
 
 /*
@@ -301,7 +300,7 @@ void armwave_set_wave_pointer(uint8_t *wave_buffer)
  */
 void armwave_set_wave_pointer_as_testbuf()
 {
-    g_armwave_state.wave_buffer = test_wave_buffer;
+    g_armwave_state.wave_buffer = g_armwave_state.test_wave_buffer;
 }
 
 /*
@@ -504,7 +503,7 @@ void armwave_test_create_am_sine(float mod, float noise_fraction)
             v = (sin((6.28f * x * (1.0f / g_armwave_state.wave_length)) + xnoise) * mod_val) * noise;
             //v = ((x & 0xff) / 128.0f) - 1.0f;
             printf("%d = %d\n", x + (w * g_armwave_state.wave_stride), MIN(MAX(128 + (v * 127), 0), 255));
-            test_wave_buffer[x + (w * g_armwave_state.wave_stride)] = MIN(MAX(128 + (v * 127), 0), 255);
+            g_armwave_state.test_wave_buffer[x + (w * g_armwave_state.wave_stride)] = MIN(MAX(128 + (v * 127), 0), 255);
         }
     }
 }
@@ -546,7 +545,7 @@ void armwave_test_create_square(float noise_fraction)
             level = ((level * 3) + new_level) * 0.25f;
 
             v = (uint8_t)(CLAMP(level + noise, 0.0f, 1.0f) * 255);
-            test_wave_buffer[x + (w * g_armwave_state.wave_stride)] = v;
+            g_armwave_state.test_wave_buffer[x + (w * g_armwave_state.wave_stride)] = v;
         }
     }
 }
