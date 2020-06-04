@@ -21,9 +21,6 @@
 
 #include "armwave.h"
 
-#define TEST_WAVE_SIZE              2048
-#define TEST_NWAVES                 64
-
 #define ARMWAVE_VER                 "v0.0.1"
 
 #define MAX(a,b)                    ((a) > (b) ? (a) : (b))
@@ -384,6 +381,8 @@ void armwave_test_generate()
     memset(g_armwave_state.ch1_buffer, 0, g_armwave_state.ch_buff_size);
 
     for(yy = 0; yy < (2048 / g_armwave_state.slice_height); yy++) {
+        printf("armwave_test_generate: slice %d (y=%d, h=%d)\n", yy, yy * g_armwave_state.slice_height, g_armwave_state.slice_record_height);
+
         render_nonaa_to_buffer_1ch_slice(yy * g_armwave_state.slice_height, g_armwave_state.slice_record_height);
     }
 }
@@ -456,11 +455,11 @@ void armwave_test_create_am_sine(float mod, float noise_fraction)
     float v, noise, xnoise, mod_val;
     int w, x;
 
-    for(w = 0; w < TEST_NWAVES; w++) {
+    for(w = 0; w < g_armwave_state.waves; w++) {
         mod_val = 0.5f + (((float)w / TEST_NWAVES) * mod);
         //mod = 1.0f;
 
-        for(x = 0; x < TEST_WAVE_SIZE; x++) {
+        for(x = 0; x < g_armwave_state.wave_length; x++) {
             noise  = ((rand() & 0xffff) * noise_fraction);
             noise *= noise;
             noise *= noise;
@@ -472,9 +471,9 @@ void armwave_test_create_am_sine(float mod, float noise_fraction)
             noise += 1.0f;
             xnoise = (rand() & 0xffff) / 6553500.0f;
 
-            v = (sin((6.28f * x * (1.0f / TEST_WAVE_SIZE)) + xnoise) * mod_val) * noise;
+            v = (sin((6.28f * x * (1.0f / g_armwave_state.wave_length)) + xnoise) * mod_val) * noise;
             //v = ((x & 0xff) / 128.0f) - 1.0f;
-            test_wave_buffer[x + (w * TEST_WAVE_SIZE)] = MIN(MAX(128 + (v * 127), 0), 255);
+            test_wave_buffer[x + (w * g_armwave_state.wave_stride)] = MIN(MAX(128 + (v * 127), 0), 255);
         }
     }
 }
@@ -491,8 +490,8 @@ void armwave_test_create_square(float noise_fraction)
     float level = 0.8f, new_level = 0.8f;
     int w, x;
 
-    for(w = 0; w < TEST_NWAVES; w++) {
-        for(x = 0; x < TEST_WAVE_SIZE; x++) {
+    for(w = 0; w < g_armwave_state.waves; w++) {
+        for(x = 0; x < g_armwave_state.wave_length; x++) {
             noise  = ((rand() & 0xffff) * noise_fraction);
             noise *= noise;
             noise *= noise;
@@ -503,11 +502,11 @@ void armwave_test_create_square(float noise_fraction)
 
             //noise += 1.0f;
 
-            if(x > (TEST_WAVE_SIZE * 0.75f)) {
+            if(x > (g_armwave_state.wave_length * 0.75f)) {
                 new_level = 0.2f;
-            } else if(x > (TEST_WAVE_SIZE * 0.5f)) {
+            } else if(x > (g_armwave_state.wave_length * 0.5f)) {
                 new_level = 0.8f;
-            } else if(x > (TEST_WAVE_SIZE * 0.25f)) {
+            } else if(x > (g_armwave_state.wave_length * 0.25f)) {
                 new_level = 0.2f;
             } else {
                 new_level = 0.8f;
@@ -516,7 +515,7 @@ void armwave_test_create_square(float noise_fraction)
             level = ((level * 3) + new_level) * 0.25f;
 
             v = (uint8_t)(CLAMP(level + noise, 0.0f, 1.0f) * 255);
-            test_wave_buffer[x + (w * TEST_WAVE_SIZE)] = v;
+            test_wave_buffer[x + (w * g_armwave_state.wave_stride)] = v;
         }
     }
 }
