@@ -429,13 +429,6 @@ PyObject *armwave_fill_pixbuf_into_pybuffer(PyObject *buf_obj)
 
     printf("armwave_fill_pixbuf_into_pybuffer: start\n");
 
-    if(buffer == NULL) {
-        printf("armwave_fill_pixbuf_into_pybuffer: passed NULL buffer, returning PyFalse\n");
-        Py_RETURN_FALSE;
-    }
-
-    // printf("buffer is not null\n");
-
     ret = PyObject_GetBuffer(buf_obj, &buffer, PyBUF_SIMPLE | PyBUF_WRITABLE);
 
     if(ret != 0) {
