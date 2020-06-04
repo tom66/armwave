@@ -39,6 +39,7 @@ struct armwave_state_t {
   uint32_t bitdepth_height;
   uint32_t slice_height;
   uint32_t slice_record_height;
+  uint32_t wave_length;
   uint32_t ch_buff_size;
   uint32_t size;
 
