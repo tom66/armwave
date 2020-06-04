@@ -422,22 +422,34 @@ void armwave_test_fill_gdkbuf(PyObject *buf)
 /*
  * Fill a pixbuf PyBuffer with a rendered waveform.
  */
-void armwave_fill_pixbuf_into_pybuffer(PyObject *buf_obj)
+PyObject *armwave_fill_pixbuf_into_pybuffer(PyObject *buf_obj)
 {
-    Py_buffer *buffer = malloc(sizeof(Py_buffer));
-    printf("buffer=0x%08x\n", buffer);
+    Py_buffer buffer;
+    int ret;
 
-    assert(buffer != NULL);
-    printf("buffer is not null\n");
+    printf("armwave_fill_pixbuf_into_pybuffer: start\n");
 
-    assert(PyObject_GetBuffer(buf_obj, buffer, PyBUF_SIMPLE | PyBUF_WRITABLE) != 0);
-    printf("PyObject_GetBuffer did not trigger assert: buffer->buf=0x%08x, buffer->obj=0x%08x, buffer->len=%d\n", buffer->buf, buffer->obj, buffer->len);
+    if(buffer == NULL) {
+        printf("armwave_fill_pixbuf_into_pybuffer: passed NULL buffer, returning PyFalse\n");
+        Py_RETURN_FALSE;
+    }
 
-    armwave_fill_pixbuf_scaled(buffer->buf);
-    printf("buffer fill done\n");
+    // printf("buffer is not null\n");
 
-    PyBuffer_Release(buffer);
-    printf("buffer released from reality\n");
+    ret = PyObject_GetBuffer(buf_obj, &buffer, PyBUF_SIMPLE | PyBUF_WRITABLE);
+
+    if(ret != 0) {
+        printf("armwave_fill_pixbuf_into_pybuffer: PyObject_GetBuffer() failed, returning PyFalse\n");
+        Py_RETURN_FALSE;
+    }
+
+    //printf("PyObject_GetBuffer did not trigger assert: buffer->buf=0x%08x, buffer->obj=0x%08x, buffer->len=%d\n", buffer->buf, buffer->obj, buffer->len);
+
+    armwave_fill_pixbuf_scaled(buffer.buf);
+    printf("armwave_fill_pixbuf_into_pybuffer: buffer fill done\n");
+
+    PyBuffer_Release(&buffer);
+    printf("armwave_fill_pixbuf_into_pybuffer: done\n");
 }
 
 /*
