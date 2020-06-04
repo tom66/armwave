@@ -469,6 +469,8 @@ PyObject *armwave_fill_pixbuf_into_pybuffer(PyObject *buf_obj)
 
     PyBuffer_Release(&buffer);
     printf("armwave_fill_pixbuf_into_pybuffer: done\n");
+
+    Py_RETURN_TRUE;
 }
 
 /*
