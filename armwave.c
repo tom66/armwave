@@ -77,12 +77,12 @@ void render_nonaa_to_buffer_1ch_slice(uint32_t slice_y, uint32_t height)
     uint8_t *write_buffer_base;
     uint8_t *write_buffer;
 
-    printf("ch1_buffer=0x%08x\n", g_armwave_state.ch1_buffer);
+    //printf("ch1_buffer=0x%08x\n", g_armwave_state.ch1_buffer);
     write_buffer_base = g_armwave_state.ch1_buffer + (slice_y * g_armwave_state.bitdepth_height);
 
     // roll through each waveform
     for(w = 0; w < g_armwave_state.waves; w++) {
-        printf("wave_buffer=0x%08x\n", g_armwave_state.wave_buffer);
+        //printf("wave_buffer=0x%08x\n", g_armwave_state.wave_buffer);
         wave_base = g_armwave_state.wave_buffer + slice_y + (w * g_armwave_state.wave_stride);
 
         // roll through y and render the slice into the out buffer
@@ -388,7 +388,7 @@ void armwave_test_generate()
 
     memset(g_armwave_state.ch1_buffer, 0, g_armwave_state.ch_buff_size);
 
-    for(yy = 0; yy < (2048 / g_armwave_state.slice_height); yy++) {
+    for(yy = 0; yy < (g_armwave_state.target_width / g_armwave_state.slice_height); yy++) {
         printf("armwave_test_generate: slice %d (y=%d, h=%d)\n", yy, yy * g_armwave_state.slice_height, g_armwave_state.slice_record_height);
 
         render_nonaa_to_buffer_1ch_slice(yy * g_armwave_state.slice_height, g_armwave_state.slice_record_height);
