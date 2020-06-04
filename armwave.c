@@ -252,7 +252,7 @@ void armwave_setup_render(uint32_t start_point, uint32_t end_point, uint32_t wav
     g_armwave_state.ch_buff_size = g_armwave_state.bitdepth_height * target_width;
     g_armwave_state.target_width = target_width;
     g_armwave_state.target_height = target_height;
-    g_armwave_state.wave_length = start_point - end_point;
+    g_armwave_state.wave_length = end_point - start_point;
 
     printf("ch_buff_size=%d\n", g_armwave_state.ch_buff_size);
 
