@@ -371,7 +371,7 @@ void armwave_test_init(int wave_size, int nwaves, int render_width, int render_h
     // make ch1 yellowish by default
     armwave_set_channel_colour(1, 2550, 1780, 250);
 
-    test_wave_buffer = calloc(wave_size * nwaves);
+    test_wave_buffer = calloc(wave_size * nwaves, 1);
 
     if(test_wave_buffer == NULL) {
         printf("armwave_test_init: failed to allocate test wave buffer (%d bytes)\n", wave_size * nwaves);
