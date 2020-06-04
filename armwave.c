@@ -375,13 +375,6 @@ void armwave_test_init(int wave_size, int nwaves, int render_width, int render_h
     // make ch1 yellowish by default
     armwave_set_channel_colour(1, 2550, 1780, 250);
 
-    test_wave_buffer = calloc(wave_size * nwaves, 1);
-
-    if(test_wave_buffer == NULL) {
-        printf("armwave_test_init: failed to allocate test wave buffer (%d bytes)\n", wave_size * nwaves);
-        return;
-    }
-
     armwave_setup_render(0, wave_size, nwaves, wave_size, render_width, render_height, 0x00000000);
 
     printf("armwave version: %s\n", ARMWAVE_VER);
@@ -435,6 +428,23 @@ void armwave_test_fill_gdkbuf(PyObject *buf)
 }
 
 /*
+ * Allocate a test buffer, freeing any existing buffer.
+ */
+void armwave_test_buffer_alloc()
+{
+    if(g_armwave_state.test_wave_buffer != NULL) {
+        free(g_armwave_state.test_wave_buffer);
+    }
+
+    g_armwave_state.test_wave_buffer = calloc(wave_size * nwaves, 1);
+
+    if(g_armwave_state.test_wave_buffer == NULL) {
+        printf("armwave_test_buffer_alloc: failed to allocate test wave buffer (%d bytes)\n", wave_size * nwaves);
+        return;
+    }
+}
+
+/*
  * Fill a pixbuf PyBuffer with a rendered waveform.
  */
 PyObject *armwave_fill_pixbuf_into_pybuffer(PyObject *buf_obj)
@@ -470,6 +480,8 @@ void armwave_test_create_am_sine(float mod, float noise_fraction)
 {
     float v, noise, xnoise, mod_val;
     int w, x;
+
+    armwave_test_buffer_alloc();
 
     for(w = 0; w < g_armwave_state.waves; w++) {
         mod_val = 0.5f + (((float)w / TEST_NWAVES) * mod);
@@ -544,8 +556,10 @@ void armwave_cleanup()
     free(g_armwave_state.out_pixbuf);
     free(g_armwave_state.ch1_buffer);
     free(g_armwave_state.xcoord_to_xpixel);
+    free(g_armwave_state.test_wave_buffer);
 
     g_armwave_state.out_pixbuf = NULL;
     g_armwave_state.ch1_buffer = NULL;
     g_armwave_state.xcoord_to_xpixel = NULL;
+    g_armwave_state.test_wave_buffer = NULL;
 }

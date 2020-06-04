@@ -30,6 +30,7 @@ struct armwave_state_t {
   uint8_t *ch4_buffer;
 
   uint8_t *wave_buffer;
+  uint8_t *test_wave_buffer;
 
   uint32_t xstride;
   uint32_t vscale;
@@ -79,6 +80,7 @@ void armwave_test_create_square(float noise_fraction);
 void armwave_test_create_am_sine(float mod, float noise_fraction);
 
 void armwave_test_init(int wave_size, int nwaves, int render_width, int render_height);
+void armwave_test_buffer_alloc();
 void armwave_test_generate(void);
 void armwave_test_fill_outbuf(void);
 void armwave_test_fill_gdkbuf(PyObject *buf);
