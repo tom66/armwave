@@ -214,6 +214,7 @@ void armwave_setup_render(uint32_t start_point, uint32_t end_point, uint32_t wav
     uint32_t length, xx;
     float points_per_pixel;
 
+    // TODO these asserts should instead raise PyExc
     assert(start_point < end_point);
 
     // target_height must be a power of two.  Only 256, 512, 1024 and 2048 height buffers are supported.
@@ -244,6 +245,7 @@ void armwave_setup_render(uint32_t start_point, uint32_t end_point, uint32_t wav
     g_armwave_state.ch_buff_size = g_armwave_state.bitdepth_height * target_width;
     g_armwave_state.target_width = target_width;
     g_armwave_state.target_height = target_height;
+    g_armwave_state.wave_length = start_point - end_point;
 
     printf("ch_buff_size=%d\n", g_armwave_state.ch_buff_size);
 
