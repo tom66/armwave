@@ -436,10 +436,10 @@ void armwave_test_buffer_alloc()
         free(g_armwave_state.test_wave_buffer);
     }
 
-    g_armwave_state.test_wave_buffer = calloc(wave_size * nwaves, 1);
+    g_armwave_state.test_wave_buffer = calloc(g_armwave_state.wave_length * g_armwave_state.waves_max, 1);
 
     if(g_armwave_state.test_wave_buffer == NULL) {
-        printf("armwave_test_buffer_alloc: failed to allocate test wave buffer (%d bytes)\n", wave_size * nwaves);
+        printf("armwave_test_buffer_alloc: failed to allocate test wave buffer (%d bytes)\n", g_armwave_state.wave_length * g_armwave_state.waves_max);
         return;
     }
 }
