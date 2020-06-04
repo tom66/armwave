@@ -21,6 +21,9 @@
 
 #include "armwave.h"
 
+#define TEST_NWAVES                 64
+#define TEST_WAVE_SIZE              2048
+
 #define ARMWAVE_VER                 "v0.0.1"
 
 #define MAX(a,b)                    ((a) > (b) ? (a) : (b))
@@ -33,7 +36,7 @@
 
 struct armwave_state_t g_armwave_state;
 
-uint8_t test_wave_buffer[TEST_WAVE_SIZE * TEST_NWAVES];
+uint8_t *test_wave_buffer; //[TEST_WAVE_SIZE * TEST_NWAVES];
 uint8_t gamma_table[256];
 
 /*
@@ -361,14 +364,21 @@ void armwave_dump_ppm_debug(uint32_t *buffer, char *fn)
 /*
  * Initialise some test functionry.
  */
-void armwave_test_init(int render_width, int render_height)
+void armwave_test_init(int wave_size, int nwaves, int render_width, int render_height)
 {
     test_create_gamma();
 
     // make ch1 yellowish by default
     armwave_set_channel_colour(1, 2550, 1780, 250);
 
-    armwave_setup_render(0, TEST_WAVE_SIZE, TEST_NWAVES, TEST_WAVE_SIZE, render_width, render_height, 0x00000000);
+    test_wave_buffer = calloc(wave_size * nwaves);
+
+    if(test_wave_buffer == NULL) {
+        printf("armwave_test_init: failed to allocate test wave buffer (%d bytes)\n", wave_size * nwaves);
+        return;
+    }
+
+    armwave_setup_render(0, wave_size, nwaves, wave_size, render_width, render_height, 0x00000000);
 
     printf("armwave version: %s\n", ARMWAVE_VER);
 }
