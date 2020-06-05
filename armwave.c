@@ -96,7 +96,7 @@ void render_nonaa_to_buffer_1ch_slice(uint32_t slice_y, uint32_t height)
                 scale_value = (word & 0xff);
                 
                 // prevents saturating behaviour; we lose two ADC counts.
-                if(COND_UNLIKELY(value == 0x00 || value == 0xff))
+                if(COND_UNLIKELY(scale_value == 0x00 || scale_value == 0xff))
                     continue;
 
                 write_buffer = write_buffer_base + ((yy + ys) * g_armwave_state.bitdepth_height);
