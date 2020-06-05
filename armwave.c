@@ -71,7 +71,7 @@ void render_nonaa_to_buffer_1ch_slice(uint32_t slice_y, uint32_t height)
 
     // roll through each waveform
     for(w = 0; w < g_armwave_state.waves; w++) {
-        wave_base = g_armwave_state.wave_buffer + ((slice_y * g_armwave_state.cmp_x_bitdepth_scale) >> AM_XCOORD_MULT_SHIFT) + (w * g_armwave_state.wave_stride);
+        wave_base = g_armwave_state.wave_buffer + slice_y + (w * g_armwave_state.wave_stride);
 
         // roll through y and render the slice into the out buffer
         // buffer is rendered rotated by 90 degrees
