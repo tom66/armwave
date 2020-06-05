@@ -16,6 +16,7 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include <malloc.h>
 #include <string.h>
 #include <math.h>
 
@@ -196,17 +197,21 @@ void armwave_fill_pixbuf_scaled(uint32_t *out_buffer)
                     word = 0xff000000 | (b << 16) | (g << 8) | r;
 
                     // Do line scaling as necessary.
+                    /*
                     nsub = n + w;
-                    yy = (nsub & 0xff) * g_armwave_state.vscale_frac;
-                    ye = ((nsub & 0xff) + 1) * g_armwave_state.vscale_frac;
+                    yy = (nsub & 0xff) * g_armwave_state.vscale;
                     xx = (nsub >> 8);
 
-                    /*
                     for(row = 0; row < g_armwave_state.vscale; row++) {
                         offset = (xx + ((yy + row) * g_armwave_state.target_width)); 
                         *(out_buffer_base + offset) = word;
                     }
                     */
+
+                    nsub = n + w;
+                    yy = (nsub & 0xff) * g_armwave_state.vscale_frac;
+                    ye = ((nsub & 0xff) + 1) * g_armwave_state.vscale_frac;
+                    xx = (nsub >> 8);
 
                     for(y = yy; y < ye; y++) {
                         offset = (xx + (y * g_armwave_state.target_width)); 
@@ -293,6 +298,11 @@ void armwave_setup_render(uint32_t start_point, uint32_t end_point, uint32_t wav
     }
 
     g_armwave_state.out_pixbuf = malloc(sizeof(uint32_t) * g_armwave_state.size);
+
+    printf("Ptrs: 0x%08x 0x%08x 0x%08x 0x%08x \n", \
+        g_armwave_state.ch1_buffer, g_armwave_state.xcoord_to_xpixel, g_armwave_state.out_pixbuf, g_armwave_state.test_wave_buffer);
+
+    malloc_stats();
 }
 
 /*
