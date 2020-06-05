@@ -72,41 +72,23 @@ void armwave_init()
  */
 void render_nonaa_to_buffer_1ch_slice(uint32_t slice_y, uint32_t height)
 {
-    int yy, ys, w, scale_value;
+    int yy, ys, w;
     uint32_t value, word;
     uint8_t *wave_base;
     uint8_t *write_buffer_base;
     uint8_t *write_buffer;
 
-    //printf("ch1_buffer=0x%08x\n", g_armwave_state.ch1_buffer);
     write_buffer_base = g_armwave_state.ch1_buffer + (slice_y * g_armwave_state.bitdepth_height);
 
     // roll through each waveform
     for(w = 0; w < g_armwave_state.waves; w++) {
-        //printf("wave_buffer=0x%08x\n", g_armwave_state.wave_buffer);
         wave_base = g_armwave_state.wave_buffer + slice_y + (w * g_armwave_state.wave_stride);
 
-        // roll through y and render the slice into the out buffer
-        // buffer is rendered rotated by 90 degrees
-        for(yy = 0; yy < height; yy += 4) {
-            word = *(uint32_t*)(wave_base + yy);
-
-            for(ys = 0; ys < 4; ys++) {
-                //printf("write %d,%d ht %d\n", yy, ys, g_armwave_state.bitdepth_height);
-                scale_value = (word & 0xff);
-                
-                // prevents saturating behaviour; we lose two ADC counts.
-                if(COND_UNLIKELY(scale_value == 0x00 || scale_value == 0xff))
-                    continue;
-
-                write_buffer = write_buffer_base + ((yy + ys) * g_armwave_state.bitdepth_height);
-                *(write_buffer + scale_value) += 1;
-                word >>= 8;
-            }
-        }
+        _render_nonaa_to_buffer_1ch_slice_core(write_buffer_base, wave_base, height);
     }
 }
 
+#if 0
 /*
  * Fill a pixbuf with a 256-height waveform.
  */
@@ -159,6 +141,7 @@ void armwave_fill_pixbuf_256(uint32_t *out_buffer)
         } 
     }
 }
+#endif
 
 /*
  * Fill a pixbuf with a multiple of a 256-height waveform.
@@ -243,25 +226,6 @@ void armwave_setup_render(uint32_t start_point, uint32_t end_point, uint32_t wav
     // TODO these asserts should instead raise PyExc
     assert(start_point < end_point);
 
-    /*
-    // target_height must be a power of two.  Only 256, 512, 1024 and 2048 height buffers are supported.
-    assert(target_height == 256 || target_height == 512 || target_height == 1024 || target_height == 2048);
-
-    if(target_height == 256) {
-        g_armwave_state.row_shift = 8;
-        g_armwave_state.row_mask = 0x0ff;
-    } else if(target_height == 512) {
-        g_armwave_state.row_shift = 9;
-        g_armwave_state.row_mask = 0x1ff;
-    } else if(target_height == 1024) {
-        g_armwave_state.row_shift = 10;
-        g_armwave_state.row_mask = 0x3ff;
-    } else if(target_height == 2048) {
-        g_armwave_state.row_shift = 11;
-        g_armwave_state.row_mask = 0x7ff;
-    }
-    */
-
     // Calculate the size of each buffer.  Buffers are rotated by 90 degrees to improve cache coherency.
     g_armwave_state.xstride = target_height;
     g_armwave_state.vscale_frac = target_height / 255.0f;
@@ -275,6 +239,9 @@ void armwave_setup_render(uint32_t start_point, uint32_t end_point, uint32_t wav
     g_armwave_state.target_width = target_width;
     g_armwave_state.target_height = target_height;
     g_armwave_state.wave_length = end_point - start_point;
+
+    // Calculate compound scaler
+    g_armwave_state.cmp_x_bitdepth_scale = g_armwave_state.bitdepth_height * (1 << AM_XCOORD_MULT_SHIFT);
 
     printf("ch_buff_size=%d\n", g_armwave_state.ch_buff_size);
 
@@ -463,7 +430,6 @@ void armwave_test_fill_gdkbuf(PyObject *buf)
     // Holy jesus dear mother of God, what have we done?
     void *out_pixbuf = ((uint32_t ***)buf)[2][10];
     
-    // TODO: use armwave_fill_pixbuf_256 for 256-height buffers for performance?
     armwave_fill_pixbuf_scaled(out_pixbuf);
 }
 
