@@ -166,9 +166,11 @@ void armwave_fill_pixbuf_256(uint32_t *out_buffer)
  */
 void armwave_fill_pixbuf_scaled(uint32_t *out_buffer)
 {
-    uint32_t xx, yy, ye, y, ysub, word, wave_word;
-    int rr, gg, bb, n, nsub, npix, w, vscale;
-    uint8_t r, g, b, value, row;
+    uint32_t xx, yy, ye, y, word, wave_word;
+    // uint32_t ysub;
+    int rr, gg, bb, n, nsub, npix, w;
+    uint8_t r, g, b, value; 
+    // uint8_t row;
     uint32_t *base_32ptr = (uint32_t*)g_armwave_state.ch1_buffer;
     uint32_t *out_buffer_base = out_buffer;
     uint32_t offset;
@@ -176,7 +178,7 @@ void armwave_fill_pixbuf_scaled(uint32_t *out_buffer)
     assert(out_buffer != NULL);
 
     npix = g_armwave_state.target_width * 256; 
-    vscale = g_armwave_state.target_height >> 8;
+    //vscale = g_armwave_state.target_height >> 8;
 
     for(n = 0; n < npix; n += 4) {
         // Read a 32-bit word at a time.  If any bits are nonzero, we need to process
@@ -305,7 +307,10 @@ void armwave_setup_render(uint32_t start_point, uint32_t end_point, uint32_t wav
     g_armwave_state.out_pixbuf = malloc(sizeof(uint32_t) * g_armwave_state.size);
 
     printf("Ptrs: 0x%08x 0x%08x 0x%08x 0x%08x \n", \
-        g_armwave_state.ch1_buffer, g_armwave_state.xcoord_to_xpixel, g_armwave_state.out_pixbuf, g_armwave_state.test_wave_buffer);
+        (uint32_t)g_armwave_state.ch1_buffer, \
+        (uint32_t)g_armwave_state.xcoord_to_xpixel, \
+        (uint32_t)g_armwave_state.out_pixbuf, \
+        (uint32_t)g_armwave_state.test_wave_buffer);
 
     malloc_stats();
 }
@@ -324,9 +329,14 @@ void armwave_set_wave_pointer(uint8_t *wave_buffer)
  * Set the wave buffer pointer as the test waveform buffer filled by such functions
  * as `armwave_test_create_square` and `armwave_test_create_am_sine`.
  */
-void armwave_set_wave_pointer_as_testbuf()
+void armwave_set_wave_pointer_as_testbuf(int set)
 {
-    g_armwave_state.wave_buffer = g_armwave_state.test_wave_buffer;
+    if(set > g_armwave_state.test_wave_buffer_nsets) {
+        printf("armwave_set_wave_pointer_as_testbuf: error, nsets exceeded\n");
+        return;
+    }
+
+    g_armwave_state.wave_buffer = g_armwave_state.test_wave_buffer + (g_armwave_state.test_wave_buffer_stride * set);
 }
 
 /*
@@ -460,7 +470,7 @@ void armwave_test_fill_gdkbuf(PyObject *buf)
 /*
  * Allocate a test buffer, freeing any existing buffer.
  */
-void armwave_test_buffer_alloc()
+void armwave_test_buffer_alloc(int nsets)
 {
     if(g_armwave_state.test_wave_buffer != NULL) {
         free(g_armwave_state.test_wave_buffer);
@@ -468,10 +478,11 @@ void armwave_test_buffer_alloc()
 
     //printf("armwave_test_buffer_alloc: length=%d max=%d\n", g_armwave_state.wave_length, g_armwave_state.waves_max);
 
-    g_armwave_state.test_wave_buffer = calloc(g_armwave_state.wave_length * g_armwave_state.waves_max, 1);
+    g_armwave_state.test_wave_buffer = calloc(g_armwave_state.wave_length * g_armwave_state.waves_max, nsets);
 
     if(g_armwave_state.test_wave_buffer == NULL) {
-        printf("armwave_test_buffer_alloc: failed to allocate test wave buffer (%d bytes)\n", g_armwave_state.wave_length * g_armwave_state.waves_max);
+        printf("armwave_test_buffer_alloc: failed to allocate test wave buffer (%d bytes, %d sets)\n", \
+            g_armwave_state.wave_length * g_armwave_state.waves_max * nsets, nsets);
         return;
     }
 }
@@ -507,37 +518,48 @@ PyObject *armwave_fill_pixbuf_into_pybuffer(PyObject *buf_obj)
 /*
  * Make a test AM waveform for render tests.
  *
- * @param   mod                 modulation depth
- * @param   noise_fraction      typically 1e-6
+ * @param   mod                     modulation depth
+ * @param   noise_fraction          typically 1e-6
+ * @param   number of wave sets     1-N, must have memory for these
  */
-void armwave_test_create_am_sine(float mod, float noise_fraction)
+void armwave_test_create_am_sine(float mod, float noise_fraction, int sets)
 {
     float v, noise, xnoise, mod_val;
+    float _1_waves_mod = mod * (1.0f / g_armwave_state.waves);
+    int s, set_offset = 0;
     int w, x;
 
-    armwave_test_buffer_alloc();
+    g_armwave_state.test_wave_buffer_stride = (g_armwave_state.waves * g_armwave_state.wave_stride);
+    g_armwave_state.test_wave_buffer_nsets = sets;
+    armwave_test_buffer_alloc(sets);
 
-    for(w = 0; w < g_armwave_state.waves; w++) {
-        mod_val = 0.5f + (((float)w / TEST_NWAVES) * mod);
-        //mod = 1.0f;
+    for(s = 0; s < sets; s++) {
+        printf("Calculating test set %d\n", s);
+    
+        for(w = 0; w < g_armwave_state.waves; w++) {
+            //mod_val = 0.5f + (((float)w / g_armwave_state.waves) * mod);
+            mod_val = 0.5f + (_1_waves_mod * w);
 
-        for(x = 0; x < g_armwave_state.wave_length; x++) {
-            noise  = ((rand() & 0xffff) * noise_fraction);
-            noise *= noise;
-            noise *= noise;
-            noise *= noise;
+            for(x = 0; x < g_armwave_state.wave_length; x++) {
+                noise  = ((rand() & 0xffff) * noise_fraction);
+                noise *= noise;
+                noise *= noise;
+                noise *= noise;
 
-            if((rand() & 0xffff) > 0x7fff)
-                noise = -noise;
+                if((rand() & 0xffff) > 0x7fff)
+                    noise = -noise;
 
-            noise += 1.0f;
-            xnoise = (rand() & 0xffff) / 6553500.0f;
+                noise += 1.0f;
+                xnoise = (rand() & 0xffff) / 6553500.0f;
 
-            v = (sin((6.28f * x * (1.0f / g_armwave_state.wave_length)) + xnoise) * mod_val) * noise;
-            //v = ((x & 0xff) / 128.0f) - 1.0f;
-            //printf("%d = %d\n", x + (w * g_armwave_state.wave_stride), MIN(MAX(128 + (v * 127), 0), 255));
-            g_armwave_state.test_wave_buffer[x + (w * g_armwave_state.wave_stride)] = (uint8_t)MIN(MAX(128 + (v * 127), 0), 255);
+                v = (sin((6.28f * x * (1.0f / g_armwave_state.wave_length)) + xnoise) * mod_val) * noise;
+                //v = ((x & 0xff) / 128.0f) - 1.0f;
+                //printf("%d = %d\n", x + (w * g_armwave_state.wave_stride), MIN(MAX(128 + (v * 127), 0), 255));
+                g_armwave_state.test_wave_buffer[x + (w * g_armwave_state.wave_stride) + set_offset] = (uint8_t)MIN(MAX(128 + (v * 127), 0), 255);
+            }
         }
+
+        set_offset += (g_armwave_state.waves * g_armwave_state.wave_stride);
     }
 }
 
@@ -546,6 +568,7 @@ void armwave_test_create_am_sine(float mod, float noise_fraction)
  *
  * @param   noise_fraction      typically 1e-6
  */
+#if 0
 void armwave_test_create_square(float noise_fraction)
 {
     uint8_t v;
@@ -582,6 +605,7 @@ void armwave_test_create_square(float noise_fraction)
         }
     }
 }
+#endif
 
 /*
  * Free all buffers and set to NULL, ready to be reinitialised or stopped.

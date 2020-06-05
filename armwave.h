@@ -30,26 +30,29 @@ struct armwave_state_t {
   uint8_t *ch4_buffer;
 
   uint8_t *wave_buffer;
+
   uint8_t *test_wave_buffer;
+  uint32_t test_wave_buffer_stride;
+  uint32_t test_wave_buffer_nsets;
 
   float vscale_frac;
 
-  uint32_t xstride;
-  uint32_t vscale;
-  uint32_t wave_stride;
-  uint32_t waves;
-  uint32_t waves_max;
-  uint32_t bitdepth_height;
-  uint32_t slice_height;
-  uint32_t slice_record_height;
-  uint32_t wave_length;
-  uint32_t ch_buff_size;
-  uint32_t size;
+  int xstride;
+  int vscale;
+  int wave_stride;
+  int waves;
+  int waves_max;
+  int bitdepth_height;
+  int slice_height;
+  int slice_record_height;
+  int wave_length;
+  int ch_buff_size;
+  int size;
 
-  uint32_t target_width;
-  uint32_t target_height;
+  int target_width;
+  int target_height;
 
-  uint32_t row_shift;
+  int row_shift;
   uint32_t row_mask;
 
   uint32_t *out_pixbuf;
@@ -69,7 +72,7 @@ void render_nonaa_to_buffer_1ch_slice(uint32_t slice_y, uint32_t height);
 void armwave_init(void);
 void armwave_setup_render(uint32_t start_point, uint32_t end_point, uint32_t waves_max, uint32_t wave_stride, uint32_t target_width, uint32_t target_height, uint32_t render_flags);
 void armwave_set_wave_pointer(uint8_t *wave_buffer);
-void armwave_set_wave_pointer_as_testbuf(void);
+void armwave_set_wave_pointer_as_testbuf(int set);
 void armwave_set_wave_pointer_u32(uint32_t wave_buffer_ptr);
 void armwave_set_channel_colour(int ch, int r, int g, int b);
 void armwave_clear_buffer(uint32_t flags);
@@ -78,8 +81,8 @@ void armwave_fill_pixbuf_scaled(uint32_t *out_buffer);
 PyObject *armwave_fill_pixbuf_into_pybuffer(PyObject *buf_obj);
 void armwave_dump_ppm_debug(uint32_t *buffer, char *fn);
 
-void armwave_test_create_square(float noise_fraction);
-void armwave_test_create_am_sine(float mod, float noise_fraction);
+//void armwave_test_create_square(float noise_fraction);
+void armwave_test_create_am_sine(float mod, float noise_fraction, int sets);
 
 void armwave_test_init(int wave_size, int nwaves, int render_width, int render_height);
 void armwave_test_buffer_alloc();
