@@ -72,8 +72,26 @@ void render_nonaa_to_buffer_1ch_slice(uint32_t slice_y, uint32_t height)
     // roll through each waveform
     for(w = 0; w < g_armwave_state.waves; w++) {
         wave_base = g_armwave_state.wave_buffer + slice_y + (w * g_armwave_state.wave_stride);
+        
+        // roll through y and render the slice into the out buffer
+        // buffer is rendered rotated by 90 degrees
+        for(yy = 0; yy < height; yy += 4) {
+            word = *(uint32_t*)(wave_base + yy);
 
-        _render_nonaa_to_buffer_1ch_slice_core(write_buffer_base, wave_base, height);
+            for(ys = 0; ys < 4; ys++) {
+                scale_value = word & 0xff;
+                
+                // prevents saturating behaviour; we lose two ADC counts.
+                if(COND_UNLIKELY(scale_value == 0x00 || scale_value == 0xff))
+                    continue;
+
+                // Keep math in integer where possible using the compound X multiplier and a shift by 8.  Limits sub-resolution
+                // of X to 1/256 but this should not be an ultimate issue.
+                write_buffer = write_buffer_base + (((yy + ys) * g_armwave_state.cmp_x_bitdepth_scale) >> AM_XCOORD_MULT_SHIFT);
+                *(write_buffer + scale_value) += 1;
+                word >>= 8;
+            }
+        }
     }
 }
 
