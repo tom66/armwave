@@ -20,7 +20,6 @@
 #define AM_XCOORD_MULT_SHIFT        8
 
 #define ATTR_ALWAYS_INLINE          __attribute__((always_inline))
-#define INLINE_STATIC_VOID          static inline void
 
 struct armwave_color_mix_t {
   int16_t r, g, b;
