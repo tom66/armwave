@@ -20,6 +20,18 @@
 #define AM_XCOORD_MULT_SHIFT        8
 
 #define ATTR_ALWAYS_INLINE          __attribute__((always_inline))
+#define INLINE_STATIC_VOID          static inline void
+
+#define TEST_NWAVES                 64
+#define TEST_WAVE_SIZE              2048
+
+#define MAX(a,b)                    ((a) > (b) ? (a) : (b))
+#define MIN(a,b)                    ((a) < (b) ? (a) : (b))
+
+#define CLAMP(x,mi,mx)              MIN(MAX((x),mi),mx)
+
+#define COND_UNLIKELY(expr)         __builtin_expect((expr), 0)
+#define COND_LIKELY(expr)           __builtin_expect((expr), 1)
 
 struct armwave_color_mix_t {
   int16_t r, g, b;

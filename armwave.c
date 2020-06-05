@@ -22,6 +22,8 @@
 
 #include "armwave.h"
 
+#define ARMWAVE_VER  "v0.0.1"
+
 struct armwave_state_t g_armwave_state;
 
 uint8_t gamma_table[256];
