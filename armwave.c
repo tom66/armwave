@@ -56,8 +56,9 @@ void armwave_init()
  */
 ATTR_ALWAYS_INLINE INLINE_STATIC_VOID _render_nonaa_to_buffer_1ch_slice_core0(uint32_t *write_buffer_base, uint32_t *wave_base, int height)
 {
+    int scale_value, yy, ys;
+    uint32_t *write_buffer;
     uint32_t word;
-    int scale_value;
 
     // roll through y and render the slice into the out buffer
     // buffer is rendered rotated by 90 degrees
