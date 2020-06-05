@@ -426,7 +426,8 @@ void armwave_test_generate()
 
     memset(g_armwave_state.ch1_buffer, 0, g_armwave_state.ch_buff_size);
 
-    for(yy = 0; yy < (g_armwave_state.target_width / g_armwave_state.slice_height); yy++) {
+    //for(yy = 0; yy < (g_armwave_state.target_width / g_armwave_state.slice_height); yy++) {
+    for(yy = 0; yy < 4; yy++) {
         //printf("armwave_test_generate: slice %d (y=%d, h=%d)\n", yy, yy * g_armwave_state.slice_height, g_armwave_state.slice_record_height);
 
         render_nonaa_to_buffer_1ch_slice(yy * g_armwave_state.slice_height, g_armwave_state.slice_record_height);
