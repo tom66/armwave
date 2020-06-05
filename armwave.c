@@ -61,7 +61,7 @@ void armwave_init()
  */
 void render_nonaa_to_buffer_1ch_slice(uint32_t slice_y, uint32_t height)
 {
-    int yy, ys, w;
+    int yy, ys, w, scale_value;
     uint32_t value, word;
     uint8_t *wave_base;
     uint8_t *write_buffer_base;
@@ -72,7 +72,7 @@ void render_nonaa_to_buffer_1ch_slice(uint32_t slice_y, uint32_t height)
     // roll through each waveform
     for(w = 0; w < g_armwave_state.waves; w++) {
         wave_base = g_armwave_state.wave_buffer + slice_y + (w * g_armwave_state.wave_stride);
-        
+
         // roll through y and render the slice into the out buffer
         // buffer is rendered rotated by 90 degrees
         for(yy = 0; yy < height; yy += 4) {
