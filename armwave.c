@@ -22,19 +22,6 @@
 
 #include "armwave.h"
 
-#define TEST_NWAVES                 64
-#define TEST_WAVE_SIZE              2048
-
-#define ARMWAVE_VER                 "v0.0.1"
-
-#define MAX(a,b)                    ((a) > (b) ? (a) : (b))
-#define MIN(a,b)                    ((a) < (b) ? (a) : (b))
-
-#define CLAMP(x,mi,mx)              MIN(MAX((x),mi),mx)
-
-#define COND_UNLIKELY(expr)         __builtin_expect((expr), 0)
-#define COND_LIKELY(expr)           __builtin_expect((expr), 1)
-
 struct armwave_state_t g_armwave_state;
 
 uint8_t gamma_table[256];
@@ -65,7 +52,7 @@ void armwave_init()
 /*
  * Core inline to do part of a render operation.
  */
-inline void _render_nonaa_to_buffer_1ch_slice_core0(uint32_t *write_buffer_base, uint32_t *wave_base, int height) ATTR_ALWAYS_INLINE
+ATTR_ALWAYS_INLINE INLINE_STATIC_VOID _render_nonaa_to_buffer_1ch_slice_core0(uint32_t *write_buffer_base, uint32_t *wave_base, int height)
 {
     uint32_t word;
     int scale_value;
