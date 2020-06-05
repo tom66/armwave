@@ -20,6 +20,7 @@
 #define AM_XCOORD_MULT_SHIFT        8
 
 #define ATTR_ALWAYS_INLINE          __attribute__((always_inline))
+#define INLINE_STATIC_VOID          inline static void
 
 struct armwave_color_mix_t {
   int16_t r, g, b;
@@ -77,7 +78,7 @@ struct armwave_state_t {
 /*
  * Function prototypes.
  */
-inline static void _render_nonaa_to_buffer_1ch_slice_core0(uint32_t *write_buffer_base, uint32_t *wave_base, int height) ATTR_ALWAYS_INLINE;
+INLINE_STATIC_VOID _render_nonaa_to_buffer_1ch_slice_core0(uint32_t *write_buffer_base, uint32_t *wave_base, int height) ATTR_ALWAYS_INLINE;
 
 void render_nonaa_to_buffer_1ch_slice(uint32_t slice_y, uint32_t height);
 void armwave_init(void);
@@ -107,7 +108,7 @@ void armwave_cleanup(void);
 /*
  * Core inline to do part of a render operation.
  */
-inline static void _render_nonaa_to_buffer_1ch_slice_core0(uint32_t *write_buffer_base, uint32_t *wave_base, int height) ATTR_ALWAYS_INLINE
+INLINE_STATIC_VOID _render_nonaa_to_buffer_1ch_slice_core0(uint32_t *write_buffer_base, uint32_t *wave_base, int height) ATTR_ALWAYS_INLINE
 {
     uint32_t word;
     int scale_value;
