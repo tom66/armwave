@@ -267,9 +267,12 @@ void armwave_setup_render(uint32_t start_point, uint32_t end_point, uint32_t wav
     g_armwave_state.wave_length = end_point - start_point;
 
     // Calculate compound scaler
-    g_armwave_state.cmp_x_bitdepth_scale = g_armwave_state.bitdepth_height * (1 << AM_XCOORD_MULT_SHIFT);
+    //g_armwave_state.cmp_x_bitdepth_scale = g_armwave_state.bitdepth_height * (1 << AM_XCOORD_MULT_SHIFT);
+    g_armwave_state.cmp_x_bitdepth_scale = \
+        (int)g_armwave_state.bitdepth_height * ((float)(g_armwave_state.target_width) / g_armwave_state.wave_length) * (1 << AM_XCOORD_MULT_SHIFT);
 
-    printf("ch_buff_size=%d\n", g_armwave_state.ch_buff_size);
+    printf("ch_buff_size=%d, cmp_x_bitdepth_scale=%d (0x%08x)\n", \
+        g_armwave_state.ch_buff_size, g_armwave_state.cmp_x_bitdepth_scale, g_armwave_state.cmp_x_bitdepth_scale);
 
     // In 1ch mode, target 1024 x 16 render buffer, reading 16 bytes at a time from each wave, retaining as much as possible in L1/L2 cache
     // In 2ch mode, target two 1024 x 8 render buffers, reading 16 bytes at a time from each wave
