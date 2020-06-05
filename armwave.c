@@ -411,7 +411,7 @@ void armwave_test_generate()
     memset(g_armwave_state.ch1_buffer, 0, g_armwave_state.ch_buff_size);
 
     for(yy = 0; yy < (g_armwave_state.target_width / g_armwave_state.slice_height); yy++) {
-        printf("armwave_test_generate: slice %d (y=%d, h=%d)\n", yy, yy * g_armwave_state.slice_height, g_armwave_state.slice_record_height);
+        //printf("armwave_test_generate: slice %d (y=%d, h=%d)\n", yy, yy * g_armwave_state.slice_height, g_armwave_state.slice_record_height);
 
         render_nonaa_to_buffer_1ch_slice(yy * g_armwave_state.slice_height, g_armwave_state.slice_record_height);
         xx_rem -= g_armwave_state.slice_height;
@@ -461,7 +461,7 @@ void armwave_test_buffer_alloc()
         free(g_armwave_state.test_wave_buffer);
     }
 
-    printf("armwave_test_buffer_alloc: length=%d max=%d\n", g_armwave_state.wave_length, g_armwave_state.waves_max);
+    //printf("armwave_test_buffer_alloc: length=%d max=%d\n", g_armwave_state.wave_length, g_armwave_state.waves_max);
 
     g_armwave_state.test_wave_buffer = calloc(g_armwave_state.wave_length * g_armwave_state.waves_max, 1);
 
@@ -479,7 +479,7 @@ PyObject *armwave_fill_pixbuf_into_pybuffer(PyObject *buf_obj)
     Py_buffer buffer;
     int ret;
 
-    printf("armwave_fill_pixbuf_into_pybuffer: start\n");
+    //printf("armwave_fill_pixbuf_into_pybuffer: start\n");
 
     ret = PyObject_GetBuffer(buf_obj, &buffer, PyBUF_SIMPLE | PyBUF_WRITABLE);
 
@@ -491,10 +491,10 @@ PyObject *armwave_fill_pixbuf_into_pybuffer(PyObject *buf_obj)
     //printf("PyObject_GetBuffer did not trigger assert: buffer->buf=0x%08x, buffer->obj=0x%08x, buffer->len=%d\n", buffer->buf, buffer->obj, buffer->len);
 
     armwave_fill_pixbuf_scaled(buffer.buf);
-    printf("armwave_fill_pixbuf_into_pybuffer: buffer fill done\n");
+    //printf("armwave_fill_pixbuf_into_pybuffer: buffer fill done\n");
 
     PyBuffer_Release(&buffer);
-    printf("armwave_fill_pixbuf_into_pybuffer: done\n");
+    //printf("armwave_fill_pixbuf_into_pybuffer: done\n");
 
     Py_RETURN_TRUE;
 }
