@@ -3753,24 +3753,24 @@ armwave_cleanup:
 	.section	.rodata
 	.align	2
 	.set	.LANCHOR0,. + 0
-	.type	__PRETTY_FUNCTION__.17097, %object
-	.size	__PRETTY_FUNCTION__.17097, 27
-__PRETTY_FUNCTION__.17097:
+	.type	__PRETTY_FUNCTION__.17095, %object
+	.size	__PRETTY_FUNCTION__.17095, 27
+__PRETTY_FUNCTION__.17095:
 	.ascii	"armwave_fill_pixbuf_scaled\000"
 	.space	1
-	.type	__PRETTY_FUNCTION__.17119, %object
-	.size	__PRETTY_FUNCTION__.17119, 21
-__PRETTY_FUNCTION__.17119:
+	.type	__PRETTY_FUNCTION__.17117, %object
+	.size	__PRETTY_FUNCTION__.17117, 21
+__PRETTY_FUNCTION__.17117:
 	.ascii	"armwave_setup_render\000"
 	.space	3
-	.type	__PRETTY_FUNCTION__.17126, %object
-	.size	__PRETTY_FUNCTION__.17126, 25
-__PRETTY_FUNCTION__.17126:
+	.type	__PRETTY_FUNCTION__.17124, %object
+	.size	__PRETTY_FUNCTION__.17124, 25
+__PRETTY_FUNCTION__.17124:
 	.ascii	"armwave_set_wave_pointer\000"
 	.space	3
-	.type	__PRETTY_FUNCTION__.17133, %object
-	.size	__PRETTY_FUNCTION__.17133, 29
-__PRETTY_FUNCTION__.17133:
+	.type	__PRETTY_FUNCTION__.17131, %object
+	.size	__PRETTY_FUNCTION__.17131, 29
+__PRETTY_FUNCTION__.17131:
 	.ascii	"armwave_set_wave_pointer_u32\000"
 	.section	.rodata.str1.4,"aMS",%progbits,1
 	.align	2
@@ -9634,7 +9634,7 @@ __PRETTY_FUNCTION__.17133:
 	.4byte	0x2d7c
 	.uleb128 0x5
 	.byte	0x3
-	.4byte	__PRETTY_FUNCTION__.17133
+	.4byte	__PRETTY_FUNCTION__.17131
 	.uleb128 0x31
 	.4byte	.LVL85
 	.4byte	0x35cc
@@ -9725,7 +9725,7 @@ __PRETTY_FUNCTION__.17133:
 	.4byte	0x2e39
 	.uleb128 0x5
 	.byte	0x3
-	.4byte	__PRETTY_FUNCTION__.17126
+	.4byte	__PRETTY_FUNCTION__.17124
 	.uleb128 0x31
 	.4byte	.LVL77
 	.4byte	0x35cc
@@ -9862,7 +9862,7 @@ __PRETTY_FUNCTION__.17133:
 	.4byte	0x3075
 	.uleb128 0x5
 	.byte	0x3
-	.4byte	__PRETTY_FUNCTION__.17119
+	.4byte	__PRETTY_FUNCTION__.17117
 	.uleb128 0x2f
 	.4byte	.LVL57
 	.4byte	0x3582
@@ -10215,7 +10215,7 @@ __PRETTY_FUNCTION__.17133:
 	.4byte	0x3191
 	.uleb128 0x5
 	.byte	0x3
-	.4byte	__PRETTY_FUNCTION__.17097
+	.4byte	__PRETTY_FUNCTION__.17095
 	.byte	0
 	.uleb128 0xc
 	.4byte	0x10a

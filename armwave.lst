@@ -5463,28 +5463,28 @@
  3753              		.section	.rodata
  3754              		.align	2
  3755              		.set	.LANCHOR0,. + 0
- 3758              	__PRETTY_FUNCTION__.17097:
+ 3758              	__PRETTY_FUNCTION__.17095:
  3759 0000 61726D77 		.ascii	"armwave_fill_pixbuf_scaled\000"
  3759      6176655F 
  3759      66696C6C 
  3759      5F706978 
  3759      6275665F 
  3760 001b 00       		.space	1
- 3763              	__PRETTY_FUNCTION__.17119:
+ 3763              	__PRETTY_FUNCTION__.17117:
  3764 001c 61726D77 		.ascii	"armwave_setup_render\000"
  3764      6176655F 
  3764      73657475 
  3764      705F7265 
  3764      6E646572 
  3765 0031 000000   		.space	3
- 3768              	__PRETTY_FUNCTION__.17126:
+ 3768              	__PRETTY_FUNCTION__.17124:
  3769 0034 61726D77 		.ascii	"armwave_set_wave_pointer\000"
  3769      6176655F 
  3769      7365745F 
  3769      77617665 
  3769      5F706F69 
  3770 004d 000000   		.space	3
- 3773              	__PRETTY_FUNCTION__.17133:
+ 3773              	__PRETTY_FUNCTION__.17131:
  3774 0050 61726D77 		.ascii	"armwave_set_wave_pointer_u32\000"
  3774      6176655F 
  3774      7365745F 
