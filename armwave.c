@@ -65,7 +65,7 @@ void armwave_init()
 /*
  * Core inline to do part of a render operation.
  */
-static inline void _render_nonaa_to_buffer_1ch_slice_core0(uint32_t *write_buffer_base, uint32_t *wave_base, int height) ATTR_ALWAYS_INLINE
+inline void _render_nonaa_to_buffer_1ch_slice_core0(uint32_t *write_buffer_base, uint32_t *wave_base, int height) ATTR_ALWAYS_INLINE
 {
     uint32_t word;
     int scale_value;
