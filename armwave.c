@@ -70,7 +70,9 @@ void render_nonaa_to_buffer_1ch_slice(uint32_t slice_y, uint32_t height)
     //write_buffer_base = g_armwave_state.ch1_buffer + (slice_y * g_armwave_state.bitdepth_height);
     write_buffer_base = g_armwave_state.ch1_buffer + ((slice_y * g_armwave_state.cmp_x_bitdepth_scale) >> AM_XCOORD_MULT_SHIFT);
 
-    printf("0x%08x 0x%08x %d\n", write_buffer_base, g_armwave_state.ch1_buffer, write_buffer_base - g_armwave_state.ch1_buffer);
+    printf("b=0x%08x ch1=0x%08x off=%d slice_y=%d height=%d\n", \
+        write_buffer_base, g_armwave_state.ch1_buffer, write_buffer_base - g_armwave_state.ch1_buffer, \
+        slice_y, height);
 
     // roll through each waveform
     for(w = 0; w < g_armwave_state.waves; w++) {
