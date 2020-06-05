@@ -170,6 +170,7 @@ void armwave_fill_pixbuf_256(uint32_t *out_buffer)
         } 
     }
 }
+#endif
 
 /*
  * Fill a pixbuf with a multiple of a 256-height waveform.
