@@ -52,36 +52,6 @@ void armwave_init()
 }
 
 /*
- * Core inline to do part of a render operation.
- */
-ATTR_ALWAYS_INLINE INLINE_STATIC_VOID _render_nonaa_to_buffer_1ch_slice_core0(uint32_t *write_buffer_base, uint32_t *wave_base, int height)
-{
-    int scale_value, yy, ys;
-    uint32_t *write_buffer;
-    uint32_t word;
-
-    // roll through y and render the slice into the out buffer
-    // buffer is rendered rotated by 90 degrees
-    for(yy = 0; yy < height; yy += 4) {
-        word = *(uint32_t*)(wave_base + yy);
-
-        for(ys = 0; ys < 4; ys++) {
-            scale_value = word & 0xff;
-            
-            // prevents saturating behaviour; we lose two ADC counts.
-            if(COND_UNLIKELY(scale_value == 0x00 || scale_value == 0xff))
-                continue;
-
-            // Keep math in integer where possible using the compound X multiplier and a shift by 8.  Limits sub-resolution
-            // of X to 1/256 but this should not be an ultimate issue.
-            write_buffer = write_buffer_base + (((yy + ys) * g_armwave_state.cmp_x_bitdepth_scale) >> AM_XCOORD_MULT_SHIFT);
-            *(write_buffer + scale_value) += 1;
-            word >>= 8;
-        }
-    }
-}
-
-/*
  * 1ch renderer, renders up to slice-height buffer with X-coord of each waveaccess
  * pre-computed.
  *

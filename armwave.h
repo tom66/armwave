@@ -89,7 +89,9 @@ struct armwave_state_t {
 /*
  * Function prototypes.
  */
+ATTR_ALWAYS_INLINE INLINE_STATIC_VOID _render_nonaa_to_buffer_1ch_slice_core0(uint32_t *write_buffer_base, uint32_t *wave_base, int height);
 void render_nonaa_to_buffer_1ch_slice(uint32_t slice_y, uint32_t height);
+
 void armwave_init(void);
 void armwave_setup_render(uint32_t start_point, uint32_t end_point, uint32_t waves_max, uint32_t wave_stride, uint32_t target_width, uint32_t target_height, uint32_t render_flags);
 void armwave_set_wave_pointer(uint8_t *wave_buffer);
@@ -111,5 +113,34 @@ void armwave_test_generate(void);
 void armwave_test_fill_outbuf(void);
 void armwave_test_fill_gdkbuf(PyObject *buf);
 void armwave_test_dump_buffer_to_ppm(char *fn);
-
 void armwave_cleanup(void);
+
+/*
+ * Core inline to do part of a render operation.
+ */
+ATTR_ALWAYS_INLINE INLINE_STATIC_VOID _render_nonaa_to_buffer_1ch_slice_core0(uint32_t *write_buffer_base, uint32_t *wave_base, int height)
+{
+    int scale_value, yy, ys;
+    uint32_t *write_buffer;
+    uint32_t word;
+
+    // roll through y and render the slice into the out buffer
+    // buffer is rendered rotated by 90 degrees
+    for(yy = 0; yy < height; yy += 4) {
+        word = *(uint32_t*)(wave_base + yy);
+
+        for(ys = 0; ys < 4; ys++) {
+            scale_value = word & 0xff;
+            
+            // prevents saturating behaviour; we lose two ADC counts.
+            if(COND_UNLIKELY(scale_value == 0x00 || scale_value == 0xff))
+                continue;
+
+            // Keep math in integer where possible using the compound X multiplier and a shift by 8.  Limits sub-resolution
+            // of X to 1/256 but this should not be an ultimate issue.
+            write_buffer = write_buffer_base + (((yy + ys) * g_armwave_state.cmp_x_bitdepth_scale) >> AM_XCOORD_MULT_SHIFT);
+            *(write_buffer + scale_value) += 1;
+            word >>= 8;
+        }
+    }
+}
