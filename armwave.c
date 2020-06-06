@@ -232,6 +232,28 @@ void armwave_fill_pixbuf_scaled(uint32_t *out_buffer)
 }
 
 /*
+ * Fill buffers with rendered waveform (only supports Ch1 so far.)
+ */
+void armwave_generate()
+{
+    uint32_t yy;
+    uint32_t xx_rem = g_armwave_state.target_width, ypos = 0;
+
+    memset(g_armwave_state.ch1_buffer, 0, g_armwave_state.ch_buff_size);
+
+    //for(yy = 0; yy < (g_armwave_state.wave_length / g_armwave_state.slice_height); yy++) {
+    for(yy = 0; yy < 5; yy++) {
+        //printf("armwave_generate: slice %d (y=%d, h=%d)\n", yy, yy * g_armwave_state.slice_height, g_armwave_state.slice_record_height);
+
+        render_nonaa_to_buffer_1ch_slice(yy * g_armwave_state.slice_height, g_armwave_state.slice_record_height);
+        xx_rem -= g_armwave_state.slice_record_height;
+        ypos += g_armwave_state.slice_record_height;
+    }
+
+    //render_nonaa_to_buffer_1ch_slice(ypos, xx_rem);
+}
+
+/*
  * Setup the renderer with passed parameters.
  */
 void armwave_setup_render(uint32_t start_point, uint32_t end_point, uint32_t waves_max, uint32_t wave_stride, uint32_t target_width, uint32_t target_height, uint32_t render_flags)
@@ -591,27 +613,6 @@ void armwave_test_create_square(float noise_fraction)
     }
 }
 #endif
-
-/*
- * Fill buffers with rendered waveform (only supports Ch1 so far.)
- */
-void armwave_generate()
-{
-    uint32_t yy;
-    uint32_t xx_rem = g_armwave_state.target_width, ypos = 0;
-
-    memset(g_armwave_state.ch1_buffer, 0, g_armwave_state.ch_buff_size);
-
-    for(yy = 0; yy < (g_armwave_state.wave_length / g_armwave_state.slice_height); yy++) {
-        //printf("armwave_generate: slice %d (y=%d, h=%d)\n", yy, yy * g_armwave_state.slice_height, g_armwave_state.slice_record_height);
-
-        render_nonaa_to_buffer_1ch_slice(yy * g_armwave_state.slice_height, g_armwave_state.slice_record_height);
-        xx_rem -= g_armwave_state.slice_record_height;
-        ypos += g_armwave_state.slice_record_height;
-    }
-
-    //render_nonaa_to_buffer_1ch_slice(ypos, xx_rem);
-}
 
 /*
  * Free all buffers and set to NULL, ready to be reinitialised or stopped.
