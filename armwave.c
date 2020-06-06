@@ -420,27 +420,6 @@ void armwave_test_init(int wave_size, int nwaves, int render_width, int render_h
 }
 
 /*
- * Fill buffers with test funtionry.
- */
-void armwave_test_generate()
-{
-    uint32_t yy;
-    uint32_t xx_rem = g_armwave_state.target_width, ypos = 0;
-
-    memset(g_armwave_state.ch1_buffer, 0, g_armwave_state.ch_buff_size);
-
-    for(yy = 0; yy < (g_armwave_state.wave_length / g_armwave_state.slice_height); yy++) {
-        //printf("armwave_test_generate: slice %d (y=%d, h=%d)\n", yy, yy * g_armwave_state.slice_height, g_armwave_state.slice_record_height);
-
-        render_nonaa_to_buffer_1ch_slice(yy * g_armwave_state.slice_height, g_armwave_state.slice_record_height);
-        xx_rem -= g_armwave_state.slice_record_height;
-        ypos += g_armwave_state.slice_record_height;
-    }
-
-    //render_nonaa_to_buffer_1ch_slice(ypos, xx_rem);
-}
-
-/*
  * Render image to the local allocated buffer.
  */
 void armwave_test_fill_outbuf()
@@ -610,6 +589,27 @@ void armwave_test_create_square(float noise_fraction)
     }
 }
 #endif
+
+/*
+ * Fill buffers with rendered waveform (only supports Ch1 so far.)
+ */
+void armwave_generate()
+{
+    uint32_t yy;
+    uint32_t xx_rem = g_armwave_state.target_width, ypos = 0;
+
+    memset(g_armwave_state.ch1_buffer, 0, g_armwave_state.ch_buff_size);
+
+    for(yy = 0; yy < (g_armwave_state.wave_length / g_armwave_state.slice_height); yy++) {
+        //printf("armwave_generate: slice %d (y=%d, h=%d)\n", yy, yy * g_armwave_state.slice_height, g_armwave_state.slice_record_height);
+
+        render_nonaa_to_buffer_1ch_slice(yy * g_armwave_state.slice_height, g_armwave_state.slice_record_height);
+        xx_rem -= g_armwave_state.slice_record_height;
+        ypos += g_armwave_state.slice_record_height;
+    }
+
+    //render_nonaa_to_buffer_1ch_slice(ypos, xx_rem);
+}
 
 /*
  * Free all buffers and set to NULL, ready to be reinitialised or stopped.
