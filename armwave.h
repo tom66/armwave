@@ -17,7 +17,7 @@
 #define AM_FLAG_DONT_RENDER_CH_4    0x00000080
 #define AM_FLAG_RENDER_PIX_AA       0x00000100
 
-#define AM_XCOORD_MULT_SHIFT        8
+#define AM_XCOORD_MULT_SHIFT        16
 
 #define ATTR_ALWAYS_INLINE          __attribute__((always_inline))
 #define INLINE_STATIC_VOID          static inline void
