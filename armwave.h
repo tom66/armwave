@@ -108,7 +108,7 @@ void armwave_test_create_am_sine(float mod, float noise_fraction, int sets);
 
 void armwave_test_init(int wave_size, int nwaves, int render_width, int render_height);
 void armwave_test_buffer_alloc();
-void armwave_test_generate(int debug);
+void armwave_test_generate();
 void armwave_test_fill_outbuf(void);
 void armwave_test_fill_gdkbuf(PyObject *buf);
 void armwave_test_dump_buffer_to_ppm(char *fn);
