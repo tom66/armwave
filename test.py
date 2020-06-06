@@ -31,7 +31,7 @@ wnd.override_background_color(Gtk.StateFlags.NORMAL, Gdk.RGBA(0.2, 0.2, 0.2, 1.0
 
 #Glib.timeout_add(
 #Gtk.main()
-
+ 
 Gtk.main_iteration()
 
 ts = time.time()
