@@ -75,14 +75,14 @@ void render_nonaa_to_buffer_1ch_slice(uint32_t slice_y, uint32_t height)
         write_buffer_base - g_armwave_state.ch1_buffer, slice_y, height);
 
     // roll through each waveform
-    for(w = 0; w < 1 /*g_armwave_state.waves*/; w++) {
+    for(w = 0; w < g_armwave_state.waves; w++) {
         wave_base = g_armwave_state.wave_buffer + slice_y + (w * g_armwave_state.wave_stride);
-
-        printf("w=%d stride=%d sly=%d wave_base=0x%08x\n", w, g_armwave_state.wave_stride, slice_y, wave_base);
 
         // roll through y and render the slice into the out buffer
         // buffer is rendered rotated by 90 degrees
         for(yy = 0; yy < height; yy += 4) {
+            printf("w=%d stride=%d sly=%d wave_base=0x%08x yy=%d\n", w, g_armwave_state.wave_stride, slice_y, wave_base, yy);
+
             word = *(uint32_t*)(wave_base + yy);
 
             for(ys = 0; ys < 4; ys++) {
@@ -99,6 +99,9 @@ void render_nonaa_to_buffer_1ch_slice(uint32_t slice_y, uint32_t height)
                 // we set our accumulation buffer to 16 bits.)
                 write_buffer = write_buffer_base + \
                     ((((yy + ys) * g_armwave_state.cmp_x_bitdepth_scale) >> AM_XCOORD_MULT_SHIFT) * g_armwave_state.bitdepth_height);
+
+                printf("write_buff=0x%08x value=%d\n", write_buffer, value);
+
                 *(write_buffer + scale_value) += 1;
                 word >>= 8;
             }
