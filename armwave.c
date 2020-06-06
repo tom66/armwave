@@ -68,7 +68,7 @@ void render_nonaa_to_buffer_1ch_slice(uint32_t slice_y, uint32_t height)
     uint8_t *write_buffer;
 
     //write_buffer_base = g_armwave_state.ch1_buffer + (slice_y * g_armwave_state.bitdepth_height);
-    write_buffer_base = g_armwave_state.ch1_buffer + ((slice_y * g_armwave_state.cmp_x_bitdepth_scale) >> AM_XCOORD_MULT_SHIFT);
+    write_buffer_base = g_armwave_state.ch1_buffer + (((slice_y * g_armwave_state.cmp_x_bitdepth_scale) >> AM_XCOORD_MULT_SHIFT) * g_armwave_state.bitdepth_height);
 
     printf("b=0x%08x ch1=0x%08x off=%d slice_y=%d height=%d\n", \
         write_buffer_base, g_armwave_state.ch1_buffer, write_buffer_base - g_armwave_state.ch1_buffer, \
@@ -84,15 +84,19 @@ void render_nonaa_to_buffer_1ch_slice(uint32_t slice_y, uint32_t height)
             word = *(uint32_t*)(wave_base + yy);
 
             for(ys = 0; ys < 4; ys++) {
+                // maybe worth preloading the base address here...
                 scale_value = word & 0xff;
                 
                 // prevents saturating behaviour; we lose two ADC counts.
                 if(COND_UNLIKELY(scale_value == 0x00 || scale_value == 0xff))
                     continue;
 
-                // Keep math in integer where possible using the compound X multiplier and a shift by 8.  Limits sub-resolution
-                // of X to 1/256 but this should not be an ultimate issue.
-                write_buffer = write_buffer_base + (((yy + ys) * g_armwave_state.cmp_x_bitdepth_scale) >> AM_XCOORD_MULT_SHIFT);
+                // Keep math in integer where possible.  We compute the X scale and then multiply to get the correct 
+                // base coordinate.  The value of the point then informs us where to write in typically an 8-bit window.
+                // The bonus of this method is that we tend to hit accesses along a 256 byte line.  (512 byte lines if
+                // we set our accumulation buffer to 16 bits.)
+                write_buffer = write_buffer_base + \
+                    ((((yy + ys) * g_armwave_state.cmp_x_bitdepth_scale) >> AM_XCOORD_MULT_SHIFT) * g_armwave_state.bitdepth_height);
                 *(write_buffer + scale_value) += 1;
                 word >>= 8;
             }
@@ -266,15 +270,14 @@ void armwave_setup_render(uint32_t start_point, uint32_t end_point, uint32_t wav
     g_armwave_state.waves = waves_max;  // Need a function to be able to change this on the fly
     g_armwave_state.size = target_height * target_width;
     g_armwave_state.bitdepth_height = 256;  // Always 256 possible levels in 8-bit mode
-    g_armwave_state.ch_buff_size = g_armwave_state.bitdepth_height * target_width;
+    g_armwave_state.ch_buff_size = (g_armwave_state.bitdepth_height + 4) * (target_width + 4);  // Add word padding too
     g_armwave_state.target_width = target_width;
     g_armwave_state.target_height = target_height;
     g_armwave_state.wave_length = end_point - start_point;
 
     // Calculate compound scaler
-    //g_armwave_state.cmp_x_bitdepth_scale = g_armwave_state.bitdepth_height * (1 << AM_XCOORD_MULT_SHIFT);
     g_armwave_state.cmp_x_bitdepth_scale = \
-        (int)g_armwave_state.bitdepth_height * ((float)(g_armwave_state.target_width) / g_armwave_state.wave_length) * (1 << AM_XCOORD_MULT_SHIFT);
+        ((float)(g_armwave_state.target_width) / g_armwave_state.wave_length) * (1 << AM_XCOORD_MULT_SHIFT);
 
     printf("ch_buff_size=%d, cmp_x_bitdepth_scale=%d (0x%08x)\n", \
         g_armwave_state.ch_buff_size, g_armwave_state.cmp_x_bitdepth_scale, g_armwave_state.cmp_x_bitdepth_scale);
