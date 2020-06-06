@@ -1960,20 +1960,20 @@ armwave_test_generate:
 	bl	memset		@
 .LVL125:
 	.loc 1 432 5 is_stmt 1 view .LVU481
-@ armwave.c:432:     for(yy = 0; yy < (g_armwave_state.target_width / g_armwave_state.slice_height); yy++) {
-	.loc 1 432 69 is_stmt 0 view .LVU482
+@ armwave.c:432:     for(yy = 0; yy < (g_armwave_state.wave_length / g_armwave_state.slice_height); yy++) {
+	.loc 1 432 68 is_stmt 0 view .LVU482
 	ldr	r6, [r9, #68]	@ _9, g_armwave_state.slice_height
-@ armwave.c:432:     for(yy = 0; yy < (g_armwave_state.target_width / g_armwave_state.slice_height); yy++) {
-	.loc 1 432 52 view .LVU483
-	ldr	r0, [r9, #88]	@, g_armwave_state.target_width
+@ armwave.c:432:     for(yy = 0; yy < (g_armwave_state.wave_length / g_armwave_state.slice_height); yy++) {
+	.loc 1 432 51 view .LVU483
+	ldr	r0, [r9, #76]	@, g_armwave_state.wave_length
 	mov	r1, r6	@, _9
 	bl	__aeabi_idiv		@
 .LVL126:
-@ armwave.c:432:     for(yy = 0; yy < (g_armwave_state.target_width / g_armwave_state.slice_height); yy++) {
+@ armwave.c:432:     for(yy = 0; yy < (g_armwave_state.wave_length / g_armwave_state.slice_height); yy++) {
 	.loc 1 432 5 view .LVU484
 	cmp	r0, #0	@,
 	beq	.L113		@,
-@ armwave.c:432:     for(yy = 0; yy < (g_armwave_state.target_width / g_armwave_state.slice_height); yy++) {
+@ armwave.c:432:     for(yy = 0; yy < (g_armwave_state.wave_length / g_armwave_state.slice_height); yy++) {
 	.loc 1 432 12 view .LVU485
 	mov	fp, #0	@ yy,
 	mov	r8, fp	@ yy, yy
@@ -2279,20 +2279,20 @@ armwave_test_generate:
 .LBE30:
 	.loc 1 436 9 is_stmt 1 view .LVU586
 	.loc 1 437 9 view .LVU587
-@ armwave.c:432:     for(yy = 0; yy < (g_armwave_state.target_width / g_armwave_state.slice_height); yy++) {
-	.loc 1 432 69 is_stmt 0 view .LVU588
+@ armwave.c:432:     for(yy = 0; yy < (g_armwave_state.wave_length / g_armwave_state.slice_height); yy++) {
+	.loc 1 432 68 is_stmt 0 view .LVU588
 	ldr	r6, [r9, #68]	@ _9, g_armwave_state.slice_height
-@ armwave.c:432:     for(yy = 0; yy < (g_armwave_state.target_width / g_armwave_state.slice_height); yy++) {
-	.loc 1 432 52 view .LVU589
-	ldr	r0, [r9, #88]	@, g_armwave_state.target_width
+@ armwave.c:432:     for(yy = 0; yy < (g_armwave_state.wave_length / g_armwave_state.slice_height); yy++) {
+	.loc 1 432 51 view .LVU589
+	ldr	r0, [r9, #76]	@, g_armwave_state.wave_length
 	mov	r1, r6	@, _9
 	bl	__aeabi_idiv		@
 .LVL144:
-@ armwave.c:432:     for(yy = 0; yy < (g_armwave_state.target_width / g_armwave_state.slice_height); yy++) {
-	.loc 1 432 87 view .LVU590
+@ armwave.c:432:     for(yy = 0; yy < (g_armwave_state.wave_length / g_armwave_state.slice_height); yy++) {
+	.loc 1 432 86 view .LVU590
 	add	r8, r8, #1	@ yy, yy,
 .LVL145:
-@ armwave.c:432:     for(yy = 0; yy < (g_armwave_state.target_width / g_armwave_state.slice_height); yy++) {
+@ armwave.c:432:     for(yy = 0; yy < (g_armwave_state.wave_length / g_armwave_state.slice_height); yy++) {
 	.loc 1 432 5 view .LVU591
 	cmp	r0, r8	@, yy
 	bhi	.L114		@,
