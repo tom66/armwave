@@ -183,7 +183,7 @@ void armwave_fill_pixbuf_scaled(uint32_t *out_buffer)
     assert(out_buffer != NULL);
 
     // we don't really want to be doing this
-    memset(out_buffer, 0x01, g_armwave_state.target_width * g_armwave_state.target_height * 4);
+    //memset(out_buffer, 0x01, g_armwave_state.target_width * g_armwave_state.target_height * 4);
 
     npix = g_armwave_state.target_width * 256; 
     //vscale = g_armwave_state.target_height >> 8;
