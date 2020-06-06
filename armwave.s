@@ -931,7 +931,7 @@ armwave_generate:
 @ armwave.c:242:     memset(g_armwave_state.ch1_buffer, 0, g_armwave_state.ch_buff_size);
 	.loc 1 242 58 view .LVU244
 	ldr	r5, .L56	@ tmp131,
-@ armwave.c:245:     for(yy = 0; yy < 5; yy++) {
+@ armwave.c:245:     for(yy = 0; yy < 20; yy++) {
 	.loc 1 245 12 view .LVU245
 	mov	r4, r1	@ yy,
 @ armwave.c:242:     memset(g_armwave_state.ch1_buffer, 0, g_armwave_state.ch_buff_size);
@@ -949,13 +949,13 @@ armwave_generate:
 .LVL60:
 	.loc 1 249 9 discriminator 3 view .LVU249
 	.loc 1 250 9 discriminator 3 view .LVU250
-@ armwave.c:245:     for(yy = 0; yy < 5; yy++) {
-	.loc 1 245 27 is_stmt 0 discriminator 3 view .LVU251
+@ armwave.c:245:     for(yy = 0; yy < 20; yy++) {
+	.loc 1 245 28 is_stmt 0 discriminator 3 view .LVU251
 	add	r4, r4, #1	@ yy, yy,
 .LVL61:
-@ armwave.c:245:     for(yy = 0; yy < 5; yy++) {
+@ armwave.c:245:     for(yy = 0; yy < 20; yy++) {
 	.loc 1 245 5 discriminator 3 view .LVU252
-	cmp	r4, #5	@ yy,
+	cmp	r4, #20	@ yy,
 	bne	.L52		@,
 	pop	{r4, r5, r6, pc}	@
 .L57:
