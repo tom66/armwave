@@ -75,7 +75,7 @@ void render_nonaa_to_buffer_1ch_slice(uint32_t slice_y, uint32_t height)
         write_buffer_base - g_armwave_state.ch1_buffer, slice_y, height);
 
     // roll through each waveform
-    for(w = 0; w < g_armwave_state.waves; w++) {
+    for(w = 0; w < 1 /*g_armwave_state.waves*/; w++) {
         wave_base = g_armwave_state.wave_buffer + slice_y + (w * g_armwave_state.wave_stride);
 
         printf("w=%d stride=%d sly=%d wave_base=0x%08x\n", w, g_armwave_state.wave_stride, slice_y, wave_base);
@@ -179,7 +179,7 @@ void armwave_fill_pixbuf_scaled(uint32_t *out_buffer)
     assert(out_buffer != NULL);
 
     // we don't really want to be doing this
-    memset(out_buffer, 0x55, g_armwave_state.target_width * g_armwave_state.target_height * 4);
+    memset(out_buffer, 0x01, g_armwave_state.target_width * g_armwave_state.target_height * 4);
 
     npix = g_armwave_state.target_width * 256; 
     //vscale = g_armwave_state.target_height >> 8;
@@ -244,8 +244,8 @@ void armwave_generate()
 
     memset(g_armwave_state.ch1_buffer, 0, g_armwave_state.ch_buff_size);
 
-    //for(yy = 0; yy < (g_armwave_state.wave_length / g_armwave_state.slice_height); yy++) {
-    for(yy = 0; yy < 1; yy++) {
+    for(yy = 0; yy < (g_armwave_state.wave_length / g_armwave_state.slice_height); yy++) {
+    //for(yy = 0; yy < 1; yy++) {
         //printf("armwave_generate: slice %d (y=%d, h=%d)\n", yy, yy * g_armwave_state.slice_height, g_armwave_state.slice_record_height);
 
         render_nonaa_to_buffer_1ch_slice(yy * g_armwave_state.slice_height, g_armwave_state.slice_record_height);
