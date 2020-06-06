@@ -932,7 +932,7 @@ armwave_generate:
 	.loc 1 244 1 view .LVU241
 	sub	sp, sp, #36	@,,
 	.cfi_def_cfa_offset 72
-@ armwave.c:251:     for(yy = 0; yy < 3; yy++) {
+@ armwave.c:251:     for(yy = 0; yy < 5; yy++) {
 	.loc 1 251 12 view .LVU242
 	mov	fp, #0	@ yy,
 @ armwave.c:248:     memset(g_armwave_state.ch1_buffer, 0, g_armwave_state.ch_buff_size);
@@ -942,7 +942,7 @@ armwave_generate:
 	bl	memset		@
 .LVL57:
 	.loc 1 251 5 is_stmt 1 view .LVU244
-@ armwave.c:251:     for(yy = 0; yy < 3; yy++) {
+@ armwave.c:251:     for(yy = 0; yy < 5; yy++) {
 	.loc 1 251 12 is_stmt 0 view .LVU245
 	mov	r8, fp	@ yy, yy
 .LVL58:
@@ -1263,13 +1263,13 @@ armwave_generate:
 .LBE17:
 	.loc 1 255 9 is_stmt 1 view .LVU348
 	.loc 1 256 9 view .LVU349
-@ armwave.c:251:     for(yy = 0; yy < 3; yy++) {
+@ armwave.c:251:     for(yy = 0; yy < 5; yy++) {
 	.loc 1 251 27 is_stmt 0 view .LVU350
 	add	r8, r8, #1	@ yy, yy,
 .LVL75:
-@ armwave.c:251:     for(yy = 0; yy < 3; yy++) {
+@ armwave.c:251:     for(yy = 0; yy < 5; yy++) {
 	.loc 1 251 5 view .LVU351
-	cmp	r8, #3	@ yy,
+	cmp	r8, #5	@ yy,
 	bne	.L55		@,
 @ armwave.c:260: }
 	.loc 1 260 1 view .LVU352
