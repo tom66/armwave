@@ -1326,10 +1326,10 @@
  931              	@ armwave.c:242:     memset(g_armwave_state.ch1_buffer, 0, g_armwave_state.ch_buff_size);
  932              		.loc 1 242 58 view .LVU244
  933 03e4 28509FE5 		ldr	r5, .L56	@ tmp131,
- 934              	@ armwave.c:245:     for(yy = 0; yy < 5; yy++) {
+ 934              	@ armwave.c:245:     for(yy = 0; yy < 20; yy++) {
  243:armwave.c     **** 
  244:armwave.c     ****     //for(yy = 0; yy < (g_armwave_state.wave_length / g_armwave_state.slice_height); yy++) {
- 245:armwave.c     ****     for(yy = 0; yy < 5; yy++) {
+ 245:armwave.c     ****     for(yy = 0; yy < 20; yy++) {
  935              		.loc 1 245 12 view .LVU245
  936 03e8 0140A0E1 		mov	r4, r1	@ yy,
  937              	@ armwave.c:242:     memset(g_armwave_state.ch1_buffer, 0, g_armwave_state.ch_buff_size);
@@ -1353,15 +1353,15 @@
  950              		.loc 1 249 9 discriminator 3 view .LVU249
  250:armwave.c     ****         ypos += g_armwave_state.slice_record_height;
  951              		.loc 1 250 9 discriminator 3 view .LVU250
- 952              	@ armwave.c:245:     for(yy = 0; yy < 5; yy++) {
+ 952              	@ armwave.c:245:     for(yy = 0; yy < 20; yy++) {
  245:armwave.c     ****         //printf("armwave_generate: slice %d (y=%d, h=%d)\n", yy, yy * g_armwave_state.slice_height
- 953              		.loc 1 245 27 is_stmt 0 discriminator 3 view .LVU251
+ 953              		.loc 1 245 28 is_stmt 0 discriminator 3 view .LVU251
  954 0404 014084E2 		add	r4, r4, #1	@ yy, yy,
  955              	.LVL61:
- 956              	@ armwave.c:245:     for(yy = 0; yy < 5; yy++) {
+ 956              	@ armwave.c:245:     for(yy = 0; yy < 20; yy++) {
  245:armwave.c     ****         //printf("armwave_generate: slice %d (y=%d, h=%d)\n", yy, yy * g_armwave_state.slice_height
  957              		.loc 1 245 5 discriminator 3 view .LVU252
- 958 0408 050054E3 		cmp	r4, #5	@ yy,
+ 958 0408 140054E3 		cmp	r4, #20	@ yy,
  959 040c F9FFFF1A 		bne	.L52		@,
  960 0410 7080BDE8 		pop	{r4, r5, r6, pc}	@
  961              	.L57:
