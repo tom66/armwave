@@ -1332,10 +1332,10 @@
  932              		.loc 1 244 1 view .LVU241
  933 03ec 24D04DE2 		sub	sp, sp, #36	@,,
  934              		.cfi_def_cfa_offset 72
- 935              	@ armwave.c:251:     for(yy = 0; yy < 5; yy++) {
+ 935              	@ armwave.c:251:     for(yy = 0; yy < 10; yy++) {
  249:armwave.c     **** 
  250:armwave.c     ****     //for(yy = 0; yy < (g_armwave_state.wave_length / g_armwave_state.slice_height); yy++) {
- 251:armwave.c     ****     for(yy = 0; yy < 5; yy++) {
+ 251:armwave.c     ****     for(yy = 0; yy < 10; yy++) {
  936              		.loc 1 251 12 view .LVU242
  937 03f0 00B0A0E3 		mov	fp, #0	@ yy,
  938              	@ armwave.c:248:     memset(g_armwave_state.ch1_buffer, 0, g_armwave_state.ch_buff_size);
@@ -1346,7 +1346,7 @@
  942 03fc FEFFFFEB 		bl	memset		@
  943              	.LVL57:
  944              		.loc 1 251 5 is_stmt 1 view .LVU244
- 945              	@ armwave.c:251:     for(yy = 0; yy < 5; yy++) {
+ 945              	@ armwave.c:251:     for(yy = 0; yy < 10; yy++) {
  946              		.loc 1 251 12 is_stmt 0 view .LVU245
  947 0400 0B80A0E1 		mov	r8, fp	@ yy, yy
  948              	.LVL58:
@@ -1770,15 +1770,15 @@
  1264              		.loc 1 255 9 is_stmt 1 view .LVU348
  256:armwave.c     ****         ypos += g_armwave_state.slice_record_height;
  1265              		.loc 1 256 9 view .LVU349
- 1266              	@ armwave.c:251:     for(yy = 0; yy < 5; yy++) {
+ 1266              	@ armwave.c:251:     for(yy = 0; yy < 10; yy++) {
  251:armwave.c     ****         //printf("armwave_generate: slice %d (y=%d, h=%d)\n", yy, yy * g_armwave_state.slice_height
- 1267              		.loc 1 251 27 is_stmt 0 view .LVU350
+ 1267              		.loc 1 251 28 is_stmt 0 view .LVU350
  1268 05bc 018088E2 		add	r8, r8, #1	@ yy, yy,
  1269              	.LVL75:
- 1270              	@ armwave.c:251:     for(yy = 0; yy < 5; yy++) {
+ 1270              	@ armwave.c:251:     for(yy = 0; yy < 10; yy++) {
  251:armwave.c     ****         //printf("armwave_generate: slice %d (y=%d, h=%d)\n", yy, yy * g_armwave_state.slice_height
  1271              		.loc 1 251 5 view .LVU351
- 1272 05c0 050058E3 		cmp	r8, #5	@ yy,
+ 1272 05c0 0A0058E3 		cmp	r8, #10	@ yy,
  1273 05c4 8EFFFF1A 		bne	.L55		@,
  1274              	@ armwave.c:260: }
  257:armwave.c     ****     }
