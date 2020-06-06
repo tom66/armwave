@@ -348,7 +348,7 @@
  275              	@ armwave.c:71:     write_buffer_base = g_armwave_state.ch1_buffer + (((slice_y * g_armwave_state.c
   71:armwave.c     **** 
  276              		.loc 1 71 105 view .LVU39
- 277 00c8 2224A0E1 		lsr	r2, r2, #8	@ tmp217, tmp216,
+ 277 00c8 2228A0E1 		lsr	r2, r2, #16	@ tmp217, tmp216,
  278              	@ armwave.c:73:     printf("wb=0x%08x b=0x%08x ch1=0x%08x off=%d slice_y=%d height=%d scale=%d bitd
  279              		.loc 1 73 5 view .LVU40
  280 00cc 04708DE5 		str	r7, [sp, #4]	@ slice_y,
@@ -519,7 +519,7 @@
  390              	@ armwave.c:102:                     ((((yy + ys) * g_armwave_state.cmp_x_bitdepth_scale) >> AM_XCO
  102:armwave.c     **** 
  391              		.loc 1 102 74 view .LVU77
- 392 0188 2114A0E1 		lsr	r1, r1, #8	@ tmp240, tmp238,
+ 392 0188 2118A0E1 		lsr	r1, r1, #16	@ tmp240, tmp238,
  393              	@ armwave.c:106:                 *(write_buffer + scale_value) += 1;
  106:armwave.c     ****                 word >>= 8;
  394              		.loc 1 106 47 view .LVU78
@@ -561,7 +561,7 @@
  422              	@ armwave.c:102:                     ((((yy + ys) * g_armwave_state.cmp_x_bitdepth_scale) >> AM_XCO
  102:armwave.c     **** 
  423              		.loc 1 102 74 view .LVU88
- 424 01b8 2BB4A0E1 		lsr	fp, fp, #8	@ tmp261, tmp259,
+ 424 01b8 2BB8A0E1 		lsr	fp, fp, #16	@ tmp261, tmp259,
  425              	@ armwave.c:94:                 if(COND_UNLIKELY(scale_value == 0x00 || scale_value == 0xff))
   94:armwave.c     ****                     continue;
  426              		.loc 1 94 19 view .LVU89
@@ -616,7 +616,7 @@
  464              	@ armwave.c:102:                     ((((yy + ys) * g_armwave_state.cmp_x_bitdepth_scale) >> AM_XCO
  102:armwave.c     **** 
  465              		.loc 1 102 74 view .LVU102
- 466 01f4 2AA4A0E1 		lsr	r10, r10, #8	@ tmp282, tmp280,
+ 466 01f4 2AA8A0E1 		lsr	r10, r10, #16	@ tmp282, tmp280,
  467              	@ armwave.c:94:                 if(COND_UNLIKELY(scale_value == 0x00 || scale_value == 0xff))
   94:armwave.c     ****                     continue;
  468              		.loc 1 94 19 view .LVU103
@@ -661,7 +661,7 @@
  498              	@ armwave.c:102:                     ((((yy + ys) * g_armwave_state.cmp_x_bitdepth_scale) >> AM_XCO
  102:armwave.c     **** 
  499              		.loc 1 102 74 view .LVU114
- 500 0224 2994A0E1 		lsr	r9, r9, #8	@ tmp302, tmp300,
+ 500 0224 2998A0E1 		lsr	r9, r9, #16	@ tmp302, tmp300,
  501              	@ armwave.c:106:                 *(write_buffer + scale_value) += 1;
  106:armwave.c     ****                 word >>= 8;
  502              		.loc 1 106 47 view .LVU115
@@ -1399,7 +1399,7 @@
  986              	@ armwave.c:71:     write_buffer_base = g_armwave_state.ch1_buffer + (((slice_y * g_armwave_state.c
   71:armwave.c     **** 
  987              		.loc 1 71 105 discriminator 3 view .LVU254
- 988 0430 2334A0E1 		lsr	r3, r3, #8	@ tmp234, tmp233,
+ 988 0430 2338A0E1 		lsr	r3, r3, #16	@ tmp234, tmp233,
  989              	.LBE13:
  990              	.LBE16:
  991              	@ armwave.c:255:         render_nonaa_to_buffer_1ch_slice(yy * g_armwave_state.slice_height, g_armw
@@ -1576,7 +1576,7 @@
  1118              	@ armwave.c:102:                     ((((yy + ys) * g_armwave_state.cmp_x_bitdepth_scale) >> AM_XCO
  102:armwave.c     **** 
  1119              		.loc 1 102 74 view .LVU300
- 1120 04f8 2224A0E1 		lsr	r2, r2, #8	@ tmp257, tmp255,
+ 1120 04f8 2228A0E1 		lsr	r2, r2, #16	@ tmp257, tmp255,
  1121              	@ armwave.c:106:                 *(write_buffer + scale_value) += 1;
  106:armwave.c     ****                 word >>= 8;
  1122              		.loc 1 106 47 view .LVU301
@@ -1619,7 +1619,7 @@
  1150              	@ armwave.c:102:                     ((((yy + ys) * g_armwave_state.cmp_x_bitdepth_scale) >> AM_XCO
  102:armwave.c     **** 
  1151              		.loc 1 102 74 view .LVU311
- 1152 0528 2BB4A0E1 		lsr	fp, fp, #8	@ tmp278, tmp276,
+ 1152 0528 2BB8A0E1 		lsr	fp, fp, #16	@ tmp278, tmp276,
  1153              	@ armwave.c:94:                 if(COND_UNLIKELY(scale_value == 0x00 || scale_value == 0xff))
   94:armwave.c     ****                     continue;
  1154              		.loc 1 94 19 view .LVU312
@@ -1675,7 +1675,7 @@
  1192              	@ armwave.c:102:                     ((((yy + ys) * g_armwave_state.cmp_x_bitdepth_scale) >> AM_XCO
  102:armwave.c     **** 
  1193              		.loc 1 102 74 view .LVU325
- 1194 0564 2AA4A0E1 		lsr	r10, r10, #8	@ tmp299, tmp297,
+ 1194 0564 2AA8A0E1 		lsr	r10, r10, #16	@ tmp299, tmp297,
  1195              	@ armwave.c:94:                 if(COND_UNLIKELY(scale_value == 0x00 || scale_value == 0xff))
   94:armwave.c     ****                     continue;
  1196              		.loc 1 94 19 view .LVU326
@@ -1721,7 +1721,7 @@
  1226              	@ armwave.c:102:                     ((((yy + ys) * g_armwave_state.cmp_x_bitdepth_scale) >> AM_XCO
  102:armwave.c     **** 
  1227              		.loc 1 102 74 view .LVU337
- 1228 0594 2884A0E1 		lsr	r8, r8, #8	@ tmp319, tmp317,
+ 1228 0594 2888A0E1 		lsr	r8, r8, #16	@ tmp319, tmp317,
  1229              	@ armwave.c:106:                 *(write_buffer + scale_value) += 1;
  106:armwave.c     ****                 word >>= 8;
  1230              		.loc 1 106 47 view .LVU338
@@ -2346,7 +2346,7 @@
  1682              		.align	2
  1683              	.L89:
  1684 07ec 00007F43 		.word	1132396544
- 1685 07f0 00008043 		.word	1132462080
+ 1685 07f0 00008047 		.word	1199570944
  1686 07f4 0000803F 		.word	1065353216
  1687 07f8 98000000 		.word	.LC5
  1688 07fc 00000000 		.word	g_armwave_state

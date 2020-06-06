@@ -274,7 +274,7 @@ render_nonaa_to_buffer_1ch_slice:
 	str	r1, [sp, #16]	@ _5,
 @ armwave.c:71:     write_buffer_base = g_armwave_state.ch1_buffer + (((slice_y * g_armwave_state.cmp_x_bitdepth_scale) >> AM_XCOORD_MULT_SHIFT) * g_armwave_state.bitdepth_height);
 	.loc 1 71 105 view .LVU39
-	lsr	r2, r2, #8	@ tmp217, tmp216,
+	lsr	r2, r2, #16	@ tmp217, tmp216,
 @ armwave.c:73:     printf("wb=0x%08x b=0x%08x ch1=0x%08x off=%d slice_y=%d height=%d scale=%d bitdepth_height=%d\n", \
 	.loc 1 73 5 view .LVU40
 	str	r7, [sp, #4]	@ slice_y,
@@ -389,7 +389,7 @@ render_nonaa_to_buffer_1ch_slice:
 	ldr	lr, [r4, #64]	@ tmp325, g_armwave_state.bitdepth_height
 @ armwave.c:102:                     ((((yy + ys) * g_armwave_state.cmp_x_bitdepth_scale) >> AM_XCOORD_MULT_SHIFT) * g_armwave_state.bitdepth_height);
 	.loc 1 102 74 view .LVU77
-	lsr	r1, r1, #8	@ tmp240, tmp238,
+	lsr	r1, r1, #16	@ tmp240, tmp238,
 @ armwave.c:106:                 *(write_buffer + scale_value) += 1;
 	.loc 1 106 47 view .LVU78
 	mla	r1, lr, r1, r7	@ tmp244, tmp325, tmp240, scale_value
@@ -421,7 +421,7 @@ render_nonaa_to_buffer_1ch_slice:
 	movne	lr, #0	@ tmp272,
 @ armwave.c:102:                     ((((yy + ys) * g_armwave_state.cmp_x_bitdepth_scale) >> AM_XCOORD_MULT_SHIFT) * g_armwave_state.bitdepth_height);
 	.loc 1 102 74 view .LVU88
-	lsr	fp, fp, #8	@ tmp261, tmp259,
+	lsr	fp, fp, #16	@ tmp261, tmp259,
 @ armwave.c:94:                 if(COND_UNLIKELY(scale_value == 0x00 || scale_value == 0xff))
 	.loc 1 94 19 view .LVU89
 	cmp	r0, #255	@ scale_value,
@@ -463,7 +463,7 @@ render_nonaa_to_buffer_1ch_slice:
 	movne	r1, #0	@ tmp292,
 @ armwave.c:102:                     ((((yy + ys) * g_armwave_state.cmp_x_bitdepth_scale) >> AM_XCOORD_MULT_SHIFT) * g_armwave_state.bitdepth_height);
 	.loc 1 102 74 view .LVU102
-	lsr	r10, r10, #8	@ tmp282, tmp280,
+	lsr	r10, r10, #16	@ tmp282, tmp280,
 @ armwave.c:94:                 if(COND_UNLIKELY(scale_value == 0x00 || scale_value == 0xff))
 	.loc 1 94 19 view .LVU103
 	cmp	r3, #255	@ word,
@@ -497,7 +497,7 @@ render_nonaa_to_buffer_1ch_slice:
 	mul	r9, r1, r9	@ tmp300, g_armwave_state.cmp_x_bitdepth_scale, tmp298
 @ armwave.c:102:                     ((((yy + ys) * g_armwave_state.cmp_x_bitdepth_scale) >> AM_XCOORD_MULT_SHIFT) * g_armwave_state.bitdepth_height);
 	.loc 1 102 74 view .LVU114
-	lsr	r9, r9, #8	@ tmp302, tmp300,
+	lsr	r9, r9, #16	@ tmp302, tmp300,
 @ armwave.c:106:                 *(write_buffer + scale_value) += 1;
 	.loc 1 106 47 view .LVU115
 	mla	r3, r0, r9, r3	@ tmp306, g_armwave_state.bitdepth_height, tmp302, word
@@ -985,7 +985,7 @@ armwave_generate:
 	str	r1, [sp, #12]	@ _16,
 @ armwave.c:71:     write_buffer_base = g_armwave_state.ch1_buffer + (((slice_y * g_armwave_state.cmp_x_bitdepth_scale) >> AM_XCOORD_MULT_SHIFT) * g_armwave_state.bitdepth_height);
 	.loc 1 71 105 discriminator 3 view .LVU254
-	lsr	r3, r3, #8	@ tmp234, tmp233,
+	lsr	r3, r3, #16	@ tmp234, tmp233,
 .LBE13:
 .LBE16:
 @ armwave.c:255:         render_nonaa_to_buffer_1ch_slice(yy * g_armwave_state.slice_height, g_armwave_state.slice_record_height);
@@ -1117,7 +1117,7 @@ armwave_generate:
 	ldr	r5, [r9, #64]	@ tmp346, g_armwave_state.bitdepth_height
 @ armwave.c:102:                     ((((yy + ys) * g_armwave_state.cmp_x_bitdepth_scale) >> AM_XCOORD_MULT_SHIFT) * g_armwave_state.bitdepth_height);
 	.loc 1 102 74 view .LVU300
-	lsr	r2, r2, #8	@ tmp257, tmp255,
+	lsr	r2, r2, #16	@ tmp257, tmp255,
 @ armwave.c:106:                 *(write_buffer + scale_value) += 1;
 	.loc 1 106 47 view .LVU301
 	mla	r2, r5, r2, r7	@ tmp261, tmp346, tmp257, scale_value
@@ -1149,7 +1149,7 @@ armwave_generate:
 	movne	r5, #0	@ tmp289,
 @ armwave.c:102:                     ((((yy + ys) * g_armwave_state.cmp_x_bitdepth_scale) >> AM_XCOORD_MULT_SHIFT) * g_armwave_state.bitdepth_height);
 	.loc 1 102 74 view .LVU311
-	lsr	fp, fp, #8	@ tmp278, tmp276,
+	lsr	fp, fp, #16	@ tmp278, tmp276,
 @ armwave.c:94:                 if(COND_UNLIKELY(scale_value == 0x00 || scale_value == 0xff))
 	.loc 1 94 19 view .LVU312
 	cmp	r0, #255	@ scale_value,
@@ -1191,7 +1191,7 @@ armwave_generate:
 	movne	r2, #0	@ tmp309,
 @ armwave.c:102:                     ((((yy + ys) * g_armwave_state.cmp_x_bitdepth_scale) >> AM_XCOORD_MULT_SHIFT) * g_armwave_state.bitdepth_height);
 	.loc 1 102 74 view .LVU325
-	lsr	r10, r10, #8	@ tmp299, tmp297,
+	lsr	r10, r10, #16	@ tmp299, tmp297,
 @ armwave.c:94:                 if(COND_UNLIKELY(scale_value == 0x00 || scale_value == 0xff))
 	.loc 1 94 19 view .LVU326
 	cmp	r3, #255	@ word,
@@ -1225,7 +1225,7 @@ armwave_generate:
 	mul	r8, r2, r8	@ tmp317, g_armwave_state.cmp_x_bitdepth_scale, tmp316
 @ armwave.c:102:                     ((((yy + ys) * g_armwave_state.cmp_x_bitdepth_scale) >> AM_XCOORD_MULT_SHIFT) * g_armwave_state.bitdepth_height);
 	.loc 1 102 74 view .LVU337
-	lsr	r8, r8, #8	@ tmp319, tmp317,
+	lsr	r8, r8, #16	@ tmp319, tmp317,
 @ armwave.c:106:                 *(write_buffer + scale_value) += 1;
 	.loc 1 106 47 view .LVU338
 	mla	r3, r0, r8, r3	@ tmp323, g_armwave_state.bitdepth_height, tmp319, word
@@ -1682,7 +1682,7 @@ armwave_setup_render:
 	.align	2
 .L89:
 	.word	1132396544
-	.word	1132462080
+	.word	1199570944
 	.word	1065353216
 	.word	.LC5
 	.word	g_armwave_state
@@ -8978,7 +8978,7 @@ __PRETTY_FUNCTION__.17139:
 	.byte	0xf4
 	.uleb128 0x25
 	.byte	0x4
-	.4byte	0x43800000
+	.4byte	0x47800000
 	.byte	0x1e
 	.byte	0xf7
 	.uleb128 0x25
@@ -9004,7 +9004,7 @@ __PRETTY_FUNCTION__.17139:
 	.byte	0xf4
 	.uleb128 0x25
 	.byte	0x4
-	.4byte	0x43800000
+	.4byte	0x47800000
 	.byte	0x1e
 	.byte	0xf7
 	.uleb128 0x25
@@ -12371,7 +12371,7 @@ __PRETTY_FUNCTION__.17139:
 	.byte	0x71
 	.sleb128 0
 	.byte	0x1e
-	.byte	0x38
+	.byte	0x40
 	.byte	0x25
 	.byte	0x3
 	.4byte	g_armwave_state+64
@@ -12390,7 +12390,7 @@ __PRETTY_FUNCTION__.17139:
 	.4byte	g_armwave_state+36
 	.byte	0x6
 	.byte	0x1e
-	.byte	0x38
+	.byte	0x40
 	.byte	0x25
 	.byte	0x3
 	.4byte	g_armwave_state+64
@@ -12409,7 +12409,7 @@ __PRETTY_FUNCTION__.17139:
 	.4byte	g_armwave_state+36
 	.byte	0x6
 	.byte	0x1e
-	.byte	0x38
+	.byte	0x40
 	.byte	0x25
 	.byte	0x3
 	.4byte	g_armwave_state+64
@@ -12428,7 +12428,7 @@ __PRETTY_FUNCTION__.17139:
 	.4byte	g_armwave_state+36
 	.byte	0x6
 	.byte	0x1e
-	.byte	0x38
+	.byte	0x40
 	.byte	0x25
 	.byte	0x3
 	.4byte	g_armwave_state+64
@@ -12447,7 +12447,7 @@ __PRETTY_FUNCTION__.17139:
 	.4byte	g_armwave_state+36
 	.byte	0x6
 	.byte	0x1e
-	.byte	0x38
+	.byte	0x40
 	.byte	0x25
 	.byte	0x3
 	.4byte	g_armwave_state+64
@@ -13196,7 +13196,7 @@ __PRETTY_FUNCTION__.17139:
 	.byte	0x72
 	.sleb128 0
 	.byte	0x1e
-	.byte	0x38
+	.byte	0x40
 	.byte	0x25
 	.byte	0x3
 	.4byte	g_armwave_state+64
@@ -13215,7 +13215,7 @@ __PRETTY_FUNCTION__.17139:
 	.4byte	g_armwave_state+36
 	.byte	0x6
 	.byte	0x1e
-	.byte	0x38
+	.byte	0x40
 	.byte	0x25
 	.byte	0x3
 	.4byte	g_armwave_state+64
@@ -13234,7 +13234,7 @@ __PRETTY_FUNCTION__.17139:
 	.4byte	g_armwave_state+36
 	.byte	0x6
 	.byte	0x1e
-	.byte	0x38
+	.byte	0x40
 	.byte	0x25
 	.byte	0x3
 	.4byte	g_armwave_state+64
@@ -13253,7 +13253,7 @@ __PRETTY_FUNCTION__.17139:
 	.4byte	g_armwave_state+36
 	.byte	0x6
 	.byte	0x1e
-	.byte	0x38
+	.byte	0x40
 	.byte	0x25
 	.byte	0x3
 	.4byte	g_armwave_state+64
@@ -13272,7 +13272,7 @@ __PRETTY_FUNCTION__.17139:
 	.4byte	g_armwave_state+36
 	.byte	0x6
 	.byte	0x1e
-	.byte	0x38
+	.byte	0x40
 	.byte	0x25
 	.byte	0x3
 	.4byte	g_armwave_state+64
