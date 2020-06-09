@@ -2045,7 +2045,7 @@
  1450              	@ armwave.c:303:     g_armwave_state.ch_buff_size = (g_armwave_state.bitdepth_height + 4) * (target
  303:armwave.c     ****     g_armwave_state.target_width = target_width;
  1451              		.loc 1 303 95 view .LVU403
- 1452 0694 8331A0E1 		lsl	r3, r3, #3	@ tmp190, tmp189,
+ 1452 0694 0332A0E1 		lsl	r3, r3, #4	@ tmp190, tmp189,
  1453              	@ armwave.c:295:     g_armwave_state.xstride = target_height;
  295:armwave.c     ****     g_armwave_state.vscale_frac = target_height / 255.0f;
  1454              		.loc 1 295 29 view .LVU404
