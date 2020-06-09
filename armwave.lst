@@ -1977,8 +1977,8 @@
  298:armwave.c     ****     g_armwave_state.waves_max = waves_max;
  299:armwave.c     ****     g_armwave_state.waves = waves_max;  // Need a function to be able to change this on the fly
  300:armwave.c     ****     g_armwave_state.size = target_height * target_width;
- 301:armwave.c     ****     g_armwave_state.bitdepth_height = 256;  // Always 256 possible levels in 8-bit mode
- 302:armwave.c     ****     g_armwave_state.ch_buff_size = (g_armwave_state.bitdepth_height + 4) * (target_width + 4);  // 
+ 301:armwave.c     ****     g_armwave_state.bitdepth_height = 256 * sizeof(bufftyp_t);  // Always 256 possible levels in 8-
+ 302:armwave.c     ****     g_armwave_state.ch_buff_size = (g_armwave_state.bitdepth_height + 4) * (target_width + 4) * siz
  303:armwave.c     ****     g_armwave_state.target_width = target_width;
  304:armwave.c     ****     g_armwave_state.target_height = target_height;
  305:armwave.c     ****     g_armwave_state.wave_length = end_point - start_point;
@@ -2016,12 +2016,12 @@
  1428              		.loc 1 295 49 view .LVU396
  1429 0670 907A07EE 		vmov	s15, r7	@ int	@ target_height, target_height
  1430              	@ armwave.c:300:     g_armwave_state.size = target_height * target_width;
- 300:armwave.c     ****     g_armwave_state.bitdepth_height = 256;  // Always 256 possible levels in 8-bit mode
+ 300:armwave.c     ****     g_armwave_state.bitdepth_height = 256 * sizeof(bufftyp_t);  // Always 256 possible levels in 8-
  1431              		.loc 1 300 42 view .LVU397
  1432 0674 970602E0 		mul	r2, r7, r6	@ tmp183, target_height, target_width
  1433              	@ armwave.c:302:     g_armwave_state.ch_buff_size = (g_armwave_state.bitdepth_height + 4) * (target
  302:armwave.c     ****     g_armwave_state.target_width = target_width;
- 1434              		.loc 1 302 74 view .LVU398
+ 1434              		.loc 1 302 95 view .LVU398
  1435 0678 033383E0 		add	r3, r3, r3, lsl #6	@ tmp189, tmp186, tmp186,
  1436              	@ armwave.c:295:     g_armwave_state.vscale_frac = target_height / 255.0f;
  295:armwave.c     ****     g_armwave_state.vscale = (int)g_armwave_state.vscale_frac;
@@ -2038,7 +2038,7 @@
  1445 0688 00608DE5 		str	r6, [sp]	@ target_width,
  1446              	@ armwave.c:302:     g_armwave_state.ch_buff_size = (g_armwave_state.bitdepth_height + 4) * (target
  302:armwave.c     ****     g_armwave_state.target_width = target_width;
- 1447              		.loc 1 302 74 view .LVU402
+ 1447              		.loc 1 302 95 view .LVU402
  1448 068c 0331A0E1 		lsl	r3, r3, #2	@ tmp190, tmp189,
  1449              	@ armwave.c:309:         ((float)(g_armwave_state.target_width) / g_armwave_state.wave_length) * (1
  309:armwave.c     **** 
@@ -2057,8 +2057,8 @@
  1459              	@ armwave.c:311:     printf("ch_buff_size=%d, cmp_x_bitdepth_scale=%d (0x%08x), targ_width=%d, wave
  1460              		.loc 1 311 5 view .LVU407
  1461 069c 0118A0E3 		mov	r1, #65536	@ tmp202,
- 1462              	@ armwave.c:301:     g_armwave_state.bitdepth_height = 256;  // Always 256 possible levels in 8-bit
- 301:armwave.c     ****     g_armwave_state.ch_buff_size = (g_armwave_state.bitdepth_height + 4) * (target_width + 4);  // 
+ 1462              	@ armwave.c:301:     g_armwave_state.bitdepth_height = 256 * sizeof(bufftyp_t);  // Always 256 poss
+ 301:armwave.c     ****     g_armwave_state.ch_buff_size = (g_armwave_state.bitdepth_height + 4) * (target_width + 4) * siz
  1463              		.loc 1 301 37 view .LVU408
  1464 06a0 017CA0E3 		mov	r7, #256	@ tmp185,
  1465              	@ armwave.c:297:     g_armwave_state.wave_stride = wave_stride;
@@ -2083,7 +2083,7 @@
  1480 06b8 70019FE5 		ldr	r0, .L88+20	@,
  1481 06bc 0310A0E1 		mov	r1, r3	@, tmp190
  1482              	@ armwave.c:300:     g_armwave_state.size = target_height * target_width;
- 300:armwave.c     ****     g_armwave_state.bitdepth_height = 256;  // Always 256 possible levels in 8-bit mode
+ 300:armwave.c     ****     g_armwave_state.bitdepth_height = 256 * sizeof(bufftyp_t);  // Always 256 possible levels in 8-
  1483              		.loc 1 300 26 view .LVU414
  1484 06c0 542084E5 		str	r2, [r4, #84]	@ tmp183, g_armwave_state.size
  1485              	@ armwave.c:302:     g_armwave_state.ch_buff_size = (g_armwave_state.bitdepth_height + 4) * (target
@@ -2094,8 +2094,8 @@
  305:armwave.c     **** 
  1489              		.loc 1 305 33 view .LVU416
  1490 06c8 4C5084E5 		str	r5, [r4, #76]	@ _13, g_armwave_state.wave_length
- 1491              	@ armwave.c:301:     g_armwave_state.bitdepth_height = 256;  // Always 256 possible levels in 8-bit
- 301:armwave.c     ****     g_armwave_state.ch_buff_size = (g_armwave_state.bitdepth_height + 4) * (target_width + 4);  // 
+ 1491              	@ armwave.c:301:     g_armwave_state.bitdepth_height = 256 * sizeof(bufftyp_t);  // Always 256 poss
+ 301:armwave.c     ****     g_armwave_state.ch_buff_size = (g_armwave_state.bitdepth_height + 4) * (target_width + 4) * siz
  1492              		.loc 1 301 37 view .LVU417
  1493 06cc 407084E5 		str	r7, [r4, #64]	@ tmp185, g_armwave_state.bitdepth_height
  1494              	@ armwave.c:295:     g_armwave_state.vscale_frac = target_height / 255.0f;
@@ -2142,9 +2142,9 @@
  1524              		.loc 1 298 5 view .LVU429
  299:armwave.c     ****     g_armwave_state.size = target_height * target_width;
  1525              		.loc 1 299 5 view .LVU430
- 300:armwave.c     ****     g_armwave_state.bitdepth_height = 256;  // Always 256 possible levels in 8-bit mode
+ 300:armwave.c     ****     g_armwave_state.bitdepth_height = 256 * sizeof(bufftyp_t);  // Always 256 possible levels in 8-
  1526              		.loc 1 300 5 view .LVU431
- 301:armwave.c     ****     g_armwave_state.ch_buff_size = (g_armwave_state.bitdepth_height + 4) * (target_width + 4);  // 
+ 301:armwave.c     ****     g_armwave_state.ch_buff_size = (g_armwave_state.bitdepth_height + 4) * (target_width + 4) * siz
  1527              		.loc 1 301 5 view .LVU432
  302:armwave.c     ****     g_armwave_state.target_width = target_width;
  1528              		.loc 1 302 5 view .LVU433

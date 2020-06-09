@@ -1414,7 +1414,7 @@ armwave_setup_render:
 @ armwave.c:309:         ((float)(g_armwave_state.target_width) / g_armwave_state.wave_length) * (1 << AM_XCOORD_MULT_SHIFT);
 	.loc 1 309 79 view .LVU392
 	vldr.32	s13, .L88+4	@ tmp199,
-@ armwave.c:302:     g_armwave_state.ch_buff_size = (g_armwave_state.bitdepth_height + 4) * (target_width + 4);  // Add word padding too
+@ armwave.c:302:     g_armwave_state.ch_buff_size = (g_armwave_state.bitdepth_height + 4) * (target_width + 4) * sizeof(bufftyp_t);  // Add word padding too
 	.loc 1 302 90 view .LVU393
 	add	r3, r6, #4	@ tmp186, target_width,
 @ armwave.c:294:     g_armwave_state.xstride = target_height;
@@ -1430,8 +1430,8 @@ armwave_setup_render:
 @ armwave.c:300:     g_armwave_state.size = target_height * target_width;
 	.loc 1 300 42 view .LVU397
 	mul	r2, r7, r6	@ tmp183, target_height, target_width
-@ armwave.c:302:     g_armwave_state.ch_buff_size = (g_armwave_state.bitdepth_height + 4) * (target_width + 4);  // Add word padding too
-	.loc 1 302 74 view .LVU398
+@ armwave.c:302:     g_armwave_state.ch_buff_size = (g_armwave_state.bitdepth_height + 4) * (target_width + 4) * sizeof(bufftyp_t);  // Add word padding too
+	.loc 1 302 95 view .LVU398
 	add	r3, r3, r3, lsl #6	@ tmp189, tmp186, tmp186,
 @ armwave.c:295:     g_armwave_state.vscale_frac = target_height / 255.0f;
 	.loc 1 295 49 view .LVU399
@@ -1443,8 +1443,8 @@ armwave_setup_render:
 	.loc 1 311 5 view .LVU401
 	str	r5, [sp, #4]	@ _13,
 	str	r6, [sp]	@ target_width,
-@ armwave.c:302:     g_armwave_state.ch_buff_size = (g_armwave_state.bitdepth_height + 4) * (target_width + 4);  // Add word padding too
-	.loc 1 302 74 view .LVU402
+@ armwave.c:302:     g_armwave_state.ch_buff_size = (g_armwave_state.bitdepth_height + 4) * (target_width + 4) * sizeof(bufftyp_t);  // Add word padding too
+	.loc 1 302 95 view .LVU402
 	lsl	r3, r3, #2	@ tmp190, tmp189,
 @ armwave.c:309:         ((float)(g_armwave_state.target_width) / g_armwave_state.wave_length) * (1 << AM_XCOORD_MULT_SHIFT);
 	.loc 1 309 48 view .LVU403
@@ -1459,7 +1459,7 @@ armwave_setup_render:
 @ armwave.c:311:     printf("ch_buff_size=%d, cmp_x_bitdepth_scale=%d (0x%08x), targ_width=%d, wave_length=%d, scaler=%d\n", \
 	.loc 1 311 5 view .LVU407
 	mov	r1, #65536	@ tmp202,
-@ armwave.c:301:     g_armwave_state.bitdepth_height = 256;  // Always 256 possible levels in 8-bit mode
+@ armwave.c:301:     g_armwave_state.bitdepth_height = 256 * sizeof(bufftyp_t);  // Always 256 possible levels in 8-bit mode
 	.loc 1 301 37 view .LVU408
 	mov	r7, #256	@ tmp185,
 @ armwave.c:297:     g_armwave_state.wave_stride = wave_stride;
@@ -1482,13 +1482,13 @@ armwave_setup_render:
 @ armwave.c:300:     g_armwave_state.size = target_height * target_width;
 	.loc 1 300 26 view .LVU414
 	str	r2, [r4, #84]	@ tmp183, g_armwave_state.size
-@ armwave.c:302:     g_armwave_state.ch_buff_size = (g_armwave_state.bitdepth_height + 4) * (target_width + 4);  // Add word padding too
+@ armwave.c:302:     g_armwave_state.ch_buff_size = (g_armwave_state.bitdepth_height + 4) * (target_width + 4) * sizeof(bufftyp_t);  // Add word padding too
 	.loc 1 302 34 view .LVU415
 	str	r3, [r4, #80]	@ tmp190, g_armwave_state.ch_buff_size
 @ armwave.c:305:     g_armwave_state.wave_length = end_point - start_point;
 	.loc 1 305 33 view .LVU416
 	str	r5, [r4, #76]	@ _13, g_armwave_state.wave_length
-@ armwave.c:301:     g_armwave_state.bitdepth_height = 256;  // Always 256 possible levels in 8-bit mode
+@ armwave.c:301:     g_armwave_state.bitdepth_height = 256 * sizeof(bufftyp_t);  // Always 256 possible levels in 8-bit mode
 	.loc 1 301 37 view .LVU417
 	str	r7, [r4, #64]	@ tmp185, g_armwave_state.bitdepth_height
 @ armwave.c:295:     g_armwave_state.vscale_frac = target_height / 255.0f;
@@ -3361,7 +3361,7 @@ __PRETTY_FUNCTION__.17140:
 	.file 74 "/usr/include/assert.h"
 	.section	.debug_info,"",%progbits
 .Ldebug_info0:
-	.4byte	0x3374
+	.4byte	0x337a
 	.2byte	0x4
 	.4byte	.Ldebug_abbrev0
 	.byte	0x4
@@ -7583,10 +7583,7 @@ __PRETTY_FUNCTION__.17140:
 	.4byte	.LASF534
 	.byte	0x45
 	.byte	0x24
-	.byte	0x13
-	.4byte	0x2093
-	.uleb128 0x7
-	.byte	0x4
+	.byte	0x11
 	.4byte	0x3f3
 	.uleb128 0x8
 	.4byte	.LASF535
@@ -7594,7 +7591,7 @@ __PRETTY_FUNCTION__.17140:
 	.byte	0x45
 	.byte	0x26
 	.byte	0x8
-	.4byte	0x20c8
+	.4byte	0x20c2
 	.uleb128 0x1a
 	.ascii	"r\000"
 	.byte	0x45
@@ -7623,7 +7620,7 @@ __PRETTY_FUNCTION__.17140:
 	.byte	0x45
 	.byte	0x2a
 	.byte	0x8
-	.4byte	0x2276
+	.4byte	0x2270
 	.uleb128 0x9
 	.4byte	.LASF537
 	.byte	0x45
@@ -7635,43 +7632,43 @@ __PRETTY_FUNCTION__.17140:
 	.4byte	.LASF538
 	.byte	0x45
 	.byte	0x2d
-	.byte	0xd
-	.4byte	0x2087
+	.byte	0xe
+	.4byte	0x2270
 	.byte	0x4
 	.uleb128 0x9
 	.4byte	.LASF539
 	.byte	0x45
 	.byte	0x2e
-	.byte	0xd
-	.4byte	0x2087
+	.byte	0xe
+	.4byte	0x2270
 	.byte	0x8
 	.uleb128 0x9
 	.4byte	.LASF540
 	.byte	0x45
 	.byte	0x2f
-	.byte	0xd
-	.4byte	0x2087
+	.byte	0xe
+	.4byte	0x2270
 	.byte	0xc
 	.uleb128 0x9
 	.4byte	.LASF541
 	.byte	0x45
 	.byte	0x30
-	.byte	0xd
-	.4byte	0x2087
+	.byte	0xe
+	.4byte	0x2270
 	.byte	0x10
 	.uleb128 0x9
 	.4byte	.LASF542
 	.byte	0x45
 	.byte	0x32
 	.byte	0xc
-	.4byte	0x2093
+	.4byte	0x2276
 	.byte	0x14
 	.uleb128 0x9
 	.4byte	.LASF543
 	.byte	0x45
 	.byte	0x34
 	.byte	0xc
-	.4byte	0x2093
+	.4byte	0x2276
 	.byte	0x18
 	.uleb128 0x9
 	.4byte	.LASF544
@@ -7811,44 +7808,50 @@ __PRETTY_FUNCTION__.17140:
 	.byte	0x45
 	.byte	0x4e
 	.byte	0xd
-	.4byte	0x2276
+	.4byte	0x227c
 	.byte	0x68
 	.uleb128 0x9
 	.4byte	.LASF563
 	.byte	0x45
 	.byte	0x50
 	.byte	0x1e
-	.4byte	0x2099
+	.4byte	0x2093
 	.byte	0x6c
 	.uleb128 0x9
 	.4byte	.LASF564
 	.byte	0x45
 	.byte	0x51
 	.byte	0x1e
-	.4byte	0x2099
+	.4byte	0x2093
 	.byte	0x72
 	.uleb128 0x9
 	.4byte	.LASF565
 	.byte	0x45
 	.byte	0x52
 	.byte	0x1e
-	.4byte	0x2099
+	.4byte	0x2093
 	.byte	0x78
 	.uleb128 0x9
 	.4byte	.LASF566
 	.byte	0x45
 	.byte	0x53
 	.byte	0x1e
-	.4byte	0x2099
+	.4byte	0x2093
 	.byte	0x7e
 	.uleb128 0x9
 	.4byte	.LASF567
 	.byte	0x45
 	.byte	0x58
 	.byte	0xd
-	.4byte	0x227c
+	.4byte	0x2282
 	.byte	0x84
 	.byte	0
+	.uleb128 0x7
+	.byte	0x4
+	.4byte	0x2087
+	.uleb128 0x7
+	.byte	0x4
+	.4byte	0x3f3
 	.uleb128 0x7
 	.byte	0x4
 	.4byte	0x40b
@@ -7860,13 +7863,13 @@ __PRETTY_FUNCTION__.17140:
 	.byte	0x1
 	.byte	0x1b
 	.byte	0x18
-	.4byte	0x20c8
+	.4byte	0x20c2
 	.uleb128 0x5
 	.byte	0x3
 	.4byte	g_armwave_state
 	.uleb128 0xc
 	.4byte	0x3f3
-	.4byte	0x22a4
+	.4byte	0x22aa
 	.uleb128 0xd
 	.4byte	0x3a
 	.byte	0xff
@@ -7876,7 +7879,7 @@ __PRETTY_FUNCTION__.17140:
 	.byte	0x1
 	.byte	0x1d
 	.byte	0x9
-	.4byte	0x2294
+	.4byte	0x229a
 	.uleb128 0x5
 	.byte	0x3
 	.4byte	gamma_table
@@ -7889,19 +7892,19 @@ __PRETTY_FUNCTION__.17140:
 	.4byte	.LFE76-.LFB76
 	.uleb128 0x1
 	.byte	0x9c
-	.4byte	0x22f2
+	.4byte	0x22f8
 	.uleb128 0x26
 	.4byte	.LVL196
-	.4byte	0x32a9
+	.4byte	0x32af
 	.uleb128 0x26
 	.4byte	.LVL197
-	.4byte	0x32a9
+	.4byte	0x32af
 	.uleb128 0x26
 	.4byte	.LVL198
-	.4byte	0x32a9
+	.4byte	0x32af
 	.uleb128 0x26
 	.4byte	.LVL199
-	.4byte	0x32a9
+	.4byte	0x32af
 	.byte	0
 	.uleb128 0x25
 	.4byte	.LASF571
@@ -7912,7 +7915,7 @@ __PRETTY_FUNCTION__.17140:
 	.4byte	.LFE75-.LFB75
 	.uleb128 0x1
 	.byte	0x9c
-	.4byte	0x2495
+	.4byte	0x249b
 	.uleb128 0x27
 	.ascii	"mod\000"
 	.byte	0x1
@@ -8006,25 +8009,25 @@ __PRETTY_FUNCTION__.17140:
 	.4byte	.LLST87
 	.4byte	.LVUS87
 	.uleb128 0x2d
-	.4byte	0x2573
+	.4byte	0x2579
 	.4byte	.LBI41
 	.byte	.LVU705
 	.4byte	.Ldebug_ranges0+0x90
 	.byte	0x1
 	.2byte	0x224
 	.byte	0x5
-	.4byte	0x2456
+	.4byte	0x245c
 	.uleb128 0x2e
-	.4byte	0x2581
+	.4byte	0x2587
 	.4byte	.LLST88
 	.4byte	.LVUS88
 	.uleb128 0x26
 	.4byte	.LVL168
-	.4byte	0x32a9
+	.4byte	0x32af
 	.uleb128 0x2f
 	.4byte	.LVL169
-	.4byte	0x32b5
-	.4byte	0x2433
+	.4byte	0x32bb
+	.4byte	0x2439
 	.uleb128 0x30
 	.uleb128 0x1
 	.byte	0x50
@@ -8040,7 +8043,7 @@ __PRETTY_FUNCTION__.17140:
 	.byte	0
 	.uleb128 0x31
 	.4byte	.LVL195
-	.4byte	0x32c1
+	.4byte	0x32c7
 	.uleb128 0x30
 	.uleb128 0x1
 	.byte	0x50
@@ -8066,8 +8069,8 @@ __PRETTY_FUNCTION__.17140:
 	.byte	0
 	.uleb128 0x2f
 	.4byte	.LVL172
-	.4byte	0x32c1
-	.4byte	0x2470
+	.4byte	0x32c7
+	.4byte	0x2476
 	.uleb128 0x30
 	.uleb128 0x1
 	.byte	0x50
@@ -8083,16 +8086,16 @@ __PRETTY_FUNCTION__.17140:
 	.byte	0
 	.uleb128 0x26
 	.4byte	.LVL176
-	.4byte	0x32ce
+	.4byte	0x32d4
 	.uleb128 0x26
 	.4byte	.LVL181
-	.4byte	0x32ce
+	.4byte	0x32d4
 	.uleb128 0x26
 	.4byte	.LVL183
-	.4byte	0x32ce
+	.4byte	0x32d4
 	.uleb128 0x26
 	.4byte	.LVL185
-	.4byte	0x32db
+	.4byte	0x32e1
 	.byte	0
 	.uleb128 0x32
 	.4byte	.LASF651
@@ -8104,7 +8107,7 @@ __PRETTY_FUNCTION__.17140:
 	.4byte	.LFE74-.LFB74
 	.uleb128 0x1
 	.byte	0x9c
-	.4byte	0x2573
+	.4byte	0x2579
 	.uleb128 0x28
 	.4byte	.LASF579
 	.byte	0x1
@@ -8131,33 +8134,33 @@ __PRETTY_FUNCTION__.17140:
 	.4byte	.LLST77
 	.4byte	.LVUS77
 	.uleb128 0x2d
-	.4byte	0x3102
+	.4byte	0x3108
 	.4byte	.LBI31
 	.byte	.LVU663
 	.4byte	.Ldebug_ranges0+0x60
 	.byte	0x1
 	.2byte	0x211
 	.byte	0x5
-	.4byte	0x2506
+	.4byte	0x250c
 	.uleb128 0x34
-	.4byte	0x3110
+	.4byte	0x3116
 	.byte	0
 	.uleb128 0x2d
-	.4byte	0x3102
+	.4byte	0x3108
 	.4byte	.LBI35
 	.byte	.LVU673
 	.4byte	.Ldebug_ranges0+0x78
 	.byte	0x1
 	.2byte	0x206
 	.byte	0x9
-	.4byte	0x2522
+	.4byte	0x2528
 	.uleb128 0x34
-	.4byte	0x3110
+	.4byte	0x3116
 	.byte	0
 	.uleb128 0x2f
 	.4byte	.LVL158
-	.4byte	0x32e7
-	.4byte	0x2542
+	.4byte	0x32ed
+	.4byte	0x2548
 	.uleb128 0x30
 	.uleb128 0x1
 	.byte	0x50
@@ -8179,11 +8182,11 @@ __PRETTY_FUNCTION__.17140:
 	.byte	0
 	.uleb128 0x26
 	.4byte	.LVL160
-	.4byte	0x2e0c
+	.4byte	0x2e12
 	.uleb128 0x2f
 	.4byte	.LVL161
-	.4byte	0x32f3
-	.4byte	0x255f
+	.4byte	0x32f9
+	.4byte	0x2565
 	.uleb128 0x30
 	.uleb128 0x1
 	.byte	0x50
@@ -8193,7 +8196,7 @@ __PRETTY_FUNCTION__.17140:
 	.byte	0
 	.uleb128 0x31
 	.4byte	.LVL164
-	.4byte	0x3300
+	.4byte	0x3306
 	.uleb128 0x30
 	.uleb128 0x1
 	.byte	0x50
@@ -8208,7 +8211,7 @@ __PRETTY_FUNCTION__.17140:
 	.2byte	0x1e7
 	.byte	0x6
 	.byte	0x1
-	.4byte	0x258f
+	.4byte	0x2595
 	.uleb128 0x36
 	.4byte	.LASF593
 	.byte	0x1
@@ -8225,7 +8228,7 @@ __PRETTY_FUNCTION__.17140:
 	.4byte	.LFE72-.LFB72
 	.uleb128 0x1
 	.byte	0x9c
-	.4byte	0x25da
+	.4byte	0x25e0
 	.uleb128 0x27
 	.ascii	"buf\000"
 	.byte	0x1
@@ -8244,7 +8247,7 @@ __PRETTY_FUNCTION__.17140:
 	.4byte	.LVUS74
 	.uleb128 0x37
 	.4byte	.LVL150
-	.4byte	0x2e0c
+	.4byte	0x2e12
 	.byte	0
 	.uleb128 0x25
 	.4byte	.LASF581
@@ -8255,7 +8258,7 @@ __PRETTY_FUNCTION__.17140:
 	.4byte	.LFE71-.LFB71
 	.uleb128 0x1
 	.byte	0x9c
-	.4byte	0x2617
+	.4byte	0x261d
 	.uleb128 0x27
 	.ascii	"fn\000"
 	.byte	0x1
@@ -8266,7 +8269,7 @@ __PRETTY_FUNCTION__.17140:
 	.4byte	.LVUS72
 	.uleb128 0x38
 	.4byte	.LVL147
-	.4byte	0x2791
+	.4byte	0x2797
 	.uleb128 0x30
 	.uleb128 0x1
 	.byte	0x51
@@ -8285,10 +8288,10 @@ __PRETTY_FUNCTION__.17140:
 	.4byte	.LFE70-.LFB70
 	.uleb128 0x1
 	.byte	0x9c
-	.4byte	0x2638
+	.4byte	0x263e
 	.uleb128 0x37
 	.4byte	.LVL144
-	.4byte	0x2e0c
+	.4byte	0x2e12
 	.byte	0
 	.uleb128 0x25
 	.4byte	.LASF583
@@ -8299,7 +8302,7 @@ __PRETTY_FUNCTION__.17140:
 	.4byte	.LFE69-.LFB69
 	.uleb128 0x1
 	.byte	0x9c
-	.4byte	0x2791
+	.4byte	0x2797
 	.uleb128 0x28
 	.4byte	.LASF584
 	.byte	0x1
@@ -8333,25 +8336,25 @@ __PRETTY_FUNCTION__.17140:
 	.4byte	.LLST66
 	.4byte	.LVUS66
 	.uleb128 0x2d
-	.4byte	0x30de
+	.4byte	0x30e4
 	.4byte	.LBI18
 	.byte	.LVU582
 	.4byte	.Ldebug_ranges0+0x18
 	.byte	0x1
 	.2byte	0x1bb
 	.byte	0x5
-	.4byte	0x2704
+	.4byte	0x270a
 	.uleb128 0x39
 	.4byte	.Ldebug_ranges0+0x20
 	.uleb128 0x3a
-	.4byte	0x30eb
+	.4byte	0x30f1
 	.4byte	.LLST67
 	.4byte	.LVUS67
 	.uleb128 0x3b
-	.4byte	0x30f5
+	.4byte	0x30fb
 	.uleb128 0x31
 	.4byte	.LVL137
-	.4byte	0x330b
+	.4byte	0x3311
 	.uleb128 0x30
 	.uleb128 0x8
 	.byte	0x90
@@ -8396,35 +8399,35 @@ __PRETTY_FUNCTION__.17140:
 	.byte	0
 	.byte	0
 	.uleb128 0x2d
-	.4byte	0x28cf
+	.4byte	0x28d5
 	.4byte	.LBI23
 	.byte	.LVU600
 	.4byte	.Ldebug_ranges0+0x38
 	.byte	0x1
 	.2byte	0x1be
 	.byte	0x5
-	.4byte	0x274f
+	.4byte	0x2755
 	.uleb128 0x2e
-	.4byte	0x28ff
+	.4byte	0x2905
 	.4byte	.LLST68
 	.4byte	.LVUS68
 	.uleb128 0x2e
-	.4byte	0x28f4
+	.4byte	0x28fa
 	.4byte	.LLST69
 	.4byte	.LVUS69
 	.uleb128 0x2e
-	.4byte	0x28e9
+	.4byte	0x28ef
 	.4byte	.LLST70
 	.4byte	.LVUS70
 	.uleb128 0x2e
-	.4byte	0x28dd
+	.4byte	0x28e3
 	.4byte	.LLST71
 	.4byte	.LVUS71
 	.byte	0
 	.uleb128 0x2f
 	.4byte	.LVL141
-	.4byte	0x2a81
-	.4byte	0x2774
+	.4byte	0x2a87
+	.4byte	0x277a
 	.uleb128 0x30
 	.uleb128 0x1
 	.byte	0x50
@@ -8451,7 +8454,7 @@ __PRETTY_FUNCTION__.17140:
 	.byte	0
 	.uleb128 0x38
 	.4byte	.LVL143
-	.4byte	0x32c1
+	.4byte	0x32c7
 	.uleb128 0x30
 	.uleb128 0x1
 	.byte	0x50
@@ -8475,13 +8478,13 @@ __PRETTY_FUNCTION__.17140:
 	.4byte	.LFE68-.LFB68
 	.uleb128 0x1
 	.byte	0x9c
-	.4byte	0x28cf
+	.4byte	0x28d5
 	.uleb128 0x28
 	.4byte	.LASF589
 	.byte	0x1
 	.2byte	0x19e
 	.byte	0x27
-	.4byte	0x2276
+	.4byte	0x227c
 	.4byte	.LLST57
 	.4byte	.LVUS57
 	.uleb128 0x27
@@ -8526,8 +8529,8 @@ __PRETTY_FUNCTION__.17140:
 	.4byte	.LVUS62
 	.uleb128 0x2f
 	.4byte	.LVL118
-	.4byte	0x3317
-	.4byte	0x2840
+	.4byte	0x331d
+	.4byte	0x2846
 	.uleb128 0x30
 	.uleb128 0x1
 	.byte	0x50
@@ -8544,8 +8547,8 @@ __PRETTY_FUNCTION__.17140:
 	.byte	0
 	.uleb128 0x2f
 	.4byte	.LVL121
-	.4byte	0x3324
-	.4byte	0x2867
+	.4byte	0x332a
+	.4byte	0x286d
 	.uleb128 0x30
 	.uleb128 0x1
 	.byte	0x50
@@ -8571,8 +8574,8 @@ __PRETTY_FUNCTION__.17140:
 	.byte	0
 	.uleb128 0x2f
 	.4byte	.LVL122
-	.4byte	0x332f
-	.4byte	0x2884
+	.4byte	0x3335
+	.4byte	0x288a
 	.uleb128 0x30
 	.uleb128 0x1
 	.byte	0x50
@@ -8588,8 +8591,8 @@ __PRETTY_FUNCTION__.17140:
 	.byte	0
 	.uleb128 0x2f
 	.4byte	.LVL123
-	.4byte	0x3324
-	.4byte	0x28ab
+	.4byte	0x332a
+	.4byte	0x28b1
 	.uleb128 0x30
 	.uleb128 0x1
 	.byte	0x50
@@ -8615,8 +8618,8 @@ __PRETTY_FUNCTION__.17140:
 	.byte	0
 	.uleb128 0x2f
 	.4byte	.LVL129
-	.4byte	0x332f
-	.4byte	0x28c5
+	.4byte	0x3335
+	.4byte	0x28cb
 	.uleb128 0x30
 	.uleb128 0x1
 	.byte	0x50
@@ -8632,7 +8635,7 @@ __PRETTY_FUNCTION__.17140:
 	.byte	0
 	.uleb128 0x37
 	.4byte	.LVL134
-	.4byte	0x333c
+	.4byte	0x3342
 	.byte	0
 	.uleb128 0x35
 	.4byte	.LASF592
@@ -8640,7 +8643,7 @@ __PRETTY_FUNCTION__.17140:
 	.2byte	0x18f
 	.byte	0x6
 	.byte	0x1
-	.4byte	0x290b
+	.4byte	0x2911
 	.uleb128 0x3c
 	.ascii	"ch\000"
 	.byte	0x1
@@ -8675,7 +8678,7 @@ __PRETTY_FUNCTION__.17140:
 	.4byte	.LFE66-.LFB66
 	.uleb128 0x1
 	.byte	0x9c
-	.4byte	0x2947
+	.4byte	0x294d
 	.uleb128 0x28
 	.4byte	.LASF537
 	.byte	0x1
@@ -8686,7 +8689,7 @@ __PRETTY_FUNCTION__.17140:
 	.4byte	.LVUS55
 	.uleb128 0x38
 	.4byte	.LVL112
-	.4byte	0x3348
+	.4byte	0x334e
 	.uleb128 0x30
 	.uleb128 0x1
 	.byte	0x51
@@ -8703,7 +8706,7 @@ __PRETTY_FUNCTION__.17140:
 	.4byte	.LFE65-.LFB65
 	.uleb128 0x1
 	.byte	0x9c
-	.4byte	0x29af
+	.4byte	0x29b5
 	.uleb128 0x28
 	.4byte	.LASF596
 	.byte	0x1
@@ -8714,13 +8717,13 @@ __PRETTY_FUNCTION__.17140:
 	.4byte	.LVUS54
 	.uleb128 0x3d
 	.4byte	.LASF599
-	.4byte	0x29bf
+	.4byte	0x29c5
 	.uleb128 0x5
 	.byte	0x3
 	.4byte	__PRETTY_FUNCTION__.17140
 	.uleb128 0x31
 	.4byte	.LVL109
-	.4byte	0x3353
+	.4byte	0x3359
 	.uleb128 0x30
 	.uleb128 0x1
 	.byte	0x50
@@ -8749,13 +8752,13 @@ __PRETTY_FUNCTION__.17140:
 	.byte	0
 	.uleb128 0xc
 	.4byte	0x10a
-	.4byte	0x29bf
+	.4byte	0x29c5
 	.uleb128 0xd
 	.4byte	0x3a
 	.byte	0x1c
 	.byte	0
 	.uleb128 0x5
-	.4byte	0x29af
+	.4byte	0x29b5
 	.uleb128 0x25
 	.4byte	.LASF597
 	.byte	0x1
@@ -8765,7 +8768,7 @@ __PRETTY_FUNCTION__.17140:
 	.4byte	.LFE64-.LFB64
 	.uleb128 0x1
 	.byte	0x9c
-	.4byte	0x2a04
+	.4byte	0x2a0a
 	.uleb128 0x27
 	.ascii	"set\000"
 	.byte	0x1
@@ -8776,7 +8779,7 @@ __PRETTY_FUNCTION__.17140:
 	.4byte	.LVUS53
 	.uleb128 0x38
 	.4byte	.LVL106
-	.4byte	0x3300
+	.4byte	0x3306
 	.uleb128 0x30
 	.uleb128 0x1
 	.byte	0x50
@@ -8794,24 +8797,24 @@ __PRETTY_FUNCTION__.17140:
 	.4byte	.LFE63-.LFB63
 	.uleb128 0x1
 	.byte	0x9c
-	.4byte	0x2a6c
+	.4byte	0x2a72
 	.uleb128 0x28
 	.4byte	.LASF542
 	.byte	0x1
 	.2byte	0x165
 	.byte	0x28
-	.4byte	0x2093
+	.4byte	0x2276
 	.4byte	.LLST52
 	.4byte	.LVUS52
 	.uleb128 0x3d
 	.4byte	.LASF599
-	.4byte	0x2a7c
+	.4byte	0x2a82
 	.uleb128 0x5
 	.byte	0x3
 	.4byte	__PRETTY_FUNCTION__.17133
 	.uleb128 0x31
 	.4byte	.LVL101
-	.4byte	0x3353
+	.4byte	0x3359
 	.uleb128 0x30
 	.uleb128 0x1
 	.byte	0x50
@@ -8840,13 +8843,13 @@ __PRETTY_FUNCTION__.17140:
 	.byte	0
 	.uleb128 0xc
 	.4byte	0x10a
-	.4byte	0x2a7c
+	.4byte	0x2a82
 	.uleb128 0xd
 	.4byte	0x3a
 	.byte	0x18
 	.byte	0
 	.uleb128 0x5
-	.4byte	0x2a6c
+	.4byte	0x2a72
 	.uleb128 0x25
 	.4byte	.LASF600
 	.byte	0x1
@@ -8856,7 +8859,7 @@ __PRETTY_FUNCTION__.17140:
 	.4byte	.LFE62-.LFB62
 	.uleb128 0x1
 	.byte	0x9c
-	.4byte	0x2cf3
+	.4byte	0x2cf9
 	.uleb128 0x28
 	.4byte	.LASF601
 	.byte	0x1
@@ -8942,14 +8945,14 @@ __PRETTY_FUNCTION__.17140:
 	.4byte	.LVUS51
 	.uleb128 0x3d
 	.4byte	.LASF599
-	.4byte	0x2d03
+	.4byte	0x2d09
 	.uleb128 0x5
 	.byte	0x3
 	.4byte	__PRETTY_FUNCTION__.17126
 	.uleb128 0x2f
 	.4byte	.LVL80
-	.4byte	0x32c1
-	.4byte	0x2ba1
+	.4byte	0x32c7
+	.4byte	0x2ba7
 	.uleb128 0x30
 	.uleb128 0x1
 	.byte	0x50
@@ -8992,8 +8995,8 @@ __PRETTY_FUNCTION__.17140:
 	.byte	0
 	.uleb128 0x2f
 	.4byte	.LVL83
-	.4byte	0x32c1
-	.4byte	0x2bff
+	.4byte	0x32c7
+	.4byte	0x2c05
 	.uleb128 0x30
 	.uleb128 0x1
 	.byte	0x50
@@ -9068,11 +9071,11 @@ __PRETTY_FUNCTION__.17140:
 	.byte	0
 	.uleb128 0x26
 	.4byte	.LVL84
-	.4byte	0x32a9
+	.4byte	0x32af
 	.uleb128 0x2f
 	.4byte	.LVL85
-	.4byte	0x32b5
-	.4byte	0x2c1b
+	.4byte	0x32bb
+	.4byte	0x2c21
 	.uleb128 0x30
 	.uleb128 0x1
 	.byte	0x51
@@ -9081,8 +9084,8 @@ __PRETTY_FUNCTION__.17140:
 	.byte	0
 	.uleb128 0x2f
 	.4byte	.LVL88
-	.4byte	0x335f
-	.4byte	0x2c31
+	.4byte	0x3365
+	.4byte	0x2c37
 	.uleb128 0x30
 	.uleb128 0x1
 	.byte	0x50
@@ -9094,11 +9097,11 @@ __PRETTY_FUNCTION__.17140:
 	.byte	0
 	.uleb128 0x26
 	.4byte	.LVL91
-	.4byte	0x335f
+	.4byte	0x3365
 	.uleb128 0x2f
 	.4byte	.LVL92
-	.4byte	0x32c1
-	.4byte	0x2c5d
+	.4byte	0x32c7
+	.4byte	0x2c63
 	.uleb128 0x30
 	.uleb128 0x1
 	.byte	0x50
@@ -9120,11 +9123,11 @@ __PRETTY_FUNCTION__.17140:
 	.byte	0
 	.uleb128 0x37
 	.4byte	.LVL95
-	.4byte	0x336b
+	.4byte	0x3371
 	.uleb128 0x2f
 	.4byte	.LVL96
-	.4byte	0x3353
-	.4byte	0x2c96
+	.4byte	0x3359
+	.4byte	0x2c9c
 	.uleb128 0x30
 	.uleb128 0x1
 	.byte	0x50
@@ -9152,8 +9155,8 @@ __PRETTY_FUNCTION__.17140:
 	.byte	0
 	.uleb128 0x2f
 	.4byte	.LVL97
-	.4byte	0x3353
-	.4byte	0x2cc6
+	.4byte	0x3359
+	.4byte	0x2ccc
 	.uleb128 0x30
 	.uleb128 0x1
 	.byte	0x50
@@ -9181,7 +9184,7 @@ __PRETTY_FUNCTION__.17140:
 	.byte	0
 	.uleb128 0x31
 	.4byte	.LVL98
-	.4byte	0x3353
+	.4byte	0x3359
 	.uleb128 0x30
 	.uleb128 0x1
 	.byte	0x50
@@ -9210,13 +9213,13 @@ __PRETTY_FUNCTION__.17140:
 	.byte	0
 	.uleb128 0xc
 	.4byte	0x10a
-	.4byte	0x2d03
+	.4byte	0x2d09
 	.uleb128 0xd
 	.4byte	0x3a
 	.byte	0x14
 	.byte	0
 	.uleb128 0x5
-	.4byte	0x2cf3
+	.4byte	0x2cf9
 	.uleb128 0x3f
 	.4byte	.LASF606
 	.byte	0x1
@@ -9226,7 +9229,7 @@ __PRETTY_FUNCTION__.17140:
 	.4byte	.LFE61-.LFB61
 	.uleb128 0x1
 	.byte	0x9c
-	.4byte	0x2e0c
+	.4byte	0x2e12
 	.uleb128 0x40
 	.ascii	"yy\000"
 	.byte	0x1
@@ -9252,63 +9255,63 @@ __PRETTY_FUNCTION__.17140:
 	.4byte	.LLST34
 	.4byte	.LVUS34
 	.uleb128 0x42
-	.4byte	0x301d
+	.4byte	0x3023
 	.4byte	.LBI10
 	.byte	.LVU262
 	.4byte	.Ldebug_ranges0+0
 	.byte	0x1
 	.byte	0xfe
 	.byte	0x9
-	.4byte	0x2dfc
+	.4byte	0x2e02
 	.uleb128 0x2e
-	.4byte	0x3036
+	.4byte	0x303c
 	.4byte	.LLST35
 	.4byte	.LVUS35
 	.uleb128 0x2e
-	.4byte	0x302a
+	.4byte	0x3030
 	.4byte	.LLST36
 	.4byte	.LVUS36
 	.uleb128 0x39
 	.4byte	.Ldebug_ranges0+0
 	.uleb128 0x3a
-	.4byte	0x3042
+	.4byte	0x3048
 	.4byte	.LLST37
 	.4byte	.LVUS37
 	.uleb128 0x3a
-	.4byte	0x304d
+	.4byte	0x3053
 	.4byte	.LLST38
 	.4byte	.LVUS38
 	.uleb128 0x3a
-	.4byte	0x3058
+	.4byte	0x305e
 	.4byte	.LLST39
 	.4byte	.LVUS39
 	.uleb128 0x3a
-	.4byte	0x3062
+	.4byte	0x3068
 	.4byte	.LLST40
 	.4byte	.LVUS40
 	.uleb128 0x3b
-	.4byte	0x306e
+	.4byte	0x3074
 	.uleb128 0x3a
-	.4byte	0x307a
+	.4byte	0x3080
 	.4byte	.LLST41
 	.4byte	.LVUS41
 	.uleb128 0x3a
-	.4byte	0x3086
+	.4byte	0x308c
 	.4byte	.LLST42
 	.4byte	.LVUS42
 	.uleb128 0x3a
-	.4byte	0x3092
+	.4byte	0x3098
 	.4byte	.LLST43
 	.4byte	.LVUS43
 	.uleb128 0x3a
-	.4byte	0x309e
+	.4byte	0x30a4
 	.4byte	.LLST44
 	.4byte	.LVUS44
 	.byte	0
 	.byte	0
 	.uleb128 0x31
 	.4byte	.LVL53
-	.4byte	0x3348
+	.4byte	0x334e
 	.uleb128 0x30
 	.uleb128 0x1
 	.byte	0x51
@@ -9325,13 +9328,13 @@ __PRETTY_FUNCTION__.17140:
 	.4byte	.LFE60-.LFB60
 	.uleb128 0x1
 	.byte	0x9c
-	.4byte	0x3008
+	.4byte	0x300e
 	.uleb128 0x44
 	.4byte	.LASF610
 	.byte	0x1
 	.byte	0xac
 	.byte	0x2b
-	.4byte	0x2276
+	.4byte	0x227c
 	.4byte	.LLST11
 	.4byte	.LVUS11
 	.uleb128 0x40
@@ -9475,7 +9478,7 @@ __PRETTY_FUNCTION__.17140:
 	.byte	0x1
 	.byte	0xb3
 	.byte	0xf
-	.4byte	0x2276
+	.4byte	0x227c
 	.4byte	.LLST29
 	.4byte	.LVUS29
 	.uleb128 0x41
@@ -9483,7 +9486,7 @@ __PRETTY_FUNCTION__.17140:
 	.byte	0x1
 	.byte	0xb4
 	.byte	0xf
-	.4byte	0x2276
+	.4byte	0x227c
 	.4byte	.LLST30
 	.4byte	.LVUS30
 	.uleb128 0x41
@@ -9496,14 +9499,14 @@ __PRETTY_FUNCTION__.17140:
 	.4byte	.LVUS31
 	.uleb128 0x3d
 	.4byte	.LASF599
-	.4byte	0x3018
+	.4byte	0x301e
 	.uleb128 0x5
 	.byte	0x3
 	.4byte	__PRETTY_FUNCTION__.17096
 	.uleb128 0x2f
 	.4byte	.LVL23
-	.4byte	0x3348
-	.4byte	0x2fdc
+	.4byte	0x334e
+	.4byte	0x2fe2
 	.uleb128 0x30
 	.uleb128 0x1
 	.byte	0x50
@@ -9518,7 +9521,7 @@ __PRETTY_FUNCTION__.17140:
 	.byte	0
 	.uleb128 0x31
 	.4byte	.LVL51
-	.4byte	0x3353
+	.4byte	0x3359
 	.uleb128 0x30
 	.uleb128 0x1
 	.byte	0x50
@@ -9547,20 +9550,20 @@ __PRETTY_FUNCTION__.17140:
 	.byte	0
 	.uleb128 0xc
 	.4byte	0x10a
-	.4byte	0x3018
+	.4byte	0x301e
 	.uleb128 0xd
 	.4byte	0x3a
 	.byte	0x1a
 	.byte	0
 	.uleb128 0x5
-	.4byte	0x3008
+	.4byte	0x300e
 	.uleb128 0x45
 	.4byte	.LASF619
 	.byte	0x1
 	.byte	0x3e
 	.byte	0x6
 	.byte	0x1
-	.4byte	0x30ab
+	.4byte	0x30b1
 	.uleb128 0x46
 	.4byte	.LASF620
 	.byte	0x1
@@ -9614,19 +9617,19 @@ __PRETTY_FUNCTION__.17140:
 	.byte	0x1
 	.byte	0x42
 	.byte	0xe
-	.4byte	0x2093
+	.4byte	0x2276
 	.uleb128 0x48
 	.4byte	.LASF624
 	.byte	0x1
 	.byte	0x43
 	.byte	0xe
-	.4byte	0x2093
+	.4byte	0x2276
 	.uleb128 0x48
 	.4byte	.LASF625
 	.byte	0x1
 	.byte	0x44
 	.byte	0xe
-	.4byte	0x2093
+	.4byte	0x2276
 	.byte	0
 	.uleb128 0x43
 	.4byte	.LASF626
@@ -9637,10 +9640,10 @@ __PRETTY_FUNCTION__.17140:
 	.4byte	.LFE58-.LFB58
 	.uleb128 0x1
 	.byte	0x9c
-	.4byte	0x30de
+	.4byte	0x30e4
 	.uleb128 0x38
 	.4byte	.LVL5
-	.4byte	0x32c1
+	.4byte	0x32c7
 	.uleb128 0x30
 	.uleb128 0x1
 	.byte	0x50
@@ -9661,7 +9664,7 @@ __PRETTY_FUNCTION__.17140:
 	.byte	0x22
 	.byte	0x6
 	.byte	0x1
-	.4byte	0x3102
+	.4byte	0x3108
 	.uleb128 0x47
 	.ascii	"i\000"
 	.byte	0x1
@@ -9681,7 +9684,7 @@ __PRETTY_FUNCTION__.17140:
 	.2byte	0x1c8
 	.byte	0x14
 	.byte	0x3
-	.4byte	0x311d
+	.4byte	0x3123
 	.uleb128 0x3c
 	.ascii	"op\000"
 	.byte	0x2
@@ -9690,23 +9693,23 @@ __PRETTY_FUNCTION__.17140:
 	.4byte	0x875
 	.byte	0
 	.uleb128 0x4b
-	.4byte	0x30de
+	.4byte	0x30e4
 	.4byte	.LFB57
 	.4byte	.LFE57-.LFB57
 	.uleb128 0x1
 	.byte	0x9c
-	.4byte	0x317a
+	.4byte	0x3180
 	.uleb128 0x3a
-	.4byte	0x30eb
+	.4byte	0x30f1
 	.4byte	.LLST0
 	.4byte	.LVUS0
 	.uleb128 0x4c
-	.4byte	0x30f5
+	.4byte	0x30fb
 	.byte	0x4
 	.4byte	0x3f666666
 	.uleb128 0x31
 	.4byte	.LVL2
-	.4byte	0x330b
+	.4byte	0x3311
 	.uleb128 0x30
 	.uleb128 0x8
 	.byte	0x90
@@ -9750,97 +9753,97 @@ __PRETTY_FUNCTION__.17140:
 	.byte	0
 	.byte	0
 	.uleb128 0x4b
-	.4byte	0x301d
+	.4byte	0x3023
 	.4byte	.LFB59
 	.4byte	.LFE59-.LFB59
 	.uleb128 0x1
 	.byte	0x9c
-	.4byte	0x3215
+	.4byte	0x321b
 	.uleb128 0x2e
-	.4byte	0x302a
+	.4byte	0x3030
 	.4byte	.LLST1
 	.4byte	.LVUS1
 	.uleb128 0x2e
-	.4byte	0x3036
+	.4byte	0x303c
 	.4byte	.LLST2
 	.4byte	.LVUS2
 	.uleb128 0x3a
-	.4byte	0x3042
+	.4byte	0x3048
 	.4byte	.LLST3
 	.4byte	.LVUS3
 	.uleb128 0x3a
-	.4byte	0x304d
+	.4byte	0x3053
 	.4byte	.LLST4
 	.4byte	.LVUS4
 	.uleb128 0x3a
-	.4byte	0x3058
+	.4byte	0x305e
 	.4byte	.LLST5
 	.4byte	.LVUS5
 	.uleb128 0x3a
-	.4byte	0x3062
+	.4byte	0x3068
 	.4byte	.LLST6
 	.4byte	.LVUS6
 	.uleb128 0x3b
-	.4byte	0x306e
+	.4byte	0x3074
 	.uleb128 0x3a
-	.4byte	0x307a
+	.4byte	0x3080
 	.4byte	.LLST7
 	.4byte	.LVUS7
 	.uleb128 0x3a
-	.4byte	0x3086
+	.4byte	0x308c
 	.4byte	.LLST8
 	.4byte	.LVUS8
 	.uleb128 0x3a
-	.4byte	0x3092
+	.4byte	0x3098
 	.4byte	.LLST9
 	.4byte	.LVUS9
 	.uleb128 0x3a
-	.4byte	0x309e
+	.4byte	0x30a4
 	.4byte	.LLST10
 	.4byte	.LVUS10
 	.byte	0
 	.uleb128 0x4b
-	.4byte	0x28cf
+	.4byte	0x28d5
 	.4byte	.LFB67
 	.4byte	.LFE67-.LFB67
 	.uleb128 0x1
 	.byte	0x9c
-	.4byte	0x324b
+	.4byte	0x3251
 	.uleb128 0x2e
-	.4byte	0x28dd
+	.4byte	0x28e3
 	.4byte	.LLST56
 	.4byte	.LVUS56
 	.uleb128 0x4d
-	.4byte	0x28e9
+	.4byte	0x28ef
 	.uleb128 0x1
 	.byte	0x51
 	.uleb128 0x4d
-	.4byte	0x28f4
+	.4byte	0x28fa
 	.uleb128 0x1
 	.byte	0x52
 	.uleb128 0x4d
-	.4byte	0x28ff
+	.4byte	0x2905
 	.uleb128 0x1
 	.byte	0x53
 	.byte	0
 	.uleb128 0x4b
-	.4byte	0x2573
+	.4byte	0x2579
 	.4byte	.LFB73
 	.4byte	.LFE73-.LFB73
 	.uleb128 0x1
 	.byte	0x9c
-	.4byte	0x32a9
+	.4byte	0x32af
 	.uleb128 0x2e
-	.4byte	0x2581
+	.4byte	0x2587
 	.4byte	.LLST75
 	.4byte	.LVUS75
 	.uleb128 0x26
 	.4byte	.LVL153
-	.4byte	0x32a9
+	.4byte	0x32af
 	.uleb128 0x2f
 	.4byte	.LVL154
-	.4byte	0x32b5
-	.4byte	0x328e
+	.4byte	0x32bb
+	.4byte	0x3294
 	.uleb128 0x30
 	.uleb128 0x1
 	.byte	0x50
@@ -9856,7 +9859,7 @@ __PRETTY_FUNCTION__.17140:
 	.byte	0
 	.uleb128 0x38
 	.4byte	.LVL156
-	.4byte	0x32c1
+	.4byte	0x32c7
 	.uleb128 0x30
 	.uleb128 0x1
 	.byte	0x50
@@ -13491,8 +13494,6 @@ __PRETTY_FUNCTION__.17140:
 	.ascii	"PyCell_Type\000"
 .LASF462:
 	.ascii	"PyExc_IndentationError\000"
-.LASF534:
-	.ascii	"buffptr_t\000"
 .LASF239:
 	.ascii	"sq_repeat\000"
 .LASF66:
@@ -14095,6 +14096,8 @@ __PRETTY_FUNCTION__.17140:
 	.ascii	"__PRETTY_FUNCTION__\000"
 .LASF382:
 	.ascii	"c_profilefunc\000"
+.LASF534:
+	.ascii	"bufftyp_t\000"
 .LASF113:
 	.ascii	"tp_as_sequence\000"
 .LASF120:
