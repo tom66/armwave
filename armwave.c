@@ -298,8 +298,8 @@ void armwave_setup_render(uint32_t start_point, uint32_t end_point, uint32_t wav
     g_armwave_state.waves_max = waves_max;
     g_armwave_state.waves = waves_max;  // Need a function to be able to change this on the fly
     g_armwave_state.size = target_height * target_width;
-    g_armwave_state.bitdepth_height = 256;  // Always 256 possible levels in 8-bit mode
-    g_armwave_state.ch_buff_size = (g_armwave_state.bitdepth_height + 4) * (target_width + 4);  // Add word padding too
+    g_armwave_state.bitdepth_height = 256 * sizeof(bufftyp_t);  // Always 256 possible levels in 8-bit mode
+    g_armwave_state.ch_buff_size = (g_armwave_state.bitdepth_height + 4) * (target_width + 4) * sizeof(bufftyp_t);  // Add word padding too
     g_armwave_state.target_width = target_width;
     g_armwave_state.target_height = target_height;
     g_armwave_state.wave_length = end_point - start_point;
