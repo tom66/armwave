@@ -251,6 +251,7 @@ void armwave_fill_pixbuf_scaled(uint32_t *out_buffer)
             xx = (nsub >> 8);
 
             //for(y = yy; y < ye; y++) {
+            y = yy;
             {
                 offset = (xx + (y * g_armwave_state.target_width)); 
                 *(out_buffer_base + offset) = word;
