@@ -174,8 +174,7 @@ void armwave_fill_pixbuf_scaled(uint32_t *out_buffer)
     uint32_t xx, yy, ye, y, word, wave_word;
     // uint32_t ysub;
     int rr, gg, bb, n, nsub, npix, w;
-    uint8_t r, g, b;
-    uint16_t value; 
+    uint8_t r, g, b, value; 
     // uint8_t row;
     uint32_t *base_32ptr = (uint32_t*)g_armwave_state.ch1_buffer;
     uint32_t *out_buffer_base = out_buffer;
@@ -191,7 +190,8 @@ void armwave_fill_pixbuf_scaled(uint32_t *out_buffer)
 
     for(n = 0; n < npix; n += 4) {
         // Read a 32-bit word at a time.  If any bits are nonzero, we need to process
-        // each 16-bit word within.
+        // each byte.  We can afford to do this because most pixels will be blank for
+        // most normal waveforms.
         wave_word = *base_32ptr++;
 
         if(COND_UNLIKELY(wave_word != 0)) {
@@ -211,8 +211,18 @@ void armwave_fill_pixbuf_scaled(uint32_t *out_buffer)
                     // Ensure 100% alpha channel, if it is used
                     word = 0xff000000 | (b << 16) | (g << 8) | r;
 
-                    // TODO: Replace this FP math with integer math: big performance hit converting to integer and back again
-                    nsub = (n + w);
+                    // Do line scaling as necessary.
+                    /*
+                    nsub = n + w;
+                    yy = (nsub & 0xff) * g_armwave_state.vscale;
+                    xx = (nsub >> 8);
+                    for(row = 0; row < g_armwave_state.vscale; row++) {
+                        offset = (xx + ((yy + row) * g_armwave_state.target_width)); 
+                        *(out_buffer_base + offset) = word;
+                    }
+                    */
+
+                    nsub = n + w;
                     yy = (nsub & 0xff) * g_armwave_state.vscale_frac;
                     ye = ((nsub & 0xff) + 1) * g_armwave_state.vscale_frac;
                     xx = (nsub >> 8);
