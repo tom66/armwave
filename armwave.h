@@ -40,10 +40,10 @@ struct armwave_color_mix_t {
 struct armwave_state_t {
   uint32_t flags;
 
-  uint8_t *ch1_buffer;
-  uint8_t *ch2_buffer;
-  uint8_t *ch3_buffer;
-  uint8_t *ch4_buffer;
+  uint16_t *ch1_buffer;
+  uint16_t *ch2_buffer;
+  uint16_t *ch3_buffer;
+  uint16_t *ch4_buffer;
 
   uint8_t *wave_buffer;
 

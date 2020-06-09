@@ -174,7 +174,8 @@ void armwave_fill_pixbuf_scaled(uint32_t *out_buffer)
     uint32_t xx, yy, ye, y, word, wave_word;
     // uint32_t ysub;
     int rr, gg, bb, n, nsub, npix, w;
-    uint8_t r, g, b, value; 
+    uint8_t r, g, b;
+    uint16_t value; 
     // uint8_t row;
     uint32_t *base_32ptr = (uint32_t*)g_armwave_state.ch1_buffer;
     uint32_t *out_buffer_base = out_buffer;
@@ -188,16 +189,15 @@ void armwave_fill_pixbuf_scaled(uint32_t *out_buffer)
     npix = g_armwave_state.target_width * 256; 
     //vscale = g_armwave_state.target_height >> 8;
 
-    for(n = 0; n < npix; n += 4) {
+    for(n = 0; n < npix; n += 2) {
         // Read a 32-bit word at a time.  If any bits are nonzero, we need to process
-        // each byte.  We can afford to do this because most pixels will be blank for
-        // most normal waveforms.
+        // each 16-bit word within.
         wave_word = *base_32ptr++;
 
         if(COND_UNLIKELY(wave_word != 0)) {
             for(w = 0; w < 4; w++) {
-                value = wave_word & 0xff;
-                wave_word >>= 8;
+                value = wave_word & 0xffff;
+                wave_word >>= 16;
 
                 if(value != 0) {
                     rr = (g_armwave_state.ch1_color.r * value) >> 8;
@@ -211,18 +211,7 @@ void armwave_fill_pixbuf_scaled(uint32_t *out_buffer)
                     // Ensure 100% alpha channel, if it is used
                     word = 0xff000000 | (b << 16) | (g << 8) | r;
 
-                    // Do line scaling as necessary.
-                    /*
-                    nsub = n + w;
-                    yy = (nsub & 0xff) * g_armwave_state.vscale;
-                    xx = (nsub >> 8);
-
-                    for(row = 0; row < g_armwave_state.vscale; row++) {
-                        offset = (xx + ((yy + row) * g_armwave_state.target_width)); 
-                        *(out_buffer_base + offset) = word;
-                    }
-                    */
-
+                    // TODO: Replace this FP math with integer math: big performance hit converting to integer and back again
                     nsub = n + w;
                     yy = (nsub & 0xff) * g_armwave_state.vscale_frac;
                     ye = ((nsub & 0xff) + 1) * g_armwave_state.vscale_frac;
@@ -301,7 +290,7 @@ void armwave_setup_render(uint32_t start_point, uint32_t end_point, uint32_t wav
     g_armwave_state.waves = waves_max;  // Need a function to be able to change this on the fly
     g_armwave_state.size = target_height * target_width;
     g_armwave_state.bitdepth_height = 256;  // Always 256 possible levels in 8-bit mode
-    g_armwave_state.ch_buff_size = (g_armwave_state.bitdepth_height + 4) * (target_width + 4);  // Add word padding too
+    g_armwave_state.ch_buff_size = (g_armwave_state.bitdepth_height + 4) * (target_width + 4) * sizeof(uint16_t);  // Add word padding too
     g_armwave_state.target_width = target_width;
     g_armwave_state.target_height = target_height;
     g_armwave_state.wave_length = end_point - start_point;
