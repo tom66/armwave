@@ -110,61 +110,6 @@ void render_nonaa_to_buffer_1ch_slice(uint32_t slice_y, uint32_t height)
     }
 }
 
-#if 0
-/*
- * Fill a pixbuf with a 256-height waveform.
- */
-void armwave_fill_pixbuf_256(uint32_t *out_buffer)
-{
-    uint32_t xx, yy, word, wave_word;
-    int rr, gg, bb, n, nsub, npix, i;
-    uint8_t r, g, b, value;
-    uint32_t *base_32ptr = (uint32_t*)g_armwave_state.ch1_buffer;
-    uint32_t *out_buffer_base = out_buffer;
-    uint32_t offset;
-
-    assert(out_buffer != NULL);
-
-    // Buffer is sent non-rotated: we use GDK/GL to assemble and rotate it
-
-    npix = g_armwave_state.target_width * 256;
-
-    for(n = 0; n < npix; n += 4) {
-        // Read a 32-bit word at a time.  If any bits are nonzero, we need to process
-        // each byte.  We can afford to do this because most pixels will be blank for
-        // most normal waveforms.
-        wave_word = *base_32ptr++;
-
-        if(COND_UNLIKELY(wave_word != 0)) {
-            for(i = 0; i < 4; i++) {
-                value = wave_word & 0xff;
-                wave_word >>= 8;
-
-                if(value != 0) {
-                    rr = (g_armwave_state.ch1_color.r * value) >> 8;
-                    gg = (g_armwave_state.ch1_color.g * value) >> 8;
-                    bb = (g_armwave_state.ch1_color.b * value) >> 8;
-
-                    r = MIN(rr, 255);
-                    g = MIN(gg, 255);
-                    b = MIN(bb, 255);
-
-                    // Ensure 100% alpha channel, if it is used
-                    word = 0xff000000 | (b << 16) | (g << 8) | r;
-
-                    // Is there a better way?
-                    nsub = n + i;
-                    xx = nsub & 0xff;
-                    yy = nsub >> 8;
-                    offset = yy + (xx * g_armwave_state.target_width);
-                    *(out_buffer_base + offset) = word;
-                }
-            }
-        } 
-    }
-}
-#endif
-
 /*
  * Fill a pixbuf with a multiple of a 256-height waveform.
  * Rows are repeated as necessary.
@@ -228,7 +173,7 @@ void armwave_fill_pixbuf_scaled(uint32_t *out_buffer)
     }
 #endif
 
-    for(n = 0; n < (npix / 2); n += 1) {
+    for(n = 0; n < npix; n += 1) {
         wave_word = g_armwave_state.ch1_buffer[n];
         value = wave_word & 0xffff;
 
