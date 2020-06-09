@@ -196,7 +196,7 @@ void armwave_fill_pixbuf_scaled(uint32_t *out_buffer)
 
         if(COND_UNLIKELY(wave_word != 0)) {
             for(w = 0; w < 4; w++) {
-                value = wave_word & 0xf;
+                value = wave_word & 0xff;
                 wave_word >>= 8;
 
                 if(value != 0) {
