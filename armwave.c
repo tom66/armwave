@@ -245,7 +245,7 @@ void armwave_fill_pixbuf_scaled(uint32_t *out_buffer)
             word = 0xff000000 | (b << 16) | (g << 8) | r;
 
             // Plot the pixels
-            nsub = n + (w * 2);
+            nsub = n * 2;
             yy = (nsub & 0xff) * g_armwave_state.vscale_frac;
             ye = ((nsub & 0xff) + 1) * g_armwave_state.vscale_frac;
             xx = (nsub >> 8);
