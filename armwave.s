@@ -1414,7 +1414,7 @@ armwave_setup_render:
 @ armwave.c:310:         ((float)(g_armwave_state.target_width) / g_armwave_state.wave_length) * (1 << AM_XCOORD_MULT_SHIFT);
 	.loc 1 310 79 view .LVU392
 	vldr.32	s13, .L88+4	@ tmp199,
-@ armwave.c:303:     g_armwave_state.ch_buff_size = (g_armwave_state.bitdepth_height + 4) * (target_width + 4) * sizeof(uint16_t);  // Add word padding too
+@ armwave.c:303:     g_armwave_state.ch_buff_size = (g_armwave_state.bitdepth_height + 4) * (target_width + 4) * sizeof(buffptr_t);  // Add word padding too
 	.loc 1 303 90 view .LVU393
 	add	r3, r6, #4	@ tmp186, target_width,
 @ armwave.c:295:     g_armwave_state.xstride = target_height;
@@ -1430,7 +1430,7 @@ armwave_setup_render:
 @ armwave.c:301:     g_armwave_state.size = target_height * target_width;
 	.loc 1 301 42 view .LVU397
 	mul	r1, r7, r6	@ tmp183, target_height, target_width
-@ armwave.c:303:     g_armwave_state.ch_buff_size = (g_armwave_state.bitdepth_height + 4) * (target_width + 4) * sizeof(uint16_t);  // Add word padding too
+@ armwave.c:303:     g_armwave_state.ch_buff_size = (g_armwave_state.bitdepth_height + 4) * (target_width + 4) * sizeof(buffptr_t);  // Add word padding too
 	.loc 1 303 95 view .LVU398
 	add	r3, r3, r3, lsl #8	@ tmp189, tmp186, tmp186,
 @ armwave.c:296:     g_armwave_state.vscale_frac = target_height / 255.0f;
@@ -1447,9 +1447,9 @@ armwave_setup_render:
 @ armwave.c:310:         ((float)(g_armwave_state.target_width) / g_armwave_state.wave_length) * (1 << AM_XCOORD_MULT_SHIFT);
 	.loc 1 310 48 view .LVU402
 	vcvt.f32.s32	s14, s15	@ tmp195, target_width
-@ armwave.c:303:     g_armwave_state.ch_buff_size = (g_armwave_state.bitdepth_height + 4) * (target_width + 4) * sizeof(uint16_t);  // Add word padding too
+@ armwave.c:303:     g_armwave_state.ch_buff_size = (g_armwave_state.bitdepth_height + 4) * (target_width + 4) * sizeof(buffptr_t);  // Add word padding too
 	.loc 1 303 95 view .LVU403
-	lsl	r3, r3, #3	@ tmp190, tmp189,
+	lsl	r3, r3, #4	@ tmp190, tmp189,
 @ armwave.c:295:     g_armwave_state.xstride = target_height;
 	.loc 1 295 29 view .LVU404
 	str	r7, [r4, #44]	@ target_height, g_armwave_state.xstride
@@ -1484,7 +1484,7 @@ armwave_setup_render:
 @ armwave.c:312:     printf("ch_buff_size=%d, cmp_x_bitdepth_scale=%d (0x%08x), targ_width=%d, wave_length=%d, scaler=%d\n", \
 	.loc 1 312 5 view .LVU415
 	mov	r1, r3	@, tmp190
-@ armwave.c:303:     g_armwave_state.ch_buff_size = (g_armwave_state.bitdepth_height + 4) * (target_width + 4) * sizeof(uint16_t);  // Add word padding too
+@ armwave.c:303:     g_armwave_state.ch_buff_size = (g_armwave_state.bitdepth_height + 4) * (target_width + 4) * sizeof(buffptr_t);  // Add word padding too
 	.loc 1 303 34 view .LVU416
 	str	r3, [r4, #80]	@ tmp190, g_armwave_state.ch_buff_size
 @ armwave.c:306:     g_armwave_state.wave_length = end_point - start_point;
@@ -9016,7 +9016,7 @@ __PRETTY_FUNCTION__.17140:
 	.byte	0x38
 	.byte	0x24
 	.byte	0x22
-	.byte	0x33
+	.byte	0x34
 	.byte	0x24
 	.uleb128 0x30
 	.uleb128 0x1
