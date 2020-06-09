@@ -195,7 +195,7 @@ void armwave_fill_pixbuf_scaled(uint32_t *out_buffer)
         wave_word = *base_32ptr++;
 
         if(COND_UNLIKELY(wave_word != 0)) {
-            for(w = 0; w < 4; w++) {
+            for(w = 0; w < 2; w++) {
                 value = wave_word & 0xffff;
                 wave_word >>= 16;
 
@@ -212,7 +212,7 @@ void armwave_fill_pixbuf_scaled(uint32_t *out_buffer)
                     word = 0xff000000 | (b << 16) | (g << 8) | r;
 
                     // TODO: Replace this FP math with integer math: big performance hit converting to integer and back again
-                    nsub = n + w;
+                    nsub = n + (w * 2);
                     yy = (nsub & 0xff) * g_armwave_state.vscale_frac;
                     ye = ((nsub & 0xff) + 1) * g_armwave_state.vscale_frac;
                     xx = (nsub >> 8);
