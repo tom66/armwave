@@ -33,7 +33,7 @@
 #define COND_UNLIKELY(expr)         __builtin_expect((expr), 0)
 #define COND_LIKELY(expr)           __builtin_expect((expr), 1)
 
-typedef uint8_t bufftyp_t;
+typedef uint16_t bufftyp_t;
 
 struct armwave_color_mix_t {
   int16_t r, g, b;
