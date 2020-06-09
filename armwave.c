@@ -189,15 +189,15 @@ void armwave_fill_pixbuf_scaled(uint32_t *out_buffer)
     npix = g_armwave_state.target_width * 256; 
     //vscale = g_armwave_state.target_height >> 8;
 
-    for(n = 0; n < npix; n += 2) {
+    for(n = 0; n < npix; n += 4) {
         // Read a 32-bit word at a time.  If any bits are nonzero, we need to process
         // each 16-bit word within.
         wave_word = *base_32ptr++;
 
         if(COND_UNLIKELY(wave_word != 0)) {
-            for(w = 0; w < 2; w++) {
-                value = wave_word & 0xffff;
-                wave_word >>= 16;
+            for(w = 0; w < 4; w++) {
+                value = wave_word & 0xf;
+                wave_word >>= 8;
 
                 if(value != 0) {
                     rr = (g_armwave_state.ch1_color.r * value) >> 8;
