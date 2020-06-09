@@ -188,6 +188,7 @@ void armwave_fill_pixbuf_scaled(uint32_t *out_buffer)
     npix = g_armwave_state.target_width * g_armwave_state.bitdepth_height; 
     //vscale = g_armwave_state.target_height >> 8;
 
+#if 0
     for(n = 0; n < npix; n += 4) {
         // Read a 32-bit word at a time.  If any bits are nonzero, we need to process
         // each byte.  We can afford to do this because most pixels will be blank for
@@ -222,6 +223,36 @@ void armwave_fill_pixbuf_scaled(uint32_t *out_buffer)
                         *(out_buffer_base + offset) = word;
                     }
                 }
+            }
+        }
+    }
+#endif
+
+    for(n = 0; n < (npix / 2); n += 1) {
+        wave_word = g_armwave_state.ch1_buffer[n];
+        value = wave_word & 0xffff;
+
+        if(value != 0) {
+            rr = (g_armwave_state.ch1_color.r * value) >> 8;
+            gg = (g_armwave_state.ch1_color.g * value) >> 8;
+            bb = (g_armwave_state.ch1_color.b * value) >> 8;
+
+            r = MIN(rr, 255);
+            g = MIN(gg, 255);
+            b = MIN(bb, 255);
+
+            // Ensure 100% alpha channel, if it is used
+            word = 0xff000000 | (b << 16) | (g << 8) | r;
+
+            // Plot the pixels
+            nsub = n + (w * 2);
+            yy = (nsub & 0xff) * g_armwave_state.vscale_frac;
+            ye = ((nsub & 0xff) + 1) * g_armwave_state.vscale_frac;
+            xx = (nsub >> 8);
+
+            for(y = yy; y < ye; y++) {
+                offset = (xx + (y * g_armwave_state.target_width)); 
+                *(out_buffer_base + offset) = word;
             }
         }
     }
