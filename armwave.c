@@ -195,9 +195,9 @@ void armwave_fill_pixbuf_scaled(uint32_t *out_buffer)
         wave_word = *base_32ptr++;
 
         if(COND_UNLIKELY(wave_word != 0)) {
-            for(w = 0; w < 4; w++) {
-                value = wave_word & 0xff;
-                wave_word >>= 8;
+            for(w = 0; w < 2; w++) {
+                value = wave_word & 0xffff;
+                wave_word >>= 16;
 
                 if(value != 0) {
                     rr = (g_armwave_state.ch1_color.r * value) >> 8;
@@ -211,17 +211,7 @@ void armwave_fill_pixbuf_scaled(uint32_t *out_buffer)
                     // Ensure 100% alpha channel, if it is used
                     word = 0xff000000 | (b << 16) | (g << 8) | r;
 
-                    // Do line scaling as necessary.
-                    /*
-                    nsub = n + w;
-                    yy = (nsub & 0xff) * g_armwave_state.vscale;
-                    xx = (nsub >> 8);
-                    for(row = 0; row < g_armwave_state.vscale; row++) {
-                        offset = (xx + ((yy + row) * g_armwave_state.target_width)); 
-                        *(out_buffer_base + offset) = word;
-                    }
-                    */
-
+                    // Plot the pixels
                     nsub = n + w;
                     yy = (nsub & 0xff) * g_armwave_state.vscale_frac;
                     ye = ((nsub & 0xff) + 1) * g_armwave_state.vscale_frac;
