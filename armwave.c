@@ -248,7 +248,7 @@ void armwave_fill_pixbuf_scaled(uint32_t *out_buffer)
             nsub = n;
             yy = (nsub & 0xff) * g_armwave_state.vscale_frac;
             ye = ((nsub & 0xff) + 1) * g_armwave_state.vscale_frac;
-            xx = (nsub >> 8);
+            xx = (nsub >> 8) / 2;
 
             //for(y = yy; y < ye; y++) {
             y = yy;
