@@ -119,7 +119,8 @@ void armwave_fill_pixbuf_scaled(uint32_t *out_buffer)
     uint32_t xx, yy, ye, y, word, wave_word;
     // uint32_t ysub;
     int rr, gg, bb, n, nsub, npix, w;
-    uint8_t r, g, b, value; 
+    uint8_t r, g, b;
+    int value; 
     // uint8_t row;
     uint32_t *base_32ptr = (uint32_t*)g_armwave_state.ch1_buffer;
     uint32_t *out_buffer_base = out_buffer;
