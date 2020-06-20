@@ -856,7 +856,7 @@ armwave_generate:
 	.cfi_def_cfa_offset 88
 @ armwave.c:181:     uint32_t xx_rem = g_armwave_state.wave_length, ypos = 0;
 	.loc 1 181 38 view .LVU223
-	ldr	r7, .L62	@ tmp286,
+	ldr	r7, .L64	@ tmp287,
 @ armwave.c:183:     memset(g_armwave_state.ch1_buffer, 0, g_armwave_state.ch_buff_size);
 	.loc 1 183 5 view .LVU224
 	mov	r1, #0	@,
@@ -886,12 +886,12 @@ armwave_generate:
 .LVL52:
 @ armwave.c:185:     for(yy = 0; yy < (g_armwave_state.wave_length / g_armwave_state.slice_height); yy++) {
 	.loc 1 185 5 view .LVU232
-	cmp	r0, #0	@ tmp221
-	beq	.L54		@,
+	cmp	r0, #0	@ tmp222
+	beq	.L55		@,
 @ armwave.c:181:     uint32_t xx_rem = g_armwave_state.wave_length, ypos = 0;
 	.loc 1 181 52 view .LVU233
 	mov	r3, #0	@ ypos,
-	ldr	r10, [r7, #36]	@ _41, g_armwave_state.cmp_x_bitdepth_scale
+	ldr	r10, [r7, #36]	@ _43, g_armwave_state.cmp_x_bitdepth_scale
 @ armwave.c:185:     for(yy = 0; yy < (g_armwave_state.wave_length / g_armwave_state.slice_height); yy++) {
 	.loc 1 185 12 view .LVU234
 	mov	fp, r3	@ yy, ypos
@@ -901,17 +901,18 @@ armwave_generate:
 .LVL53:
 .L49:
 	.loc 1 187 9 is_stmt 1 discriminator 3 view .LVU236
-@ armwave.c:189:             (yy * g_armwave_state.cmp_x_bitdepth_scale) >> AM_XCOORD_MULT_SHIFT);
-	.loc 1 189 17 is_stmt 0 discriminator 3 view .LVU237
-	mul	r10, r10, fp	@ tmp225, _41, yy
+	mul	r1, fp, r9	@ _7, yy, _12
+	mov	r3, r9	@, _12
+	mov	r2, r1	@, _7
+@ armwave.c:189:             (yy * g_armwave_state.slice_height * g_armwave_state.cmp_x_bitdepth_scale) >> AM_XCOORD_MULT_SHIFT);
+	.loc 1 189 48 is_stmt 0 discriminator 3 view .LVU237
+	mul	r10, r10, r1	@ tmp225, _43, _7
 @ armwave.c:187:         printf("armwave_generate: slice %d (y=%d, h=%d, xpos=%d)\n", \
 	.loc 1 187 9 discriminator 3 view .LVU238
-	mov	r3, r9	@, _12
-	mul	r2, fp, r9	@, yy, tmp3
+	ldr	r0, .L64+4	@,
+	mov	r1, fp	@, yy
 	lsr	r10, r10, #16	@ tmp226, tmp225,
 	str	r10, [sp]	@ tmp226,
-	mov	r1, fp	@, yy
-	ldr	r0, .L62+4	@,
 	bl	printf		@
 .LVL54:
 	.loc 1 191 9 is_stmt 1 discriminator 3 view .LVU239
@@ -922,10 +923,10 @@ armwave_generate:
 .LBB11:
 @ armwave.c:71:     write_buffer_base = g_armwave_state.ch1_buffer + (((slice_y * g_armwave_state.cmp_x_bitdepth_scale) >> AM_XCOORD_MULT_SHIFT) * g_armwave_state.bitdepth_height);
 	.loc 1 71 82 discriminator 3 view .LVU241
-	ldr	r10, [r7, #36]	@ _41, g_armwave_state.cmp_x_bitdepth_scale
+	ldr	r10, [r7, #36]	@ _43, g_armwave_state.cmp_x_bitdepth_scale
 @ armwave.c:79:     for(w = 0; w < g_armwave_state.waves; w++) {
 	.loc 1 79 35 discriminator 3 view .LVU242
-	ldr	r3, [r7, #56]	@ _153, g_armwave_state.waves
+	ldr	r3, [r7, #56]	@ _155, g_armwave_state.waves
 .LBE11:
 .LBE10:
 @ armwave.c:191:         render_nonaa_to_buffer_1ch_slice(yy * g_armwave_state.slice_height, g_armwave_state.slice_height);
@@ -944,74 +945,74 @@ armwave_generate:
 	.loc 1 71 5 discriminator 3 view .LVU250
 @ armwave.c:79:     for(w = 0; w < g_armwave_state.waves; w++) {
 	.loc 1 79 35 is_stmt 0 discriminator 3 view .LVU251
-	mov	r1, r3	@ _153, _153
-	str	r3, [sp, #32]	@ _153, %sfp
+	mov	r1, r3	@ _155, _155
+	str	r3, [sp, #32]	@ _155, %sfp
 @ armwave.c:71:     write_buffer_base = g_armwave_state.ch1_buffer + (((slice_y * g_armwave_state.cmp_x_bitdepth_scale) >> AM_XCOORD_MULT_SHIFT) * g_armwave_state.bitdepth_height);
 	.loc 1 71 65 discriminator 3 view .LVU252
-	mul	r3, r10, r2	@ tmp231, _41, _14
+	mul	r3, r10, r2	@ tmp231, _43, _14
 @ armwave.c:71:     write_buffer_base = g_armwave_state.ch1_buffer + (((slice_y * g_armwave_state.cmp_x_bitdepth_scale) >> AM_XCOORD_MULT_SHIFT) * g_armwave_state.bitdepth_height);
 	.loc 1 71 147 discriminator 3 view .LVU253
-	ldr	r8, [r7, #64]	@ _45, g_armwave_state.bitdepth_height
+	ldr	lr, [r7, #64]	@ _47, g_armwave_state.bitdepth_height
 @ armwave.c:79:     for(w = 0; w < g_armwave_state.waves; w++) {
 	.loc 1 79 5 discriminator 3 view .LVU254
-	cmp	r1, #0	@ _153,
+	cmp	r1, #0	@ _155,
 @ armwave.c:71:     write_buffer_base = g_armwave_state.ch1_buffer + (((slice_y * g_armwave_state.cmp_x_bitdepth_scale) >> AM_XCOORD_MULT_SHIFT) * g_armwave_state.bitdepth_height);
 	.loc 1 71 105 discriminator 3 view .LVU255
 	lsr	r3, r3, #16	@ tmp232, tmp231,
 @ armwave.c:71:     write_buffer_base = g_armwave_state.ch1_buffer + (((slice_y * g_armwave_state.cmp_x_bitdepth_scale) >> AM_XCOORD_MULT_SHIFT) * g_armwave_state.bitdepth_height);
 	.loc 1 71 40 discriminator 3 view .LVU256
-	ldr	r0, [r7, #4]	@ _40, g_armwave_state.ch1_buffer
+	ldr	ip, [r7, #4]	@ _42, g_armwave_state.ch1_buffer
 @ armwave.c:71:     write_buffer_base = g_armwave_state.ch1_buffer + (((slice_y * g_armwave_state.cmp_x_bitdepth_scale) >> AM_XCOORD_MULT_SHIFT) * g_armwave_state.bitdepth_height);
 	.loc 1 71 130 discriminator 3 view .LVU257
-	mul	lr, r8, r3	@ _46, _45, tmp232
+	mul	r4, lr, r3	@ _48, _47, tmp232
 .LVL56:
 	.loc 1 79 5 is_stmt 1 discriminator 3 view .LVU258
 	.loc 1 79 5 is_stmt 0 discriminator 3 view .LVU259
-	ble	.L52		@,
+	ble	.L53		@,
 @ armwave.c:80:         wave_base = g_armwave_state.wave_buffer + slice_y + (w * g_armwave_state.wave_stride);
 	.loc 1 80 81 view .LVU260
-	ldr	r1, [r7, #52]	@ _48, g_armwave_state.wave_stride
+	ldr	r1, [r7, #52]	@ _50, g_armwave_state.wave_stride
 	cmp	r9, #0	@ _12,
 @ armwave.c:80:         wave_base = g_armwave_state.wave_buffer + slice_y + (w * g_armwave_state.wave_stride);
 	.loc 1 80 36 view .LVU261
-	ldr	r3, [r7, #20]	@ _47, g_armwave_state.wave_buffer
+	ldr	r3, [r7, #20]	@ _49, g_armwave_state.wave_buffer
 @ armwave.c:80:         wave_base = g_armwave_state.wave_buffer + slice_y + (w * g_armwave_state.wave_stride);
 	.loc 1 80 81 view .LVU262
-	str	r1, [sp, #36]	@ _48, %sfp
-	beq	.L52		@,
-	add	r3, r3, r2	@ ivtmp.79, _47, _14
+	str	r1, [sp, #36]	@ _50, %sfp
+	beq	.L53		@,
+	add	r3, r3, r2	@ ivtmp.79, _49, _14
 	str	r3, [sp, #12]	@ ivtmp.79, %sfp
-	lsl	r2, r10, #1	@ tmp285, _41,
+	lsl	r2, r10, #1	@ tmp286, _43,
 .LVL57:
 	.loc 1 80 81 view .LVU263
 	rsb	r3, r3, #0	@ ivtmp.80, ivtmp.79
 	str	r3, [sp, #8]	@ ivtmp.80, %sfp
-	add	r3, r2, r10	@ tmp282, tmp285, _41
-	str	r3, [sp, #20]	@ tmp282, %sfp
+	add	r3, r2, r10	@ tmp281, tmp286, _43
+	str	r3, [sp, #20]	@ tmp281, %sfp
 @ armwave.c:79:     for(w = 0; w < g_armwave_state.waves; w++) {
 	.loc 1 79 11 view .LVU264
 	mov	r3, #0	@ w,
-	str	r2, [sp, #40]	@ tmp285, %sfp
+	str	r2, [sp, #40]	@ tmp286, %sfp
 	str	r3, [sp, #16]	@ w, %sfp
 	str	fp, [sp, #44]	@ yy, %sfp
 .LVL58:
-.L53:
+.L54:
 	.loc 1 80 9 is_stmt 1 view .LVU265
 	.loc 1 84 9 view .LVU266
 @ armwave.c:79:     for(w = 0; w < g_armwave_state.waves; w++) {
 	.loc 1 79 11 is_stmt 0 view .LVU267
-	ldr	ip, [sp, #40]	@ ivtmp.75, %sfp
+	ldr	r0, [sp, #40]	@ ivtmp.75, %sfp
 	ldr	fp, [sp, #12]	@ ivtmp.72, %sfp
 	mov	r1, #0	@ ivtmp.73,
 .LVL59:
-.L51:
+.L52:
 	.loc 1 87 13 is_stmt 1 view .LVU268
 @ armwave.c:103:                     ((((yy + ys) * g_armwave_state.cmp_x_bitdepth_scale) >> AM_XCOORD_MULT_SHIFT) * g_armwave_state.bitdepth_height);
 	.loc 1 103 74 is_stmt 0 view .LVU269
-	lsr	r2, r1, #16	@ tmp242, ivtmp.73,
+	lsr	r2, r1, #16	@ tmp241, ivtmp.73,
 @ armwave.c:87:             word = *(uint32_t*)(wave_base + yy);
 	.loc 1 87 18 view .LVU270
-	ldr	r3, [fp], #4	@ word, MEM[base: _308, offset: 0B]
+	ldr	r3, [fp], #4	@ word, MEM[base: _312, offset: 0B]
 .LVL60:
 	.loc 1 89 13 is_stmt 1 view .LVU271
 	.loc 1 90 17 view .LVU272
@@ -1019,38 +1020,38 @@ armwave_generate:
 	.loc 1 107 17 view .LVU274
 @ armwave.c:107:                 *(write_buffer + scale_value) += 1;
 	.loc 1 107 47 is_stmt 0 view .LVU275
-	mla	r2, r8, r2, lr	@ tmp244, _45, tmp242, _46
+	mla	r2, lr, r2, r4	@ tmp243, _47, tmp241, _48
 @ armwave.c:103:                     ((((yy + ys) * g_armwave_state.cmp_x_bitdepth_scale) >> AM_XCOORD_MULT_SHIFT) * g_armwave_state.bitdepth_height);
 	.loc 1 103 34 view .LVU276
-	add	r1, r10, r1	@ _112, _41, ivtmp.73
+	add	r1, r10, r1	@ _114, _43, ivtmp.73
 .LVL61:
 @ armwave.c:107:                 *(write_buffer + scale_value) += 1;
 	.loc 1 107 47 view .LVU277
-	uxtab	r2, r2, r3	@ tmp246, tmp244, word
+	uxtab	r2, r2, r3	@ tmp245, tmp243, word
 @ armwave.c:103:                     ((((yy + ys) * g_armwave_state.cmp_x_bitdepth_scale) >> AM_XCOORD_MULT_SHIFT) * g_armwave_state.bitdepth_height);
 	.loc 1 103 74 view .LVU278
-	lsr	r4, r1, #16	@ tmp251, _112,
+	lsr	r5, r1, #16	@ tmp250, _114,
 @ armwave.c:107:                 *(write_buffer + scale_value) += 1;
 	.loc 1 107 47 view .LVU279
-	lsl	r2, r2, #1	@ tmp247, tmp246,
-	ldr	r5, [sp, #20]	@ tmp282, %sfp
-	mla	r4, r8, r4, lr	@ tmp253, _45, tmp251, _46
+	lsl	r2, r2, #1	@ tmp246, tmp245,
+	ldr	r6, [sp, #20]	@ tmp281, %sfp
+	mla	r5, lr, r5, r4	@ tmp252, _47, tmp250, _48
 @ armwave.c:108:                 word >>= 8;
 	.loc 1 108 22 view .LVU280
-	lsr	r6, r3, #8	@ word, word,
-	add	r1, r1, r5	@ ivtmp.73, _112, tmp282
+	lsr	r8, r3, #8	@ word, word,
+	add	r1, r1, r6	@ ivtmp.73, _114, tmp281
 @ armwave.c:107:                 *(write_buffer + scale_value) += 1;
 	.loc 1 107 47 view .LVU281
-	ldrh	r5, [r0, r2]	@ *_97, *_97
-	uxtab	r4, r4, r6	@ tmp256, tmp253, word
+	ldrh	r6, [ip, r2]	@ *_99, *_99
+	uxtab	r5, r5, r8	@ tmp255, tmp252, word
 @ armwave.c:103:                     ((((yy + ys) * g_armwave_state.cmp_x_bitdepth_scale) >> AM_XCOORD_MULT_SHIFT) * g_armwave_state.bitdepth_height);
 	.loc 1 103 74 view .LVU282
-	lsr	r6, ip, #16	@ tmp261, ivtmp.75,
+	lsr	r8, r0, #16	@ tmp260, ivtmp.75,
 @ armwave.c:107:                 *(write_buffer + scale_value) += 1;
 	.loc 1 107 47 view .LVU283
-	add	r5, r5, #1	@ tmp250, *_97,
-	mla	r6, r8, r6, lr	@ tmp263, _45, tmp261, _46
-	strh	r5, [r0, r2]	@ movhi	@ tmp250, *_97
+	add	r6, r6, #1	@ tmp249, *_99,
+	mla	r8, lr, r8, r4	@ tmp262, _47, tmp260, _48
+	strh	r6, [ip, r2]	@ movhi	@ tmp249, *_99
 	.loc 1 108 17 is_stmt 1 view .LVU284
 .LVL62:
 	.loc 1 90 17 view .LVU285
@@ -1058,30 +1059,30 @@ armwave_generate:
 	.loc 1 107 17 view .LVU287
 @ armwave.c:103:                     ((((yy + ys) * g_armwave_state.cmp_x_bitdepth_scale) >> AM_XCOORD_MULT_SHIFT) * g_armwave_state.bitdepth_height);
 	.loc 1 103 34 is_stmt 0 view .LVU288
-	add	ip, r10, ip	@ _156, _41, ivtmp.75
+	add	r0, r10, r0	@ _158, _43, ivtmp.75
 @ armwave.c:108:                 word >>= 8;
 	.loc 1 108 22 view .LVU289
 	lsr	r2, r3, #16	@ word, word,
 @ armwave.c:107:                 *(write_buffer + scale_value) += 1;
 	.loc 1 107 47 view .LVU290
-	lsl	r4, r4, #1	@ tmp257, tmp256,
-	uxtab	r2, r6, r2	@ tmp266, tmp263, word
+	lsl	r5, r5, #1	@ tmp256, tmp255,
+	uxtab	r2, r8, r2	@ tmp265, tmp262, word
 @ armwave.c:103:                     ((((yy + ys) * g_armwave_state.cmp_x_bitdepth_scale) >> AM_XCOORD_MULT_SHIFT) * g_armwave_state.bitdepth_height);
 	.loc 1 103 74 view .LVU291
-	lsr	r6, ip, #16	@ tmp271, _156,
+	lsr	r8, r0, #16	@ tmp270, _158,
 @ armwave.c:107:                 *(write_buffer + scale_value) += 1;
 	.loc 1 107 47 view .LVU292
-	ldrh	r5, [r0, r4]	@ *_119, *_119
+	ldrh	r6, [ip, r5]	@ *_121, *_121
 @ armwave.c:108:                 word >>= 8;
 	.loc 1 108 22 view .LVU293
 	lsr	r3, r3, #24	@ word, word,
 .LVL63:
 @ armwave.c:107:                 *(write_buffer + scale_value) += 1;
 	.loc 1 107 47 view .LVU294
-	mla	r3, r8, r6, r3	@ tmp274, _45, tmp271, word
-	lsl	r2, r2, #1	@ tmp267, tmp266,
-	add	r5, r5, #1	@ tmp260, *_119,
-	strh	r5, [r0, r4]	@ movhi	@ tmp260, *_119
+	mla	r3, lr, r8, r3	@ tmp273, _47, tmp270, word
+	lsl	r2, r2, #1	@ tmp266, tmp265,
+	add	r6, r6, #1	@ tmp259, *_121,
+	strh	r6, [ip, r5]	@ movhi	@ tmp259, *_121
 	.loc 1 108 17 is_stmt 1 view .LVU295
 .LVL64:
 	.loc 1 90 17 view .LVU296
@@ -1089,12 +1090,12 @@ armwave_generate:
 	.loc 1 107 17 view .LVU298
 @ armwave.c:107:                 *(write_buffer + scale_value) += 1;
 	.loc 1 107 47 is_stmt 0 view .LVU299
-	add	r3, r3, lr	@ tmp275, tmp274, _46
-	ldrh	r4, [r0, r2]	@ *_141, *_141
-	lsl	r3, r3, #1	@ tmp276, tmp275,
-	ldr	r5, [sp, #20]	@ tmp282, %sfp
-	add	r4, r4, #1	@ tmp270, *_141,
-	strh	r4, [r0, r2]	@ movhi	@ tmp270, *_141
+	add	r3, r3, r4	@ tmp274, tmp273, _48
+	ldrh	r5, [ip, r2]	@ *_143, *_143
+	lsl	r3, r3, #1	@ tmp275, tmp274,
+	ldr	r6, [sp, #20]	@ tmp281, %sfp
+	add	r5, r5, #1	@ tmp269, *_143,
+	strh	r5, [ip, r2]	@ movhi	@ tmp269, *_143
 	.loc 1 108 17 is_stmt 1 view .LVU300
 .LVL65:
 	.loc 1 90 17 view .LVU301
@@ -1102,59 +1103,59 @@ armwave_generate:
 	.loc 1 107 17 view .LVU303
 @ armwave.c:84:         for(yy = 0; yy < height; yy += 4) {
 	.loc 1 84 9 is_stmt 0 view .LVU304
-	ldr	r4, [sp, #8]	@ ivtmp.80, %sfp
+	ldr	r5, [sp, #8]	@ ivtmp.80, %sfp
 @ armwave.c:107:                 *(write_buffer + scale_value) += 1;
 	.loc 1 107 47 view .LVU305
-	ldrh	r2, [r0, r3]	@ *_163, *_163
+	ldrh	r2, [ip, r3]	@ *_165, *_165
 @ armwave.c:84:         for(yy = 0; yy < height; yy += 4) {
 	.loc 1 84 9 view .LVU306
-	add	r4, r4, fp	@ tmp283, ivtmp.80, ivtmp.72
-	cmp	r9, r4	@ _12, tmp283
+	add	r5, r5, fp	@ tmp282, ivtmp.80, ivtmp.72
+	cmp	r9, r5	@ _12, tmp282
 @ armwave.c:107:                 *(write_buffer + scale_value) += 1;
 	.loc 1 107 47 view .LVU307
-	add	r2, r2, #1	@ tmp279, *_163,
-	add	ip, ip, r5	@ ivtmp.75, _156, tmp282
+	add	r2, r2, #1	@ tmp278, *_165,
+	add	r0, r0, r6	@ ivtmp.75, _158, tmp281
 .LVL66:
 	.loc 1 107 47 view .LVU308
-	strh	r2, [r0, r3]	@ movhi	@ tmp279, *_163
+	strh	r2, [ip, r3]	@ movhi	@ tmp278, *_165
 	.loc 1 108 17 is_stmt 1 view .LVU309
 .LVL67:
 @ armwave.c:84:         for(yy = 0; yy < height; yy += 4) {
 	.loc 1 84 9 is_stmt 0 view .LVU310
-	bhi	.L51		@,
+	bhi	.L52		@,
 @ armwave.c:79:     for(w = 0; w < g_armwave_state.waves; w++) {
 	.loc 1 79 44 view .LVU311
 	ldr	r3, [sp, #16]	@ w, %sfp
 @ armwave.c:79:     for(w = 0; w < g_armwave_state.waves; w++) {
 	.loc 1 79 5 view .LVU312
-	ldr	r2, [sp, #32]	@ _153, %sfp
+	ldr	r2, [sp, #32]	@ _155, %sfp
 @ armwave.c:79:     for(w = 0; w < g_armwave_state.waves; w++) {
 	.loc 1 79 44 view .LVU313
 	add	r3, r3, #1	@ w, w,
 @ armwave.c:79:     for(w = 0; w < g_armwave_state.waves; w++) {
 	.loc 1 79 5 view .LVU314
-	cmp	r3, r2	@ w, _153
+	cmp	r3, r2	@ w, _155
 @ armwave.c:79:     for(w = 0; w < g_armwave_state.waves; w++) {
 	.loc 1 79 44 view .LVU315
 	str	r3, [sp, #16]	@ w, %sfp
 .LVL68:
 	.loc 1 79 44 view .LVU316
 	ldr	r2, [sp, #12]	@ ivtmp.79, %sfp
-	ldr	r3, [sp, #36]	@ _48, %sfp
+	ldr	r3, [sp, #36]	@ _50, %sfp
 .LVL69:
 	.loc 1 79 44 view .LVU317
-	add	r2, r2, r3	@ ivtmp.79, ivtmp.79, _48
+	add	r2, r2, r3	@ ivtmp.79, ivtmp.79, _50
 	str	r2, [sp, #12]	@ ivtmp.79, %sfp
 	.loc 1 79 44 view .LVU318
 	ldr	r2, [sp, #8]	@ ivtmp.80, %sfp
-	sub	r3, r2, r3	@ ivtmp.80, ivtmp.80, _48
+	sub	r3, r2, r3	@ ivtmp.80, ivtmp.80, _50
 	str	r3, [sp, #8]	@ ivtmp.80, %sfp
 @ armwave.c:79:     for(w = 0; w < g_armwave_state.waves; w++) {
 	.loc 1 79 5 view .LVU319
-	bne	.L53		@,
+	bne	.L54		@,
 	ldr	fp, [sp, #44]	@ yy, %sfp
 .LVL70:
-.L52:
+.L53:
 	.loc 1 79 5 view .LVU320
 .LBE12:
 .LBE13:
@@ -1163,52 +1164,51 @@ armwave_generate:
 	.loc 1 185 51 is_stmt 0 view .LVU322
 	mov	r1, r9	@, _12
 	ldr	r0, [r7, #76]	@, g_armwave_state.wave_length
-.LVL71:
-	.loc 1 185 51 view .LVU323
 	bl	__aeabi_idiv		@
-.LVL72:
+.LVL71:
 @ armwave.c:192:         xx_rem -= g_armwave_state.slice_height;
-	.loc 1 192 16 view .LVU324
+	.loc 1 192 16 view .LVU323
 	ldr	r3, [sp, #24]	@ xx_rem, %sfp
 @ armwave.c:185:     for(yy = 0; yy < (g_armwave_state.wave_length / g_armwave_state.slice_height); yy++) {
-	.loc 1 185 86 view .LVU325
+	.loc 1 185 86 view .LVU324
 	add	fp, fp, #1	@ yy, yy,
 @ armwave.c:192:         xx_rem -= g_armwave_state.slice_height;
-	.loc 1 192 16 view .LVU326
+	.loc 1 192 16 view .LVU325
 	sub	r3, r3, r9	@ xx_rem, xx_rem, _12
 	str	r3, [sp, #24]	@ xx_rem, %sfp
-.LVL73:
-	.loc 1 193 9 is_stmt 1 view .LVU327
+.LVL72:
+	.loc 1 193 9 is_stmt 1 view .LVU326
 @ armwave.c:193:         ypos += g_armwave_state.slice_height;   
-	.loc 1 193 14 is_stmt 0 view .LVU328
+	.loc 1 193 14 is_stmt 0 view .LVU327
 	ldr	r3, [sp, #28]	@ ypos, %sfp
-.LVL74:
-	.loc 1 193 14 view .LVU329
+.LVL73:
+	.loc 1 193 14 view .LVU328
 	add	r3, r3, r9	@ ypos, ypos, _12
 	str	r3, [sp, #28]	@ ypos, %sfp
-.LVL75:
+.LVL74:
 @ armwave.c:185:     for(yy = 0; yy < (g_armwave_state.wave_length / g_armwave_state.slice_height); yy++) {
-	.loc 1 185 5 view .LVU330
+	.loc 1 185 5 view .LVU329
 	cmp	r0, fp	@, yy
 	bhi	.L49		@,
-	mul	r0, r10, fp	@ tmp239, _41, yy
+	mul	r0, r10, r9	@ tmp283, _43, _12
 	mov	r4, r3	@ ypos, ypos
-	lsr	r0, r0, #16	@ _323, tmp239,
-.LVL76:
+	mul	r0, fp, r0	@ tmp284, yy, tmp283
+	lsr	r0, r0, #16	@ _334, tmp284,
+.LVL75:
 .L47:
-	.loc 1 196 5 is_stmt 1 view .LVU331
-	str	r0, [sp]	@ _323,
+	.loc 1 196 5 is_stmt 1 view .LVU330
+	str	r0, [sp]	@ _334,
 	mov	r1, fp	@, yy
 	mov	r3, r9	@, _12
 	mov	r2, r4	@, ypos
-	ldr	r0, .L62+8	@,
+	ldr	r0, .L64+8	@,
 	bl	printf		@
-.LVL77:
-	.loc 1 199 5 view .LVU332
+.LVL76:
+	.loc 1 199 5 view .LVU331
 	ldr	r1, [sp, #24]	@, %sfp
 	mov	r0, r4	@, ypos
 @ armwave.c:200: }
-	.loc 1 200 1 is_stmt 0 view .LVU333
+	.loc 1 200 1 is_stmt 0 view .LVU332
 	add	sp, sp, #52	@,,
 	.cfi_remember_state
 	.cfi_def_cfa_offset 36
@@ -1225,22 +1225,22 @@ armwave_generate:
 	.cfi_restore 4
 	.cfi_def_cfa_offset 0
 @ armwave.c:199:     render_nonaa_to_buffer_1ch_slice(ypos, xx_rem);
-	.loc 1 199 5 view .LVU334
+	.loc 1 199 5 view .LVU333
 	b	render_nonaa_to_buffer_1ch_slice		@
-.LVL78:
-.L54:
+.LVL77:
+.L55:
 	.cfi_restore_state
 @ armwave.c:181:     uint32_t xx_rem = g_armwave_state.wave_length, ypos = 0;
-	.loc 1 181 52 view .LVU335
-	str	r0, [sp, #28]	@ _323, %sfp
+	.loc 1 181 52 view .LVU334
+	str	r0, [sp, #28]	@ _334, %sfp
 @ armwave.c:185:     for(yy = 0; yy < (g_armwave_state.wave_length / g_armwave_state.slice_height); yy++) {
-	.loc 1 185 12 view .LVU336
-	mov	fp, r0	@ yy, _323
-	mov	r4, r0	@ ypos, _323
+	.loc 1 185 12 view .LVU335
+	mov	fp, r0	@ yy, _334
+	mov	r4, r0	@ ypos, _334
 	b	.L47		@
-.L63:
+.L65:
 	.align	2
-.L62:
+.L64:
 	.word	g_armwave_state
 	.word	.LC2
 	.word	.LC3
@@ -1254,17 +1254,17 @@ armwave_generate:
 	.fpu vfp
 	.type	armwave_setup_render, %function
 armwave_setup_render:
-.LVL79:
+.LVL78:
 .LFB62:
 	.loc 1 206 1 is_stmt 1 view -0
 	.cfi_startproc
 	@ args = 12, pretend = 0, frame = 0
 	@ frame_needed = 0, uses_anonymous_args = 0
-	.loc 1 207 5 view .LVU338
-	.loc 1 208 5 view .LVU339
-	.loc 1 210 5 view .LVU340
+	.loc 1 207 5 view .LVU337
+	.loc 1 208 5 view .LVU338
+	.loc 1 210 5 view .LVU339
 @ armwave.c:206: {
-	.loc 1 206 1 is_stmt 0 view .LVU341
+	.loc 1 206 1 is_stmt 0 view .LVU340
 	push	{r4, r5, r6, r7, r8, r9, r10, lr}	@
 	.cfi_def_cfa_offset 32
 	.cfi_offset 4, -32
@@ -1285,302 +1285,302 @@ armwave_setup_render:
 	sub	sp, sp, #16	@,,
 	.cfi_def_cfa_offset 56
 @ armwave.c:206: {
-	.loc 1 206 1 view .LVU342
+	.loc 1 206 1 view .LVU341
 	add	r6, sp, #56	@,,
 	mov	r10, r3	@ wave_stride, wave_stride
 	ldm	r6, {r6, r8, ip}	@,,,
 @ armwave.c:210:     printf("s=%d e=%d w=%d ws=%d tw=%d th=%d rf=0x%08x\n", start_point, end_point, waves_max, wave_stride, target_width, target_height, render_flags);
-	.loc 1 210 5 view .LVU343
+	.loc 1 210 5 view .LVU342
 	str	r3, [sp]	@ wave_stride,
 	mov	r3, r2	@, waves_max
-.LVL80:
-	.loc 1 210 5 view .LVU344
+.LVL79:
+	.loc 1 210 5 view .LVU343
 	stmib	sp, {r6, r8, ip}	@,,,
 	mov	r2, r1	@, end_point
+.LVL80:
+	.loc 1 210 5 view .LVU344
+	mov	r1, r0	@, start_point
 .LVL81:
 	.loc 1 210 5 view .LVU345
-	mov	r1, r0	@, start_point
+	ldr	r0, .L80+8	@,
 .LVL82:
 	.loc 1 210 5 view .LVU346
-	ldr	r0, .L78+8	@,
-.LVL83:
-	.loc 1 210 5 view .LVU347
 	bl	printf		@
-.LVL84:
-	.loc 1 213 5 is_stmt 1 view .LVU348
+.LVL83:
+	.loc 1 213 5 is_stmt 1 view .LVU347
 	cmp	r5, r7	@ start_point, end_point
-	bcs	.L75		@,
-	.loc 1 234 5 view .LVU349
+	bcs	.L77		@,
+	.loc 1 234 5 view .LVU348
 @ armwave.c:235:     g_armwave_state.vscale_frac = target_height / 255.0f;
-	.loc 1 235 49 is_stmt 0 view .LVU350
+	.loc 1 235 49 is_stmt 0 view .LVU349
 	vmov	s15, r8	@ int	@ target_height, target_height
-	vldr.32	s14, .L78	@ tmp171,
+	vldr.32	s14, .L80	@ tmp171,
 @ armwave.c:245:     g_armwave_state.wave_length = end_point - start_point;
-	.loc 1 245 45 view .LVU351
+	.loc 1 245 45 view .LVU350
 	sub	r5, r7, r5	@ _13, end_point, start_point
-.LVL85:
+.LVL84:
 @ armwave.c:242:     g_armwave_state.ch_buff_size = (g_armwave_state.bitdepth_height + 4) * (target_width + 4) * sizeof(bufftyp_t);  // Add word padding too
-	.loc 1 242 90 view .LVU352
+	.loc 1 242 90 view .LVU351
 	add	r7, r6, #4	@ tmp182, target_width,
-.LVL86:
+.LVL85:
 @ armwave.c:235:     g_armwave_state.vscale_frac = target_height / 255.0f;
-	.loc 1 235 49 view .LVU353
+	.loc 1 235 49 view .LVU352
 	vcvt.f32.u32	s13, s15	@ tmp170, target_height
 @ armwave.c:234:     g_armwave_state.xstride = target_height;
-	.loc 1 234 29 view .LVU354
-	ldr	r4, .L78+12	@ tmp236,
+	.loc 1 234 29 view .LVU353
+	ldr	r4, .L80+12	@ tmp236,
 @ armwave.c:240:     g_armwave_state.size = target_height * target_width;
-	.loc 1 240 42 view .LVU355
+	.loc 1 240 42 view .LVU354
 	mul	r2, r8, r6	@ tmp179, target_height, target_width
 @ armwave.c:242:     g_armwave_state.ch_buff_size = (g_armwave_state.bitdepth_height + 4) * (target_width + 4) * sizeof(bufftyp_t);  // Add word padding too
-	.loc 1 242 95 view .LVU356
+	.loc 1 242 95 view .LVU355
 	add	r7, r7, r7, lsl #7	@ tmp185, tmp182, tmp182,
 @ armwave.c:241:     g_armwave_state.bitdepth_height = 256 * sizeof(bufftyp_t);  // Always 256 possible levels in 8-bit mode
-	.loc 1 241 37 view .LVU357
+	.loc 1 241 37 view .LVU356
 	mov	r3, #512	@ tmp181,
 @ armwave.c:242:     g_armwave_state.ch_buff_size = (g_armwave_state.bitdepth_height + 4) * (target_width + 4) * sizeof(bufftyp_t);  // Add word padding too
-	.loc 1 242 95 view .LVU358
+	.loc 1 242 95 view .LVU357
 	lsl	r7, r7, #3	@ tmp186, tmp185,
 @ armwave.c:249:         ((g_armwave_state.target_width / g_armwave_state.wave_length)) * (1 << AM_XCOORD_MULT_SHIFT);
-	.loc 1 249 40 view .LVU359
+	.loc 1 249 40 view .LVU358
 	mov	r1, r5	@, _13
 @ armwave.c:235:     g_armwave_state.vscale_frac = target_height / 255.0f;
-	.loc 1 235 49 view .LVU360
+	.loc 1 235 49 view .LVU359
 	vdiv.f32	s15, s13, s14	@ _3, tmp170, tmp171
 @ armwave.c:240:     g_armwave_state.size = target_height * target_width;
-	.loc 1 240 26 view .LVU361
+	.loc 1 240 26 view .LVU360
 	str	r2, [r4, #84]	@ tmp179, g_armwave_state.size
 @ armwave.c:241:     g_armwave_state.bitdepth_height = 256 * sizeof(bufftyp_t);  // Always 256 possible levels in 8-bit mode
-	.loc 1 241 37 view .LVU362
+	.loc 1 241 37 view .LVU361
 	str	r3, [r4, #64]	@ tmp181, g_armwave_state.bitdepth_height
 @ armwave.c:234:     g_armwave_state.xstride = target_height;
-	.loc 1 234 29 view .LVU363
+	.loc 1 234 29 view .LVU362
 	str	r8, [r4, #44]	@ target_height, g_armwave_state.xstride
-	.loc 1 235 5 is_stmt 1 view .LVU364
+	.loc 1 235 5 is_stmt 1 view .LVU363
 @ armwave.c:237:     g_armwave_state.wave_stride = wave_stride;
-	.loc 1 237 33 is_stmt 0 view .LVU365
+	.loc 1 237 33 is_stmt 0 view .LVU364
 	str	r10, [r4, #52]	@ wave_stride, g_armwave_state.wave_stride
 @ armwave.c:238:     g_armwave_state.waves_max = waves_max;
-	.loc 1 238 31 view .LVU366
+	.loc 1 238 31 view .LVU365
 	str	r9, [r4, #60]	@ waves_max, g_armwave_state.waves_max
 @ armwave.c:239:     g_armwave_state.waves = waves_max;  // Need a function to be able to change this on the fly
-	.loc 1 239 27 view .LVU367
+	.loc 1 239 27 view .LVU366
 	str	r9, [r4, #56]	@ waves_max, g_armwave_state.waves
 @ armwave.c:243:     g_armwave_state.target_width = target_width;
-	.loc 1 243 34 view .LVU368
+	.loc 1 243 34 view .LVU367
 	str	r6, [r4, #88]	@ target_width, g_armwave_state.target_width
 @ armwave.c:244:     g_armwave_state.target_height = target_height;
-	.loc 1 244 35 view .LVU369
+	.loc 1 244 35 view .LVU368
 	str	r8, [r4, #92]	@ target_height, g_armwave_state.target_height
 @ armwave.c:245:     g_armwave_state.wave_length = end_point - start_point;
-	.loc 1 245 33 view .LVU370
+	.loc 1 245 33 view .LVU369
 	str	r5, [r4, #76]	@ _13, g_armwave_state.wave_length
 @ armwave.c:249:         ((g_armwave_state.target_width / g_armwave_state.wave_length)) * (1 << AM_XCOORD_MULT_SHIFT);
-	.loc 1 249 40 view .LVU371
+	.loc 1 249 40 view .LVU370
 	mov	r0, r6	@, target_width
 @ armwave.c:242:     g_armwave_state.ch_buff_size = (g_armwave_state.bitdepth_height + 4) * (target_width + 4) * sizeof(bufftyp_t);  // Add word padding too
-	.loc 1 242 34 view .LVU372
+	.loc 1 242 34 view .LVU371
 	str	r7, [r4, #80]	@ tmp186, g_armwave_state.ch_buff_size
 @ armwave.c:236:     g_armwave_state.vscale = (int)g_armwave_state.vscale_frac;
-	.loc 1 236 30 view .LVU373
+	.loc 1 236 30 view .LVU372
 	vcvt.s32.f32	s14, s15	@ tmp174, _3
 @ armwave.c:235:     g_armwave_state.vscale_frac = target_height / 255.0f;
-	.loc 1 235 33 view .LVU374
+	.loc 1 235 33 view .LVU373
 	vstr.32	s15, [r4, #40]	@ _3, g_armwave_state.vscale_frac
-	.loc 1 236 5 is_stmt 1 view .LVU375
+	.loc 1 236 5 is_stmt 1 view .LVU374
 @ armwave.c:236:     g_armwave_state.vscale = (int)g_armwave_state.vscale_frac;
-	.loc 1 236 30 is_stmt 0 view .LVU376
+	.loc 1 236 30 is_stmt 0 view .LVU375
 	vstr.32	s14, [r4, #48]	@ int	@ tmp174, g_armwave_state.vscale
-	.loc 1 237 5 is_stmt 1 view .LVU377
-	.loc 1 238 5 view .LVU378
-	.loc 1 239 5 view .LVU379
-	.loc 1 240 5 view .LVU380
-	.loc 1 241 5 view .LVU381
-	.loc 1 242 5 view .LVU382
-	.loc 1 243 5 view .LVU383
-	.loc 1 244 5 view .LVU384
-	.loc 1 245 5 view .LVU385
-	.loc 1 248 5 view .LVU386
+	.loc 1 237 5 is_stmt 1 view .LVU376
+	.loc 1 238 5 view .LVU377
+	.loc 1 239 5 view .LVU378
+	.loc 1 240 5 view .LVU379
+	.loc 1 241 5 view .LVU380
+	.loc 1 242 5 view .LVU381
+	.loc 1 243 5 view .LVU382
+	.loc 1 244 5 view .LVU383
+	.loc 1 245 5 view .LVU384
+	.loc 1 248 5 view .LVU385
 @ armwave.c:249:         ((g_armwave_state.target_width / g_armwave_state.wave_length)) * (1 << AM_XCOORD_MULT_SHIFT);
-	.loc 1 249 40 is_stmt 0 view .LVU387
+	.loc 1 249 40 is_stmt 0 view .LVU386
 	bl	__aeabi_idiv		@
-.LVL87:
+.LVL86:
 @ armwave.c:251:     printf("ch_buff_size=%d, cmp_x_bitdepth_scale=%d (0x%08x), targ_width=%d, wave_length=%d, scaler=%d\n", \
-	.loc 1 251 5 view .LVU388
+	.loc 1 251 5 view .LVU387
 	mov	r3, #65536	@ tmp197,
 	str	r3, [sp, #8]	@ tmp197,
 	mov	r1, r7	@, tmp186
 	str	r5, [sp, #4]	@ _13,
 	str	r6, [sp]	@ target_width,
 @ armwave.c:249:         ((g_armwave_state.target_width / g_armwave_state.wave_length)) * (1 << AM_XCOORD_MULT_SHIFT);
-	.loc 1 249 72 view .LVU389
+	.loc 1 249 72 view .LVU388
 	lsl	ip, r0, #16	@ _17,,
 @ armwave.c:251:     printf("ch_buff_size=%d, cmp_x_bitdepth_scale=%d (0x%08x), targ_width=%d, wave_length=%d, scaler=%d\n", \
-	.loc 1 251 5 view .LVU390
+	.loc 1 251 5 view .LVU389
 	mov	r3, ip	@, _17
 	mov	r2, ip	@, tmp3
-	ldr	r0, .L78+16	@,
+	ldr	r0, .L80+16	@,
 @ armwave.c:248:     g_armwave_state.cmp_x_bitdepth_scale = \
-	.loc 1 248 42 view .LVU391
+	.loc 1 248 42 view .LVU390
 	str	ip, [r4, #36]	@ _17, g_armwave_state.cmp_x_bitdepth_scale
-	.loc 1 251 5 is_stmt 1 view .LVU392
+	.loc 1 251 5 is_stmt 1 view .LVU391
 	bl	printf		@
-.LVL88:
-	.loc 1 259 5 view .LVU393
+.LVL87:
+	.loc 1 259 5 view .LVU392
 @ armwave.c:261:     if(g_armwave_state.ch1_buffer != NULL)
-	.loc 1 261 23 is_stmt 0 view .LVU394
+	.loc 1 261 23 is_stmt 0 view .LVU393
 	ldr	r0, [r4, #4]	@ _18, g_armwave_state.ch1_buffer
 @ armwave.c:259:     g_armwave_state.slice_height = 64; // 64;  
-	.loc 1 259 34 view .LVU395
+	.loc 1 259 34 view .LVU394
 	mov	r3, #64	@ tmp199,
 @ armwave.c:261:     if(g_armwave_state.ch1_buffer != NULL)
-	.loc 1 261 7 view .LVU396
+	.loc 1 261 7 view .LVU395
 	cmp	r0, #0	@ _18,
 @ armwave.c:259:     g_armwave_state.slice_height = 64; // 64;  
-	.loc 1 259 34 view .LVU397
+	.loc 1 259 34 view .LVU396
 	str	r3, [r4, #68]	@ tmp199, g_armwave_state.slice_height
-	.loc 1 261 5 is_stmt 1 view .LVU398
+	.loc 1 261 5 is_stmt 1 view .LVU397
 @ armwave.c:261:     if(g_armwave_state.ch1_buffer != NULL)
-	.loc 1 261 7 is_stmt 0 view .LVU399
-	beq	.L66		@,
-	.loc 1 262 9 is_stmt 1 view .LVU400
+	.loc 1 261 7 is_stmt 0 view .LVU398
+	beq	.L68		@,
+	.loc 1 262 9 is_stmt 1 view .LVU399
 	bl	free		@
-.LVL89:
-.L66:
-	.loc 1 264 5 view .LVU401
+.LVL88:
+.L68:
+	.loc 1 264 5 view .LVU400
 @ armwave.c:264:     g_armwave_state.ch1_buffer = calloc(g_armwave_state.ch_buff_size, 1);
-	.loc 1 264 34 is_stmt 0 view .LVU402
+	.loc 1 264 34 is_stmt 0 view .LVU401
 	mov	r1, #1	@,
 	ldr	r0, [r4, #80]	@, g_armwave_state.ch_buff_size
 	bl	calloc		@
-.LVL90:
+.LVL89:
 @ armwave.c:266:     assert(g_armwave_state.ch1_buffer != NULL);
-	.loc 1 266 5 view .LVU403
+	.loc 1 266 5 view .LVU402
 	cmp	r0, #0	@ _21,
 @ armwave.c:264:     g_armwave_state.ch1_buffer = calloc(g_armwave_state.ch_buff_size, 1);
-	.loc 1 264 34 view .LVU404
+	.loc 1 264 34 view .LVU403
 	mov	r7, r0	@ _21,
 @ armwave.c:264:     g_armwave_state.ch1_buffer = calloc(g_armwave_state.ch_buff_size, 1);
-	.loc 1 264 32 view .LVU405
+	.loc 1 264 32 view .LVU404
 	str	r0, [r4, #4]	@ _21, g_armwave_state.ch1_buffer
-	.loc 1 266 5 is_stmt 1 view .LVU406
-	beq	.L76		@,
-	.loc 1 269 5 view .LVU407
-.LVL91:
-	.loc 1 270 5 view .LVU408
+	.loc 1 266 5 is_stmt 1 view .LVU405
+	beq	.L78		@,
+	.loc 1 269 5 view .LVU406
+.LVL90:
+	.loc 1 270 5 view .LVU407
 @ armwave.c:270:     points_per_pixel = length / ((float)(target_width));
-	.loc 1 270 34 is_stmt 0 view .LVU409
+	.loc 1 270 34 is_stmt 0 view .LVU408
 	vmov	s15, r6	@ int	@ target_width, target_width
 @ armwave.c:270:     points_per_pixel = length / ((float)(target_width));
-	.loc 1 270 22 view .LVU410
+	.loc 1 270 22 view .LVU409
 	vmov	s13, r5	@ int	@ _13, _13
 @ armwave.c:271:     g_armwave_state.slice_record_height = points_per_pixel * g_armwave_state.slice_height;
-	.loc 1 271 60 view .LVU411
+	.loc 1 271 60 view .LVU410
 	vldr.32	s14, [r4, #68]	@ int	@ tmp243, g_armwave_state.slice_height
 @ armwave.c:272:     g_armwave_state.xcoord_to_xpixel = malloc(length * sizeof(uint16_t));
-	.loc 1 272 40 view .LVU412
+	.loc 1 272 40 view .LVU411
 	lsl	r0, r5, #1	@, _13,
 @ armwave.c:270:     points_per_pixel = length / ((float)(target_width));
-	.loc 1 270 34 view .LVU413
+	.loc 1 270 34 view .LVU412
 	vcvt.f32.u32	s15, s15	@ tmp210, target_width
 @ armwave.c:270:     points_per_pixel = length / ((float)(target_width));
-	.loc 1 270 22 view .LVU414
+	.loc 1 270 22 view .LVU413
 	vcvt.f32.u32	s13, s13	@ tmp209, _13
 @ armwave.c:271:     g_armwave_state.slice_record_height = points_per_pixel * g_armwave_state.slice_height;
-	.loc 1 271 60 view .LVU415
+	.loc 1 271 60 view .LVU414
 	vcvt.f32.s32	s14, s14	@ tmp213, tmp243
 @ armwave.c:270:     points_per_pixel = length / ((float)(target_width));
-	.loc 1 270 22 view .LVU416
+	.loc 1 270 22 view .LVU415
 	vdiv.f32	s16, s13, s15	@ points_per_pixel, tmp209, tmp210
-.LVL92:
-	.loc 1 271 5 is_stmt 1 view .LVU417
+.LVL91:
+	.loc 1 271 5 is_stmt 1 view .LVU416
 @ armwave.c:271:     g_armwave_state.slice_record_height = points_per_pixel * g_armwave_state.slice_height;
-	.loc 1 271 60 is_stmt 0 view .LVU418
+	.loc 1 271 60 is_stmt 0 view .LVU417
 	vmul.f32	s15, s14, s16	@ tmp215, tmp213, points_per_pixel
 @ armwave.c:271:     g_armwave_state.slice_record_height = points_per_pixel * g_armwave_state.slice_height;
-	.loc 1 271 41 view .LVU419
+	.loc 1 271 41 view .LVU418
 	vcvt.s32.f32	s15, s15	@ tmp216, tmp215
 	vstr.32	s15, [r4, #72]	@ int	@ tmp216, g_armwave_state.slice_record_height
-	.loc 1 272 5 is_stmt 1 view .LVU420
+	.loc 1 272 5 is_stmt 1 view .LVU419
 @ armwave.c:272:     g_armwave_state.xcoord_to_xpixel = malloc(length * sizeof(uint16_t));
-	.loc 1 272 40 is_stmt 0 view .LVU421
+	.loc 1 272 40 is_stmt 0 view .LVU420
 	bl	malloc		@
-.LVL93:
+.LVL92:
 @ armwave.c:274:     assert(g_armwave_state.xcoord_to_xpixel != NULL);
-	.loc 1 274 5 view .LVU422
+	.loc 1 274 5 view .LVU421
 	cmp	r0, #0	@ _29,
 @ armwave.c:272:     g_armwave_state.xcoord_to_xpixel = malloc(length * sizeof(uint16_t));
-	.loc 1 272 40 view .LVU423
+	.loc 1 272 40 view .LVU422
 	mov	r6, r0	@ _29,
 @ armwave.c:272:     g_armwave_state.xcoord_to_xpixel = malloc(length * sizeof(uint16_t));
-	.loc 1 272 38 view .LVU424
+	.loc 1 272 38 view .LVU423
 	str	r0, [r4, #132]	@ _29, g_armwave_state.xcoord_to_xpixel
-	.loc 1 274 5 is_stmt 1 view .LVU425
-	beq	.L77		@,
+	.loc 1 274 5 is_stmt 1 view .LVU424
+	beq	.L79		@,
 @ armwave.c:277:         g_armwave_state.xcoord_to_xpixel[xx] = (1.0f / points_per_pixel) * xx;
-	.loc 1 277 54 is_stmt 0 view .LVU426
-	vldr.32	s15, .L78+4	@ tmp224,
+	.loc 1 277 54 is_stmt 0 view .LVU425
+	vldr.32	s15, .L80+4	@ tmp224,
 	sub	r0, r0, #2	@ ivtmp.86, _29,
 @ armwave.c:276:     for(xx = 0; xx < length; xx++) {
-	.loc 1 276 12 view .LVU427
+	.loc 1 276 12 view .LVU426
 	mov	r3, #0	@ xx,
 @ armwave.c:277:         g_armwave_state.xcoord_to_xpixel[xx] = (1.0f / points_per_pixel) * xx;
-	.loc 1 277 54 view .LVU428
+	.loc 1 277 54 view .LVU427
 	vdiv.f32	s14, s15, s16	@ _30, tmp224, points_per_pixel
-.L69:
-.LVL94:
-	.loc 1 277 9 is_stmt 1 discriminator 3 view .LVU429
+.L71:
+.LVL93:
+	.loc 1 277 9 is_stmt 1 discriminator 3 view .LVU428
 @ armwave.c:277:         g_armwave_state.xcoord_to_xpixel[xx] = (1.0f / points_per_pixel) * xx;
-	.loc 1 277 74 is_stmt 0 discriminator 3 view .LVU430
+	.loc 1 277 74 is_stmt 0 discriminator 3 view .LVU429
 	vmov	s15, r3	@ int	@ xx, xx
 @ armwave.c:276:     for(xx = 0; xx < length; xx++) {
-	.loc 1 276 32 discriminator 3 view .LVU431
+	.loc 1 276 32 discriminator 3 view .LVU430
 	add	r3, r3, #1	@ xx, xx,
-.LVL95:
+.LVL94:
 @ armwave.c:276:     for(xx = 0; xx < length; xx++) {
-	.loc 1 276 5 discriminator 3 view .LVU432
+	.loc 1 276 5 discriminator 3 view .LVU431
 	cmp	r5, r3	@ _13, xx
 @ armwave.c:277:         g_armwave_state.xcoord_to_xpixel[xx] = (1.0f / points_per_pixel) * xx;
-	.loc 1 277 74 discriminator 3 view .LVU433
+	.loc 1 277 74 discriminator 3 view .LVU432
 	vcvt.f32.s32	s15, s15	@ tmp225, xx
 	vmul.f32	s15, s15, s14	@ tmp226, tmp225, _30
 @ armwave.c:277:         g_armwave_state.xcoord_to_xpixel[xx] = (1.0f / points_per_pixel) * xx;
-	.loc 1 277 46 discriminator 3 view .LVU434
+	.loc 1 277 46 discriminator 3 view .LVU433
 	vcvt.u32.f32	s15, s15	@ tmp227, tmp226
 	vmov	r2, s15	@ int	@ tmp227, tmp227
 	strh	r2, [r0, #2]!	@ movhi	@ tmp227, MEM[base: _99, offset: 0B]
 @ armwave.c:276:     for(xx = 0; xx < length; xx++) {
-	.loc 1 276 5 discriminator 3 view .LVU435
-	bne	.L69		@,
-	.loc 1 282 5 is_stmt 1 view .LVU436
+	.loc 1 276 5 discriminator 3 view .LVU434
+	bne	.L71		@,
+	.loc 1 282 5 is_stmt 1 view .LVU435
 @ armwave.c:282:     g_armwave_state.out_pixbuf = malloc(sizeof(uint32_t) * g_armwave_state.size);
-	.loc 1 282 34 is_stmt 0 view .LVU437
+	.loc 1 282 34 is_stmt 0 view .LVU436
 	ldr	r0, [r4, #84]	@ g_armwave_state.size, g_armwave_state.size
 	lsl	r0, r0, #2	@, g_armwave_state.size,
 	bl	malloc		@
-.LVL96:
+.LVL95:
 @ armwave.c:284:     printf("Ptrs: 0x%08x 0x%08x 0x%08x 0x%08x \n", \
-	.loc 1 284 5 view .LVU438
+	.loc 1 284 5 view .LVU437
 	ldr	r3, [r4, #24]	@ g_armwave_state.test_wave_buffer, g_armwave_state.test_wave_buffer
 	mov	r2, r6	@, _29
 	str	r3, [sp]	@ g_armwave_state.test_wave_buffer,
 	mov	r1, r7	@, _21
 @ armwave.c:282:     g_armwave_state.out_pixbuf = malloc(sizeof(uint32_t) * g_armwave_state.size);
-	.loc 1 282 34 view .LVU439
+	.loc 1 282 34 view .LVU438
 	mov	ip, r0	@ tmp231,
 @ armwave.c:284:     printf("Ptrs: 0x%08x 0x%08x 0x%08x 0x%08x \n", \
-	.loc 1 284 5 view .LVU440
+	.loc 1 284 5 view .LVU439
 	mov	r3, r0	@, tmp231
-	ldr	r0, .L78+20	@,
+	ldr	r0, .L80+20	@,
 @ armwave.c:282:     g_armwave_state.out_pixbuf = malloc(sizeof(uint32_t) * g_armwave_state.size);
-	.loc 1 282 32 view .LVU441
+	.loc 1 282 32 view .LVU440
 	str	ip, [r4, #104]	@ tmp231, g_armwave_state.out_pixbuf
-	.loc 1 284 5 is_stmt 1 view .LVU442
+	.loc 1 284 5 is_stmt 1 view .LVU441
 	bl	printf		@
-.LVL97:
-	.loc 1 290 5 view .LVU443
+.LVL96:
+	.loc 1 290 5 view .LVU442
 @ armwave.c:291: }
-	.loc 1 291 1 is_stmt 0 view .LVU444
+	.loc 1 291 1 is_stmt 0 view .LVU443
 	add	sp, sp, #16	@,,
 	.cfi_remember_state
 	.cfi_def_cfa_offset 40
@@ -1589,8 +1589,8 @@ armwave_setup_render:
 	.cfi_restore 80
 	.cfi_restore 81
 	.cfi_def_cfa_offset 32
-.LVL98:
-	.loc 1 291 1 view .LVU445
+.LVL97:
+	.loc 1 291 1 view .LVU444
 	pop	{r4, r5, r6, r7, r8, r9, r10, lr}	@
 	.cfi_restore 14
 	.cfi_restore 10
@@ -1601,39 +1601,39 @@ armwave_setup_render:
 	.cfi_restore 5
 	.cfi_restore 4
 	.cfi_def_cfa_offset 0
-.LVL99:
+.LVL98:
 @ armwave.c:290:     malloc_stats();
-	.loc 1 290 5 view .LVU446
+	.loc 1 290 5 view .LVU445
 	b	malloc_stats		@
-.LVL100:
-.L75:
+.LVL99:
+.L77:
 	.cfi_restore_state
-	.loc 1 213 5 is_stmt 1 discriminator 1 view .LVU447
-	ldr	r3, .L78+24	@,
+	.loc 1 213 5 is_stmt 1 discriminator 1 view .LVU446
+	ldr	r3, .L80+24	@,
 	mov	r2, #213	@,
-	ldr	r1, .L78+28	@,
-	ldr	r0, .L78+32	@,
+	ldr	r1, .L80+28	@,
+	ldr	r0, .L80+32	@,
+	bl	__assert_fail		@
+.LVL100:
+.L79:
+	.loc 1 274 5 discriminator 1 view .LVU447
+	ldr	r3, .L80+24	@,
+	ldr	r2, .L80+36	@,
+	ldr	r1, .L80+28	@,
+	ldr	r0, .L80+40	@,
 	bl	__assert_fail		@
 .LVL101:
-.L77:
-	.loc 1 274 5 discriminator 1 view .LVU448
-	ldr	r3, .L78+24	@,
-	ldr	r2, .L78+36	@,
-	ldr	r1, .L78+28	@,
-	ldr	r0, .L78+40	@,
+.L78:
+	.loc 1 266 5 discriminator 1 view .LVU448
+	ldr	r3, .L80+24	@,
+	ldr	r2, .L80+44	@,
+	ldr	r1, .L80+28	@,
+	ldr	r0, .L80+48	@,
 	bl	__assert_fail		@
 .LVL102:
-.L76:
-	.loc 1 266 5 discriminator 1 view .LVU449
-	ldr	r3, .L78+24	@,
-	ldr	r2, .L78+44	@,
-	ldr	r1, .L78+28	@,
-	ldr	r0, .L78+48	@,
-	bl	__assert_fail		@
-.LVL103:
-.L79:
+.L81:
 	.align	2
-.L78:
+.L80:
 	.word	1132396544
 	.word	1065353216
 	.word	.LC4
@@ -1657,43 +1657,43 @@ armwave_setup_render:
 	.fpu vfp
 	.type	armwave_set_wave_pointer, %function
 armwave_set_wave_pointer:
-.LVL104:
+.LVL103:
 .LFB63:
 	.loc 1 298 1 view -0
 	.cfi_startproc
 	@ args = 0, pretend = 0, frame = 0
 	@ frame_needed = 0, uses_anonymous_args = 0
-	.loc 1 299 5 view .LVU451
+	.loc 1 299 5 view .LVU450
 	cmp	r0, #0	@ wave_buffer
-	.loc 1 299 5 is_stmt 0 view .LVU452
-	beq	.L85		@,
-	.loc 1 300 5 is_stmt 1 view .LVU453
+	.loc 1 299 5 is_stmt 0 view .LVU451
+	beq	.L87		@,
+	.loc 1 300 5 is_stmt 1 view .LVU452
 @ armwave.c:300:     g_armwave_state.wave_buffer = wave_buffer;
-	.loc 1 300 33 is_stmt 0 view .LVU454
-	ldr	r3, .L86	@ tmp116,
+	.loc 1 300 33 is_stmt 0 view .LVU453
+	ldr	r3, .L88	@ tmp116,
 	str	r0, [r3, #20]	@ wave_buffer, g_armwave_state.wave_buffer
 	bx	lr	@
-.L85:
-	.loc 1 299 5 is_stmt 1 discriminator 1 view .LVU455
+.L87:
+	.loc 1 299 5 is_stmt 1 discriminator 1 view .LVU454
 @ armwave.c:298: {
-	.loc 1 298 1 is_stmt 0 discriminator 1 view .LVU456
+	.loc 1 298 1 is_stmt 0 discriminator 1 view .LVU455
 	push	{r4, lr}	@
 	.cfi_def_cfa_offset 8
 	.cfi_offset 4, -8
 	.cfi_offset 14, -4
 @ armwave.c:299:     assert(wave_buffer != NULL);
+	.loc 1 299 5 discriminator 1 view .LVU456
+	ldr	r3, .L88+4	@,
+	ldr	r2, .L88+8	@,
+	ldr	r1, .L88+12	@,
+	ldr	r0, .L88+16	@,
+.LVL104:
 	.loc 1 299 5 discriminator 1 view .LVU457
-	ldr	r3, .L86+4	@,
-	ldr	r2, .L86+8	@,
-	ldr	r1, .L86+12	@,
-	ldr	r0, .L86+16	@,
-.LVL105:
-	.loc 1 299 5 discriminator 1 view .LVU458
 	bl	__assert_fail		@
-.LVL106:
-.L87:
+.LVL105:
+.L89:
 	.align	2
-.L86:
+.L88:
 	.word	g_armwave_state
 	.word	.LANCHOR0+24
 	.word	299
@@ -1709,48 +1709,48 @@ armwave_set_wave_pointer:
 	.fpu vfp
 	.type	armwave_set_wave_pointer_as_testbuf, %function
 armwave_set_wave_pointer_as_testbuf:
-.LVL107:
+.LVL106:
 .LFB64:
 	.loc 1 308 1 is_stmt 1 view -0
 	.cfi_startproc
 	@ args = 0, pretend = 0, frame = 0
 	@ frame_needed = 0, uses_anonymous_args = 0
 	@ link register save eliminated.
-	.loc 1 309 5 view .LVU460
+	.loc 1 309 5 view .LVU459
 @ armwave.c:309:     if(set > g_armwave_state.test_wave_buffer_nsets) {
-	.loc 1 309 29 is_stmt 0 view .LVU461
-	ldr	r3, .L91	@ tmp117,
+	.loc 1 309 29 is_stmt 0 view .LVU460
+	ldr	r3, .L93	@ tmp117,
 @ armwave.c:309:     if(set > g_armwave_state.test_wave_buffer_nsets) {
-	.loc 1 309 7 view .LVU462
+	.loc 1 309 7 view .LVU461
 	ldr	r2, [r3, #32]	@ g_armwave_state.test_wave_buffer_nsets, g_armwave_state.test_wave_buffer_nsets
 	cmp	r2, r0	@ g_armwave_state.test_wave_buffer_nsets, set
-	bcc	.L90		@,
-	.loc 1 314 5 is_stmt 1 view .LVU463
+	bcc	.L92		@,
+	.loc 1 314 5 is_stmt 1 view .LVU462
 @ armwave.c:314:     g_armwave_state.wave_buffer = g_armwave_state.test_wave_buffer + (g_armwave_state.test_wave_buffer_stride * set);
-	.loc 1 314 111 is_stmt 0 view .LVU464
+	.loc 1 314 111 is_stmt 0 view .LVU463
 	ldr	r1, [r3, #28]	@ g_armwave_state.test_wave_buffer_stride, g_armwave_state.test_wave_buffer_stride
 @ armwave.c:314:     g_armwave_state.wave_buffer = g_armwave_state.test_wave_buffer + (g_armwave_state.test_wave_buffer_stride * set);
-	.loc 1 314 68 view .LVU465
+	.loc 1 314 68 view .LVU464
 	ldr	r2, [r3, #24]	@ g_armwave_state.test_wave_buffer, g_armwave_state.test_wave_buffer
 	mla	r0, r1, r0, r2	@ tmp125, g_armwave_state.test_wave_buffer_stride, set, g_armwave_state.test_wave_buffer
-.LVL108:
+.LVL107:
 @ armwave.c:314:     g_armwave_state.wave_buffer = g_armwave_state.test_wave_buffer + (g_armwave_state.test_wave_buffer_stride * set);
-	.loc 1 314 33 view .LVU466
+	.loc 1 314 33 view .LVU465
 	str	r0, [r3, #20]	@ tmp125, g_armwave_state.wave_buffer
 @ armwave.c:315: }
-	.loc 1 315 1 view .LVU467
+	.loc 1 315 1 view .LVU466
 	bx	lr	@
-.LVL109:
-.L90:
-	.loc 1 310 9 is_stmt 1 view .LVU468
-	ldr	r0, .L91+4	@,
-.LVL110:
-	.loc 1 310 9 is_stmt 0 view .LVU469
-	b	puts		@
-.LVL111:
+.LVL108:
 .L92:
+	.loc 1 310 9 is_stmt 1 view .LVU467
+	ldr	r0, .L93+4	@,
+.LVL109:
+	.loc 1 310 9 is_stmt 0 view .LVU468
+	b	puts		@
+.LVL110:
+.L94:
 	.align	2
-.L91:
+.L93:
 	.word	g_armwave_state
 	.word	.LC12
 	.cfi_endproc
@@ -1763,43 +1763,43 @@ armwave_set_wave_pointer_as_testbuf:
 	.fpu vfp
 	.type	armwave_set_wave_pointer_u32, %function
 armwave_set_wave_pointer_u32:
-.LVL112:
+.LVL111:
 .LFB65:
 	.loc 1 322 1 is_stmt 1 view -0
 	.cfi_startproc
 	@ args = 0, pretend = 0, frame = 0
 	@ frame_needed = 0, uses_anonymous_args = 0
-	.loc 1 323 5 view .LVU471
+	.loc 1 323 5 view .LVU470
 	cmp	r0, #0	@ wave_buffer_ptr
-	.loc 1 323 5 is_stmt 0 view .LVU472
-	beq	.L98		@,
-	.loc 1 324 5 is_stmt 1 view .LVU473
+	.loc 1 323 5 is_stmt 0 view .LVU471
+	beq	.L100		@,
+	.loc 1 324 5 is_stmt 1 view .LVU472
 @ armwave.c:324:     g_armwave_state.wave_buffer = (uint8_t*)wave_buffer_ptr;
-	.loc 1 324 33 is_stmt 0 view .LVU474
-	ldr	r3, .L99	@ tmp117,
+	.loc 1 324 33 is_stmt 0 view .LVU473
+	ldr	r3, .L101	@ tmp117,
 	str	r0, [r3, #20]	@ wave_buffer_ptr, g_armwave_state.wave_buffer
 	bx	lr	@
-.L98:
-	.loc 1 323 5 is_stmt 1 discriminator 1 view .LVU475
+.L100:
+	.loc 1 323 5 is_stmt 1 discriminator 1 view .LVU474
 @ armwave.c:322: {
-	.loc 1 322 1 is_stmt 0 discriminator 1 view .LVU476
+	.loc 1 322 1 is_stmt 0 discriminator 1 view .LVU475
 	push	{r4, lr}	@
 	.cfi_def_cfa_offset 8
 	.cfi_offset 4, -8
 	.cfi_offset 14, -4
 @ armwave.c:323:     assert(wave_buffer_ptr != 0);
+	.loc 1 323 5 discriminator 1 view .LVU476
+	ldr	r3, .L101+4	@,
+	ldr	r2, .L101+8	@,
+	ldr	r1, .L101+12	@,
+	ldr	r0, .L101+16	@,
+.LVL112:
 	.loc 1 323 5 discriminator 1 view .LVU477
-	ldr	r3, .L99+4	@,
-	ldr	r2, .L99+8	@,
-	ldr	r1, .L99+12	@,
-	ldr	r0, .L99+16	@,
-.LVL113:
-	.loc 1 323 5 discriminator 1 view .LVU478
 	bl	__assert_fail		@
-.LVL114:
-.L100:
+.LVL113:
+.L102:
 	.align	2
-.L99:
+.L101:
 	.word	g_armwave_state
 	.word	.LANCHOR0+52
 	.word	323
@@ -1815,29 +1815,29 @@ armwave_set_wave_pointer_u32:
 	.fpu vfp
 	.type	armwave_clear_buffer, %function
 armwave_clear_buffer:
-.LVL115:
+.LVL114:
 .LFB66:
 	.loc 1 331 1 is_stmt 1 view -0
 	.cfi_startproc
 	@ args = 0, pretend = 0, frame = 0
 	@ frame_needed = 0, uses_anonymous_args = 0
 	@ link register save eliminated.
-	.loc 1 333 5 view .LVU480
+	.loc 1 333 5 view .LVU479
 @ armwave.c:333:     memset(g_armwave_state.ch1_buffer, 0, g_armwave_state.ch_buff_size);
-	.loc 1 333 58 is_stmt 0 view .LVU481
-	ldr	r3, .L102	@ tmp114,
+	.loc 1 333 58 is_stmt 0 view .LVU480
+	ldr	r3, .L104	@ tmp114,
 @ armwave.c:333:     memset(g_armwave_state.ch1_buffer, 0, g_armwave_state.ch_buff_size);
-	.loc 1 333 5 view .LVU482
+	.loc 1 333 5 view .LVU481
 	mov	r1, #0	@,
 	ldr	r2, [r3, #80]	@, g_armwave_state.ch_buff_size
 	ldr	r0, [r3, #4]	@, g_armwave_state.ch1_buffer
-.LVL116:
-	.loc 1 333 5 view .LVU483
+.LVL115:
+	.loc 1 333 5 view .LVU482
 	b	memset		@
-.LVL117:
-.L103:
+.LVL116:
+.L105:
 	.align	2
-.L102:
+.L104:
 	.word	g_armwave_state
 	.cfi_endproc
 .LFE66:
@@ -1849,37 +1849,37 @@ armwave_clear_buffer:
 	.fpu vfp
 	.type	armwave_set_channel_colour, %function
 armwave_set_channel_colour:
-.LVL118:
+.LVL117:
 .LFB67:
 	.loc 1 340 1 is_stmt 1 view -0
 	.cfi_startproc
 	@ args = 0, pretend = 0, frame = 0
 	@ frame_needed = 0, uses_anonymous_args = 0
 	@ link register save eliminated.
-	.loc 1 342 5 view .LVU485
+	.loc 1 342 5 view .LVU484
 	cmp	r0, #1	@ ch,
-	.loc 1 344 13 view .LVU486
+	.loc 1 344 13 view .LVU485
 @ armwave.c:344:             g_armwave_state.ch1_color.r = r;
-	.loc 1 344 41 is_stmt 0 view .LVU487
-	ldreq	r0, .L106	@ tmp117,
-.LVL119:
-	.loc 1 344 41 view .LVU488
+	.loc 1 344 41 is_stmt 0 view .LVU486
+	ldreq	r0, .L108	@ tmp117,
+.LVL118:
+	.loc 1 344 41 view .LVU487
 	strheq	r1, [r0, #108]	@ movhi	@ r, g_armwave_state.ch1_color.r
-	.loc 1 345 13 is_stmt 1 view .LVU489
+	.loc 1 345 13 is_stmt 1 view .LVU488
 @ armwave.c:345:             g_armwave_state.ch1_color.g = g;
-	.loc 1 345 41 is_stmt 0 view .LVU490
+	.loc 1 345 41 is_stmt 0 view .LVU489
 	strheq	r2, [r0, #110]	@ movhi	@ g, g_armwave_state.ch1_color.g
-	.loc 1 346 13 is_stmt 1 view .LVU491
+	.loc 1 346 13 is_stmt 1 view .LVU490
 @ armwave.c:346:             g_armwave_state.ch1_color.b = b;
-	.loc 1 346 41 is_stmt 0 view .LVU492
+	.loc 1 346 41 is_stmt 0 view .LVU491
 	strheq	r3, [r0, #112]	@ movhi	@ b, g_armwave_state.ch1_color.b
-	.loc 1 347 13 is_stmt 1 view .LVU493
+	.loc 1 347 13 is_stmt 1 view .LVU492
 @ armwave.c:349: }
-	.loc 1 349 1 is_stmt 0 view .LVU494
+	.loc 1 349 1 is_stmt 0 view .LVU493
 	bx	lr	@
-.L107:
+.L109:
 	.align	2
-.L106:
+.L108:
 	.word	g_armwave_state
 	.cfi_endproc
 .LFE67:
@@ -1891,15 +1891,15 @@ armwave_set_channel_colour:
 	.fpu vfp
 	.type	armwave_dump_ppm_debug, %function
 armwave_dump_ppm_debug:
-.LVL120:
+.LVL119:
 .LFB68:
 	.loc 1 355 1 is_stmt 1 view -0
 	.cfi_startproc
 	@ args = 0, pretend = 0, frame = 0
 	@ frame_needed = 0, uses_anonymous_args = 0
-	.loc 1 356 5 view .LVU496
+	.loc 1 356 5 view .LVU495
 @ armwave.c:355: {
-	.loc 1 355 1 is_stmt 0 view .LVU497
+	.loc 1 355 1 is_stmt 0 view .LVU496
 	mov	r3, r1	@ fn, fn
 	push	{r4, r5, r6, r7, r8, r9, lr}	@
 	.cfi_def_cfa_offset 28
@@ -1914,133 +1914,133 @@ armwave_dump_ppm_debug:
 	sub	sp, sp, #12	@,,
 	.cfi_def_cfa_offset 40
 @ armwave.c:356:     FILE *fp = fopen(fn, "wb");
+	.loc 1 356 16 view .LVU497
+	ldr	r1, .L118	@,
+.LVL120:
 	.loc 1 356 16 view .LVU498
-	ldr	r1, .L116	@,
+	mov	r0, r3	@, fn
 .LVL121:
 	.loc 1 356 16 view .LVU499
-	mov	r0, r3	@, fn
-.LVL122:
-	.loc 1 356 16 view .LVU500
 	bl	fopen64		@
-.LVL123:
+.LVL122:
 @ armwave.c:363:     fprintf(fp, "%d %d\n", g_armwave_state.target_width, g_armwave_state.target_height);
-	.loc 1 363 5 view .LVU501
-	ldr	r6, .L116+4	@ tmp150,
+	.loc 1 363 5 view .LVU500
+	ldr	r6, .L118+4	@ tmp150,
 @ armwave.c:362:     fputs("P3\n", fp);
-	.loc 1 362 5 view .LVU502
+	.loc 1 362 5 view .LVU501
 	mov	r2, #3	@,
 	mov	r1, #1	@,
 @ armwave.c:356:     FILE *fp = fopen(fn, "wb");
-	.loc 1 356 16 view .LVU503
+	.loc 1 356 16 view .LVU502
 	mov	r7, r0	@ fp,
-.LVL124:
-	.loc 1 357 5 is_stmt 1 view .LVU504
-	.loc 1 358 5 view .LVU505
-	.loc 1 362 5 view .LVU506
+.LVL123:
+	.loc 1 357 5 is_stmt 1 view .LVU503
+	.loc 1 358 5 view .LVU504
+	.loc 1 362 5 view .LVU505
 	mov	r3, r0	@, fp
-	ldr	r0, .L116+8	@,
-.LVL125:
-	.loc 1 362 5 is_stmt 0 view .LVU507
+	ldr	r0, .L118+8	@,
+.LVL124:
+	.loc 1 362 5 is_stmt 0 view .LVU506
 	bl	fwrite		@
-.LVL126:
-	.loc 1 363 5 is_stmt 1 view .LVU508
+.LVL125:
+	.loc 1 363 5 is_stmt 1 view .LVU507
 	ldrd	r2, [r6, #88]	@, tmp150,
-	ldr	r1, .L116+12	@,
+	ldr	r1, .L118+12	@,
 	mov	r0, r7	@, fp
 	bl	fprintf		@
-.LVL127:
-	.loc 1 364 5 view .LVU509
+.LVL126:
+	.loc 1 364 5 view .LVU508
 	mov	r2, #4	@,
 	mov	r3, r7	@, fp
 	mov	r1, #1	@,
-	ldr	r0, .L116+16	@,
+	ldr	r0, .L118+16	@,
 	bl	fwrite		@
-.LVL128:
-	.loc 1 366 5 view .LVU510
+.LVL127:
+	.loc 1 366 5 view .LVU509
 @ armwave.c:366:     for(yy = 0; yy < g_armwave_state.target_height; yy++) {
-	.loc 1 366 37 is_stmt 0 view .LVU511
+	.loc 1 366 37 is_stmt 0 view .LVU510
 	ldr	r2, [r6, #92]	@ prephitmp_53, g_armwave_state.target_height
 @ armwave.c:366:     for(yy = 0; yy < g_armwave_state.target_height; yy++) {
-	.loc 1 366 5 view .LVU512
+	.loc 1 366 5 view .LVU511
 	cmp	r2, #0	@ prephitmp_53,
-	ble	.L109		@,
+	ble	.L111		@,
 	ldr	r3, [r6, #88]	@ _13, g_armwave_state.target_width
 @ armwave.c:371:             fprintf(fp, "%3d %3d %3d\n", data & 0xff, (data >> 8) & 0xff, (data >> 16) & 0xff);
-	.loc 1 371 13 view .LVU513
-	ldr	r9, .L116+20	@ tmp152,
+	.loc 1 371 13 view .LVU512
+	ldr	r9, .L118+20	@ tmp152,
 @ armwave.c:366:     for(yy = 0; yy < g_armwave_state.target_height; yy++) {
-	.loc 1 366 12 view .LVU514
+	.loc 1 366 12 view .LVU513
 	mov	r5, #0	@ yy,
-.LVL129:
-.L110:
+.LVL128:
+.L112:
 @ armwave.c:367:         for(xx = 0; xx < g_armwave_state.target_width; xx++) {
-	.loc 1 367 9 view .LVU515
+	.loc 1 367 9 view .LVU514
 	cmp	r3, #0	@ _13,
 @ armwave.c:367:         for(xx = 0; xx < g_armwave_state.target_width; xx++) {
-	.loc 1 367 16 view .LVU516
+	.loc 1 367 16 view .LVU515
 	movgt	r4, #0	@ xx,
 @ armwave.c:367:         for(xx = 0; xx < g_armwave_state.target_width; xx++) {
-	.loc 1 367 9 view .LVU517
-	ble	.L112		@,
-.LVL130:
-.L111:
-	.loc 1 368 13 is_stmt 1 discriminator 3 view .LVU518
+	.loc 1 367 9 view .LVU516
+	ble	.L114		@,
+.LVL129:
+.L113:
+	.loc 1 368 13 is_stmt 1 discriminator 3 view .LVU517
 @ armwave.c:368:             data = *(buffer + (xx + (yy * g_armwave_state.target_width)));
-	.loc 1 368 29 is_stmt 0 discriminator 3 view .LVU519
+	.loc 1 368 29 is_stmt 0 discriminator 3 view .LVU518
 	mla	r3, r5, r3, r4	@ tmp141, yy, _13, xx
 @ armwave.c:371:             fprintf(fp, "%3d %3d %3d\n", data & 0xff, (data >> 8) & 0xff, (data >> 16) & 0xff);
-	.loc 1 371 13 discriminator 3 view .LVU520
+	.loc 1 371 13 discriminator 3 view .LVU519
 	mov	r1, r9	@, tmp152
 	mov	r0, r7	@, fp
 @ armwave.c:368:             data = *(buffer + (xx + (yy * g_armwave_state.target_width)));
-	.loc 1 368 18 discriminator 3 view .LVU521
+	.loc 1 368 18 discriminator 3 view .LVU520
 	ldr	r2, [r8, r3, lsl #2]	@ data, *_7
-.LVL131:
-	.loc 1 371 13 is_stmt 1 discriminator 3 view .LVU522
+.LVL130:
+	.loc 1 371 13 is_stmt 1 discriminator 3 view .LVU521
 @ armwave.c:367:         for(xx = 0; xx < g_armwave_state.target_width; xx++) {
-	.loc 1 367 58 is_stmt 0 discriminator 3 view .LVU523
+	.loc 1 367 58 is_stmt 0 discriminator 3 view .LVU522
 	add	r4, r4, #1	@ xx, xx,
-.LVL132:
+.LVL131:
 @ armwave.c:371:             fprintf(fp, "%3d %3d %3d\n", data & 0xff, (data >> 8) & 0xff, (data >> 16) & 0xff);
-	.loc 1 371 81 discriminator 3 view .LVU524
+	.loc 1 371 81 discriminator 3 view .LVU523
 	lsr	ip, r2, #16	@ tmp146, data,
 @ armwave.c:371:             fprintf(fp, "%3d %3d %3d\n", data & 0xff, (data >> 8) & 0xff, (data >> 16) & 0xff);
-	.loc 1 371 61 discriminator 3 view .LVU525
+	.loc 1 371 61 discriminator 3 view .LVU524
 	lsr	r3, r2, #8	@ tmp142, data,
 @ armwave.c:371:             fprintf(fp, "%3d %3d %3d\n", data & 0xff, (data >> 8) & 0xff, (data >> 16) & 0xff);
-	.loc 1 371 13 discriminator 3 view .LVU526
+	.loc 1 371 13 discriminator 3 view .LVU525
 	uxtb	ip, ip	@ tmp147, tmp146
 	uxtb	r3, r3	@, tmp142
 	str	ip, [sp]	@ tmp147,
 	uxtb	r2, r2	@, data
-.LVL133:
-	.loc 1 371 13 discriminator 3 view .LVU527
+.LVL132:
+	.loc 1 371 13 discriminator 3 view .LVU526
 	bl	fprintf		@
-.LVL134:
+.LVL133:
 @ armwave.c:367:         for(xx = 0; xx < g_armwave_state.target_width; xx++) {
-	.loc 1 367 41 discriminator 3 view .LVU528
+	.loc 1 367 41 discriminator 3 view .LVU527
 	ldr	r3, [r6, #88]	@ _13, g_armwave_state.target_width
 @ armwave.c:367:         for(xx = 0; xx < g_armwave_state.target_width; xx++) {
-	.loc 1 367 9 discriminator 3 view .LVU529
+	.loc 1 367 9 discriminator 3 view .LVU528
 	cmp	r3, r4	@ _13, xx
-	bgt	.L111		@,
+	bgt	.L113		@,
 	ldr	r2, [r6, #92]	@ prephitmp_53, g_armwave_state.target_height
-.LVL135:
-.L112:
+.LVL134:
+.L114:
 @ armwave.c:366:     for(yy = 0; yy < g_armwave_state.target_height; yy++) {
-	.loc 1 366 55 discriminator 2 view .LVU530
+	.loc 1 366 55 discriminator 2 view .LVU529
 	add	r5, r5, #1	@ yy, yy,
-.LVL136:
+.LVL135:
 @ armwave.c:366:     for(yy = 0; yy < g_armwave_state.target_height; yy++) {
-	.loc 1 366 5 discriminator 2 view .LVU531
+	.loc 1 366 5 discriminator 2 view .LVU530
 	cmp	r5, r2	@ yy, prephitmp_53
-	blt	.L110		@,
-.LVL137:
-.L109:
-	.loc 1 375 5 is_stmt 1 view .LVU532
+	blt	.L112		@,
+.LVL136:
+.L111:
+	.loc 1 375 5 is_stmt 1 view .LVU531
 	mov	r0, r7	@, fp
 @ armwave.c:376: }
-	.loc 1 376 1 is_stmt 0 view .LVU533
+	.loc 1 376 1 is_stmt 0 view .LVU532
 	add	sp, sp, #12	@,,
 	.cfi_def_cfa_offset 28
 	@ sp needed	@
@@ -2053,15 +2053,15 @@ armwave_dump_ppm_debug:
 	.cfi_restore 5
 	.cfi_restore 4
 	.cfi_def_cfa_offset 0
-.LVL138:
+.LVL137:
 @ armwave.c:375:     fclose(fp);
-	.loc 1 375 5 view .LVU534
+	.loc 1 375 5 view .LVU533
 	b	fclose		@
-.LVL139:
-.L117:
-	.loc 1 375 5 view .LVU535
+.LVL138:
+.L119:
+	.loc 1 375 5 view .LVU534
 	.align	2
-.L116:
+.L118:
 	.word	.LC14
 	.word	g_armwave_state
 	.word	.LC15
@@ -2078,20 +2078,20 @@ armwave_dump_ppm_debug:
 	.fpu vfp
 	.type	armwave_test_init, %function
 armwave_test_init:
-.LVL140:
+.LVL139:
 .LFB69:
 	.loc 1 382 1 is_stmt 1 view -0
 	.cfi_startproc
 	@ args = 0, pretend = 0, frame = 0
 	@ frame_needed = 0, uses_anonymous_args = 0
-	.loc 1 383 5 view .LVU537
+	.loc 1 383 5 view .LVU536
 .LBB18:
 .LBI18:
-	.loc 1 34 6 view .LVU538
-	.loc 1 34 6 is_stmt 0 view .LVU539
+	.loc 1 34 6 view .LVU537
+	.loc 1 34 6 is_stmt 0 view .LVU538
 .LBE18:
 @ armwave.c:382: {
-	.loc 1 382 1 view .LVU540
+	.loc 1 382 1 view .LVU539
 	push	{r4, r5, r6, r7, r8, r9, r10, lr}	@
 	.cfi_def_cfa_offset 32
 	.cfi_offset 4, -32
@@ -2110,97 +2110,97 @@ armwave_test_init:
 	.cfi_offset 83, -44
 	.cfi_offset 84, -40
 	.cfi_offset 85, -36
-	ldr	r4, .L122+20	@ ivtmp.100,
+	ldr	r4, .L124+20	@ ivtmp.100,
 .LBB21:
 .LBB19:
 @ armwave.c:40:         gamma_table[i] = pow(i / 255.0f, gamma) * 255.0f;
-	.loc 1 40 32 view .LVU541
-	vldr.32	s20, .L122+16	@ tmp136,
+	.loc 1 40 32 view .LVU540
+	vldr.32	s20, .L124+16	@ tmp136,
 @ armwave.c:40:         gamma_table[i] = pow(i / 255.0f, gamma) * 255.0f;
-	.loc 1 40 26 view .LVU542
-	vldr.64	d9, .L122	@ tmp151,
+	.loc 1 40 26 view .LVU541
+	vldr.64	d9, .L124	@ tmp151,
 @ armwave.c:40:         gamma_table[i] = pow(i / 255.0f, gamma) * 255.0f;
-	.loc 1 40 49 view .LVU543
-	vldr.64	d8, .L122+8	@ tmp139,
+	.loc 1 40 49 view .LVU542
+	vldr.64	d8, .L124+8	@ tmp139,
 	add	ip, r4, #1	@ _38, ivtmp.100,
 .LBE19:
 .LBE21:
 @ armwave.c:382: {
-	.loc 1 382 1 view .LVU544
+	.loc 1 382 1 view .LVU543
 	sub	sp, sp, #16	@,,
 	.cfi_def_cfa_offset 72
 @ armwave.c:382: {
-	.loc 1 382 1 view .LVU545
+	.loc 1 382 1 view .LVU544
 	mov	r6, r0	@ wave_size, wave_size
 	mov	r7, r1	@ nwaves, nwaves
 	mov	r8, r2	@ render_width, render_width
 	mov	r9, r3	@ render_height, render_height
 	add	r10, r4, #256	@ _39, ivtmp.100,
 	rsb	r5, ip, #1	@ tmp150, _38,
-.LVL141:
-.L119:
+.LVL140:
+.L121:
 .LBB22:
 .LBB20:
-	.loc 1 40 9 is_stmt 1 view .LVU546
+	.loc 1 40 9 is_stmt 1 view .LVU545
 @ armwave.c:40:         gamma_table[i] = pow(i / 255.0f, gamma) * 255.0f;
-	.loc 1 40 32 is_stmt 0 view .LVU547
+	.loc 1 40 32 is_stmt 0 view .LVU546
 	add	r3, r5, r4	@ tmp133, tmp150, ivtmp.100
 @ armwave.c:40:         gamma_table[i] = pow(i / 255.0f, gamma) * 255.0f;
-	.loc 1 40 26 view .LVU548
+	.loc 1 40 26 view .LVU547
 	vmov.f64	d1, d9	@, tmp151
 @ armwave.c:40:         gamma_table[i] = pow(i / 255.0f, gamma) * 255.0f;
-	.loc 1 40 32 view .LVU549
+	.loc 1 40 32 view .LVU548
 	vmov	s15, r3	@ int	@ tmp133, tmp133
 	vcvt.f32.s32	s15, s15	@ tmp134, tmp133
 	vdiv.f32	s0, s15, s20	@ tmp135, tmp134, tmp136
 @ armwave.c:40:         gamma_table[i] = pow(i / 255.0f, gamma) * 255.0f;
-	.loc 1 40 26 view .LVU550
+	.loc 1 40 26 view .LVU549
 	vcvt.f64.f32	d0, s0	@, tmp135
 	bl	pow		@
-.LVL142:
+.LVL141:
 @ armwave.c:40:         gamma_table[i] = pow(i / 255.0f, gamma) * 255.0f;
-	.loc 1 40 49 view .LVU551
+	.loc 1 40 49 view .LVU550
 	vmul.f64	d0, d0, d8	@ tmp138,, tmp139
 @ armwave.c:40:         gamma_table[i] = pow(i / 255.0f, gamma) * 255.0f;
-	.loc 1 40 24 view .LVU552
+	.loc 1 40 24 view .LVU551
 	vcvt.u32.f64	s15, d0	@ tmp140, tmp138
 	vmov	r0, s15	@ int	@ tmp140, tmp140
 	strb	r0, [r4, #1]!	@ tmp140, MEM[base: _37, offset: 0B]
-.LVL143:
+.LVL142:
 @ armwave.c:39:     for(i = 0; i < 256; i++) {
-	.loc 1 39 5 view .LVU553
+	.loc 1 39 5 view .LVU552
 	cmp	r4, r10	@ ivtmp.100, _39
-	bne	.L119		@,
-.LVL144:
-	.loc 1 39 5 view .LVU554
+	bne	.L121		@,
+.LVL143:
+	.loc 1 39 5 view .LVU553
 .LBE20:
 .LBE22:
-	.loc 1 386 5 is_stmt 1 view .LVU555
+	.loc 1 386 5 is_stmt 1 view .LVU554
 .LBB23:
 .LBI23:
-	.loc 1 339 6 view .LVU556
+	.loc 1 339 6 view .LVU555
 .LBB24:
-	.loc 1 342 5 view .LVU557
-	.loc 1 344 13 view .LVU558
-	.loc 1 345 13 view .LVU559
+	.loc 1 342 5 view .LVU556
+	.loc 1 344 13 view .LVU557
+	.loc 1 345 13 view .LVU558
 @ armwave.c:344:             g_armwave_state.ch1_color.r = r;
-	.loc 1 344 41 is_stmt 0 view .LVU560
-	ldr	ip, .L122+24	@ tmp142,
-	ldr	r4, .L122+28	@ tmp143,
+	.loc 1 344 41 is_stmt 0 view .LVU559
+	ldr	ip, .L124+24	@ tmp142,
+	ldr	r4, .L124+28	@ tmp143,
 .LBE24:
 .LBE23:
 @ armwave.c:388:     armwave_setup_render(0, wave_size, nwaves, wave_size, render_width, render_height, 0x00000000);
-	.loc 1 388 5 view .LVU561
+	.loc 1 388 5 view .LVU560
 	mov	r0, #0	@ tmp147,
 .LBB28:
 .LBB25:
 @ armwave.c:346:             g_armwave_state.ch1_color.b = b;
-	.loc 1 346 41 view .LVU562
+	.loc 1 346 41 view .LVU561
 	mov	lr, #250	@ tmp146,
 .LBE25:
 .LBE28:
 @ armwave.c:388:     armwave_setup_render(0, wave_size, nwaves, wave_size, render_width, render_height, 0x00000000);
-	.loc 1 388 5 view .LVU563
+	.loc 1 388 5 view .LVU562
 	str	r0, [sp, #8]	@ tmp147,
 	str	r9, [sp, #4]	@ render_height,
 	str	r8, [sp]	@ render_width,
@@ -2209,32 +2209,32 @@ armwave_test_init:
 .LBB29:
 .LBB26:
 @ armwave.c:344:             g_armwave_state.ch1_color.r = r;
-	.loc 1 344 41 view .LVU564
+	.loc 1 344 41 view .LVU563
 	str	r4, [ip, #108]	@ tmp143, MEM[(short int *)&g_armwave_state + 108B]
-	.loc 1 346 13 is_stmt 1 view .LVU565
+	.loc 1 346 13 is_stmt 1 view .LVU564
 .LBE26:
 .LBE29:
 @ armwave.c:388:     armwave_setup_render(0, wave_size, nwaves, wave_size, render_width, render_height, 0x00000000);
-	.loc 1 388 5 is_stmt 0 view .LVU566
+	.loc 1 388 5 is_stmt 0 view .LVU565
 	mov	r3, r6	@, wave_size
 .LBB30:
 .LBB27:
 @ armwave.c:346:             g_armwave_state.ch1_color.b = b;
-	.loc 1 346 41 view .LVU567
+	.loc 1 346 41 view .LVU566
 	strh	lr, [ip, #112]	@ movhi	@ tmp146, g_armwave_state.ch1_color.b
-	.loc 1 347 13 is_stmt 1 view .LVU568
-.LVL145:
-	.loc 1 347 13 is_stmt 0 view .LVU569
+	.loc 1 347 13 is_stmt 1 view .LVU567
+.LVL144:
+	.loc 1 347 13 is_stmt 0 view .LVU568
 .LBE27:
 .LBE30:
-	.loc 1 388 5 is_stmt 1 view .LVU570
+	.loc 1 388 5 is_stmt 1 view .LVU569
 	bl	armwave_setup_render		@
-.LVL146:
-	.loc 1 390 5 view .LVU571
-	ldr	r1, .L122+32	@,
-	ldr	r0, .L122+36	@,
+.LVL145:
+	.loc 1 390 5 view .LVU570
+	ldr	r1, .L124+32	@,
+	ldr	r0, .L124+36	@,
 @ armwave.c:391: }
-	.loc 1 391 1 is_stmt 0 view .LVU572
+	.loc 1 391 1 is_stmt 0 view .LVU571
 	add	sp, sp, #16	@,,
 	.cfi_def_cfa_offset 56
 	@ sp needed	@
@@ -2256,14 +2256,14 @@ armwave_test_init:
 	.cfi_restore 5
 	.cfi_restore 4
 	.cfi_def_cfa_offset 0
-.LVL147:
+.LVL146:
 @ armwave.c:390:     printf("armwave version: %s\n", ARMWAVE_VER);
-	.loc 1 390 5 view .LVU573
+	.loc 1 390 5 view .LVU572
 	b	printf		@
-.LVL148:
-.L123:
+.LVL147:
+.L125:
 	.align	3
-.L122:
+.L124:
 	.word	-1073741824
 	.word	1072483532
 	.word	0
@@ -2290,14 +2290,14 @@ armwave_test_fill_outbuf:
 	@ args = 0, pretend = 0, frame = 0
 	@ frame_needed = 0, uses_anonymous_args = 0
 	@ link register save eliminated.
-	.loc 1 398 5 view .LVU575
-	ldr	r3, .L125	@ tmp111,
+	.loc 1 398 5 view .LVU574
+	ldr	r3, .L127	@ tmp111,
 	ldr	r0, [r3, #104]	@, g_armwave_state.out_pixbuf
 	b	armwave_fill_pixbuf_scaled		@
-.LVL149:
-.L126:
+.LVL148:
+.L128:
 	.align	2
-.L125:
+.L127:
 	.word	g_armwave_state
 	.cfi_endproc
 .LFE70:
@@ -2309,25 +2309,25 @@ armwave_test_fill_outbuf:
 	.fpu vfp
 	.type	armwave_test_dump_buffer_to_ppm, %function
 armwave_test_dump_buffer_to_ppm:
-.LVL150:
+.LVL149:
 .LFB71:
 	.loc 1 405 1 view -0
 	.cfi_startproc
 	@ args = 0, pretend = 0, frame = 0
 	@ frame_needed = 0, uses_anonymous_args = 0
 	@ link register save eliminated.
-	.loc 1 406 5 view .LVU577
-	ldr	r3, .L128	@ tmp112,
+	.loc 1 406 5 view .LVU576
+	ldr	r3, .L130	@ tmp112,
 	mov	r1, r0	@, fn
 	ldr	r0, [r3, #104]	@, g_armwave_state.out_pixbuf
-.LVL151:
-	.loc 1 406 5 is_stmt 0 view .LVU578
+.LVL150:
+	.loc 1 406 5 is_stmt 0 view .LVU577
 	b	armwave_dump_ppm_debug		@
-.LVL152:
-.L129:
-	.loc 1 406 5 view .LVU579
+.LVL151:
+.L131:
+	.loc 1 406 5 view .LVU578
 	.align	2
-.L128:
+.L130:
 	.word	g_armwave_state
 	.cfi_endproc
 .LFE71:
@@ -2339,26 +2339,26 @@ armwave_test_dump_buffer_to_ppm:
 	.fpu vfp
 	.type	armwave_test_fill_gdkbuf, %function
 armwave_test_fill_gdkbuf:
-.LVL153:
+.LVL152:
 .LFB72:
 	.loc 1 413 1 is_stmt 1 view -0
 	.cfi_startproc
 	@ args = 0, pretend = 0, frame = 0
 	@ frame_needed = 0, uses_anonymous_args = 0
 	@ link register save eliminated.
-	.loc 1 418 5 view .LVU581
-	.loc 1 421 5 view .LVU582
+	.loc 1 418 5 view .LVU580
+	.loc 1 421 5 view .LVU581
 @ armwave.c:418:     void *out_pixbuf = ((uint32_t ***)buf)[2][10];
-	.loc 1 418 11 is_stmt 0 view .LVU583
+	.loc 1 418 11 is_stmt 0 view .LVU582
 	ldr	r3, [r0, #8]	@ MEM[(uint32_t * * *)buf_2(D) + 8B], MEM[(uint32_t * * *)buf_2(D) + 8B]
 @ armwave.c:421:     armwave_fill_pixbuf_scaled(out_pixbuf);
-	.loc 1 421 5 view .LVU584
+	.loc 1 421 5 view .LVU583
 	ldr	r0, [r3, #40]	@, MEM[(uint32_t * *)_1 + 40B]
+.LVL153:
+	.loc 1 421 5 view .LVU584
+	b	armwave_fill_pixbuf_scaled		@
 .LVL154:
 	.loc 1 421 5 view .LVU585
-	b	armwave_fill_pixbuf_scaled		@
-.LVL155:
-	.loc 1 421 5 view .LVU586
 	.cfi_endproc
 .LFE72:
 	.size	armwave_test_fill_gdkbuf, .-armwave_test_fill_gdkbuf
@@ -2369,15 +2369,15 @@ armwave_test_fill_gdkbuf:
 	.fpu vfp
 	.type	armwave_test_buffer_alloc, %function
 armwave_test_buffer_alloc:
-.LVL156:
+.LVL155:
 .LFB73:
 	.loc 1 428 1 is_stmt 1 view -0
 	.cfi_startproc
 	@ args = 0, pretend = 0, frame = 0
 	@ frame_needed = 0, uses_anonymous_args = 0
-	.loc 1 429 5 view .LVU588
+	.loc 1 429 5 view .LVU587
 @ armwave.c:428: {
-	.loc 1 428 1 is_stmt 0 view .LVU589
+	.loc 1 428 1 is_stmt 0 view .LVU588
 	push	{r4, r5, r6, lr}	@
 	.cfi_def_cfa_offset 16
 	.cfi_offset 4, -16
@@ -2385,68 +2385,68 @@ armwave_test_buffer_alloc:
 	.cfi_offset 6, -8
 	.cfi_offset 14, -4
 @ armwave.c:428: {
-	.loc 1 428 1 view .LVU590
+	.loc 1 428 1 view .LVU589
 	mov	r6, r0	@ nsets, nsets
 @ armwave.c:429:     if(g_armwave_state.test_wave_buffer != NULL) {
-	.loc 1 429 23 view .LVU591
-	ldr	r4, .L138	@ tmp128,
+	.loc 1 429 23 view .LVU590
+	ldr	r4, .L140	@ tmp128,
 	ldr	r0, [r4, #24]	@ _1, g_armwave_state.test_wave_buffer
-.LVL157:
+.LVL156:
 @ armwave.c:429:     if(g_armwave_state.test_wave_buffer != NULL) {
-	.loc 1 429 7 view .LVU592
+	.loc 1 429 7 view .LVU591
 	cmp	r0, #0	@ _1,
-	beq	.L132		@,
-	.loc 1 430 9 is_stmt 1 view .LVU593
+	beq	.L134		@,
+	.loc 1 430 9 is_stmt 1 view .LVU592
 	bl	free		@
-.LVL158:
-.L132:
-	.loc 1 435 5 view .LVU594
+.LVL157:
+.L134:
+	.loc 1 435 5 view .LVU593
 @ armwave.c:435:     g_armwave_state.test_wave_buffer = calloc(g_armwave_state.wave_length * g_armwave_state.waves_max, nsets);
-	.loc 1 435 75 is_stmt 0 view .LVU595
+	.loc 1 435 75 is_stmt 0 view .LVU594
 	ldr	r3, [r4, #76]	@ g_armwave_state.wave_length, g_armwave_state.wave_length
 	ldr	r5, [r4, #60]	@ g_armwave_state.waves_max, g_armwave_state.waves_max
 @ armwave.c:435:     g_armwave_state.test_wave_buffer = calloc(g_armwave_state.wave_length * g_armwave_state.waves_max, nsets);
-	.loc 1 435 40 view .LVU596
+	.loc 1 435 40 view .LVU595
 	mov	r1, r6	@, nsets
 @ armwave.c:435:     g_armwave_state.test_wave_buffer = calloc(g_armwave_state.wave_length * g_armwave_state.waves_max, nsets);
-	.loc 1 435 75 view .LVU597
+	.loc 1 435 75 view .LVU596
 	mul	r5, r5, r3	@ _4, g_armwave_state.waves_max, g_armwave_state.wave_length
 @ armwave.c:435:     g_armwave_state.test_wave_buffer = calloc(g_armwave_state.wave_length * g_armwave_state.waves_max, nsets);
-	.loc 1 435 40 view .LVU598
+	.loc 1 435 40 view .LVU597
 	mov	r0, r5	@, _4
 	bl	calloc		@
-.LVL159:
+.LVL158:
 @ armwave.c:437:     if(g_armwave_state.test_wave_buffer == NULL) {
-	.loc 1 437 7 view .LVU599
+	.loc 1 437 7 view .LVU598
 	cmp	r0, #0	@ tmp124,
 @ armwave.c:435:     g_armwave_state.test_wave_buffer = calloc(g_armwave_state.wave_length * g_armwave_state.waves_max, nsets);
-	.loc 1 435 38 view .LVU600
+	.loc 1 435 38 view .LVU599
 	str	r0, [r4, #24]	@ tmp124, g_armwave_state.test_wave_buffer
-	.loc 1 437 5 is_stmt 1 view .LVU601
+	.loc 1 437 5 is_stmt 1 view .LVU600
 @ armwave.c:437:     if(g_armwave_state.test_wave_buffer == NULL) {
-	.loc 1 437 7 is_stmt 0 view .LVU602
+	.loc 1 437 7 is_stmt 0 view .LVU601
 	popne	{r4, r5, r6, pc}	@
-	.loc 1 438 9 is_stmt 1 view .LVU603
+	.loc 1 438 9 is_stmt 1 view .LVU602
 	mul	r1, r6, r5	@, nsets, _4
 	mov	r2, r6	@, nsets
-	ldr	r0, .L138+4	@,
+	ldr	r0, .L140+4	@,
 @ armwave.c:442: }
-	.loc 1 442 1 is_stmt 0 view .LVU604
+	.loc 1 442 1 is_stmt 0 view .LVU603
 	pop	{r4, r5, r6, lr}	@
 	.cfi_restore 14
 	.cfi_restore 6
 	.cfi_restore 5
 	.cfi_restore 4
 	.cfi_def_cfa_offset 0
-.LVL160:
+.LVL159:
 @ armwave.c:438:         printf("armwave_test_buffer_alloc: failed to allocate test wave buffer (%d bytes, %d sets)\n", \
-	.loc 1 438 9 view .LVU605
+	.loc 1 438 9 view .LVU604
 	b	printf		@
-.LVL161:
-.L139:
-	.loc 1 438 9 view .LVU606
+.LVL160:
+.L141:
+	.loc 1 438 9 view .LVU605
 	.align	2
-.L138:
+.L140:
 	.word	g_armwave_state
 	.word	.LC19
 	.cfi_endproc
@@ -2459,117 +2459,117 @@ armwave_test_buffer_alloc:
 	.fpu vfp
 	.type	armwave_fill_pixbuf_into_pybuffer, %function
 armwave_fill_pixbuf_into_pybuffer:
-.LVL162:
+.LVL161:
 .LFB74:
 	.loc 1 448 1 is_stmt 1 view -0
 	.cfi_startproc
 	@ args = 0, pretend = 0, frame = 48
 	@ frame_needed = 0, uses_anonymous_args = 0
-	.loc 1 449 5 view .LVU608
-	.loc 1 450 5 view .LVU609
-	.loc 1 454 5 view .LVU610
+	.loc 1 449 5 view .LVU607
+	.loc 1 450 5 view .LVU608
+	.loc 1 454 5 view .LVU609
 @ armwave.c:448: {
-	.loc 1 448 1 is_stmt 0 view .LVU611
+	.loc 1 448 1 is_stmt 0 view .LVU610
 	str	lr, [sp, #-4]!	@,
 	.cfi_def_cfa_offset 4
 	.cfi_offset 14, -4
 	sub	sp, sp, #52	@,,
 	.cfi_def_cfa_offset 56
 @ armwave.c:454:     ret = PyObject_GetBuffer(buf_obj, &buffer, PyBUF_SIMPLE | PyBUF_WRITABLE);
-	.loc 1 454 11 view .LVU612
+	.loc 1 454 11 view .LVU611
 	add	r1, sp, #4	@ tmp131,,
 	mov	r2, #1	@,
 	bl	PyObject_GetBuffer		@
-.LVL163:
-	.loc 1 456 5 is_stmt 1 view .LVU613
+.LVL162:
+	.loc 1 456 5 is_stmt 1 view .LVU612
 @ armwave.c:456:     if(ret != 0) {
-	.loc 1 456 7 is_stmt 0 view .LVU614
+	.loc 1 456 7 is_stmt 0 view .LVU613
 	cmp	r0, #0	@,
-	bne	.L144		@,
-	.loc 1 463 5 is_stmt 1 view .LVU615
+	bne	.L146		@,
+	.loc 1 463 5 is_stmt 1 view .LVU614
 	ldr	r0, [sp, #4]	@, buffer.buf
-.LVL164:
-	.loc 1 463 5 is_stmt 0 view .LVU616
+.LVL163:
+	.loc 1 463 5 is_stmt 0 view .LVU615
 	bl	armwave_fill_pixbuf_scaled		@
-.LVL165:
-	.loc 1 466 5 is_stmt 1 view .LVU617
+.LVL164:
+	.loc 1 466 5 is_stmt 1 view .LVU616
 	add	r0, sp, #4	@ tmp132,,
 	bl	PyBuffer_Release		@
-.LVL166:
-	.loc 1 469 5 view .LVU618
+.LVL165:
+	.loc 1 469 5 view .LVU617
 .LBB31:
 .LBI31:
 	.file 2 "/usr/local/include/python3.8/object.h"
-	.loc 2 456 20 view .LVU619
+	.loc 2 456 20 view .LVU618
 .LBB32:
-	.loc 2 458 21 view .LVU620
-	.loc 2 459 5 view .LVU621
+	.loc 2 458 21 view .LVU619
+	.loc 2 459 5 view .LVU620
 @ /usr/local/include/python3.8/object.h:459:     op->ob_refcnt++;
-	.loc 2 459 18 is_stmt 0 view .LVU622
-	ldr	r3, .L145	@ tmp126,
+	.loc 2 459 18 is_stmt 0 view .LVU621
+	ldr	r3, .L147	@ tmp126,
 .LBE32:
 .LBE31:
 @ armwave.c:469:     Py_RETURN_TRUE;
-	.loc 1 469 5 view .LVU623
+	.loc 1 469 5 view .LVU622
 	mov	r0, r3	@ <retval>, tmp126
 .LBB34:
 .LBB33:
 @ /usr/local/include/python3.8/object.h:459:     op->ob_refcnt++;
-	.loc 2 459 18 view .LVU624
+	.loc 2 459 18 view .LVU623
 	ldr	r2, [r3]	@ MEM[(Py_ssize_t *)&_Py_TrueStruct],
 	add	r2, r2, #1	@ tmp128, MEM[(Py_ssize_t *)&_Py_TrueStruct],
 	str	r2, [r3]	@ tmp128,
 .LBE33:
 .LBE34:
 @ armwave.c:470: }
-	.loc 1 470 1 view .LVU625
+	.loc 1 470 1 view .LVU624
 	add	sp, sp, #52	@,,
 	.cfi_remember_state
 	.cfi_def_cfa_offset 4
 	@ sp needed	@
 	ldr	pc, [sp], #4	@
-.LVL167:
-.L144:
+.LVL166:
+.L146:
 	.cfi_restore_state
-	.loc 1 457 9 is_stmt 1 view .LVU626
-	ldr	r0, .L145+4	@,
-.LVL168:
-	.loc 1 457 9 is_stmt 0 view .LVU627
+	.loc 1 457 9 is_stmt 1 view .LVU625
+	ldr	r0, .L147+4	@,
+.LVL167:
+	.loc 1 457 9 is_stmt 0 view .LVU626
 	bl	puts		@
-.LVL169:
-	.loc 1 458 9 is_stmt 1 view .LVU628
+.LVL168:
+	.loc 1 458 9 is_stmt 1 view .LVU627
 .LBB35:
 .LBI35:
-	.loc 2 456 20 view .LVU629
+	.loc 2 456 20 view .LVU628
 .LBB36:
-	.loc 2 458 21 view .LVU630
-	.loc 2 459 5 view .LVU631
+	.loc 2 458 21 view .LVU629
+	.loc 2 459 5 view .LVU630
 @ /usr/local/include/python3.8/object.h:459:     op->ob_refcnt++;
-	.loc 2 459 18 is_stmt 0 view .LVU632
-	ldr	r3, .L145+8	@ tmp120,
+	.loc 2 459 18 is_stmt 0 view .LVU631
+	ldr	r3, .L147+8	@ tmp120,
 .LBE36:
 .LBE35:
 @ armwave.c:458:         Py_RETURN_FALSE;
-	.loc 1 458 9 view .LVU633
+	.loc 1 458 9 view .LVU632
 	mov	r0, r3	@ <retval>, tmp120
 .LBB38:
 .LBB37:
 @ /usr/local/include/python3.8/object.h:459:     op->ob_refcnt++;
-	.loc 2 459 18 view .LVU634
+	.loc 2 459 18 view .LVU633
 	ldr	r2, [r3]	@ MEM[(Py_ssize_t *)&_Py_FalseStruct],
 	add	r2, r2, #1	@ tmp122, MEM[(Py_ssize_t *)&_Py_FalseStruct],
 	str	r2, [r3]	@ tmp122,
 .LBE37:
 .LBE38:
 @ armwave.c:470: }
-	.loc 1 470 1 view .LVU635
+	.loc 1 470 1 view .LVU634
 	add	sp, sp, #52	@,,
 	.cfi_def_cfa_offset 4
 	@ sp needed	@
 	ldr	pc, [sp], #4	@
-.L146:
+.L148:
 	.align	2
-.L145:
+.L147:
 	.word	_Py_TrueStruct
 	.word	.LC20
 	.word	_Py_FalseStruct
@@ -2583,16 +2583,16 @@ armwave_fill_pixbuf_into_pybuffer:
 	.fpu vfp
 	.type	armwave_test_create_am_sine, %function
 armwave_test_create_am_sine:
-.LVL170:
+.LVL169:
 .LFB75:
 	.loc 1 480 1 is_stmt 1 view -0
 	.cfi_startproc
 	@ args = 0, pretend = 0, frame = 8
 	@ frame_needed = 0, uses_anonymous_args = 0
-	.loc 1 481 5 view .LVU637
-	.loc 1 482 5 view .LVU638
+	.loc 1 481 5 view .LVU636
+	.loc 1 482 5 view .LVU637
 @ armwave.c:480: {
-	.loc 1 480 1 is_stmt 0 view .LVU639
+	.loc 1 480 1 is_stmt 0 view .LVU638
 	push	{r4, r5, r6, r7, r8, r9, r10, lr}	@
 	.cfi_def_cfa_offset 32
 	.cfi_offset 4, -32
@@ -2604,13 +2604,13 @@ armwave_test_create_am_sine:
 	.cfi_offset 10, -8
 	.cfi_offset 14, -4
 @ armwave.c:482:     float _1_waves_mod = mod * (1.0f / g_armwave_state.waves);
-	.loc 1 482 38 view .LVU640
-	vldr.32	s14, .L178	@ tmp180,
+	.loc 1 482 38 view .LVU639
+	vldr.32	s14, .L180	@ tmp180,
 @ armwave.c:482:     float _1_waves_mod = mod * (1.0f / g_armwave_state.waves);
-	.loc 1 482 55 view .LVU641
-	ldr	r5, .L178+28	@ tmp250,
+	.loc 1 482 55 view .LVU640
+	ldr	r5, .L180+28	@ tmp250,
 @ armwave.c:480: {
-	.loc 1 480 1 view .LVU642
+	.loc 1 480 1 view .LVU641
 	vpush.64	{d8, d9, d10, d11, d12, d13}	@
 	.cfi_def_cfa_offset 80
 	.cfi_offset 80, -80
@@ -2627,357 +2627,357 @@ armwave_test_create_am_sine:
 	.cfi_offset 91, -36
 	mov	r9, r0	@ sets, sets
 @ armwave.c:482:     float _1_waves_mod = mod * (1.0f / g_armwave_state.waves);
-	.loc 1 482 38 view .LVU643
+	.loc 1 482 38 view .LVU642
 	vldr.32	s15, [r5, #56]	@ int	@ tmp264, g_armwave_state.waves
 @ armwave.c:486:     g_armwave_state.test_wave_buffer_stride = (g_armwave_state.waves * g_armwave_state.wave_stride);
-	.loc 1 486 70 view .LVU644
+	.loc 1 486 70 view .LVU643
 	ldr	r3, [r5, #52]	@ g_armwave_state.wave_stride, g_armwave_state.wave_stride
 	ldr	r2, [r5, #56]	@ tmp265, g_armwave_state.waves
 .LBB41:
 .LBB42:
 @ armwave.c:429:     if(g_armwave_state.test_wave_buffer != NULL) {
-	.loc 1 429 23 view .LVU645
+	.loc 1 429 23 view .LVU644
 	ldr	r0, [r5, #24]	@ _82, g_armwave_state.test_wave_buffer
-.LVL171:
-	.loc 1 429 23 view .LVU646
+.LVL170:
+	.loc 1 429 23 view .LVU645
 .LBE42:
 .LBE41:
 @ armwave.c:482:     float _1_waves_mod = mod * (1.0f / g_armwave_state.waves);
-	.loc 1 482 38 view .LVU647
+	.loc 1 482 38 view .LVU646
 	vcvt.f32.s32	s15, s15	@ tmp178, tmp264
 @ armwave.c:486:     g_armwave_state.test_wave_buffer_stride = (g_armwave_state.waves * g_armwave_state.wave_stride);
-	.loc 1 486 70 view .LVU648
+	.loc 1 486 70 view .LVU647
 	mul	r3, r2, r3	@ tmp183, tmp265, g_armwave_state.wave_stride
 @ armwave.c:480: {
-	.loc 1 480 1 view .LVU649
+	.loc 1 480 1 view .LVU648
 	vmov.f32	s23, s1	@ noise_fraction, noise_fraction
 .LBB46:
 .LBB43:
 @ armwave.c:429:     if(g_armwave_state.test_wave_buffer != NULL) {
-	.loc 1 429 7 view .LVU650
+	.loc 1 429 7 view .LVU649
 	cmp	r0, #0	@ _82,
 .LBE43:
 .LBE46:
 @ armwave.c:480: {
-	.loc 1 480 1 view .LVU651
+	.loc 1 480 1 view .LVU650
 	sub	sp, sp, #8	@,,
 	.cfi_def_cfa_offset 88
 @ armwave.c:487:     g_armwave_state.test_wave_buffer_nsets = sets;
-	.loc 1 487 44 view .LVU652
+	.loc 1 487 44 view .LVU651
 	str	r9, [r5, #32]	@ sets, g_armwave_state.test_wave_buffer_nsets
 @ armwave.c:486:     g_armwave_state.test_wave_buffer_stride = (g_armwave_state.waves * g_armwave_state.wave_stride);
-	.loc 1 486 45 view .LVU653
+	.loc 1 486 45 view .LVU652
 	str	r3, [r5, #28]	@ tmp183, g_armwave_state.test_wave_buffer_stride
 @ armwave.c:482:     float _1_waves_mod = mod * (1.0f / g_armwave_state.waves);
-	.loc 1 482 38 view .LVU654
+	.loc 1 482 38 view .LVU653
 	vdiv.f32	s26, s14, s15	@ tmp179, tmp180, tmp178
 @ armwave.c:482:     float _1_waves_mod = mod * (1.0f / g_armwave_state.waves);
-	.loc 1 482 11 view .LVU655
+	.loc 1 482 11 view .LVU654
 	vmul.f32	s26, s26, s0	@ _1_waves_mod, tmp179, mod
-.LVL172:
-	.loc 1 483 5 is_stmt 1 view .LVU656
-	.loc 1 484 5 view .LVU657
-	.loc 1 486 5 view .LVU658
-	.loc 1 487 5 view .LVU659
-	.loc 1 488 5 view .LVU660
+.LVL171:
+	.loc 1 483 5 is_stmt 1 view .LVU655
+	.loc 1 484 5 view .LVU656
+	.loc 1 486 5 view .LVU657
+	.loc 1 487 5 view .LVU658
+	.loc 1 488 5 view .LVU659
 .LBB47:
 .LBI41:
-	.loc 1 427 6 view .LVU661
+	.loc 1 427 6 view .LVU660
 .LBB44:
-	.loc 1 429 5 view .LVU662
+	.loc 1 429 5 view .LVU661
 @ armwave.c:429:     if(g_armwave_state.test_wave_buffer != NULL) {
-	.loc 1 429 7 is_stmt 0 view .LVU663
-	beq	.L148		@,
-	.loc 1 430 9 is_stmt 1 view .LVU664
+	.loc 1 429 7 is_stmt 0 view .LVU662
+	beq	.L150		@,
+	.loc 1 430 9 is_stmt 1 view .LVU663
 	bl	free		@
-.LVL173:
-.L148:
-	.loc 1 435 5 view .LVU665
+.LVL172:
+.L150:
+	.loc 1 435 5 view .LVU664
 @ armwave.c:435:     g_armwave_state.test_wave_buffer = calloc(g_armwave_state.wave_length * g_armwave_state.waves_max, nsets);
-	.loc 1 435 75 is_stmt 0 view .LVU666
+	.loc 1 435 75 is_stmt 0 view .LVU665
 	ldr	r3, [r5, #76]	@ g_armwave_state.wave_length, g_armwave_state.wave_length
 	ldr	r4, [r5, #60]	@ g_armwave_state.waves_max, g_armwave_state.waves_max
 @ armwave.c:435:     g_armwave_state.test_wave_buffer = calloc(g_armwave_state.wave_length * g_armwave_state.waves_max, nsets);
-	.loc 1 435 40 view .LVU667
+	.loc 1 435 40 view .LVU666
 	mov	r1, r9	@, sets
 @ armwave.c:435:     g_armwave_state.test_wave_buffer = calloc(g_armwave_state.wave_length * g_armwave_state.waves_max, nsets);
-	.loc 1 435 75 view .LVU668
+	.loc 1 435 75 view .LVU667
 	mul	r4, r4, r3	@ _85, g_armwave_state.waves_max, g_armwave_state.wave_length
 @ armwave.c:435:     g_armwave_state.test_wave_buffer = calloc(g_armwave_state.wave_length * g_armwave_state.waves_max, nsets);
-	.loc 1 435 40 view .LVU669
+	.loc 1 435 40 view .LVU668
 	mov	r0, r4	@, _85
 	bl	calloc		@
-.LVL174:
+.LVL173:
 @ armwave.c:437:     if(g_armwave_state.test_wave_buffer == NULL) {
-	.loc 1 437 7 view .LVU670
+	.loc 1 437 7 view .LVU669
 	cmp	r0, #0	@ tmp191,
 @ armwave.c:435:     g_armwave_state.test_wave_buffer = calloc(g_armwave_state.wave_length * g_armwave_state.waves_max, nsets);
-	.loc 1 435 38 view .LVU671
+	.loc 1 435 38 view .LVU670
 	str	r0, [r5, #24]	@ tmp191, g_armwave_state.test_wave_buffer
-	.loc 1 437 5 is_stmt 1 view .LVU672
+	.loc 1 437 5 is_stmt 1 view .LVU671
 @ armwave.c:437:     if(g_armwave_state.test_wave_buffer == NULL) {
-	.loc 1 437 7 is_stmt 0 view .LVU673
-	beq	.L177		@,
-.L149:
-.LVL175:
-	.loc 1 437 7 view .LVU674
+	.loc 1 437 7 is_stmt 0 view .LVU672
+	beq	.L179		@,
+.L151:
+.LVL174:
+	.loc 1 437 7 view .LVU673
 .LBE44:
 .LBE47:
 @ armwave.c:490:     for(s = 0; s < sets; s++) {
-	.loc 1 490 5 discriminator 1 view .LVU675
+	.loc 1 490 5 discriminator 1 view .LVU674
 	cmp	r9, #0	@ sets,
-	ble	.L147		@,
+	ble	.L149		@,
 @ armwave.c:509:                 v = (sin((6.28f * x * (1.0f / g_armwave_state.wave_length)) + xnoise) * mod_val) * noise;
-	.loc 1 509 45 view .LVU676
-	vldr.32	s16, .L178	@ tmp258,
+	.loc 1 509 45 view .LVU675
+	vldr.32	s16, .L180	@ tmp258,
 @ armwave.c:512:                 g_armwave_state.test_wave_buffer[x + (w * g_armwave_state.wave_stride) + set_offset] = (uint8_t)MIN(MAX(128 + (v * 127), 0), 255);
-	.loc 1 512 104 view .LVU677
-	vldr.32	s24, .L178+4	@ tmp259,
+	.loc 1 512 104 view .LVU676
+	vldr.32	s24, .L180+4	@ tmp259,
 @ armwave.c:490:     for(s = 0; s < sets; s++) {
-	.loc 1 490 5 view .LVU678
+	.loc 1 490 5 view .LVU677
 	mov	r7, #0	@ set_offset,
 @ armwave.c:491:         printf("Calculating test set %d\n", s);
-	.loc 1 491 9 view .LVU679
-	ldr	r10, .L178+32	@ tmp257,
+	.loc 1 491 9 view .LVU678
+	ldr	r10, .L180+32	@ tmp257,
 @ armwave.c:490:     for(s = 0; s < sets; s++) {
-	.loc 1 490 5 view .LVU680
+	.loc 1 490 5 view .LVU679
 	mov	r8, r7	@ s, set_offset
-.LVL176:
-.L150:
-	.loc 1 491 9 is_stmt 1 view .LVU681
+.LVL175:
+.L152:
+	.loc 1 491 9 is_stmt 1 view .LVU680
 	mov	r1, r8	@, s
 	mov	r0, r10	@, tmp257
 	bl	printf		@
-.LVL177:
-	.loc 1 493 9 view .LVU682
+.LVL176:
+	.loc 1 493 9 view .LVU681
 @ armwave.c:493:         for(w = 0; w < g_armwave_state.waves; w++) {
-	.loc 1 493 39 is_stmt 0 view .LVU683
+	.loc 1 493 39 is_stmt 0 view .LVU682
 	ldr	r2, [r5, #56]	@ prephitmp_120, g_armwave_state.waves
 @ armwave.c:493:         for(w = 0; w < g_armwave_state.waves; w++) {
-	.loc 1 493 9 view .LVU684
+	.loc 1 493 9 view .LVU683
 	cmp	r2, #0	@ prephitmp_120,
-	ble	.L151		@,
+	ble	.L153		@,
 @ armwave.c:495:             mod_val = 0.5f + (_1_waves_mod * w);
-	.loc 1 495 21 view .LVU685
-	vldr.32	s25, .L178+8	@ tmp200,
+	.loc 1 495 21 view .LVU684
+	vldr.32	s25, .L180+8	@ tmp200,
 @ armwave.c:509:                 v = (sin((6.28f * x * (1.0f / g_armwave_state.wave_length)) + xnoise) * mod_val) * noise;
-	.loc 1 509 33 view .LVU686
-	vldr.32	s22, .L178+12	@ tmp253,
+	.loc 1 509 33 view .LVU685
+	vldr.32	s22, .L180+12	@ tmp253,
 @ armwave.c:507:                 xnoise = (rand() & 0xffff) / 6553500.0f;
-	.loc 1 507 24 view .LVU687
-	vldr.32	s21, .L178+16	@ tmp254,
+	.loc 1 507 24 view .LVU686
+	vldr.32	s21, .L180+16	@ tmp254,
 	ldr	r3, [r5, #76]	@ prephitmp_124, g_armwave_state.wave_length
 @ armwave.c:493:         for(w = 0; w < g_armwave_state.waves; w++) {
-	.loc 1 493 15 view .LVU688
+	.loc 1 493 15 view .LVU687
 	mov	r6, #0	@ w,
-.LVL178:
-.L158:
-	.loc 1 495 13 is_stmt 1 view .LVU689
+.LVL177:
+.L160:
+	.loc 1 495 13 is_stmt 1 view .LVU688
 @ armwave.c:495:             mod_val = 0.5f + (_1_waves_mod * w);
-	.loc 1 495 21 is_stmt 0 view .LVU690
+	.loc 1 495 21 is_stmt 0 view .LVU689
 	vmov	s15, r6	@ int	@ w, w
 	vmov.f32	s18, s25	@ mod_val, tmp200
 @ armwave.c:497:             for(x = 0; x < g_armwave_state.wave_length; x++) {
-	.loc 1 497 13 view .LVU691
+	.loc 1 497 13 view .LVU690
 	cmp	r3, #0	@ prephitmp_124,
 @ armwave.c:495:             mod_val = 0.5f + (_1_waves_mod * w);
-	.loc 1 495 21 view .LVU692
+	.loc 1 495 21 view .LVU691
 	vcvt.f32.s32	s15, s15	@ tmp198, w
 	vmla.f32	s18, s15, s26	@ mod_val, tmp198, _1_waves_mod
-.LVL179:
-	.loc 1 497 13 is_stmt 1 view .LVU693
-	.loc 1 497 13 is_stmt 0 view .LVU694
-	ble	.L152		@,
+.LVL178:
+	.loc 1 497 13 is_stmt 1 view .LVU692
+	.loc 1 497 13 is_stmt 0 view .LVU693
+	ble	.L154		@,
 	vcvt.f64.f32	d9, s18	@ tmp249, mod_val
 @ armwave.c:512:                 g_armwave_state.test_wave_buffer[x + (w * g_armwave_state.wave_stride) + set_offset] = (uint8_t)MIN(MAX(128 + (v * 127), 0), 255);
-	.loc 1 512 113 view .LVU695
-	vldr.32	s20, .L178+20	@ tmp229,
-	vldr.32	s17, .L178+24	@ tmp230,
+	.loc 1 512 113 view .LVU694
+	vldr.32	s20, .L180+20	@ tmp229,
+	vldr.32	s17, .L180+24	@ tmp230,
 @ armwave.c:497:             for(x = 0; x < g_armwave_state.wave_length; x++) {
-	.loc 1 497 19 view .LVU696
+	.loc 1 497 19 view .LVU695
 	mov	r4, #0	@ x,
-.LVL180:
-.L157:
-	.loc 1 498 17 is_stmt 1 view .LVU697
+.LVL179:
+.L159:
+	.loc 1 498 17 is_stmt 1 view .LVU696
 @ armwave.c:498:                 noise  = ((rand() & 0xffff) * noise_fraction);
-	.loc 1 498 28 is_stmt 0 view .LVU698
+	.loc 1 498 28 is_stmt 0 view .LVU697
 	bl	rand		@
-.LVL181:
+.LVL180:
 @ armwave.c:498:                 noise  = ((rand() & 0xffff) * noise_fraction);
-	.loc 1 498 35 view .LVU699
+	.loc 1 498 35 view .LVU698
 	uxth	r0, r0	@ tmp201,
 @ armwave.c:498:                 noise  = ((rand() & 0xffff) * noise_fraction);
-	.loc 1 498 45 view .LVU700
+	.loc 1 498 45 view .LVU699
 	vmov	s15, r0	@ int	@ tmp201, tmp201
 	vcvt.f32.s32	s15, s15	@ tmp203, tmp201
 @ armwave.c:498:                 noise  = ((rand() & 0xffff) * noise_fraction);
-	.loc 1 498 24 view .LVU701
+	.loc 1 498 24 view .LVU700
 	vmul.f32	s15, s15, s23	@ noise, tmp203, noise_fraction
-.LVL182:
-	.loc 1 499 17 is_stmt 1 view .LVU702
+.LVL181:
+	.loc 1 499 17 is_stmt 1 view .LVU701
 @ armwave.c:499:                 noise *= noise;
-	.loc 1 499 23 is_stmt 0 view .LVU703
+	.loc 1 499 23 is_stmt 0 view .LVU702
+	vmul.f32	s15, s15, s15	@ noise, noise, noise
+.LVL182:
+	.loc 1 500 17 is_stmt 1 view .LVU703
+@ armwave.c:500:                 noise *= noise;
+	.loc 1 500 23 is_stmt 0 view .LVU704
 	vmul.f32	s15, s15, s15	@ noise, noise, noise
 .LVL183:
-	.loc 1 500 17 is_stmt 1 view .LVU704
-@ armwave.c:500:                 noise *= noise;
-	.loc 1 500 23 is_stmt 0 view .LVU705
-	vmul.f32	s15, s15, s15	@ noise, noise, noise
-.LVL184:
-	.loc 1 501 17 is_stmt 1 view .LVU706
+	.loc 1 501 17 is_stmt 1 view .LVU705
 @ armwave.c:501:                 noise *= noise;
-	.loc 1 501 23 is_stmt 0 view .LVU707
+	.loc 1 501 23 is_stmt 0 view .LVU706
 	vmul.f32	s27, s15, s15	@ noise, noise, noise
-.LVL185:
-	.loc 1 503 17 is_stmt 1 view .LVU708
+.LVL184:
+	.loc 1 503 17 is_stmt 1 view .LVU707
 @ armwave.c:503:                 if((rand() & 0xffff) > 0x7fff)
-	.loc 1 503 21 is_stmt 0 view .LVU709
+	.loc 1 503 21 is_stmt 0 view .LVU708
 	bl	rand		@
-.LVL186:
-	.loc 1 504 21 is_stmt 1 view .LVU710
+.LVL185:
+	.loc 1 504 21 is_stmt 1 view .LVU709
 @ armwave.c:503:                 if((rand() & 0xffff) > 0x7fff)
-	.loc 1 503 19 is_stmt 0 view .LVU711
+	.loc 1 503 19 is_stmt 0 view .LVU710
 	tst	r0, #32768	@,
 @ armwave.c:504:                     noise = -noise;
-	.loc 1 504 27 view .LVU712
+	.loc 1 504 27 view .LVU711
 	vnegne.f32	s27, s27	@ noise, noise
-.LVL187:
-	.loc 1 506 17 is_stmt 1 view .LVU713
-	.loc 1 507 17 view .LVU714
+.LVL186:
+	.loc 1 506 17 is_stmt 1 view .LVU712
+	.loc 1 507 17 view .LVU713
 @ armwave.c:507:                 xnoise = (rand() & 0xffff) / 6553500.0f;
-	.loc 1 507 27 is_stmt 0 view .LVU715
+	.loc 1 507 27 is_stmt 0 view .LVU714
 	bl	rand		@
-.LVL188:
-	.loc 1 509 17 is_stmt 1 view .LVU716
+.LVL187:
+	.loc 1 509 17 is_stmt 1 view .LVU715
 @ armwave.c:509:                 v = (sin((6.28f * x * (1.0f / g_armwave_state.wave_length)) + xnoise) * mod_val) * noise;
-	.loc 1 509 45 is_stmt 0 view .LVU717
+	.loc 1 509 45 is_stmt 0 view .LVU716
 	vldr.32	s14, [r5, #76]	@ int	@ tmp270, g_armwave_state.wave_length
 @ armwave.c:509:                 v = (sin((6.28f * x * (1.0f / g_armwave_state.wave_length)) + xnoise) * mod_val) * noise;
-	.loc 1 509 33 view .LVU718
+	.loc 1 509 33 view .LVU717
 	vmov	s15, r4	@ int	@ x, x
 @ armwave.c:509:                 v = (sin((6.28f * x * (1.0f / g_armwave_state.wave_length)) + xnoise) * mod_val) * noise;
-	.loc 1 509 45 view .LVU719
+	.loc 1 509 45 view .LVU718
 	vcvt.f32.s32	s14, s14	@ tmp206, tmp270
 @ armwave.c:509:                 v = (sin((6.28f * x * (1.0f / g_armwave_state.wave_length)) + xnoise) * mod_val) * noise;
-	.loc 1 509 33 view .LVU720
+	.loc 1 509 33 view .LVU719
 	vcvt.f32.s32	s15, s15	@ tmp210, x
 @ armwave.c:509:                 v = (sin((6.28f * x * (1.0f / g_armwave_state.wave_length)) + xnoise) * mod_val) * noise;
-	.loc 1 509 45 view .LVU721
+	.loc 1 509 45 view .LVU720
 	vdiv.f32	s13, s16, s14	@ tmp208, tmp258, tmp206
 @ armwave.c:509:                 v = (sin((6.28f * x * (1.0f / g_armwave_state.wave_length)) + xnoise) * mod_val) * noise;
-	.loc 1 509 33 view .LVU722
+	.loc 1 509 33 view .LVU721
 	vmul.f32	s15, s15, s22	@ tmp211, tmp210, tmp253
 @ armwave.c:507:                 xnoise = (rand() & 0xffff) / 6553500.0f;
-	.loc 1 507 34 view .LVU723
+	.loc 1 507 34 view .LVU722
 	uxth	r0, r0	@ tmp214,
-.LVL189:
+.LVL188:
 @ armwave.c:507:                 xnoise = (rand() & 0xffff) / 6553500.0f;
-	.loc 1 507 44 view .LVU724
+	.loc 1 507 44 view .LVU723
 	vmov	s14, r0	@ int	@ tmp214, tmp214
 	vcvt.f32.s32	s14, s14	@ tmp216, tmp214
 @ armwave.c:507:                 xnoise = (rand() & 0xffff) / 6553500.0f;
-	.loc 1 507 24 view .LVU725
+	.loc 1 507 24 view .LVU724
 	vdiv.f32	s0, s14, s21	@ xnoise, tmp216, tmp254
 @ armwave.c:509:                 v = (sin((6.28f * x * (1.0f / g_armwave_state.wave_length)) + xnoise) * mod_val) * noise;
-	.loc 1 509 77 view .LVU726
+	.loc 1 509 77 view .LVU725
 	vmla.f32	s0, s13, s15	@ tmp219, tmp208, tmp211
 @ armwave.c:509:                 v = (sin((6.28f * x * (1.0f / g_armwave_state.wave_length)) + xnoise) * mod_val) * noise;
-	.loc 1 509 22 view .LVU727
+	.loc 1 509 22 view .LVU726
 	vcvt.f64.f32	d0, s0	@, tmp219
 	bl	sin		@
-.LVL190:
-	.loc 1 512 17 is_stmt 1 view .LVU728
+.LVL189:
+	.loc 1 512 17 is_stmt 1 view .LVU727
 @ armwave.c:506:                 noise += 1.0f;
-	.loc 1 506 23 is_stmt 0 view .LVU729
+	.loc 1 506 23 is_stmt 0 view .LVU728
 	vadd.f32	s15, s27, s16	@ noise, noise, tmp258
 @ armwave.c:512:                 g_armwave_state.test_wave_buffer[x + (w * g_armwave_state.wave_stride) + set_offset] = (uint8_t)MIN(MAX(128 + (v * 127), 0), 255);
-	.loc 1 512 104 view .LVU730
+	.loc 1 512 104 view .LVU729
 	mov	r1, #0	@ iftmp.23_50,
 @ armwave.c:509:                 v = (sin((6.28f * x * (1.0f / g_armwave_state.wave_length)) + xnoise) * mod_val) * noise;
-	.loc 1 509 98 view .LVU731
+	.loc 1 509 98 view .LVU730
 	vcvt.f64.f32	d7, s15	@ tmp225, noise
 @ armwave.c:509:                 v = (sin((6.28f * x * (1.0f / g_armwave_state.wave_length)) + xnoise) * mod_val) * noise;
-	.loc 1 509 87 view .LVU732
+	.loc 1 509 87 view .LVU731
 	vmul.f64	d0, d9, d0	@ tmp222, tmp249,
 @ armwave.c:509:                 v = (sin((6.28f * x * (1.0f / g_armwave_state.wave_length)) + xnoise) * mod_val) * noise;
-	.loc 1 509 98 view .LVU733
+	.loc 1 509 98 view .LVU732
 	vmul.f64	d7, d0, d7	@ tmp226, tmp222, tmp225
 @ armwave.c:509:                 v = (sin((6.28f * x * (1.0f / g_armwave_state.wave_length)) + xnoise) * mod_val) * noise;
-	.loc 1 509 19 view .LVU734
+	.loc 1 509 19 view .LVU733
 	vcvt.f32.f64	s14, d7	@ v, tmp226
 @ armwave.c:512:                 g_armwave_state.test_wave_buffer[x + (w * g_armwave_state.wave_stride) + set_offset] = (uint8_t)MIN(MAX(128 + (v * 127), 0), 255);
-	.loc 1 512 113 view .LVU735
+	.loc 1 512 113 view .LVU734
 	vmov.f32	s15, s17	@ _33, tmp230
 	vmla.f32	s15, s14, s20	@ _33, v, tmp229
 	vcmpe.f32	s15, #0	@ _33
 	vmrs	APSR_nzcv, FPSCR
-	ble	.L154		@,
+	ble	.L156		@,
 @ armwave.c:512:                 g_armwave_state.test_wave_buffer[x + (w * g_armwave_state.wave_stride) + set_offset] = (uint8_t)MIN(MAX(128 + (v * 127), 0), 255);
-	.loc 1 512 104 discriminator 1 view .LVU736
+	.loc 1 512 104 discriminator 1 view .LVU735
 	vcmpe.f32	s15, s24	@ _33, tmp259
 	mov	r1, #255	@ iftmp.23_50,
 	vmrs	APSR_nzcv, FPSCR
 	vcvtmi.u32.f32	s15, s15	@ tmp234, _33
 	vstrmi.32	s15, [sp, #4]	@ int	@ tmp234, %sfp
 	ldrbmi	r1, [sp, #4]	@ zero_extendqisi2	@ iftmp.23_50, %sfp
-.L154:
+.L156:
 @ armwave.c:512:                 g_armwave_state.test_wave_buffer[x + (w * g_armwave_state.wave_stride) + set_offset] = (uint8_t)MIN(MAX(128 + (v * 127), 0), 255);
-	.loc 1 512 57 discriminator 12 view .LVU737
+	.loc 1 512 57 discriminator 12 view .LVU736
 	ldr	r2, [r5, #52]	@ g_armwave_state.wave_stride, g_armwave_state.wave_stride
 @ armwave.c:512:                 g_armwave_state.test_wave_buffer[x + (w * g_armwave_state.wave_stride) + set_offset] = (uint8_t)MIN(MAX(128 + (v * 127), 0), 255);
-	.loc 1 512 102 discriminator 12 view .LVU738
+	.loc 1 512 102 discriminator 12 view .LVU737
 	ldr	r3, [r5, #24]	@ g_armwave_state.test_wave_buffer, g_armwave_state.test_wave_buffer
 	mla	r2, r2, r6, r7	@ tmp241, g_armwave_state.wave_stride, w, set_offset
 	add	r3, r3, r4	@ tmp240, g_armwave_state.test_wave_buffer, x
 @ armwave.c:497:             for(x = 0; x < g_armwave_state.wave_length; x++) {
-	.loc 1 497 58 discriminator 12 view .LVU739
+	.loc 1 497 58 discriminator 12 view .LVU738
 	add	r4, r4, #1	@ x, x,
-.LVL191:
+.LVL190:
 @ armwave.c:512:                 g_armwave_state.test_wave_buffer[x + (w * g_armwave_state.wave_stride) + set_offset] = (uint8_t)MIN(MAX(128 + (v * 127), 0), 255);
-	.loc 1 512 102 discriminator 12 view .LVU740
+	.loc 1 512 102 discriminator 12 view .LVU739
 	strb	r1, [r2, r3]	@ iftmp.23_50, *_40
 @ armwave.c:497:             for(x = 0; x < g_armwave_state.wave_length; x++) {
-	.loc 1 497 43 discriminator 12 view .LVU741
+	.loc 1 497 43 discriminator 12 view .LVU740
 	ldr	r3, [r5, #76]	@ prephitmp_124, g_armwave_state.wave_length
 @ armwave.c:497:             for(x = 0; x < g_armwave_state.wave_length; x++) {
-	.loc 1 497 13 discriminator 12 view .LVU742
+	.loc 1 497 13 discriminator 12 view .LVU741
 	cmp	r3, r4	@ prephitmp_124, x
-	bgt	.L157		@,
+	bgt	.L159		@,
 	ldr	r2, [r5, #56]	@ prephitmp_120, g_armwave_state.waves
-.LVL192:
-.L152:
+.LVL191:
+.L154:
 @ armwave.c:493:         for(w = 0; w < g_armwave_state.waves; w++) {
-	.loc 1 493 48 discriminator 2 view .LVU743
+	.loc 1 493 48 discriminator 2 view .LVU742
 	add	r6, r6, #1	@ w, w,
-.LVL193:
+.LVL192:
 @ armwave.c:493:         for(w = 0; w < g_armwave_state.waves; w++) {
-	.loc 1 493 9 discriminator 2 view .LVU744
+	.loc 1 493 9 discriminator 2 view .LVU743
 	cmp	r6, r2	@ w, prephitmp_120
-	blt	.L158		@,
-.LVL194:
-.L151:
-	.loc 1 516 9 is_stmt 1 discriminator 2 view .LVU745
+	blt	.L160		@,
+.LVL193:
+.L153:
+	.loc 1 516 9 is_stmt 1 discriminator 2 view .LVU744
 @ armwave.c:516:         set_offset += (g_armwave_state.waves * g_armwave_state.wave_stride);
-	.loc 1 516 46 is_stmt 0 discriminator 2 view .LVU746
+	.loc 1 516 46 is_stmt 0 discriminator 2 view .LVU745
 	ldr	r3, [r5, #52]	@ g_armwave_state.wave_stride, g_armwave_state.wave_stride
 @ armwave.c:490:     for(s = 0; s < sets; s++) {
-	.loc 1 490 27 discriminator 2 view .LVU747
+	.loc 1 490 27 discriminator 2 view .LVU746
 	add	r8, r8, #1	@ s, s,
-.LVL195:
+.LVL194:
 @ armwave.c:490:     for(s = 0; s < sets; s++) {
-	.loc 1 490 5 discriminator 2 view .LVU748
+	.loc 1 490 5 discriminator 2 view .LVU747
 	cmp	r9, r8	@ sets, s
 @ armwave.c:516:         set_offset += (g_armwave_state.waves * g_armwave_state.wave_stride);
-	.loc 1 516 20 discriminator 2 view .LVU749
+	.loc 1 516 20 discriminator 2 view .LVU748
 	mla	r7, r3, r2, r7	@ set_offset, g_armwave_state.wave_stride, prephitmp_120, set_offset
-.LVL196:
+.LVL195:
 @ armwave.c:490:     for(s = 0; s < sets; s++) {
-	.loc 1 490 5 discriminator 2 view .LVU750
-	bne	.L150		@,
-.LVL197:
-.L147:
+	.loc 1 490 5 discriminator 2 view .LVU749
+	bne	.L152		@,
+.LVL196:
+.L149:
 @ armwave.c:518: }
-	.loc 1 518 1 view .LVU751
+	.loc 1 518 1 view .LVU750
 	add	sp, sp, #8	@,,
 	.cfi_remember_state
 	.cfi_def_cfa_offset 80
@@ -2996,25 +2996,25 @@ armwave_test_create_am_sine:
 	.cfi_restore 80
 	.cfi_restore 81
 	.cfi_def_cfa_offset 32
-.LVL198:
-	.loc 1 518 1 view .LVU752
+.LVL197:
+	.loc 1 518 1 view .LVU751
 	pop	{r4, r5, r6, r7, r8, r9, r10, pc}	@
-.LVL199:
-.L177:
+.LVL198:
+.L179:
 	.cfi_restore_state
 .LBB48:
 .LBB45:
-	.loc 1 438 9 is_stmt 1 view .LVU753
+	.loc 1 438 9 is_stmt 1 view .LVU752
 	mul	r1, r4, r9	@, _85, sets
 	mov	r2, r9	@, sets
-	ldr	r0, .L178+36	@,
+	ldr	r0, .L180+36	@,
 	bl	printf		@
-.LVL200:
-	.loc 1 440 9 view .LVU754
-	b	.L149		@
-.L179:
+.LVL199:
+	.loc 1 440 9 view .LVU753
+	b	.L151		@
+.L181:
 	.align	2
-.L178:
+.L180:
 	.word	1065353216
 	.word	1132396544
 	.word	1056964608
@@ -3042,56 +3042,56 @@ armwave_cleanup:
 	.cfi_startproc
 	@ args = 0, pretend = 0, frame = 0
 	@ frame_needed = 0, uses_anonymous_args = 0
-	.loc 1 569 5 view .LVU756
+	.loc 1 569 5 view .LVU755
 @ armwave.c:568: {
-	.loc 1 568 1 is_stmt 0 view .LVU757
+	.loc 1 568 1 is_stmt 0 view .LVU756
 	push	{r4, lr}	@
 	.cfi_def_cfa_offset 8
 	.cfi_offset 4, -8
 	.cfi_offset 14, -4
 @ armwave.c:569:     free(g_armwave_state.out_pixbuf);
-	.loc 1 569 25 view .LVU758
-	ldr	r4, .L182	@ tmp114,
+	.loc 1 569 25 view .LVU757
+	ldr	r4, .L184	@ tmp114,
 @ armwave.c:569:     free(g_armwave_state.out_pixbuf);
-	.loc 1 569 5 view .LVU759
+	.loc 1 569 5 view .LVU758
 	ldr	r0, [r4, #104]	@, g_armwave_state.out_pixbuf
 	bl	free		@
-.LVL201:
-	.loc 1 570 5 is_stmt 1 view .LVU760
+.LVL200:
+	.loc 1 570 5 is_stmt 1 view .LVU759
 	ldr	r0, [r4, #4]	@, g_armwave_state.ch1_buffer
 	bl	free		@
-.LVL202:
-	.loc 1 571 5 view .LVU761
+.LVL201:
+	.loc 1 571 5 view .LVU760
 	ldr	r0, [r4, #132]	@, g_armwave_state.xcoord_to_xpixel
 	bl	free		@
-.LVL203:
-	.loc 1 572 5 view .LVU762
+.LVL202:
+	.loc 1 572 5 view .LVU761
 	ldr	r0, [r4, #24]	@, g_armwave_state.test_wave_buffer
 	bl	free		@
-.LVL204:
-	.loc 1 574 5 view .LVU763
+.LVL203:
+	.loc 1 574 5 view .LVU762
 @ armwave.c:574:     g_armwave_state.out_pixbuf = NULL;
-	.loc 1 574 32 is_stmt 0 view .LVU764
+	.loc 1 574 32 is_stmt 0 view .LVU763
 	mov	r3, #0	@ tmp123,
 	str	r3, [r4, #104]	@ tmp123, g_armwave_state.out_pixbuf
-	.loc 1 575 5 is_stmt 1 view .LVU765
+	.loc 1 575 5 is_stmt 1 view .LVU764
 @ armwave.c:575:     g_armwave_state.ch1_buffer = NULL;
-	.loc 1 575 32 is_stmt 0 view .LVU766
+	.loc 1 575 32 is_stmt 0 view .LVU765
 	str	r3, [r4, #4]	@ tmp123, g_armwave_state.ch1_buffer
-	.loc 1 576 5 is_stmt 1 view .LVU767
+	.loc 1 576 5 is_stmt 1 view .LVU766
 @ armwave.c:576:     g_armwave_state.xcoord_to_xpixel = NULL;
-	.loc 1 576 38 is_stmt 0 view .LVU768
+	.loc 1 576 38 is_stmt 0 view .LVU767
 	str	r3, [r4, #132]	@ tmp123, g_armwave_state.xcoord_to_xpixel
-	.loc 1 577 5 is_stmt 1 view .LVU769
+	.loc 1 577 5 is_stmt 1 view .LVU768
 @ armwave.c:577:     g_armwave_state.test_wave_buffer = NULL;
-	.loc 1 577 38 is_stmt 0 view .LVU770
+	.loc 1 577 38 is_stmt 0 view .LVU769
 	str	r3, [r4, #24]	@ tmp123, g_armwave_state.test_wave_buffer
 @ armwave.c:578: }
-	.loc 1 578 1 view .LVU771
+	.loc 1 578 1 view .LVU770
 	pop	{r4, pc}	@
-.L183:
+.L185:
 	.align	2
-.L182:
+.L184:
 	.word	g_armwave_state
 	.cfi_endproc
 .LFE76:
@@ -7791,6 +7791,9 @@ __PRETTY_FUNCTION__.17138:
 	.byte	0x9c
 	.4byte	0x22f8
 	.uleb128 0x26
+	.4byte	.LVL200
+	.4byte	0x3295
+	.uleb128 0x26
 	.4byte	.LVL201
 	.4byte	0x3295
 	.uleb128 0x26
@@ -7798,9 +7801,6 @@ __PRETTY_FUNCTION__.17138:
 	.4byte	0x3295
 	.uleb128 0x26
 	.4byte	.LVL203
-	.4byte	0x3295
-	.uleb128 0x26
-	.4byte	.LVL204
 	.4byte	0x3295
 	.byte	0
 	.uleb128 0x25
@@ -7908,7 +7908,7 @@ __PRETTY_FUNCTION__.17138:
 	.uleb128 0x2d
 	.4byte	0x2579
 	.4byte	.LBI41
-	.byte	.LVU661
+	.byte	.LVU660
 	.4byte	.Ldebug_ranges0+0x90
 	.byte	0x1
 	.2byte	0x1e8
@@ -7919,10 +7919,10 @@ __PRETTY_FUNCTION__.17138:
 	.4byte	.LLST86
 	.4byte	.LVUS86
 	.uleb128 0x26
-	.4byte	.LVL173
+	.4byte	.LVL172
 	.4byte	0x3295
 	.uleb128 0x2f
-	.4byte	.LVL174
+	.4byte	.LVL173
 	.4byte	0x32a1
 	.4byte	0x2439
 	.uleb128 0x30
@@ -7939,7 +7939,7 @@ __PRETTY_FUNCTION__.17138:
 	.sleb128 0
 	.byte	0
 	.uleb128 0x31
-	.4byte	.LVL200
+	.4byte	.LVL199
 	.4byte	0x32ad
 	.uleb128 0x30
 	.uleb128 0x1
@@ -7965,7 +7965,7 @@ __PRETTY_FUNCTION__.17138:
 	.byte	0
 	.byte	0
 	.uleb128 0x2f
-	.4byte	.LVL177
+	.4byte	.LVL176
 	.4byte	0x32ad
 	.4byte	0x2476
 	.uleb128 0x30
@@ -7982,16 +7982,16 @@ __PRETTY_FUNCTION__.17138:
 	.sleb128 0
 	.byte	0
 	.uleb128 0x26
-	.4byte	.LVL181
+	.4byte	.LVL180
 	.4byte	0x32ba
 	.uleb128 0x26
-	.4byte	.LVL186
+	.4byte	.LVL185
 	.4byte	0x32ba
 	.uleb128 0x26
-	.4byte	.LVL188
+	.4byte	.LVL187
 	.4byte	0x32ba
 	.uleb128 0x26
-	.4byte	.LVL190
+	.4byte	.LVL189
 	.4byte	0x32c7
 	.byte	0
 	.uleb128 0x32
@@ -8033,7 +8033,7 @@ __PRETTY_FUNCTION__.17138:
 	.uleb128 0x2d
 	.4byte	0x30f6
 	.4byte	.LBI31
-	.byte	.LVU619
+	.byte	.LVU618
 	.4byte	.Ldebug_ranges0+0x60
 	.byte	0x1
 	.2byte	0x1d5
@@ -8045,7 +8045,7 @@ __PRETTY_FUNCTION__.17138:
 	.uleb128 0x2d
 	.4byte	0x30f6
 	.4byte	.LBI35
-	.byte	.LVU629
+	.byte	.LVU628
 	.4byte	.Ldebug_ranges0+0x78
 	.byte	0x1
 	.2byte	0x1ca
@@ -8055,7 +8055,7 @@ __PRETTY_FUNCTION__.17138:
 	.4byte	0x3104
 	.byte	0
 	.uleb128 0x2f
-	.4byte	.LVL163
+	.4byte	.LVL162
 	.4byte	0x32d3
 	.4byte	0x2548
 	.uleb128 0x30
@@ -8078,10 +8078,10 @@ __PRETTY_FUNCTION__.17138:
 	.byte	0x31
 	.byte	0
 	.uleb128 0x26
-	.4byte	.LVL165
+	.4byte	.LVL164
 	.4byte	0x2e53
 	.uleb128 0x2f
-	.4byte	.LVL166
+	.4byte	.LVL165
 	.4byte	0x32df
 	.4byte	0x2565
 	.uleb128 0x30
@@ -8092,7 +8092,7 @@ __PRETTY_FUNCTION__.17138:
 	.sleb128 -60
 	.byte	0
 	.uleb128 0x31
-	.4byte	.LVL169
+	.4byte	.LVL168
 	.4byte	0x32ec
 	.uleb128 0x30
 	.uleb128 0x1
@@ -8143,7 +8143,7 @@ __PRETTY_FUNCTION__.17138:
 	.4byte	.LLST72
 	.4byte	.LVUS72
 	.uleb128 0x37
-	.4byte	.LVL155
+	.4byte	.LVL154
 	.4byte	0x2e53
 	.byte	0
 	.uleb128 0x25
@@ -8165,7 +8165,7 @@ __PRETTY_FUNCTION__.17138:
 	.4byte	.LLST70
 	.4byte	.LVUS70
 	.uleb128 0x38
-	.4byte	.LVL152
+	.4byte	.LVL151
 	.4byte	0x2797
 	.uleb128 0x30
 	.uleb128 0x1
@@ -8187,7 +8187,7 @@ __PRETTY_FUNCTION__.17138:
 	.byte	0x9c
 	.4byte	0x263e
 	.uleb128 0x37
-	.4byte	.LVL149
+	.4byte	.LVL148
 	.4byte	0x2e53
 	.byte	0
 	.uleb128 0x25
@@ -8235,7 +8235,7 @@ __PRETTY_FUNCTION__.17138:
 	.uleb128 0x2d
 	.4byte	0x30d2
 	.4byte	.LBI18
-	.byte	.LVU538
+	.byte	.LVU537
 	.4byte	.Ldebug_ranges0+0x18
 	.byte	0x1
 	.2byte	0x17f
@@ -8250,7 +8250,7 @@ __PRETTY_FUNCTION__.17138:
 	.uleb128 0x3b
 	.4byte	0x30e9
 	.uleb128 0x31
-	.4byte	.LVL142
+	.4byte	.LVL141
 	.4byte	0x32f7
 	.uleb128 0x30
 	.uleb128 0x8
@@ -8298,7 +8298,7 @@ __PRETTY_FUNCTION__.17138:
 	.uleb128 0x2d
 	.4byte	0x28d5
 	.4byte	.LBI23
-	.byte	.LVU556
+	.byte	.LVU555
 	.4byte	.Ldebug_ranges0+0x38
 	.byte	0x1
 	.2byte	0x182
@@ -8322,7 +8322,7 @@ __PRETTY_FUNCTION__.17138:
 	.4byte	.LVUS69
 	.byte	0
 	.uleb128 0x2f
-	.4byte	.LVL146
+	.4byte	.LVL145
 	.4byte	0x2a87
 	.4byte	0x277a
 	.uleb128 0x30
@@ -8350,7 +8350,7 @@ __PRETTY_FUNCTION__.17138:
 	.sleb128 0
 	.byte	0
 	.uleb128 0x38
-	.4byte	.LVL148
+	.4byte	.LVL147
 	.4byte	0x32ad
 	.uleb128 0x30
 	.uleb128 0x1
@@ -8425,7 +8425,7 @@ __PRETTY_FUNCTION__.17138:
 	.4byte	.LLST60
 	.4byte	.LVUS60
 	.uleb128 0x2f
-	.4byte	.LVL123
+	.4byte	.LVL122
 	.4byte	0x3303
 	.4byte	0x2846
 	.uleb128 0x30
@@ -8443,7 +8443,7 @@ __PRETTY_FUNCTION__.17138:
 	.4byte	.LC14
 	.byte	0
 	.uleb128 0x2f
-	.4byte	.LVL126
+	.4byte	.LVL125
 	.4byte	0x3310
 	.4byte	0x286d
 	.uleb128 0x30
@@ -8470,7 +8470,7 @@ __PRETTY_FUNCTION__.17138:
 	.sleb128 0
 	.byte	0
 	.uleb128 0x2f
-	.4byte	.LVL127
+	.4byte	.LVL126
 	.4byte	0x331b
 	.4byte	0x288a
 	.uleb128 0x30
@@ -8487,7 +8487,7 @@ __PRETTY_FUNCTION__.17138:
 	.4byte	.LC16
 	.byte	0
 	.uleb128 0x2f
-	.4byte	.LVL128
+	.4byte	.LVL127
 	.4byte	0x3310
 	.4byte	0x28b1
 	.uleb128 0x30
@@ -8514,7 +8514,7 @@ __PRETTY_FUNCTION__.17138:
 	.sleb128 0
 	.byte	0
 	.uleb128 0x2f
-	.4byte	.LVL134
+	.4byte	.LVL133
 	.4byte	0x331b
 	.4byte	0x28cb
 	.uleb128 0x30
@@ -8531,7 +8531,7 @@ __PRETTY_FUNCTION__.17138:
 	.sleb128 0
 	.byte	0
 	.uleb128 0x37
-	.4byte	.LVL139
+	.4byte	.LVL138
 	.4byte	0x3328
 	.byte	0
 	.uleb128 0x35
@@ -8585,7 +8585,7 @@ __PRETTY_FUNCTION__.17138:
 	.4byte	.LLST53
 	.4byte	.LVUS53
 	.uleb128 0x38
-	.4byte	.LVL117
+	.4byte	.LVL116
 	.4byte	0x3334
 	.uleb128 0x30
 	.uleb128 0x1
@@ -8619,7 +8619,7 @@ __PRETTY_FUNCTION__.17138:
 	.byte	0x3
 	.4byte	__PRETTY_FUNCTION__.17138
 	.uleb128 0x31
-	.4byte	.LVL114
+	.4byte	.LVL113
 	.4byte	0x333f
 	.uleb128 0x30
 	.uleb128 0x1
@@ -8675,7 +8675,7 @@ __PRETTY_FUNCTION__.17138:
 	.4byte	.LLST51
 	.4byte	.LVUS51
 	.uleb128 0x38
-	.4byte	.LVL111
+	.4byte	.LVL110
 	.4byte	0x32ec
 	.uleb128 0x30
 	.uleb128 0x1
@@ -8710,7 +8710,7 @@ __PRETTY_FUNCTION__.17138:
 	.byte	0x3
 	.4byte	__PRETTY_FUNCTION__.17131
 	.uleb128 0x31
-	.4byte	.LVL106
+	.4byte	.LVL105
 	.4byte	0x333f
 	.uleb128 0x30
 	.uleb128 0x1
@@ -8847,7 +8847,7 @@ __PRETTY_FUNCTION__.17138:
 	.byte	0x3
 	.4byte	__PRETTY_FUNCTION__.17124
 	.uleb128 0x2f
-	.4byte	.LVL84
+	.4byte	.LVL83
 	.4byte	0x32ad
 	.4byte	0x2baa
 	.uleb128 0x30
@@ -8905,7 +8905,7 @@ __PRETTY_FUNCTION__.17138:
 	.byte	0x6
 	.byte	0
 	.uleb128 0x2f
-	.4byte	.LVL88
+	.4byte	.LVL87
 	.4byte	0x32ad
 	.4byte	0x2bdd
 	.uleb128 0x30
@@ -8944,10 +8944,10 @@ __PRETTY_FUNCTION__.17138:
 	.byte	0x24
 	.byte	0
 	.uleb128 0x26
-	.4byte	.LVL89
+	.4byte	.LVL88
 	.4byte	0x3295
 	.uleb128 0x2f
-	.4byte	.LVL90
+	.4byte	.LVL89
 	.4byte	0x32a1
 	.4byte	0x2bf9
 	.uleb128 0x30
@@ -8957,7 +8957,7 @@ __PRETTY_FUNCTION__.17138:
 	.byte	0x31
 	.byte	0
 	.uleb128 0x2f
-	.4byte	.LVL93
+	.4byte	.LVL92
 	.4byte	0x334b
 	.4byte	0x2c0f
 	.uleb128 0x30
@@ -8970,10 +8970,10 @@ __PRETTY_FUNCTION__.17138:
 	.byte	0x24
 	.byte	0
 	.uleb128 0x26
-	.4byte	.LVL96
+	.4byte	.LVL95
 	.4byte	0x334b
 	.uleb128 0x2f
-	.4byte	.LVL97
+	.4byte	.LVL96
 	.4byte	0x32ad
 	.4byte	0x2c3b
 	.uleb128 0x30
@@ -8996,10 +8996,10 @@ __PRETTY_FUNCTION__.17138:
 	.sleb128 0
 	.byte	0
 	.uleb128 0x37
-	.4byte	.LVL100
+	.4byte	.LVL99
 	.4byte	0x3357
 	.uleb128 0x2f
-	.4byte	.LVL101
+	.4byte	.LVL100
 	.4byte	0x333f
 	.4byte	0x2c73
 	.uleb128 0x30
@@ -9028,7 +9028,7 @@ __PRETTY_FUNCTION__.17138:
 	.4byte	.LANCHOR0
 	.byte	0
 	.uleb128 0x2f
-	.4byte	.LVL102
+	.4byte	.LVL101
 	.4byte	0x333f
 	.4byte	0x2ca3
 	.uleb128 0x30
@@ -9057,7 +9057,7 @@ __PRETTY_FUNCTION__.17138:
 	.4byte	.LANCHOR0
 	.byte	0
 	.uleb128 0x31
-	.4byte	.LVL103
+	.4byte	.LVL102
 	.4byte	0x333f
 	.uleb128 0x30
 	.uleb128 0x1
@@ -9231,7 +9231,7 @@ __PRETTY_FUNCTION__.17138:
 	.sleb128 0
 	.byte	0
 	.uleb128 0x2f
-	.4byte	.LVL77
+	.4byte	.LVL76
 	.4byte	0x32ad
 	.4byte	0x2e40
 	.uleb128 0x30
@@ -9260,7 +9260,7 @@ __PRETTY_FUNCTION__.17138:
 	.sleb128 0
 	.byte	0
 	.uleb128 0x38
-	.4byte	.LVL78
+	.4byte	.LVL77
 	.4byte	0x3011
 	.uleb128 0x30
 	.uleb128 0x1
@@ -9744,10 +9744,10 @@ __PRETTY_FUNCTION__.17138:
 	.4byte	.LLST73
 	.4byte	.LVUS73
 	.uleb128 0x26
-	.4byte	.LVL158
+	.4byte	.LVL157
 	.4byte	0x3295
 	.uleb128 0x2f
-	.4byte	.LVL159
+	.4byte	.LVL158
 	.4byte	0x32a1
 	.4byte	0x327a
 	.uleb128 0x30
@@ -9764,7 +9764,7 @@ __PRETTY_FUNCTION__.17138:
 	.sleb128 0
 	.byte	0
 	.uleb128 0x38
-	.4byte	.LVL161
+	.4byte	.LVL160
 	.4byte	0x32ad
 	.uleb128 0x30
 	.uleb128 0x1
@@ -11057,16 +11057,16 @@ __PRETTY_FUNCTION__.17138:
 .Ldebug_loc0:
 .LVUS76:
 	.uleb128 0
-	.uleb128 .LVU665
-	.uleb128 .LVU665
+	.uleb128 .LVU664
+	.uleb128 .LVU664
 	.uleb128 0
 .LLST76:
-	.4byte	.LVL170-.Ltext0
-	.4byte	.LVL173-1-.Ltext0
+	.4byte	.LVL169-.Ltext0
+	.4byte	.LVL172-1-.Ltext0
 	.2byte	0x2
 	.byte	0x90
 	.uleb128 0x40
-	.4byte	.LVL173-1-.Ltext0
+	.4byte	.LVL172-1-.Ltext0
 	.4byte	.LFE75-.Ltext0
 	.2byte	0x6
 	.byte	0xf3
@@ -11079,16 +11079,16 @@ __PRETTY_FUNCTION__.17138:
 	.4byte	0
 .LVUS77:
 	.uleb128 0
-	.uleb128 .LVU665
-	.uleb128 .LVU665
+	.uleb128 .LVU664
+	.uleb128 .LVU664
 	.uleb128 0
 .LLST77:
-	.4byte	.LVL170-.Ltext0
-	.4byte	.LVL173-1-.Ltext0
+	.4byte	.LVL169-.Ltext0
+	.4byte	.LVL172-1-.Ltext0
 	.2byte	0x2
 	.byte	0x90
 	.uleb128 0x41
-	.4byte	.LVL173-1-.Ltext0
+	.4byte	.LVL172-1-.Ltext0
 	.4byte	.LFE75-.Ltext0
 	.2byte	0x2
 	.byte	0x90
@@ -11097,40 +11097,40 @@ __PRETTY_FUNCTION__.17138:
 	.4byte	0
 .LVUS78:
 	.uleb128 0
-	.uleb128 .LVU646
-	.uleb128 .LVU646
+	.uleb128 .LVU645
+	.uleb128 .LVU645
 	.uleb128 0
 .LLST78:
+	.4byte	.LVL169-.Ltext0
 	.4byte	.LVL170-.Ltext0
-	.4byte	.LVL171-.Ltext0
 	.2byte	0x1
 	.byte	0x50
-	.4byte	.LVL171-.Ltext0
+	.4byte	.LVL170-.Ltext0
 	.4byte	.LFE75-.Ltext0
 	.2byte	0x1
 	.byte	0x59
 	.4byte	0
 	.4byte	0
 .LVUS79:
-	.uleb128 .LVU702
-	.uleb128 .LVU708
-	.uleb128 .LVU708
-	.uleb128 .LVU714
-	.uleb128 .LVU714
-	.uleb128 .LVU743
+	.uleb128 .LVU701
+	.uleb128 .LVU707
+	.uleb128 .LVU707
+	.uleb128 .LVU713
+	.uleb128 .LVU713
+	.uleb128 .LVU742
 .LLST79:
-	.4byte	.LVL182-.Ltext0
-	.4byte	.LVL185-.Ltext0
+	.4byte	.LVL181-.Ltext0
+	.4byte	.LVL184-.Ltext0
 	.2byte	0x2
 	.byte	0x90
 	.uleb128 0x4f
-	.4byte	.LVL185-.Ltext0
-	.4byte	.LVL187-.Ltext0
+	.4byte	.LVL184-.Ltext0
+	.4byte	.LVL186-.Ltext0
 	.2byte	0x2
 	.byte	0x90
 	.uleb128 0x5b
-	.4byte	.LVL187-.Ltext0
-	.4byte	.LVL192-.Ltext0
+	.4byte	.LVL186-.Ltext0
+	.4byte	.LVL191-.Ltext0
 	.2byte	0xc
 	.byte	0xf5
 	.uleb128 0x5b
@@ -11144,11 +11144,11 @@ __PRETTY_FUNCTION__.17138:
 	.4byte	0
 	.4byte	0
 .LVUS80:
-	.uleb128 .LVU716
-	.uleb128 .LVU724
+	.uleb128 .LVU715
+	.uleb128 .LVU723
 .LLST80:
+	.4byte	.LVL187-.Ltext0
 	.4byte	.LVL188-.Ltext0
-	.4byte	.LVL189-.Ltext0
 	.2byte	0x13
 	.byte	0x70
 	.sleb128 0
@@ -11168,17 +11168,17 @@ __PRETTY_FUNCTION__.17138:
 	.4byte	0
 	.4byte	0
 .LVUS81:
-	.uleb128 .LVU656
+	.uleb128 .LVU655
+	.uleb128 .LVU751
 	.uleb128 .LVU752
-	.uleb128 .LVU753
 	.uleb128 0
 .LLST81:
-	.4byte	.LVL172-.Ltext0
-	.4byte	.LVL198-.Ltext0
+	.4byte	.LVL171-.Ltext0
+	.4byte	.LVL197-.Ltext0
 	.2byte	0x2
 	.byte	0x90
 	.uleb128 0x5a
-	.4byte	.LVL199-.Ltext0
+	.4byte	.LVL198-.Ltext0
 	.4byte	.LFE75-.Ltext0
 	.2byte	0x2
 	.byte	0x90
@@ -11186,54 +11186,54 @@ __PRETTY_FUNCTION__.17138:
 	.4byte	0
 	.4byte	0
 .LVUS82:
-	.uleb128 .LVU674
-	.uleb128 .LVU681
-	.uleb128 .LVU681
-	.uleb128 .LVU748
-	.uleb128 .LVU748
+	.uleb128 .LVU673
+	.uleb128 .LVU680
+	.uleb128 .LVU680
+	.uleb128 .LVU747
+	.uleb128 .LVU747
+	.uleb128 .LVU749
+	.uleb128 .LVU749
 	.uleb128 .LVU750
-	.uleb128 .LVU750
-	.uleb128 .LVU751
 .LLST82:
+	.4byte	.LVL174-.Ltext0
 	.4byte	.LVL175-.Ltext0
-	.4byte	.LVL176-.Ltext0
 	.2byte	0x2
 	.byte	0x30
 	.byte	0x9f
-	.4byte	.LVL176-.Ltext0
-	.4byte	.LVL195-.Ltext0
+	.4byte	.LVL175-.Ltext0
+	.4byte	.LVL194-.Ltext0
 	.2byte	0x1
 	.byte	0x58
+	.4byte	.LVL194-.Ltext0
 	.4byte	.LVL195-.Ltext0
-	.4byte	.LVL196-.Ltext0
 	.2byte	0x3
 	.byte	0x78
 	.sleb128 -1
 	.byte	0x9f
+	.4byte	.LVL195-.Ltext0
 	.4byte	.LVL196-.Ltext0
-	.4byte	.LVL197-.Ltext0
 	.2byte	0x1
 	.byte	0x58
 	.4byte	0
 	.4byte	0
 .LVUS83:
-	.uleb128 .LVU657
-	.uleb128 .LVU681
-	.uleb128 .LVU681
-	.uleb128 .LVU751
-	.uleb128 .LVU753
+	.uleb128 .LVU656
+	.uleb128 .LVU680
+	.uleb128 .LVU680
+	.uleb128 .LVU750
+	.uleb128 .LVU752
 	.uleb128 0
 .LLST83:
-	.4byte	.LVL172-.Ltext0
-	.4byte	.LVL176-.Ltext0
+	.4byte	.LVL171-.Ltext0
+	.4byte	.LVL175-.Ltext0
 	.2byte	0x2
 	.byte	0x30
 	.byte	0x9f
-	.4byte	.LVL176-.Ltext0
-	.4byte	.LVL197-.Ltext0
+	.4byte	.LVL175-.Ltext0
+	.4byte	.LVL196-.Ltext0
 	.2byte	0x1
 	.byte	0x57
-	.4byte	.LVL199-.Ltext0
+	.4byte	.LVL198-.Ltext0
 	.4byte	.LFE75-.Ltext0
 	.2byte	0x2
 	.byte	0x30
@@ -11241,44 +11241,44 @@ __PRETTY_FUNCTION__.17138:
 	.4byte	0
 	.4byte	0
 .LVUS84:
-	.uleb128 .LVU683
-	.uleb128 .LVU689
-	.uleb128 .LVU689
-	.uleb128 .LVU745
+	.uleb128 .LVU682
+	.uleb128 .LVU688
+	.uleb128 .LVU688
+	.uleb128 .LVU744
 .LLST84:
+	.4byte	.LVL176-.Ltext0
 	.4byte	.LVL177-.Ltext0
-	.4byte	.LVL178-.Ltext0
 	.2byte	0x2
 	.byte	0x30
 	.byte	0x9f
-	.4byte	.LVL178-.Ltext0
-	.4byte	.LVL194-.Ltext0
+	.4byte	.LVL177-.Ltext0
+	.4byte	.LVL193-.Ltext0
 	.2byte	0x1
 	.byte	0x56
 	.4byte	0
 	.4byte	0
 .LVUS85:
-	.uleb128 .LVU694
-	.uleb128 .LVU697
-	.uleb128 .LVU697
-	.uleb128 .LVU743
+	.uleb128 .LVU693
+	.uleb128 .LVU696
+	.uleb128 .LVU696
+	.uleb128 .LVU742
 .LLST85:
+	.4byte	.LVL178-.Ltext0
 	.4byte	.LVL179-.Ltext0
-	.4byte	.LVL180-.Ltext0
 	.2byte	0x2
 	.byte	0x30
 	.byte	0x9f
-	.4byte	.LVL180-.Ltext0
-	.4byte	.LVL192-.Ltext0
+	.4byte	.LVL179-.Ltext0
+	.4byte	.LVL191-.Ltext0
 	.2byte	0x1
 	.byte	0x54
 	.4byte	0
 	.4byte	0
 .LVUS86:
-	.uleb128 .LVU661
+	.uleb128 .LVU660
 	.uleb128 0
 .LLST86:
-	.4byte	.LVL172-.Ltext0
+	.4byte	.LVL171-.Ltext0
 	.4byte	.LFE75-.Ltext0
 	.2byte	0x1
 	.byte	0x59
@@ -11286,15 +11286,15 @@ __PRETTY_FUNCTION__.17138:
 	.4byte	0
 .LVUS74:
 	.uleb128 0
-	.uleb128 .LVU613
-	.uleb128 .LVU613
+	.uleb128 .LVU612
+	.uleb128 .LVU612
 	.uleb128 0
 .LLST74:
-	.4byte	.LVL162-.Ltext0
-	.4byte	.LVL163-1-.Ltext0
+	.4byte	.LVL161-.Ltext0
+	.4byte	.LVL162-1-.Ltext0
 	.2byte	0x1
 	.byte	0x50
-	.4byte	.LVL163-1-.Ltext0
+	.4byte	.LVL162-1-.Ltext0
 	.4byte	.LFE74-.Ltext0
 	.2byte	0x4
 	.byte	0xf3
@@ -11304,32 +11304,32 @@ __PRETTY_FUNCTION__.17138:
 	.4byte	0
 	.4byte	0
 .LVUS75:
-	.uleb128 .LVU613
-	.uleb128 .LVU616
+	.uleb128 .LVU612
+	.uleb128 .LVU615
+	.uleb128 .LVU625
 	.uleb128 .LVU626
-	.uleb128 .LVU627
 .LLST75:
+	.4byte	.LVL162-.Ltext0
 	.4byte	.LVL163-.Ltext0
-	.4byte	.LVL164-.Ltext0
 	.2byte	0x1
 	.byte	0x50
+	.4byte	.LVL166-.Ltext0
 	.4byte	.LVL167-.Ltext0
-	.4byte	.LVL168-.Ltext0
 	.2byte	0x1
 	.byte	0x50
 	.4byte	0
 	.4byte	0
 .LVUS71:
 	.uleb128 0
-	.uleb128 .LVU585
-	.uleb128 .LVU585
+	.uleb128 .LVU584
+	.uleb128 .LVU584
 	.uleb128 0
 .LLST71:
+	.4byte	.LVL152-.Ltext0
 	.4byte	.LVL153-.Ltext0
-	.4byte	.LVL154-.Ltext0
 	.2byte	0x1
 	.byte	0x50
-	.4byte	.LVL154-.Ltext0
+	.4byte	.LVL153-.Ltext0
 	.4byte	.LFE72-.Ltext0
 	.2byte	0x4
 	.byte	0xf3
@@ -11339,42 +11339,42 @@ __PRETTY_FUNCTION__.17138:
 	.4byte	0
 	.4byte	0
 .LVUS72:
-	.uleb128 .LVU582
+	.uleb128 .LVU581
+	.uleb128 .LVU584
+	.uleb128 .LVU584
 	.uleb128 .LVU585
-	.uleb128 .LVU585
-	.uleb128 .LVU586
 .LLST72:
+	.4byte	.LVL152-.Ltext0
 	.4byte	.LVL153-.Ltext0
-	.4byte	.LVL154-.Ltext0
 	.2byte	0x5
 	.byte	0x70
 	.sleb128 8
 	.byte	0x6
 	.byte	0x23
 	.uleb128 0x28
-	.4byte	.LVL154-.Ltext0
-	.4byte	.LVL155-1-.Ltext0
+	.4byte	.LVL153-.Ltext0
+	.4byte	.LVL154-1-.Ltext0
 	.2byte	0x1
 	.byte	0x50
 	.4byte	0
 	.4byte	0
 .LVUS70:
 	.uleb128 0
+	.uleb128 .LVU577
+	.uleb128 .LVU577
 	.uleb128 .LVU578
 	.uleb128 .LVU578
-	.uleb128 .LVU579
-	.uleb128 .LVU579
 	.uleb128 0
 .LLST70:
+	.4byte	.LVL149-.Ltext0
 	.4byte	.LVL150-.Ltext0
-	.4byte	.LVL151-.Ltext0
 	.2byte	0x1
 	.byte	0x50
-	.4byte	.LVL151-.Ltext0
-	.4byte	.LVL152-1-.Ltext0
+	.4byte	.LVL150-.Ltext0
+	.4byte	.LVL151-1-.Ltext0
 	.2byte	0x1
 	.byte	0x51
-	.4byte	.LVL152-1-.Ltext0
+	.4byte	.LVL151-1-.Ltext0
 	.4byte	.LFE71-.Ltext0
 	.2byte	0x4
 	.byte	0xf3
@@ -11385,21 +11385,21 @@ __PRETTY_FUNCTION__.17138:
 	.4byte	0
 .LVUS61:
 	.uleb128 0
-	.uleb128 .LVU546
-	.uleb128 .LVU546
-	.uleb128 .LVU573
-	.uleb128 .LVU573
+	.uleb128 .LVU545
+	.uleb128 .LVU545
+	.uleb128 .LVU572
+	.uleb128 .LVU572
 	.uleb128 0
 .LLST61:
+	.4byte	.LVL139-.Ltext0
 	.4byte	.LVL140-.Ltext0
-	.4byte	.LVL141-.Ltext0
 	.2byte	0x1
 	.byte	0x50
-	.4byte	.LVL141-.Ltext0
-	.4byte	.LVL147-.Ltext0
+	.4byte	.LVL140-.Ltext0
+	.4byte	.LVL146-.Ltext0
 	.2byte	0x1
 	.byte	0x56
-	.4byte	.LVL147-.Ltext0
+	.4byte	.LVL146-.Ltext0
 	.4byte	.LFE69-.Ltext0
 	.2byte	0x4
 	.byte	0xf3
@@ -11410,21 +11410,21 @@ __PRETTY_FUNCTION__.17138:
 	.4byte	0
 .LVUS62:
 	.uleb128 0
-	.uleb128 .LVU546
-	.uleb128 .LVU546
-	.uleb128 .LVU573
-	.uleb128 .LVU573
+	.uleb128 .LVU545
+	.uleb128 .LVU545
+	.uleb128 .LVU572
+	.uleb128 .LVU572
 	.uleb128 0
 .LLST62:
+	.4byte	.LVL139-.Ltext0
 	.4byte	.LVL140-.Ltext0
-	.4byte	.LVL141-.Ltext0
 	.2byte	0x1
 	.byte	0x51
-	.4byte	.LVL141-.Ltext0
-	.4byte	.LVL147-.Ltext0
+	.4byte	.LVL140-.Ltext0
+	.4byte	.LVL146-.Ltext0
 	.2byte	0x1
 	.byte	0x57
-	.4byte	.LVL147-.Ltext0
+	.4byte	.LVL146-.Ltext0
 	.4byte	.LFE69-.Ltext0
 	.2byte	0x4
 	.byte	0xf3
@@ -11435,21 +11435,21 @@ __PRETTY_FUNCTION__.17138:
 	.4byte	0
 .LVUS63:
 	.uleb128 0
-	.uleb128 .LVU546
-	.uleb128 .LVU546
-	.uleb128 .LVU573
-	.uleb128 .LVU573
+	.uleb128 .LVU545
+	.uleb128 .LVU545
+	.uleb128 .LVU572
+	.uleb128 .LVU572
 	.uleb128 0
 .LLST63:
+	.4byte	.LVL139-.Ltext0
 	.4byte	.LVL140-.Ltext0
-	.4byte	.LVL141-.Ltext0
 	.2byte	0x1
 	.byte	0x52
-	.4byte	.LVL141-.Ltext0
-	.4byte	.LVL147-.Ltext0
+	.4byte	.LVL140-.Ltext0
+	.4byte	.LVL146-.Ltext0
 	.2byte	0x1
 	.byte	0x58
-	.4byte	.LVL147-.Ltext0
+	.4byte	.LVL146-.Ltext0
 	.4byte	.LFE69-.Ltext0
 	.2byte	0x4
 	.byte	0xf3
@@ -11460,21 +11460,21 @@ __PRETTY_FUNCTION__.17138:
 	.4byte	0
 .LVUS64:
 	.uleb128 0
-	.uleb128 .LVU546
-	.uleb128 .LVU546
-	.uleb128 .LVU573
-	.uleb128 .LVU573
+	.uleb128 .LVU545
+	.uleb128 .LVU545
+	.uleb128 .LVU572
+	.uleb128 .LVU572
 	.uleb128 0
 .LLST64:
+	.4byte	.LVL139-.Ltext0
 	.4byte	.LVL140-.Ltext0
-	.4byte	.LVL141-.Ltext0
 	.2byte	0x1
 	.byte	0x53
-	.4byte	.LVL141-.Ltext0
-	.4byte	.LVL147-.Ltext0
+	.4byte	.LVL140-.Ltext0
+	.4byte	.LVL146-.Ltext0
 	.2byte	0x1
 	.byte	0x59
-	.4byte	.LVL147-.Ltext0
+	.4byte	.LVL146-.Ltext0
 	.4byte	.LFE69-.Ltext0
 	.2byte	0x4
 	.byte	0xf3
@@ -11484,18 +11484,18 @@ __PRETTY_FUNCTION__.17138:
 	.4byte	0
 	.4byte	0
 .LVUS65:
-	.uleb128 .LVU539
-	.uleb128 .LVU546
-	.uleb128 .LVU546
-	.uleb128 .LVU554
+	.uleb128 .LVU538
+	.uleb128 .LVU545
+	.uleb128 .LVU545
+	.uleb128 .LVU553
 .LLST65:
+	.4byte	.LVL139-.Ltext0
 	.4byte	.LVL140-.Ltext0
-	.4byte	.LVL141-.Ltext0
 	.2byte	0x2
 	.byte	0x30
 	.byte	0x9f
-	.4byte	.LVL141-.Ltext0
-	.4byte	.LVL144-.Ltext0
+	.4byte	.LVL140-.Ltext0
+	.4byte	.LVL143-.Ltext0
 	.2byte	0x9
 	.byte	0x74
 	.sleb128 0
@@ -11506,11 +11506,11 @@ __PRETTY_FUNCTION__.17138:
 	.4byte	0
 	.4byte	0
 .LVUS66:
-	.uleb128 .LVU556
-	.uleb128 .LVU569
+	.uleb128 .LVU555
+	.uleb128 .LVU568
 .LLST66:
+	.4byte	.LVL143-.Ltext0
 	.4byte	.LVL144-.Ltext0
-	.4byte	.LVL145-.Ltext0
 	.2byte	0x3
 	.byte	0x8
 	.byte	0xfa
@@ -11518,11 +11518,11 @@ __PRETTY_FUNCTION__.17138:
 	.4byte	0
 	.4byte	0
 .LVUS67:
-	.uleb128 .LVU556
-	.uleb128 .LVU569
+	.uleb128 .LVU555
+	.uleb128 .LVU568
 .LLST67:
+	.4byte	.LVL143-.Ltext0
 	.4byte	.LVL144-.Ltext0
-	.4byte	.LVL145-.Ltext0
 	.2byte	0x4
 	.byte	0xa
 	.2byte	0x6f4
@@ -11530,11 +11530,11 @@ __PRETTY_FUNCTION__.17138:
 	.4byte	0
 	.4byte	0
 .LVUS68:
-	.uleb128 .LVU556
-	.uleb128 .LVU569
+	.uleb128 .LVU555
+	.uleb128 .LVU568
 .LLST68:
+	.4byte	.LVL143-.Ltext0
 	.4byte	.LVL144-.Ltext0
-	.4byte	.LVL145-.Ltext0
 	.2byte	0x4
 	.byte	0xa
 	.2byte	0x9f6
@@ -11542,11 +11542,11 @@ __PRETTY_FUNCTION__.17138:
 	.4byte	0
 	.4byte	0
 .LVUS69:
-	.uleb128 .LVU556
-	.uleb128 .LVU569
+	.uleb128 .LVU555
+	.uleb128 .LVU568
 .LLST69:
+	.4byte	.LVL143-.Ltext0
 	.4byte	.LVL144-.Ltext0
-	.4byte	.LVL145-.Ltext0
 	.2byte	0x2
 	.byte	0x31
 	.byte	0x9f
@@ -11554,21 +11554,21 @@ __PRETTY_FUNCTION__.17138:
 	.4byte	0
 .LVUS55:
 	.uleb128 0
-	.uleb128 .LVU500
-	.uleb128 .LVU500
-	.uleb128 .LVU534
-	.uleb128 .LVU534
+	.uleb128 .LVU499
+	.uleb128 .LVU499
+	.uleb128 .LVU533
+	.uleb128 .LVU533
 	.uleb128 0
 .LLST55:
-	.4byte	.LVL120-.Ltext0
-	.4byte	.LVL122-.Ltext0
+	.4byte	.LVL119-.Ltext0
+	.4byte	.LVL121-.Ltext0
 	.2byte	0x1
 	.byte	0x50
-	.4byte	.LVL122-.Ltext0
-	.4byte	.LVL138-.Ltext0
+	.4byte	.LVL121-.Ltext0
+	.4byte	.LVL137-.Ltext0
 	.2byte	0x1
 	.byte	0x58
-	.4byte	.LVL138-.Ltext0
+	.4byte	.LVL137-.Ltext0
 	.4byte	.LFE68-.Ltext0
 	.2byte	0x4
 	.byte	0xf3
@@ -11579,21 +11579,21 @@ __PRETTY_FUNCTION__.17138:
 	.4byte	0
 .LVUS56:
 	.uleb128 0
-	.uleb128 .LVU499
-	.uleb128 .LVU499
-	.uleb128 .LVU501
-	.uleb128 .LVU501
+	.uleb128 .LVU498
+	.uleb128 .LVU498
+	.uleb128 .LVU500
+	.uleb128 .LVU500
 	.uleb128 0
 .LLST56:
+	.4byte	.LVL119-.Ltext0
 	.4byte	.LVL120-.Ltext0
-	.4byte	.LVL121-.Ltext0
 	.2byte	0x1
 	.byte	0x51
-	.4byte	.LVL121-.Ltext0
-	.4byte	.LVL123-1-.Ltext0
+	.4byte	.LVL120-.Ltext0
+	.4byte	.LVL122-1-.Ltext0
 	.2byte	0x1
 	.byte	0x53
-	.4byte	.LVL123-1-.Ltext0
+	.4byte	.LVL122-1-.Ltext0
 	.4byte	.LFE68-.Ltext0
 	.2byte	0x4
 	.byte	0xf3
@@ -11603,102 +11603,102 @@ __PRETTY_FUNCTION__.17138:
 	.4byte	0
 	.4byte	0
 .LVUS57:
-	.uleb128 .LVU504
+	.uleb128 .LVU503
+	.uleb128 .LVU506
+	.uleb128 .LVU506
 	.uleb128 .LVU507
 	.uleb128 .LVU507
-	.uleb128 .LVU508
-	.uleb128 .LVU508
+	.uleb128 .LVU533
+	.uleb128 .LVU533
 	.uleb128 .LVU534
-	.uleb128 .LVU534
-	.uleb128 .LVU535
 .LLST57:
+	.4byte	.LVL123-.Ltext0
 	.4byte	.LVL124-.Ltext0
-	.4byte	.LVL125-.Ltext0
 	.2byte	0x1
 	.byte	0x50
-	.4byte	.LVL125-.Ltext0
-	.4byte	.LVL126-1-.Ltext0
+	.4byte	.LVL124-.Ltext0
+	.4byte	.LVL125-1-.Ltext0
 	.2byte	0x1
 	.byte	0x53
-	.4byte	.LVL126-1-.Ltext0
-	.4byte	.LVL138-.Ltext0
+	.4byte	.LVL125-1-.Ltext0
+	.4byte	.LVL137-.Ltext0
 	.2byte	0x1
 	.byte	0x57
-	.4byte	.LVL138-.Ltext0
-	.4byte	.LVL139-1-.Ltext0
+	.4byte	.LVL137-.Ltext0
+	.4byte	.LVL138-1-.Ltext0
 	.2byte	0x1
 	.byte	0x50
 	.4byte	0
 	.4byte	0
 .LVUS58:
-	.uleb128 .LVU522
-	.uleb128 .LVU527
+	.uleb128 .LVU521
+	.uleb128 .LVU526
 .LLST58:
-	.4byte	.LVL131-.Ltext0
-	.4byte	.LVL133-.Ltext0
+	.4byte	.LVL130-.Ltext0
+	.4byte	.LVL132-.Ltext0
 	.2byte	0x1
 	.byte	0x52
 	.4byte	0
 	.4byte	0
 .LVUS59:
-	.uleb128 .LVU515
-	.uleb128 .LVU518
-	.uleb128 .LVU518
-	.uleb128 .LVU524
-	.uleb128 .LVU524
-	.uleb128 .LVU528
-	.uleb128 .LVU528
-	.uleb128 .LVU530
+	.uleb128 .LVU514
+	.uleb128 .LVU517
+	.uleb128 .LVU517
+	.uleb128 .LVU523
+	.uleb128 .LVU523
+	.uleb128 .LVU527
+	.uleb128 .LVU527
+	.uleb128 .LVU529
 .LLST59:
-	.4byte	.LVL129-.Ltext0
-	.4byte	.LVL130-.Ltext0
-	.2byte	0x2
-	.byte	0x30
-	.byte	0x9f
-	.4byte	.LVL130-.Ltext0
-	.4byte	.LVL132-.Ltext0
-	.2byte	0x1
-	.byte	0x54
-	.4byte	.LVL132-.Ltext0
-	.4byte	.LVL134-.Ltext0
-	.2byte	0x3
-	.byte	0x74
-	.sleb128 -1
-	.byte	0x9f
-	.4byte	.LVL134-.Ltext0
-	.4byte	.LVL135-.Ltext0
-	.2byte	0x1
-	.byte	0x54
-	.4byte	0
-	.4byte	0
-.LVUS60:
-	.uleb128 .LVU511
-	.uleb128 .LVU515
-	.uleb128 .LVU515
-	.uleb128 .LVU532
-.LLST60:
 	.4byte	.LVL128-.Ltext0
 	.4byte	.LVL129-.Ltext0
 	.2byte	0x2
 	.byte	0x30
 	.byte	0x9f
 	.4byte	.LVL129-.Ltext0
-	.4byte	.LVL137-.Ltext0
+	.4byte	.LVL131-.Ltext0
+	.2byte	0x1
+	.byte	0x54
+	.4byte	.LVL131-.Ltext0
+	.4byte	.LVL133-.Ltext0
+	.2byte	0x3
+	.byte	0x74
+	.sleb128 -1
+	.byte	0x9f
+	.4byte	.LVL133-.Ltext0
+	.4byte	.LVL134-.Ltext0
+	.2byte	0x1
+	.byte	0x54
+	.4byte	0
+	.4byte	0
+.LVUS60:
+	.uleb128 .LVU510
+	.uleb128 .LVU514
+	.uleb128 .LVU514
+	.uleb128 .LVU531
+.LLST60:
+	.4byte	.LVL127-.Ltext0
+	.4byte	.LVL128-.Ltext0
+	.2byte	0x2
+	.byte	0x30
+	.byte	0x9f
+	.4byte	.LVL128-.Ltext0
+	.4byte	.LVL136-.Ltext0
 	.2byte	0x1
 	.byte	0x55
 	.4byte	0
 	.4byte	0
 .LVUS53:
 	.uleb128 0
-	.uleb128 .LVU483
-	.uleb128 .LVU483
+	.uleb128 .LVU482
+	.uleb128 .LVU482
 	.uleb128 0
 .LLST53:
+	.4byte	.LVL114-.Ltext0
 	.4byte	.LVL115-.Ltext0
-	.4byte	.LVL116-.Ltext0
 	.2byte	0x1
 	.byte	0x50
-	.4byte	.LVL116-.Ltext0
+	.4byte	.LVL115-.Ltext0
 	.4byte	.LFE66-.Ltext0
 	.2byte	0x4
 	.byte	0xf3
@@ -11709,15 +11709,15 @@ __PRETTY_FUNCTION__.17138:
 	.4byte	0
 .LVUS52:
 	.uleb128 0
-	.uleb128 .LVU478
-	.uleb128 .LVU478
+	.uleb128 .LVU477
+	.uleb128 .LVU477
 	.uleb128 0
 .LLST52:
+	.4byte	.LVL111-.Ltext0
 	.4byte	.LVL112-.Ltext0
-	.4byte	.LVL113-.Ltext0
 	.2byte	0x1
 	.byte	0x50
-	.4byte	.LVL113-.Ltext0
+	.4byte	.LVL112-.Ltext0
 	.4byte	.LFE65-.Ltext0
 	.2byte	0x4
 	.byte	0xf3
@@ -11728,30 +11728,30 @@ __PRETTY_FUNCTION__.17138:
 	.4byte	0
 .LVUS51:
 	.uleb128 0
-	.uleb128 .LVU466
-	.uleb128 .LVU466
+	.uleb128 .LVU465
+	.uleb128 .LVU465
+	.uleb128 .LVU467
+	.uleb128 .LVU467
 	.uleb128 .LVU468
 	.uleb128 .LVU468
-	.uleb128 .LVU469
-	.uleb128 .LVU469
 	.uleb128 0
 .LLST51:
+	.4byte	.LVL106-.Ltext0
 	.4byte	.LVL107-.Ltext0
-	.4byte	.LVL108-.Ltext0
 	.2byte	0x1
 	.byte	0x50
+	.4byte	.LVL107-.Ltext0
 	.4byte	.LVL108-.Ltext0
-	.4byte	.LVL109-.Ltext0
 	.2byte	0x4
 	.byte	0xf3
 	.uleb128 0x1
 	.byte	0x50
 	.byte	0x9f
+	.4byte	.LVL108-.Ltext0
 	.4byte	.LVL109-.Ltext0
-	.4byte	.LVL110-.Ltext0
 	.2byte	0x1
 	.byte	0x50
-	.4byte	.LVL110-.Ltext0
+	.4byte	.LVL109-.Ltext0
 	.4byte	.LFE64-.Ltext0
 	.2byte	0x4
 	.byte	0xf3
@@ -11762,15 +11762,15 @@ __PRETTY_FUNCTION__.17138:
 	.4byte	0
 .LVUS50:
 	.uleb128 0
-	.uleb128 .LVU458
-	.uleb128 .LVU458
+	.uleb128 .LVU457
+	.uleb128 .LVU457
 	.uleb128 0
 .LLST50:
+	.4byte	.LVL103-.Ltext0
 	.4byte	.LVL104-.Ltext0
-	.4byte	.LVL105-.Ltext0
 	.2byte	0x1
 	.byte	0x50
-	.4byte	.LVL105-.Ltext0
+	.4byte	.LVL104-.Ltext0
 	.4byte	.LFE63-.Ltext0
 	.2byte	0x4
 	.byte	0xf3
@@ -11781,42 +11781,42 @@ __PRETTY_FUNCTION__.17138:
 	.4byte	0
 .LVUS43:
 	.uleb128 0
+	.uleb128 .LVU346
+	.uleb128 .LVU346
 	.uleb128 .LVU347
 	.uleb128 .LVU347
-	.uleb128 .LVU348
-	.uleb128 .LVU348
-	.uleb128 .LVU352
-	.uleb128 .LVU352
+	.uleb128 .LVU351
+	.uleb128 .LVU351
+	.uleb128 .LVU446
+	.uleb128 .LVU446
 	.uleb128 .LVU447
 	.uleb128 .LVU447
-	.uleb128 .LVU448
-	.uleb128 .LVU448
 	.uleb128 0
 .LLST43:
-	.4byte	.LVL79-.Ltext0
-	.4byte	.LVL83-.Ltext0
+	.4byte	.LVL78-.Ltext0
+	.4byte	.LVL82-.Ltext0
 	.2byte	0x1
 	.byte	0x50
-	.4byte	.LVL83-.Ltext0
-	.4byte	.LVL84-1-.Ltext0
+	.4byte	.LVL82-.Ltext0
+	.4byte	.LVL83-1-.Ltext0
 	.2byte	0x1
 	.byte	0x51
-	.4byte	.LVL84-1-.Ltext0
-	.4byte	.LVL85-.Ltext0
+	.4byte	.LVL83-1-.Ltext0
+	.4byte	.LVL84-.Ltext0
 	.2byte	0x1
 	.byte	0x55
-	.4byte	.LVL85-.Ltext0
-	.4byte	.LVL100-.Ltext0
+	.4byte	.LVL84-.Ltext0
+	.4byte	.LVL99-.Ltext0
 	.2byte	0x4
 	.byte	0xf3
 	.uleb128 0x1
 	.byte	0x50
 	.byte	0x9f
+	.4byte	.LVL99-.Ltext0
 	.4byte	.LVL100-.Ltext0
-	.4byte	.LVL101-.Ltext0
 	.2byte	0x1
 	.byte	0x55
-	.4byte	.LVL101-.Ltext0
+	.4byte	.LVL100-.Ltext0
 	.4byte	.LFE62-.Ltext0
 	.2byte	0x4
 	.byte	0xf3
@@ -11827,42 +11827,42 @@ __PRETTY_FUNCTION__.17138:
 	.4byte	0
 .LVUS44:
 	.uleb128 0
-	.uleb128 .LVU346
-	.uleb128 .LVU346
-	.uleb128 .LVU348
-	.uleb128 .LVU348
-	.uleb128 .LVU353
-	.uleb128 .LVU353
+	.uleb128 .LVU345
+	.uleb128 .LVU345
+	.uleb128 .LVU347
+	.uleb128 .LVU347
+	.uleb128 .LVU352
+	.uleb128 .LVU352
+	.uleb128 .LVU446
+	.uleb128 .LVU446
 	.uleb128 .LVU447
 	.uleb128 .LVU447
-	.uleb128 .LVU448
-	.uleb128 .LVU448
 	.uleb128 0
 .LLST44:
-	.4byte	.LVL79-.Ltext0
-	.4byte	.LVL82-.Ltext0
+	.4byte	.LVL78-.Ltext0
+	.4byte	.LVL81-.Ltext0
 	.2byte	0x1
 	.byte	0x51
-	.4byte	.LVL82-.Ltext0
-	.4byte	.LVL84-1-.Ltext0
+	.4byte	.LVL81-.Ltext0
+	.4byte	.LVL83-1-.Ltext0
 	.2byte	0x1
 	.byte	0x52
-	.4byte	.LVL84-1-.Ltext0
-	.4byte	.LVL86-.Ltext0
+	.4byte	.LVL83-1-.Ltext0
+	.4byte	.LVL85-.Ltext0
 	.2byte	0x1
 	.byte	0x57
-	.4byte	.LVL86-.Ltext0
-	.4byte	.LVL100-.Ltext0
+	.4byte	.LVL85-.Ltext0
+	.4byte	.LVL99-.Ltext0
 	.2byte	0x4
 	.byte	0xf3
 	.uleb128 0x1
 	.byte	0x51
 	.byte	0x9f
+	.4byte	.LVL99-.Ltext0
 	.4byte	.LVL100-.Ltext0
-	.4byte	.LVL101-.Ltext0
 	.2byte	0x1
 	.byte	0x57
-	.4byte	.LVL101-.Ltext0
+	.4byte	.LVL100-.Ltext0
 	.4byte	.LFE62-.Ltext0
 	.2byte	0x4
 	.byte	0xf3
@@ -11873,36 +11873,36 @@ __PRETTY_FUNCTION__.17138:
 	.4byte	0
 .LVUS45:
 	.uleb128 0
-	.uleb128 .LVU345
-	.uleb128 .LVU345
-	.uleb128 .LVU348
-	.uleb128 .LVU348
+	.uleb128 .LVU344
+	.uleb128 .LVU344
+	.uleb128 .LVU347
+	.uleb128 .LVU347
+	.uleb128 .LVU445
+	.uleb128 .LVU445
 	.uleb128 .LVU446
 	.uleb128 .LVU446
-	.uleb128 .LVU447
-	.uleb128 .LVU447
 	.uleb128 0
 .LLST45:
-	.4byte	.LVL79-.Ltext0
-	.4byte	.LVL81-.Ltext0
+	.4byte	.LVL78-.Ltext0
+	.4byte	.LVL80-.Ltext0
 	.2byte	0x1
 	.byte	0x52
-	.4byte	.LVL81-.Ltext0
-	.4byte	.LVL84-1-.Ltext0
+	.4byte	.LVL80-.Ltext0
+	.4byte	.LVL83-1-.Ltext0
 	.2byte	0x1
 	.byte	0x53
-	.4byte	.LVL84-1-.Ltext0
-	.4byte	.LVL99-.Ltext0
+	.4byte	.LVL83-1-.Ltext0
+	.4byte	.LVL98-.Ltext0
 	.2byte	0x1
 	.byte	0x59
+	.4byte	.LVL98-.Ltext0
 	.4byte	.LVL99-.Ltext0
-	.4byte	.LVL100-.Ltext0
 	.2byte	0x4
 	.byte	0xf3
 	.uleb128 0x1
 	.byte	0x52
 	.byte	0x9f
-	.4byte	.LVL100-.Ltext0
+	.4byte	.LVL99-.Ltext0
 	.4byte	.LFE62-.Ltext0
 	.2byte	0x1
 	.byte	0x59
@@ -11910,49 +11910,49 @@ __PRETTY_FUNCTION__.17138:
 	.4byte	0
 .LVUS46:
 	.uleb128 0
-	.uleb128 .LVU344
-	.uleb128 .LVU344
+	.uleb128 .LVU343
+	.uleb128 .LVU343
+	.uleb128 .LVU445
+	.uleb128 .LVU445
 	.uleb128 .LVU446
 	.uleb128 .LVU446
-	.uleb128 .LVU447
-	.uleb128 .LVU447
 	.uleb128 0
 .LLST46:
+	.4byte	.LVL78-.Ltext0
 	.4byte	.LVL79-.Ltext0
-	.4byte	.LVL80-.Ltext0
 	.2byte	0x1
 	.byte	0x53
-	.4byte	.LVL80-.Ltext0
-	.4byte	.LVL99-.Ltext0
+	.4byte	.LVL79-.Ltext0
+	.4byte	.LVL98-.Ltext0
 	.2byte	0x1
 	.byte	0x5a
+	.4byte	.LVL98-.Ltext0
 	.4byte	.LVL99-.Ltext0
-	.4byte	.LVL100-.Ltext0
 	.2byte	0x4
 	.byte	0xf3
 	.uleb128 0x1
 	.byte	0x53
 	.byte	0x9f
-	.4byte	.LVL100-.Ltext0
+	.4byte	.LVL99-.Ltext0
 	.4byte	.LFE62-.Ltext0
 	.2byte	0x1
 	.byte	0x5a
 	.4byte	0
 	.4byte	0
 .LVUS47:
-	.uleb128 .LVU408
-	.uleb128 .LVU446
+	.uleb128 .LVU407
+	.uleb128 .LVU445
+	.uleb128 .LVU445
 	.uleb128 .LVU446
 	.uleb128 .LVU447
 	.uleb128 .LVU448
-	.uleb128 .LVU449
 .LLST47:
-	.4byte	.LVL91-.Ltext0
-	.4byte	.LVL99-.Ltext0
+	.4byte	.LVL90-.Ltext0
+	.4byte	.LVL98-.Ltext0
 	.2byte	0x1
 	.byte	0x55
+	.4byte	.LVL98-.Ltext0
 	.4byte	.LVL99-.Ltext0
-	.4byte	.LVL100-.Ltext0
 	.2byte	0x8
 	.byte	0xf3
 	.uleb128 0x1
@@ -11962,39 +11962,39 @@ __PRETTY_FUNCTION__.17138:
 	.byte	0x50
 	.byte	0x1c
 	.byte	0x9f
+	.4byte	.LVL100-.Ltext0
 	.4byte	.LVL101-.Ltext0
-	.4byte	.LVL102-.Ltext0
 	.2byte	0x1
 	.byte	0x55
 	.4byte	0
 	.4byte	0
 .LVUS48:
-	.uleb128 .LVU429
-	.uleb128 .LVU438
+	.uleb128 .LVU428
+	.uleb128 .LVU437
 .LLST48:
-	.4byte	.LVL94-.Ltext0
-	.4byte	.LVL96-1-.Ltext0
+	.4byte	.LVL93-.Ltext0
+	.4byte	.LVL95-1-.Ltext0
 	.2byte	0x1
 	.byte	0x53
 	.4byte	0
 	.4byte	0
 .LVUS49:
-	.uleb128 .LVU417
+	.uleb128 .LVU416
+	.uleb128 .LVU444
+	.uleb128 .LVU444
 	.uleb128 .LVU445
 	.uleb128 .LVU445
-	.uleb128 .LVU446
 	.uleb128 .LVU446
 	.uleb128 .LVU447
 	.uleb128 .LVU448
-	.uleb128 .LVU449
 .LLST49:
-	.4byte	.LVL92-.Ltext0
-	.4byte	.LVL98-.Ltext0
+	.4byte	.LVL91-.Ltext0
+	.4byte	.LVL97-.Ltext0
 	.2byte	0x2
 	.byte	0x90
 	.uleb128 0x50
+	.4byte	.LVL97-.Ltext0
 	.4byte	.LVL98-.Ltext0
-	.4byte	.LVL99-.Ltext0
 	.2byte	0xf
 	.byte	0x75
 	.sleb128 0
@@ -12011,8 +12011,8 @@ __PRETTY_FUNCTION__.17138:
 	.uleb128 0x25
 	.byte	0x1b
 	.byte	0x9f
+	.4byte	.LVL98-.Ltext0
 	.4byte	.LVL99-.Ltext0
-	.4byte	.LVL100-.Ltext0
 	.2byte	0x14
 	.byte	0xf3
 	.uleb128 0x1
@@ -12034,8 +12034,8 @@ __PRETTY_FUNCTION__.17138:
 	.uleb128 0x25
 	.byte	0x1b
 	.byte	0x9f
+	.4byte	.LVL100-.Ltext0
 	.4byte	.LVL101-.Ltext0
-	.4byte	.LVL102-.Ltext0
 	.2byte	0x2
 	.byte	0x90
 	.uleb128 0x50
@@ -12048,9 +12048,9 @@ __PRETTY_FUNCTION__.17138:
 	.uleb128 .LVU265
 	.uleb128 .LVU265
 	.uleb128 .LVU320
+	.uleb128 .LVU329
 	.uleb128 .LVU330
-	.uleb128 .LVU331
-	.uleb128 .LVU335
+	.uleb128 .LVU334
 	.uleb128 0
 .LLST31:
 	.4byte	.LVL51-.Ltext0
@@ -12067,11 +12067,11 @@ __PRETTY_FUNCTION__.17138:
 	.2byte	0x2
 	.byte	0x91
 	.sleb128 -52
+	.4byte	.LVL74-.Ltext0
 	.4byte	.LVL75-.Ltext0
-	.4byte	.LVL76-.Ltext0
 	.2byte	0x1
 	.byte	0x5b
-	.4byte	.LVL78-.Ltext0
+	.4byte	.LVL77-.Ltext0
 	.4byte	.LFE61-.Ltext0
 	.2byte	0x2
 	.byte	0x30
@@ -12082,10 +12082,10 @@ __PRETTY_FUNCTION__.17138:
 	.uleb128 .LVU228
 	.uleb128 .LVU229
 	.uleb128 .LVU229
-	.uleb128 .LVU327
-	.uleb128 .LVU327
-	.uleb128 .LVU329
-	.uleb128 .LVU329
+	.uleb128 .LVU326
+	.uleb128 .LVU326
+	.uleb128 .LVU328
+	.uleb128 .LVU328
 	.uleb128 0
 .LLST32:
 	.4byte	.LVL50-.Ltext0
@@ -12093,15 +12093,15 @@ __PRETTY_FUNCTION__.17138:
 	.2byte	0x1
 	.byte	0x53
 	.4byte	.LVL51-1-.Ltext0
-	.4byte	.LVL73-.Ltext0
+	.4byte	.LVL72-.Ltext0
 	.2byte	0x3
 	.byte	0x91
 	.sleb128 -72
+	.4byte	.LVL72-.Ltext0
 	.4byte	.LVL73-.Ltext0
-	.4byte	.LVL74-.Ltext0
 	.2byte	0x1
 	.byte	0x53
-	.4byte	.LVL74-.Ltext0
+	.4byte	.LVL73-.Ltext0
 	.4byte	.LFE61-.Ltext0
 	.2byte	0x3
 	.byte	0x91
@@ -12112,10 +12112,10 @@ __PRETTY_FUNCTION__.17138:
 	.uleb128 .LVU228
 	.uleb128 .LVU236
 	.uleb128 .LVU236
+	.uleb128 .LVU329
+	.uleb128 .LVU329
 	.uleb128 .LVU330
-	.uleb128 .LVU330
-	.uleb128 .LVU331
-	.uleb128 .LVU335
+	.uleb128 .LVU334
 	.uleb128 0
 .LLST33:
 	.4byte	.LVL50-.Ltext0
@@ -12124,15 +12124,15 @@ __PRETTY_FUNCTION__.17138:
 	.byte	0x30
 	.byte	0x9f
 	.4byte	.LVL53-.Ltext0
-	.4byte	.LVL75-.Ltext0
+	.4byte	.LVL74-.Ltext0
 	.2byte	0x3
 	.byte	0x91
 	.sleb128 -68
+	.4byte	.LVL74-.Ltext0
 	.4byte	.LVL75-.Ltext0
-	.4byte	.LVL76-.Ltext0
 	.2byte	0x1
 	.byte	0x53
-	.4byte	.LVL78-.Ltext0
+	.4byte	.LVL77-.Ltext0
 	.4byte	.LFE61-.Ltext0
 	.2byte	0x2
 	.byte	0x30
@@ -12395,13 +12395,13 @@ __PRETTY_FUNCTION__.17138:
 	.uleb128 .LVU323
 .LLST41:
 	.4byte	.LVL56-.Ltext0
-	.4byte	.LVL71-.Ltext0
+	.4byte	.LVL71-1-.Ltext0
 	.2byte	0x8
-	.byte	0x7e
+	.byte	0x74
 	.sleb128 0
 	.byte	0x31
 	.byte	0x24
-	.byte	0x70
+	.byte	0x7c
 	.sleb128 0
 	.byte	0x22
 	.byte	0x9f
@@ -12420,34 +12420,34 @@ __PRETTY_FUNCTION__.17138:
 	.sleb128 0
 	.byte	0x40
 	.byte	0x25
-	.byte	0x78
+	.byte	0x7e
 	.sleb128 0
 	.byte	0x1e
-	.byte	0x7e
+	.byte	0x74
 	.sleb128 0
 	.byte	0x22
 	.byte	0x31
 	.byte	0x24
-	.byte	0x70
+	.byte	0x7c
 	.sleb128 0
 	.byte	0x22
 	.byte	0x9f
 	.4byte	.LVL65-.Ltext0
 	.4byte	.LVL66-.Ltext0
 	.2byte	0x10
-	.byte	0x7c
+	.byte	0x70
 	.sleb128 0
 	.byte	0x40
 	.byte	0x25
-	.byte	0x78
+	.byte	0x7e
 	.sleb128 0
 	.byte	0x1e
-	.byte	0x7e
+	.byte	0x74
 	.sleb128 0
 	.byte	0x22
 	.byte	0x31
 	.byte	0x24
-	.byte	0x70
+	.byte	0x7c
 	.sleb128 0
 	.byte	0x22
 	.byte	0x9f
@@ -13254,15 +13254,15 @@ __PRETTY_FUNCTION__.17138:
 	.4byte	0
 .LVUS54:
 	.uleb128 0
-	.uleb128 .LVU488
-	.uleb128 .LVU488
+	.uleb128 .LVU487
+	.uleb128 .LVU487
 	.uleb128 0
 .LLST54:
+	.4byte	.LVL117-.Ltext0
 	.4byte	.LVL118-.Ltext0
-	.4byte	.LVL119-.Ltext0
 	.2byte	0x1
 	.byte	0x50
-	.4byte	.LVL119-.Ltext0
+	.4byte	.LVL118-.Ltext0
 	.4byte	.LFE67-.Ltext0
 	.2byte	0x4
 	.byte	0xf3
@@ -13273,27 +13273,27 @@ __PRETTY_FUNCTION__.17138:
 	.4byte	0
 .LVUS73:
 	.uleb128 0
-	.uleb128 .LVU592
-	.uleb128 .LVU592
+	.uleb128 .LVU591
+	.uleb128 .LVU591
+	.uleb128 .LVU604
+	.uleb128 .LVU604
 	.uleb128 .LVU605
 	.uleb128 .LVU605
-	.uleb128 .LVU606
-	.uleb128 .LVU606
 	.uleb128 0
 .LLST73:
+	.4byte	.LVL155-.Ltext0
 	.4byte	.LVL156-.Ltext0
-	.4byte	.LVL157-.Ltext0
 	.2byte	0x1
 	.byte	0x50
-	.4byte	.LVL157-.Ltext0
-	.4byte	.LVL160-.Ltext0
+	.4byte	.LVL156-.Ltext0
+	.4byte	.LVL159-.Ltext0
 	.2byte	0x1
 	.byte	0x56
-	.4byte	.LVL160-.Ltext0
-	.4byte	.LVL161-1-.Ltext0
+	.4byte	.LVL159-.Ltext0
+	.4byte	.LVL160-1-.Ltext0
 	.2byte	0x1
 	.byte	0x52
-	.4byte	.LVL161-1-.Ltext0
+	.4byte	.LVL160-1-.Ltext0
 	.4byte	.LFE73-.Ltext0
 	.2byte	0x4
 	.byte	0xf3
