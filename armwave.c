@@ -87,12 +87,13 @@ void render_nonaa_to_buffer_1ch_slice(uint32_t slice_y, uint32_t height)
             word = *(uint32_t*)(wave_base + yy);
 
             for(ys = 0; ys < 4; ys++) {
-                // maybe worth preloading the base address here...
                 scale_value = word & 0xff;
                 
+                /*
                 // prevents saturating behaviour; we lose two ADC counts.
                 if(COND_UNLIKELY(scale_value == 0x00 || scale_value == 0xff))
                     continue;
+                */
 
                 // Keep math in integer where possible.  We compute the X scale and then multiply to get the correct 
                 // base coordinate.  The value of the point then informs us where to write in typically an 8-bit window.
@@ -240,7 +241,7 @@ void armwave_setup_render(uint32_t start_point, uint32_t end_point, uint32_t wav
 
     // Calculate compound scaler
     g_armwave_state.cmp_x_bitdepth_scale = \
-        ((float)(g_armwave_state.target_width) / g_armwave_state.wave_length) * (1 << AM_XCOORD_MULT_SHIFT);
+        ((g_armwave_state.target_width) * (1.0f / g_armwave_state.wave_length)) * (1 << AM_XCOORD_MULT_SHIFT);
 
     printf("ch_buff_size=%d, cmp_x_bitdepth_scale=%d (0x%08x), targ_width=%d, wave_length=%d, scaler=%d\n", \
         g_armwave_state.ch_buff_size, g_armwave_state.cmp_x_bitdepth_scale, \
