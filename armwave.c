@@ -184,13 +184,14 @@ void armwave_generate()
 
     for(yy = 0; yy < (g_armwave_state.wave_length / g_armwave_state.slice_height); yy++) {
     //for(yy = 0; yy < 10; yy++) {
-        //printf("armwave_generate: slice %d (y=%d, h=%d)\n", yy, yy * g_armwave_state.slice_height, g_armwave_state.slice_record_height);
+        printf("armwave_generate: slice %d (y=%d, h=%d)\n", yy, yy * g_armwave_state.slice_height, g_armwave_state.slice_height);
 
         render_nonaa_to_buffer_1ch_slice(yy * g_armwave_state.slice_height, g_armwave_state.slice_height);
         xx_rem -= g_armwave_state.slice_height;
         ypos += g_armwave_state.slice_height;
     }
 
+    printf("armwave_generate: slice %d (y=%d, h=%d)\n", yy, ypos, g_armwave_state.slice_height);
     render_nonaa_to_buffer_1ch_slice(ypos, xx_rem);
 }
 
