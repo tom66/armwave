@@ -246,7 +246,7 @@ void armwave_setup_render(uint32_t start_point, uint32_t end_point, uint32_t wav
 
     // Calculate compound scaler
     g_armwave_state.cmp_x_bitdepth_scale = \
-        ((g_armwave_state.target_width / g_armwave_state.wave_length)) * (1 << AM_XCOORD_MULT_SHIFT);
+        ((g_armwave_state.target_width * (1.0f / g_armwave_state.wave_length))) * (1 << AM_XCOORD_MULT_SHIFT);
 
     printf("ch_buff_size=%d, cmp_x_bitdepth_scale=%d (0x%08x), targ_width=%d, wave_length=%d, scaler=%d\n", \
         g_armwave_state.ch_buff_size, g_armwave_state.cmp_x_bitdepth_scale, \
