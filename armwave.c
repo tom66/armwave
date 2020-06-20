@@ -178,7 +178,7 @@ void armwave_fill_pixbuf_scaled(uint32_t *out_buffer)
 void armwave_generate()
 {
     uint32_t yy;
-    uint32_t xx_rem = g_armwave_state.target_width, ypos = 0;
+    uint32_t xx_rem = g_armwave_state.wave_length, ypos = 0;
 
     memset(g_armwave_state.ch1_buffer, 0, g_armwave_state.ch_buff_size);
 
