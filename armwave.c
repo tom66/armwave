@@ -193,10 +193,12 @@ void armwave_generate()
         ypos += g_armwave_state.slice_height;   
     }
 
+    /*
     printf("armwave_generate: slice %d (y=%d, h=%d, xpos=%d) last\n", \
             yy, ypos, g_armwave_state.slice_height, 
             (yy * g_armwave_state.slice_height * g_armwave_state.cmp_x_bitdepth_scale) >> AM_XCOORD_MULT_SHIFT);
     render_nonaa_to_buffer_1ch_slice(ypos, xx_rem);
+    */
 }
 
 /*
