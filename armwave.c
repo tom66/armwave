@@ -191,7 +191,7 @@ void armwave_generate()
         ypos += g_armwave_state.slice_height;
     }
 
-    render_nonaa_to_buffer_1ch_slice(yy * g_armwave_state.slice_height, xx_rem);
+    render_nonaa_to_buffer_1ch_slice((yy + 1) * g_armwave_state.slice_height, xx_rem);
 }
 
 /*
