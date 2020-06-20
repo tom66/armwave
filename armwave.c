@@ -263,12 +263,17 @@ void armwave_setup_render(uint32_t start_point, uint32_t end_point, uint32_t wav
 
     g_armwave_state.ch1_buffer = calloc(g_armwave_state.ch_buff_size, 1);
 
-    assert(g_armwave_state.ch1_buffer != NULL);
+    if(g_armwave_state.ch1_buffer == NULL) {
+        fprintf(stderr, "malloc failure allocating %d bytes (g_armwave_state.ch1_buffer)\n", g_armwave_state.ch_buff_size);
+        exit(-1);
+    }
 
     // Precompute the x-coord to pixel lookup to reduce ALU load
     length = end_point - start_point;
     points_per_pixel = length / ((float)(target_width));
     g_armwave_state.slice_record_height = points_per_pixel * g_armwave_state.slice_height;
+
+    /*
     g_armwave_state.xcoord_to_xpixel = malloc(length * sizeof(uint16_t));
 
     assert(g_armwave_state.xcoord_to_xpixel != NULL);
@@ -278,6 +283,7 @@ void armwave_setup_render(uint32_t start_point, uint32_t end_point, uint32_t wav
 
         // printf("xcoord_to_xpixel[%5d] = %5d (scale:%8.3f)\n", xx, g_armwave_state.xcoord_to_xpixel[xx], 1.0f / points_per_pixel);
     }
+    */
 
     g_armwave_state.out_pixbuf = malloc(sizeof(uint32_t) * g_armwave_state.size);
 
@@ -287,7 +293,7 @@ void armwave_setup_render(uint32_t start_point, uint32_t end_point, uint32_t wav
         (uint32_t)g_armwave_state.out_pixbuf, \
         (uint32_t)g_armwave_state.test_wave_buffer);
 
-    malloc_stats();
+     //malloc_stats();
 }
 
 /*
