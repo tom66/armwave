@@ -147,6 +147,10 @@ void armwave_fill_pixbuf_scaled(uint32_t *out_buffer)
         //wave_word = g_armwave_state.ch1_buffer[n]
         wave_word = *base_32ptr++;
 
+        if(n % 200 == 0) {
+           printf("%d,", n);
+        }
+
         if(COND_UNLIKELY(wave_word != 0)) {
             for(w = 0; w < 2; w++) {
                 value = wave_word & 0xffff;
@@ -180,7 +184,7 @@ void armwave_fill_pixbuf_scaled(uint32_t *out_buffer)
         }
     }
 
-    printf("done paint %d pixels...\n", painted);
+    printf("...done %d pixels...\n", painted);
 }
 
 /*
