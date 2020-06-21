@@ -82,9 +82,9 @@ void render_nonaa_to_buffer_1ch_slice(uint32_t slice_y, uint32_t height)
         // roll through y and render the slice into the out buffer
         // buffer is rendered rotated by 90 degrees
         for(yy = 0; yy < height; yy += 4) {
-            //printf("w=%d stride=%d sly=%d wave_base=0x%08x yy=%d\n", w, g_armwave_state.wave_stride, slice_y, wave_base, yy);
-
             word = *(uint32_t*)(wave_base + yy);
+
+            printf("w=%d stride=%d sly=%d wave_base=0x%08x yy=%d word=0x%08x\n", w, g_armwave_state.wave_stride, slice_y, wave_base, yy, word);
 
             for(ys = 0; ys < 4; ys++) {
                 scale_value = word & 0xff;
