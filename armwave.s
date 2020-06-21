@@ -911,7 +911,7 @@ armwave_fill_pixbuf_scaled:
 @ armwave.c:183:                         offset = (xx + (y * g_armwave_state.target_width)); 
 	.loc 1 183 43 is_stmt 0 discriminator 3 view .LVU236
 	ldr	r5, [r10, #88]	@ g_armwave_state.target_width, g_armwave_state.target_width
-@ armwave.c:184:                         printf("0x%08x,%d,%d,%d,%d\n", out_buffer_base, offset, xx, y, n);
+@ armwave.c:184:                         printf("0x%08x,%6d,%6d,%6d,%6d\n", out_buffer_base, offset, xx, y, n);
 	.loc 1 184 25 discriminator 3 view .LVU237
 	stm	sp, {r4, r8}	@,,
 	mov	r3, r6	@, xx
@@ -925,7 +925,7 @@ armwave_fill_pixbuf_scaled:
 	.loc 1 182 42 is_stmt 0 discriminator 3 view .LVU240
 	add	r4, r4, #1	@ y, y,
 .LVL63:
-@ armwave.c:184:                         printf("0x%08x,%d,%d,%d,%d\n", out_buffer_base, offset, xx, y, n);
+@ armwave.c:184:                         printf("0x%08x,%6d,%6d,%6d,%6d\n", out_buffer_base, offset, xx, y, n);
 	.loc 1 184 25 discriminator 3 view .LVU241
 	mov	r2, r5	@, offset
 	ldr	r0, .L46+20	@,
@@ -2972,7 +2972,7 @@ __PRETTY_FUNCTION__.17136:
 .LC6:
 	.ascii	"iter...\000"
 .LC7:
-	.ascii	"0x%08x,%d,%d,%d,%d\012\000"
+	.ascii	"0x%08x,%6d,%6d,%6d,%6d\012\000"
 .LC8:
 	.ascii	"...done paint %d pixels...\012\000"
 .LC9:

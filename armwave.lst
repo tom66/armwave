@@ -944,7 +944,7 @@
  181:armwave.c     **** 
  182:armwave.c     ****                     for(y = yy; y < ye; y++) {
  183:armwave.c     ****                         offset = (xx + (y * g_armwave_state.target_width)); 
- 184:armwave.c     ****                         printf("0x%08x,%d,%d,%d,%d\n", out_buffer_base, offset, xx, y, n);
+ 184:armwave.c     ****                         printf("0x%08x,%6d,%6d,%6d,%6d\n", out_buffer_base, offset, xx, y, n);
  185:armwave.c     ****                         *(out_buffer_base + offset) = word;
  186:armwave.c     ****                         painted++;
  187:armwave.c     ****                     }
@@ -1240,19 +1240,19 @@
  907 03dc 0C80A0E1 		mov	r8, ip	@ n, n
  908              	.LVL61:
  909              	.L30:
- 183:armwave.c     ****                         printf("0x%08x,%d,%d,%d,%d\n", out_buffer_base, offset, xx, y, n);
+ 183:armwave.c     ****                         printf("0x%08x,%6d,%6d,%6d,%6d\n", out_buffer_base, offset, xx, y, n);
  910              		.loc 1 183 25 is_stmt 1 discriminator 3 view .LVU235
  911              	@ armwave.c:183:                         offset = (xx + (y * g_armwave_state.target_width)); 
- 183:armwave.c     ****                         printf("0x%08x,%d,%d,%d,%d\n", out_buffer_base, offset, xx, y, n);
+ 183:armwave.c     ****                         printf("0x%08x,%6d,%6d,%6d,%6d\n", out_buffer_base, offset, xx, y, n);
  912              		.loc 1 183 43 is_stmt 0 discriminator 3 view .LVU236
  913 03e0 58509AE5 		ldr	r5, [r10, #88]	@ g_armwave_state.target_width, g_armwave_state.target_width
- 914              	@ armwave.c:184:                         printf("0x%08x,%d,%d,%d,%d\n", out_buffer_base, offset, xx
+ 914              	@ armwave.c:184:                         printf("0x%08x,%6d,%6d,%6d,%6d\n", out_buffer_base, offset
  184:armwave.c     ****                         *(out_buffer_base + offset) = word;
  915              		.loc 1 184 25 discriminator 3 view .LVU237
  916 03e4 10018DE8 		stm	sp, {r4, r8}	@,,
  917 03e8 0630A0E1 		mov	r3, r6	@, xx
  918              	@ armwave.c:183:                         offset = (xx + (y * g_armwave_state.target_width)); 
- 183:armwave.c     ****                         printf("0x%08x,%d,%d,%d,%d\n", out_buffer_base, offset, xx, y, n);
+ 183:armwave.c     ****                         printf("0x%08x,%6d,%6d,%6d,%6d\n", out_buffer_base, offset, xx, y, n);
  919              		.loc 1 183 32 discriminator 3 view .LVU238
  920 03ec 956425E0 		mla	r5, r5, r4, r6	@ offset, g_armwave_state.target_width, y, xx
  921              	.LVL62:
@@ -1264,7 +1264,7 @@
  925              		.loc 1 182 42 is_stmt 0 discriminator 3 view .LVU240
  926 03f4 014084E2 		add	r4, r4, #1	@ y, y,
  927              	.LVL63:
- 928              	@ armwave.c:184:                         printf("0x%08x,%d,%d,%d,%d\n", out_buffer_base, offset, xx
+ 928              	@ armwave.c:184:                         printf("0x%08x,%6d,%6d,%6d,%6d\n", out_buffer_base, offset
  184:armwave.c     ****                         *(out_buffer_base + offset) = word;
  929              		.loc 1 184 25 discriminator 3 view .LVU241
  930 03f8 0520A0E1 		mov	r2, r5	@, offset
@@ -1339,7 +1339,7 @@
  986 0454 84000000 		.word	.LC4
  987 0458 9C000000 		.word	.LC5
  988 045c FC000000 		.word	.LC6
- 989 0460 18010000 		.word	.LC8
+ 989 0460 1C010000 		.word	.LC8
  990 0464 04010000 		.word	.LC7
  991              		.cfi_endproc
  992              	.LFE60:
@@ -1504,7 +1504,7 @@
  1115              		.align	2
  1116              	.L56:
  1117 04fc 00000000 		.word	g_armwave_state
- 1118 0500 34010000 		.word	.LC9
+ 1118 0500 38010000 		.word	.LC9
  1119              		.cfi_endproc
  1120              	.LFE61:
  1122              		.align	2
@@ -2017,15 +2017,15 @@
  1472 06c4 0000803F 		.word	1065353216
  1473 06c8 00007F43 		.word	1132396544
  1474 06cc 00008047 		.word	1199570944
- 1475 06d0 68010000 		.word	.LC10
+ 1475 06d0 6C010000 		.word	.LC10
  1476 06d4 00000000 		.word	g_armwave_state
- 1477 06d8 B8010000 		.word	.LC13
- 1478 06dc 5C020000 		.word	.LC15
+ 1477 06d8 BC010000 		.word	.LC13
+ 1478 06dc 60020000 		.word	.LC15
  1479 06e0 00000000 		.word	.LANCHOR0
- 1480 06e4 94010000 		.word	.LC11
- 1481 06e8 A0010000 		.word	.LC12
+ 1480 06e4 98010000 		.word	.LC11
+ 1481 06e8 A4010000 		.word	.LC12
  1482 06ec 00000000 		.word	stderr
- 1483 06f0 18020000 		.word	.LC14
+ 1483 06f0 1C020000 		.word	.LC14
  1484              		.cfi_endproc
  1485              	.LFE62:
  1487              		.align	2
@@ -2086,8 +2086,8 @@
  1530              	.L76:
  1531 0720 00000000 		.word	g_armwave_state
  1532 0724 18000000 		.word	.LANCHOR0+24
- 1533 0728 94010000 		.word	.LC11
- 1534 072c 80020000 		.word	.LC16
+ 1533 0728 98010000 		.word	.LC11
+ 1534 072c 84020000 		.word	.LC16
  1535              		.cfi_endproc
  1536              	.LFE63:
  1538              		.align	2
@@ -2156,7 +2156,7 @@
  1585              		.align	2
  1586              	.L81:
  1587 075c 00000000 		.word	g_armwave_state
- 1588 0760 94020000 		.word	.LC17
+ 1588 0760 98020000 		.word	.LC17
  1589              		.cfi_endproc
  1590              	.LFE64:
  1592              		.align	2
@@ -2217,8 +2217,8 @@
  1635              	.L89:
  1636 0790 00000000 		.word	g_armwave_state
  1637 0794 34000000 		.word	.LANCHOR0+52
- 1638 0798 94010000 		.word	.LC11
- 1639 079c D0020000 		.word	.LC18
+ 1638 0798 98010000 		.word	.LC11
+ 1639 079c D4020000 		.word	.LC18
  1640              		.cfi_endproc
  1641              	.LFE65:
  1643              		.align	2
@@ -2543,12 +2543,12 @@
  1894              		.loc 1 404 5 view .LVU478
  1895              		.align	2
  1896              	.L106:
- 1897 08b0 E8020000 		.word	.LC19
+ 1897 08b0 EC020000 		.word	.LC19
  1898 08b4 00000000 		.word	g_armwave_state
- 1899 08b8 EC020000 		.word	.LC20
- 1900 08bc F0020000 		.word	.LC21
- 1901 08c0 F8020000 		.word	.LC22
- 1902 08c4 00030000 		.word	.LC23
+ 1899 08b8 F0020000 		.word	.LC20
+ 1900 08bc F4020000 		.word	.LC21
+ 1901 08c0 FC020000 		.word	.LC22
+ 1902 08c4 04030000 		.word	.LC23
  1903              		.cfi_endproc
  1904              	.LFE68:
  1906              		.align	2
@@ -3020,7 +3020,7 @@
  2280              		.align	2
  2281              	.L128:
  2282 0a2c 00000000 		.word	g_armwave_state
- 2283 0a30 10030000 		.word	.LC24
+ 2283 0a30 14030000 		.word	.LC24
  2284              		.cfi_endproc
  2285              	.LFE73:
  2287              		.align	2
@@ -3635,7 +3635,7 @@
  2403              		.align	2
  2404              	.L135:
  2405 0aa0 00000000 		.word	_Py_TrueStruct
- 2406 0aa4 64030000 		.word	.LC25
+ 2406 0aa4 68030000 		.word	.LC25
  2407 0aa8 00000000 		.word	_Py_FalseStruct
  2408              		.cfi_endproc
  2409              	.LFE74:
@@ -4225,8 +4225,8 @@
  2855 0cb4 0000FE42 		.word	1123942400
  2856 0cb8 00000043 		.word	1124073472
  2857 0cbc 00000000 		.word	g_armwave_state
- 2858 0cc0 B8030000 		.word	.LC26
- 2859 0cc4 10030000 		.word	.LC24
+ 2858 0cc0 BC030000 		.word	.LC26
+ 2859 0cc4 14030000 		.word	.LC24
  2860              	.LBE39:
  2861              	.LBE42:
  2862              		.cfi_endproc
@@ -4434,137 +4434,137 @@
  2973 00fc 69746572 		.ascii	"iter...\000"
  2973      2E2E2E00 
  2974              	.LC7:
- 2975 0104 30782530 		.ascii	"0x%08x,%d,%d,%d,%d\012\000"
+ 2975 0104 30782530 		.ascii	"0x%08x,%6d,%6d,%6d,%6d\012\000"
  2975      38782C25 
- 2975      642C2564 
- 2975      2C25642C 
- 2975      25640A00 
+ 2975      36642C25 
+ 2975      36642C25 
+ 2975      36642C25 
  2976              	.LC8:
- 2977 0118 2E2E2E64 		.ascii	"...done paint %d pixels...\012\000"
+ 2977 011c 2E2E2E64 		.ascii	"...done paint %d pixels...\012\000"
  2977      6F6E6520 
  2977      7061696E 
  2977      74202564 
  2977      20706978 
  2978              	.LC9:
- 2979 0134 61726D77 		.ascii	"armwave_generate: slice %d (y=%d, h=%d, xpos=%d)\012"
+ 2979 0138 61726D77 		.ascii	"armwave_generate: slice %d (y=%d, h=%d, xpos=%d)\012"
  2979      6176655F 
  2979      67656E65 
  2979      72617465 
  2979      3A20736C 
- 2980 0165 00       		.ascii	"\000"
- 2981 0166 0000     		.space	2
+ 2980 0169 00       		.ascii	"\000"
+ 2981 016a 0000     		.space	2
  2982              	.LC10:
- 2983 0168 733D2564 		.ascii	"s=%d e=%d w=%d ws=%d tw=%d th=%d rf=0x%08x\012\000"
+ 2983 016c 733D2564 		.ascii	"s=%d e=%d w=%d ws=%d tw=%d th=%d rf=0x%08x\012\000"
  2983      20653D25 
  2983      6420773D 
  2983      25642077 
  2983      733D2564 
  2984              	.LC11:
- 2985 0194 61726D77 		.ascii	"armwave.c\000"
+ 2985 0198 61726D77 		.ascii	"armwave.c\000"
  2985      6176652E 
  2985      6300
- 2986 019e 0000     		.space	2
+ 2986 01a2 0000     		.space	2
  2987              	.LC12:
- 2988 01a0 73746172 		.ascii	"start_point < end_point\000"
+ 2988 01a4 73746172 		.ascii	"start_point < end_point\000"
  2988      745F706F 
  2988      696E7420 
  2988      3C20656E 
  2988      645F706F 
  2989              	.LC13:
- 2990 01b8 63685F62 		.ascii	"ch_buff_size=%d, cmp_x_bitdepth_scale=%d (0x%08x), "
+ 2990 01bc 63685F62 		.ascii	"ch_buff_size=%d, cmp_x_bitdepth_scale=%d (0x%08x), "
  2990      7566665F 
  2990      73697A65 
  2990      3D25642C 
  2990      20636D70 
- 2991 01eb 74617267 		.ascii	"targ_width=%d, wave_length=%d, scaler=%d\012\000"
+ 2991 01ef 74617267 		.ascii	"targ_width=%d, wave_length=%d, scaler=%d\012\000"
  2991      5F776964 
  2991      74683D25 
  2991      642C2077 
  2991      6176655F 
- 2992 0215 000000   		.space	3
+ 2992 0219 000000   		.space	3
  2993              	.LC14:
- 2994 0218 6D616C6C 		.ascii	"malloc failure allocating %d bytes (g_armwave_state"
+ 2994 021c 6D616C6C 		.ascii	"malloc failure allocating %d bytes (g_armwave_state"
  2994      6F632066 
  2994      61696C75 
  2994      72652061 
  2994      6C6C6F63 
- 2995 024b 2E636831 		.ascii	".ch1_buffer)\012\000"
+ 2995 024f 2E636831 		.ascii	".ch1_buffer)\012\000"
  2995      5F627566 
  2995      66657229 
  2995      0A00
- 2996 0259 000000   		.space	3
+ 2996 025d 000000   		.space	3
  2997              	.LC15:
- 2998 025c 50747273 		.ascii	"Ptrs: 0x%08x 0x%08x 0x%08x 0x%08x \012\000"
+ 2998 0260 50747273 		.ascii	"Ptrs: 0x%08x 0x%08x 0x%08x 0x%08x \012\000"
  2998      3A203078 
  2998      25303878 
  2998      20307825 
  2998      30387820 
  2999              	.LC16:
- 3000 0280 77617665 		.ascii	"wave_buffer != NULL\000"
+ 3000 0284 77617665 		.ascii	"wave_buffer != NULL\000"
  3000      5F627566 
  3000      66657220 
  3000      213D204E 
  3000      554C4C00 
  3001              	.LC17:
- 3002 0294 61726D77 		.ascii	"armwave_set_wave_pointer_as_testbuf: error, nsets e"
+ 3002 0298 61726D77 		.ascii	"armwave_set_wave_pointer_as_testbuf: error, nsets e"
  3002      6176655F 
  3002      7365745F 
  3002      77617665 
  3002      5F706F69 
- 3003 02c7 78636565 		.ascii	"xceeded\000"
+ 3003 02cb 78636565 		.ascii	"xceeded\000"
  3003      64656400 
- 3004 02cf 00       		.space	1
+ 3004 02d3 00       		.space	1
  3005              	.LC18:
- 3006 02d0 77617665 		.ascii	"wave_buffer_ptr != 0\000"
+ 3006 02d4 77617665 		.ascii	"wave_buffer_ptr != 0\000"
  3006      5F627566 
  3006      6665725F 
  3006      70747220 
  3006      213D2030 
- 3007 02e5 000000   		.space	3
+ 3007 02e9 000000   		.space	3
  3008              	.LC19:
- 3009 02e8 776200   		.ascii	"wb\000"
- 3010 02eb 00       		.space	1
+ 3009 02ec 776200   		.ascii	"wb\000"
+ 3010 02ef 00       		.space	1
  3011              	.LC20:
- 3012 02ec 50330A00 		.ascii	"P3\012\000"
+ 3012 02f0 50330A00 		.ascii	"P3\012\000"
  3013              	.LC21:
- 3014 02f0 25642025 		.ascii	"%d %d\012\000"
+ 3014 02f4 25642025 		.ascii	"%d %d\012\000"
  3014      640A00
- 3015 02f7 00       		.space	1
+ 3015 02fb 00       		.space	1
  3016              	.LC22:
- 3017 02f8 3235350A 		.ascii	"255\012\000"
+ 3017 02fc 3235350A 		.ascii	"255\012\000"
  3017      00
- 3018 02fd 000000   		.space	3
+ 3018 0301 000000   		.space	3
  3019              	.LC23:
- 3020 0300 25336420 		.ascii	"%3d %3d %3d\012\000"
+ 3020 0304 25336420 		.ascii	"%3d %3d %3d\012\000"
  3020      25336420 
  3020      2533640A 
  3020      00
- 3021 030d 000000   		.space	3
+ 3021 0311 000000   		.space	3
  3022              	.LC24:
- 3023 0310 61726D77 		.ascii	"armwave_test_buffer_alloc: failed to allocate test "
+ 3023 0314 61726D77 		.ascii	"armwave_test_buffer_alloc: failed to allocate test "
  3023      6176655F 
  3023      74657374 
  3023      5F627566 
  3023      6665725F 
- 3024 0343 77617665 		.ascii	"wave buffer (%d bytes, %d sets)\012\000"
+ 3024 0347 77617665 		.ascii	"wave buffer (%d bytes, %d sets)\012\000"
  3024      20627566 
  3024      66657220 
  3024      28256420 
  3024      62797465 
  3025              	.LC25:
- 3026 0364 61726D77 		.ascii	"armwave_fill_pixbuf_into_pybuffer: PyObject_GetBuff"
+ 3026 0368 61726D77 		.ascii	"armwave_fill_pixbuf_into_pybuffer: PyObject_GetBuff"
  3026      6176655F 
  3026      66696C6C 
  3026      5F706978 
  3026      6275665F 
- 3027 0397 65722829 		.ascii	"er() failed, returning PyFalse\000"
+ 3027 039b 65722829 		.ascii	"er() failed, returning PyFalse\000"
  3027      20666169 
  3027      6C65642C 
  3027      20726574 
  3027      75726E69 
- 3028 03b6 0000     		.space	2
+ 3028 03ba 0000     		.space	2
  3029              	.LC26:
- 3030 03b8 43616C63 		.ascii	"Calculating test set %d\012\000"
+ 3030 03bc 43616C63 		.ascii	"Calculating test set %d\012\000"
  3030      756C6174 
  3030      696E6720 
  3030      74657374 
