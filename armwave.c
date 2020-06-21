@@ -150,7 +150,7 @@ void armwave_fill_pixbuf_scaled(uint32_t *out_buffer)
         wave_word = *base_32ptr++;
 
         if(n % 200 == 0) {
-           printf("%d,", n);
+           printf("%d\n", n);
         }
 
         if(COND_UNLIKELY(wave_word != 0)) {
