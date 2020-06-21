@@ -109,6 +109,8 @@ void render_nonaa_to_buffer_1ch_slice(uint32_t slice_y, uint32_t height)
             }
         }
     }
+
+    printf("wb_end=%d\n", write_buffer - write_buffer_base);
 }
 
 /*
