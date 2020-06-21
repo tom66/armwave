@@ -147,7 +147,8 @@ void armwave_fill_pixbuf_scaled(uint32_t *out_buffer)
 
     for(n = 0; n < npix; n += 2) {
         //wave_word = g_armwave_state.ch1_buffer[n]
-        wave_word = *base_32ptr++;
+        wave_word = 0x12345678;
+        //wave_word = *base_32ptr++;
 
         if(n % 200 == 0) {
            printf("%d\n", n);
