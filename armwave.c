@@ -117,7 +117,7 @@ void render_nonaa_to_buffer_1ch_slice(uint32_t slice_y, uint32_t height)
  */
 void armwave_fill_pixbuf_scaled(uint32_t *out_buffer)
 {
-    uint32_t xx, yy, ye, y, word, wave_word;
+    uint32_t xx, yy, ye, y, word, wave_word, painted = 0;
     // uint32_t ysub;
     int rr, gg, bb, n, nsub, npix, w;
     uint8_t r, g, b;
@@ -127,14 +127,20 @@ void armwave_fill_pixbuf_scaled(uint32_t *out_buffer)
     uint32_t *out_buffer_base = out_buffer;
     uint32_t offset;
 
+    printf("output buffer: 0x%08x\n", out_buffer);
+
     if(out_buffer == NULL)
         return;
+
+    npix = g_armwave_state.target_width * g_armwave_state.bitdepth_height; 
+    
+    printf("memset %d bytes, npix %d, base32_ptr 0x%08x\n", g_armwave_state.target_width * g_armwave_state.target_height * 4, npix, base_32ptr);
 
     // we don't really want to be doing this if possible;  os.madvise may be a better option
     memset(out_buffer, 0x00, g_armwave_state.target_width * g_armwave_state.target_height * 4);
 
-    npix = g_armwave_state.target_width * g_armwave_state.bitdepth_height; 
-    
+    printf("iter...\n");
+
     for(n = 0; n < npix; n += 2) {
         //wave_word = g_armwave_state.ch1_buffer[n]
         wave_word = *base_32ptr++;
@@ -165,11 +171,14 @@ void armwave_fill_pixbuf_scaled(uint32_t *out_buffer)
                     for(y = yy; y < ye; y++) {
                         offset = (xx + (y * g_armwave_state.target_width)); 
                         *(out_buffer_base + offset) = word;
+                        painted++;
                     }
                 }
             }
         }
     }
+
+    printf("done paint %d pixels...\n", painted);
 }
 
 /*
