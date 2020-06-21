@@ -872,7 +872,7 @@
  656 02bc 040000EA 		b	.L33		@
  657              	.LVL36:
  658              	.L28:
- 153:armwave.c     ****            printf("%d,", n);
+ 153:armwave.c     ****            printf("%d\n", n);
  154:armwave.c     ****         }
  155:armwave.c     **** 
  156:armwave.c     ****         if(COND_UNLIKELY(wave_word != 0)) {
@@ -898,7 +898,7 @@
  150:armwave.c     **** 
  676              		.loc 1 150 9 is_stmt 1 view .LVU157
  677              	@ armwave.c:152:         if(n % 200 == 0) {
- 152:armwave.c     ****            printf("%d,", n);
+ 152:armwave.c     ****            printf("%d\n", n);
  678              		.loc 1 152 14 is_stmt 0 view .LVU158
  679 02d4 9B24C3E0 		smull	r2, r3, fp, r4	@ tmp283, tmp207, tmp208, n
  680              	@ armwave.c:150:         wave_word = *base_32ptr++;
@@ -906,17 +906,17 @@
  681              		.loc 1 150 19 view .LVU159
  682 02d8 045099E4 		ldr	r5, [r9], #4	@ wave_word, MEM[base: base_32ptr_79, offset: 4294967292B]
  683              	.LVL40:
- 152:armwave.c     ****            printf("%d,", n);
+ 152:armwave.c     ****            printf("%d\n", n);
  684              		.loc 1 152 9 is_stmt 1 view .LVU160
  685              	@ armwave.c:152:         if(n % 200 == 0) {
- 152:armwave.c     ****            printf("%d,", n);
+ 152:armwave.c     ****            printf("%d\n", n);
  686              		.loc 1 152 14 is_stmt 0 view .LVU161
  687 02dc C42FA0E1 		asr	r2, r4, #31	@ tmp210, n,
  688 02e0 433362E0 		rsb	r3, r2, r3, asr #6	@ tmp206, tmp210, tmp207,
  689 02e4 033183E0 		add	r3, r3, r3, lsl #2	@ tmp213, tmp206, tmp206,
  690 02e8 033183E0 		add	r3, r3, r3, lsl #2	@ tmp215, tmp213, tmp213,
  691              	@ armwave.c:152:         if(n % 200 == 0) {
- 152:armwave.c     ****            printf("%d,", n);
+ 152:armwave.c     ****            printf("%d\n", n);
  692              		.loc 1 152 11 view .LVU162
  693 02ec 830154E1 		cmp	r4, r3, lsl #3	@ n, tmp215,
  694 02f0 F2FFFF1A 		bne	.L28		@,
@@ -4404,7 +4404,7 @@
  2967 00e8 69746572 		.ascii	"iter...\000"
  2967      2E2E2E00 
  2968              	.LC7:
- 2969 00f0 25642C00 		.ascii	"%d,\000"
+ 2969 00f0 25640A00 		.ascii	"%d\012\000"
  2970              	.LC8:
  2971 00f4 2E2E2E64 		.ascii	"...done paint %d pixels...\012\000"
  2971      6F6E6520 

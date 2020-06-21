@@ -2966,7 +2966,7 @@ __PRETTY_FUNCTION__.17136:
 .LC6:
 	.ascii	"iter...\000"
 .LC7:
-	.ascii	"%d,\000"
+	.ascii	"%d\012\000"
 .LC8:
 	.ascii	"...done paint %d pixels...\012\000"
 .LC9:
