@@ -150,9 +150,11 @@ void armwave_fill_pixbuf_scaled(uint32_t *out_buffer)
         //wave_word = 0x12345678;
         wave_word = *base_32ptr++;
 
+        /*
         if(n % 200 == 0) {
            printf("%d\n", n);
         }
+        */
 
         if(COND_UNLIKELY(wave_word != 0)) {
             for(w = 0; w < 2; w++) {
@@ -179,7 +181,8 @@ void armwave_fill_pixbuf_scaled(uint32_t *out_buffer)
 
                     for(y = yy; y < ye; y++) {
                         offset = (xx + (y * g_armwave_state.target_width)); 
-                        //*(out_buffer_base + offset) = word;
+                        printf("%d,%d,%d\n", offset, xx, y);
+                        *(out_buffer_base + offset) = word;
                         painted++;
                     }
                 }
