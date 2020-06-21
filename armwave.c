@@ -184,7 +184,7 @@ void armwave_fill_pixbuf_scaled(uint32_t *out_buffer)
         }
     }
 
-    printf("...done %d pixels...\n", painted);
+    printf("...done paint %d pixels...\n", painted);
 }
 
 /*
