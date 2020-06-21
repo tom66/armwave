@@ -179,7 +179,7 @@ void armwave_fill_pixbuf_scaled(uint32_t *out_buffer)
                     xx = (nsub >> 8) / 2;
 
                     for(y = yy; y < ye; y++) {
-                        offset = (xx + (y * g_armwave_state.target_width)); 
+                        offset = (xx + ((g_armwave_state.target_height - y) * g_armwave_state.target_width)); 
                         //printf("0x%08x,%6d,%6d,%6d,%6d,%4d,%.3f\n", out_buffer_base, offset, xx, y, n, g_armwave_state.target_width, g_armwave_state.vscale_frac);
                         *(out_buffer_base + offset) = word;
                         painted++;
