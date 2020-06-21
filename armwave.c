@@ -134,7 +134,9 @@ void armwave_fill_pixbuf_scaled(uint32_t *out_buffer)
 
     npix = g_armwave_state.target_width * g_armwave_state.bitdepth_height; 
     
-    printf("memset %d bytes, npix %d, base32_ptr 0x%08x\n", g_armwave_state.target_width * g_armwave_state.target_height * 4, npix, base_32ptr);
+    printf("memset %d bytes, npix %d, chbuff sz %d, base32_ptr 0x%08x, stack ~0x%08x\n", \
+        g_armwave_state.target_width * g_armwave_state.target_height * 4, npix, \
+        g_armwave_state.ch_buff_size, base_32ptr, &w);
 
     // we don't really want to be doing this if possible;  os.madvise may be a better option
     memset(out_buffer, 0x00, g_armwave_state.target_width * g_armwave_state.target_height * 4);
