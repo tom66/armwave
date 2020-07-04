@@ -555,7 +555,12 @@ void armwave_set_channel_colour(int ch, int r, int g, int b, float i, int pri_se
 void armwave_set_channel_palette(int ch, int palette)
 {
     // Channels are 1-4 externally, 0-3 internally
-    armwave_prep_yuv_palette(ch - 1, palette);
+    // Only 1ch supported for now
+    switch(ch) {
+        case 1:
+            armwave_prep_yuv_palette(0, palette, &g_armwave_state.ch1_color_a, &g_armwave_state.ch1_color_b);
+            break;
+    }
 }
 
 /*
