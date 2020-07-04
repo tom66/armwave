@@ -142,8 +142,8 @@ struct armwave_state_t {
 void rgb2yuv(struct armwave_rgb_t *rgb_in, struct armwave_yuv_t *yuv_out);
 void hsv2rgb(struct armwave_hsv_t *hsv_in, struct armwave_rgb_t *rgb_out);
 
-static void plot_pixel_yuv(XvImage *img, int x, int y, struct armwave_yuv_t *yuv_in);
-static void plot_pixel_yuv_fastq(XvImage *img, int x, int y, struct armwave_yuv_t *yuv_in);
+//static void plot_pixel_yuv(XvImage *img, int x, int y, struct armwave_yuv_t *yuv_in);
+//static void plot_pixel_yuv_fastq(XvImage *img, int x, int y, struct armwave_yuv_t *yuv_in);
 
 void fill_rgb_xvimage(XvImage *img, struct armwave_rgb_t *rgb);
 

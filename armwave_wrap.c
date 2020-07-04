@@ -4135,135 +4135,6 @@ SWIG_From_float  (float value)
   return SWIG_From_double  (value);
 }
 
-
-SWIGINTERN swig_type_info*
-SWIG_pchar_descriptor(void)
-{
-  static int init = 0;
-  static swig_type_info* info = 0;
-  if (!init) {
-    info = SWIG_TypeQuery("_p_char");
-    init = 1;
-  }
-  return info;
-}
-
-
-SWIGINTERN int
-SWIG_AsCharPtrAndSize(PyObject *obj, char** cptr, size_t* psize, int *alloc)
-{
-#if PY_VERSION_HEX>=0x03000000
-#if defined(SWIG_PYTHON_STRICT_BYTE_CHAR)
-  if (PyBytes_Check(obj))
-#else
-  if (PyUnicode_Check(obj))
-#endif
-#else  
-  if (PyString_Check(obj))
-#endif
-  {
-    char *cstr; Py_ssize_t len;
-#if PY_VERSION_HEX>=0x03000000
-#if !defined(SWIG_PYTHON_STRICT_BYTE_CHAR)
-    if (!alloc && cptr) {
-        /* We can't allow converting without allocation, since the internal
-           representation of string in Python 3 is UCS-2/UCS-4 but we require
-           a UTF-8 representation.
-           TODO(bhy) More detailed explanation */
-        return SWIG_RuntimeError;
-    }
-    obj = PyUnicode_AsUTF8String(obj);
-    if(alloc) *alloc = SWIG_NEWOBJ;
-#endif
-    PyBytes_AsStringAndSize(obj, &cstr, &len);
-#else
-    PyString_AsStringAndSize(obj, &cstr, &len);
-#endif
-    if (cptr) {
-      if (alloc) {
-	/* 
-	   In python the user should not be able to modify the inner
-	   string representation. To warranty that, if you define
-	   SWIG_PYTHON_SAFE_CSTRINGS, a new/copy of the python string
-	   buffer is always returned.
-
-	   The default behavior is just to return the pointer value,
-	   so, be careful.
-	*/ 
-#if defined(SWIG_PYTHON_SAFE_CSTRINGS)
-	if (*alloc != SWIG_OLDOBJ) 
-#else
-	if (*alloc == SWIG_NEWOBJ) 
-#endif
-	{
-	  *cptr = (char *)memcpy(malloc((len + 1)*sizeof(char)), cstr, sizeof(char)*(len + 1));
-	  *alloc = SWIG_NEWOBJ;
-	} else {
-	  *cptr = cstr;
-	  *alloc = SWIG_OLDOBJ;
-	}
-      } else {
-#if PY_VERSION_HEX>=0x03000000
-#if defined(SWIG_PYTHON_STRICT_BYTE_CHAR)
-	*cptr = PyBytes_AsString(obj);
-#else
-	assert(0); /* Should never reach here with Unicode strings in Python 3 */
-#endif
-#else
-	*cptr = SWIG_Python_str_AsChar(obj);
-#endif
-      }
-    }
-    if (psize) *psize = len + 1;
-#if PY_VERSION_HEX>=0x03000000 && !defined(SWIG_PYTHON_STRICT_BYTE_CHAR)
-    Py_XDECREF(obj);
-#endif
-    return SWIG_OK;
-  } else {
-#if defined(SWIG_PYTHON_2_UNICODE)
-#if defined(SWIG_PYTHON_STRICT_BYTE_CHAR)
-#error "Cannot use both SWIG_PYTHON_2_UNICODE and SWIG_PYTHON_STRICT_BYTE_CHAR at once"
-#endif
-#if PY_VERSION_HEX<0x03000000
-    if (PyUnicode_Check(obj)) {
-      char *cstr; Py_ssize_t len;
-      if (!alloc && cptr) {
-        return SWIG_RuntimeError;
-      }
-      obj = PyUnicode_AsUTF8String(obj);
-      if (PyString_AsStringAndSize(obj, &cstr, &len) != -1) {
-        if (cptr) {
-          if (alloc) *alloc = SWIG_NEWOBJ;
-          *cptr = (char *)memcpy(malloc((len + 1)*sizeof(char)), cstr, sizeof(char)*(len + 1));
-        }
-        if (psize) *psize = len + 1;
-
-        Py_XDECREF(obj);
-        return SWIG_OK;
-      } else {
-        Py_XDECREF(obj);
-      }
-    }
-#endif
-#endif
-
-    swig_type_info* pchar_descriptor = SWIG_pchar_descriptor();
-    if (pchar_descriptor) {
-      void* vptr = 0;
-      if (SWIG_ConvertPtr(obj, &vptr, pchar_descriptor, 0) == SWIG_OK) {
-	if (cptr) *cptr = (char *) vptr;
-	if (psize) *psize = vptr ? (strlen((char *)vptr) + 1) : 0;
-	if (alloc) *alloc = SWIG_OLDOBJ;
-	return SWIG_OK;
-      }
-    }
-  }
-  return SWIG_TypeError;
-}
-
-
-
-
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -7137,102 +7008,6 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_plot_pixel_yuv(PyObject *self, PyObject *args) {
-  PyObject *resultobj = 0;
-  XvImage *arg1 = (XvImage *) 0 ;
-  int arg2 ;
-  int arg3 ;
-  struct armwave_yuv_t *arg4 = (struct armwave_yuv_t *) 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  int val2 ;
-  int ecode2 = 0 ;
-  int val3 ;
-  int ecode3 = 0 ;
-  void *argp4 = 0 ;
-  int res4 = 0 ;
-  PyObject * obj0 = 0 ;
-  PyObject * obj1 = 0 ;
-  PyObject * obj2 = 0 ;
-  PyObject * obj3 = 0 ;
-  
-  if (!PyArg_ParseTuple(args,(char *)"OOOO:plot_pixel_yuv",&obj0,&obj1,&obj2,&obj3)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_XvImage, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "plot_pixel_yuv" "', argument " "1"" of type '" "XvImage *""'"); 
-  }
-  arg1 = (XvImage *)(argp1);
-  ecode2 = SWIG_AsVal_int(obj1, &val2);
-  if (!SWIG_IsOK(ecode2)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "plot_pixel_yuv" "', argument " "2"" of type '" "int""'");
-  } 
-  arg2 = (int)(val2);
-  ecode3 = SWIG_AsVal_int(obj2, &val3);
-  if (!SWIG_IsOK(ecode3)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "plot_pixel_yuv" "', argument " "3"" of type '" "int""'");
-  } 
-  arg3 = (int)(val3);
-  res4 = SWIG_ConvertPtr(obj3, &argp4,SWIGTYPE_p_armwave_yuv_t, 0 |  0 );
-  if (!SWIG_IsOK(res4)) {
-    SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "plot_pixel_yuv" "', argument " "4"" of type '" "struct armwave_yuv_t *""'"); 
-  }
-  arg4 = (struct armwave_yuv_t *)(argp4);
-  plot_pixel_yuv(arg1,arg2,arg3,arg4);
-  resultobj = SWIG_Py_Void();
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_plot_pixel_yuv_fastq(PyObject *self, PyObject *args) {
-  PyObject *resultobj = 0;
-  XvImage *arg1 = (XvImage *) 0 ;
-  int arg2 ;
-  int arg3 ;
-  struct armwave_yuv_t *arg4 = (struct armwave_yuv_t *) 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  int val2 ;
-  int ecode2 = 0 ;
-  int val3 ;
-  int ecode3 = 0 ;
-  void *argp4 = 0 ;
-  int res4 = 0 ;
-  PyObject * obj0 = 0 ;
-  PyObject * obj1 = 0 ;
-  PyObject * obj2 = 0 ;
-  PyObject * obj3 = 0 ;
-  
-  if (!PyArg_ParseTuple(args,(char *)"OOOO:plot_pixel_yuv_fastq",&obj0,&obj1,&obj2,&obj3)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_XvImage, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "plot_pixel_yuv_fastq" "', argument " "1"" of type '" "XvImage *""'"); 
-  }
-  arg1 = (XvImage *)(argp1);
-  ecode2 = SWIG_AsVal_int(obj1, &val2);
-  if (!SWIG_IsOK(ecode2)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "plot_pixel_yuv_fastq" "', argument " "2"" of type '" "int""'");
-  } 
-  arg2 = (int)(val2);
-  ecode3 = SWIG_AsVal_int(obj2, &val3);
-  if (!SWIG_IsOK(ecode3)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "plot_pixel_yuv_fastq" "', argument " "3"" of type '" "int""'");
-  } 
-  arg3 = (int)(val3);
-  res4 = SWIG_ConvertPtr(obj3, &argp4,SWIGTYPE_p_armwave_yuv_t, 0 |  0 );
-  if (!SWIG_IsOK(res4)) {
-    SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "plot_pixel_yuv_fastq" "', argument " "4"" of type '" "struct armwave_yuv_t *""'"); 
-  }
-  arg4 = (struct armwave_yuv_t *)(argp4);
-  plot_pixel_yuv_fastq(arg1,arg2,arg3,arg4);
-  resultobj = SWIG_Py_Void();
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
 SWIGINTERN PyObject *_wrap_fill_rgb_xvimage(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
   XvImage *arg1 = (XvImage *) 0 ;
@@ -7725,39 +7500,6 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_dump_ppm_debug(PyObject *self, PyObject *args) {
-  PyObject *resultobj = 0;
-  uint32_t *arg1 = (uint32_t *) 0 ;
-  char *arg2 = (char *) 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  int res2 ;
-  char *buf2 = 0 ;
-  int alloc2 = 0 ;
-  PyObject * obj0 = 0 ;
-  PyObject * obj1 = 0 ;
-  
-  if (!PyArg_ParseTuple(args,(char *)"OO:dump_ppm_debug",&obj0,&obj1)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_unsigned_int, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "dump_ppm_debug" "', argument " "1"" of type '" "uint32_t *""'"); 
-  }
-  arg1 = (uint32_t *)(argp1);
-  res2 = SWIG_AsCharPtrAndSize(obj1, &buf2, NULL, &alloc2);
-  if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "dump_ppm_debug" "', argument " "2"" of type '" "char *""'");
-  }
-  arg2 = (char *)(buf2);
-  armwave_dump_ppm_debug(arg1,arg2);
-  resultobj = SWIG_Py_Void();
-  if (alloc2 == SWIG_NEWOBJ) free((char*)buf2);
-  return resultobj;
-fail:
-  if (alloc2 == SWIG_NEWOBJ) free((char*)buf2);
-  return NULL;
-}
-
-
 SWIGINTERN PyObject *_wrap_test_buffer_alloc(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
   int arg1 ;
@@ -7818,6 +7560,93 @@ fail:
 }
 
 
+SWIGINTERN PyObject *_wrap_render_frame_x11(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  
+  if (!PyArg_ParseTuple(args,(char *)":render_frame_x11")) SWIG_fail;
+  armwave_render_frame_x11();
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_render_graticule(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  
+  if (!PyArg_ParseTuple(args,(char *)":render_graticule")) SWIG_fail;
+  armwave_render_graticule();
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_init_xvimage_shared(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  int arg1 ;
+  int arg2 ;
+  int val1 ;
+  int ecode1 = 0 ;
+  int val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:init_xvimage_shared",&obj0,&obj1)) SWIG_fail;
+  ecode1 = SWIG_AsVal_int(obj0, &val1);
+  if (!SWIG_IsOK(ecode1)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "init_xvimage_shared" "', argument " "1"" of type '" "int""'");
+  } 
+  arg1 = (int)(val1);
+  ecode2 = SWIG_AsVal_int(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "init_xvimage_shared" "', argument " "2"" of type '" "int""'");
+  } 
+  arg2 = (int)(val2);
+  armwave_init_xvimage_shared(arg1,arg2);
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_init_x11(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  
+  if (!PyArg_ParseTuple(args,(char *)":init_x11")) SWIG_fail;
+  armwave_init_x11();
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_grab_xid(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  int arg1 ;
+  int val1 ;
+  int ecode1 = 0 ;
+  PyObject * obj0 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:grab_xid",&obj0)) SWIG_fail;
+  ecode1 = SWIG_AsVal_int(obj0, &val1);
+  if (!SWIG_IsOK(ecode1)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "grab_xid" "', argument " "1"" of type '" "int""'");
+  } 
+  arg1 = (int)(val1);
+  armwave_grab_xid(arg1);
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
 SWIGINTERN PyObject *_wrap_generate(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
   
@@ -7846,8 +7675,6 @@ static PyMethodDef SwigMethods[] = {
 	 { "SWIG_PyInstanceMethod_New", SWIG_PyInstanceMethod_New, METH_O, NULL},
 	 { "rgb2yuv", _wrap_rgb2yuv, METH_VARARGS, NULL},
 	 { "hsv2rgb", _wrap_hsv2rgb, METH_VARARGS, NULL},
-	 { "plot_pixel_yuv", _wrap_plot_pixel_yuv, METH_VARARGS, NULL},
-	 { "plot_pixel_yuv_fastq", _wrap_plot_pixel_yuv_fastq, METH_VARARGS, NULL},
 	 { "fill_rgb_xvimage", _wrap_fill_rgb_xvimage, METH_VARARGS, NULL},
 	 { "prep_yuv_palette", _wrap_prep_yuv_palette, METH_VARARGS, NULL},
 	 { "render_nonaa_to_buffer_1ch_slice", _wrap_render_nonaa_to_buffer_1ch_slice, METH_VARARGS, NULL},
@@ -7862,9 +7689,13 @@ static PyMethodDef SwigMethods[] = {
 	 { "set_graticule_subcolour", _wrap_set_graticule_subcolour, METH_VARARGS, NULL},
 	 { "set_graticule_dims", _wrap_set_graticule_dims, METH_VARARGS, NULL},
 	 { "clear_buffer", _wrap_clear_buffer, METH_VARARGS, NULL},
-	 { "dump_ppm_debug", _wrap_dump_ppm_debug, METH_VARARGS, NULL},
 	 { "test_buffer_alloc", _wrap_test_buffer_alloc, METH_VARARGS, NULL},
 	 { "test_create_am_sine", _wrap_test_create_am_sine, METH_VARARGS, NULL},
+	 { "render_frame_x11", _wrap_render_frame_x11, METH_VARARGS, NULL},
+	 { "render_graticule", _wrap_render_graticule, METH_VARARGS, NULL},
+	 { "init_xvimage_shared", _wrap_init_xvimage_shared, METH_VARARGS, NULL},
+	 { "init_x11", _wrap_init_x11, METH_VARARGS, NULL},
+	 { "grab_xid", _wrap_grab_xid, METH_VARARGS, NULL},
 	 { "generate", _wrap_generate, METH_VARARGS, NULL},
 	 { "cleanup", _wrap_cleanup, METH_VARARGS, NULL},
 	 { NULL, NULL, 0, NULL }

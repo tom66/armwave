@@ -85,6 +85,9 @@ enum {
     MWM_FUNC_CLOSE = (1L << 5)
 };
 
+static void plot_pixel_yuv(XvImage *img, int x, int y, struct armwave_yuv_t *yuv_in);
+static void plot_pixel_yuv_fastq(XvImage *img, int x, int y, struct armwave_yuv_t *yuv_in);
+
 /*
  * Helper function to convert 8-bit RGB to 8-bit YUV values.
  */
