@@ -955,7 +955,7 @@ void armwave_render_frame_x11()
     
     armwave_render_graticule();
 
-    XFlush(g_dpy);
+    //XFlush(g_dpy);
 
     g_frame_num++;
 }
