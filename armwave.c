@@ -932,8 +932,8 @@ void armwave_render_graticule()
     
     x0 = g_armwave_state.frame_margin + g_armwave_state.draw_xoff;
     y0 = g_armwave_state.frame_margin + g_armwave_state.draw_yoff;
-    x1 = x0 + g_armwave_state.draw_width;
-    y1 = y0 + g_armwave_state.draw_height;
+    x1 = g_armwave_state.frame_margin + g_armwave_state.draw_width;
+    y1 = g_armwave_state.frame_margin + g_armwave_state.draw_height;
     
     XAllocColor(g_dpy, g_xswa.colormap, &g_grat_colour);
     XSetForeground(g_dpy, g_gc, g_armwave_state.grat_colour_main);
