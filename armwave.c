@@ -1003,7 +1003,7 @@ int main()
      * Set up the renderer.
      */
     printf("Preparing test waveforms...\n");
-    armwave_setup_render(0, 640, 1024, 640, tex_width, 256, \
+    armwave_setup_render(0, 1024, 1024, 1024, tex_width, 256, \
         AM_FLAG_GRAT_RENDER_FRAME | AM_FLAG_GRAT_RENDER_DIVS | AM_FLAG_GRAT_RENDER_XHAIR | AM_FLAG_GRAT_RENDER_SUBDIV);
     armwave_set_channel_colour(1, 255, 178, 25, 10.0f);
     armwave_prep_yuv_palette(PLT_RAINBOW_THERMAL, &g_armwave_state.ch1_color, &g_armwave_state.ch1_color);
