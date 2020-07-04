@@ -600,7 +600,7 @@ void armwave_test_buffer_alloc(int nsets)
 
     //printf("armwave_test_buffer_alloc: length=%d max=%d\n", g_armwave_state.wave_length, g_armwave_state.waves_max);
 
-    g_armwave_state.test_wave_buffer = calloc(g_armwave_state.wave_length * g_armwave_state.waves_max, nsets);
+    g_armwave_state.test_wave_buffer = calloc(g_armwave_state.wave_stride * g_armwave_state.waves_max, nsets);
 
     if(g_armwave_state.test_wave_buffer == NULL) {
         printf("armwave_test_buffer_alloc: failed to allocate test wave buffer (%d bytes, %d sets)\n", \
@@ -628,7 +628,7 @@ void armwave_test_create_am_sine(float mod, float noise_fraction, int sets)
     armwave_test_buffer_alloc(sets);
 
     for(s = 0; s < sets; s++) {
-        printf("Calculating test set %d\n", s);
+        printf("Calculating test set %d (length=%d)\n", s, g_armwave_state.wave_length);
     
         for(w = 0; w < g_armwave_state.waves; w++) {
             //mod_val = 0.5f + (((float)w / g_armwave_state.waves) * mod);
@@ -1003,7 +1003,7 @@ int main()
      * Set up the renderer.
      */
     printf("Preparing test waveforms...\n");
-    armwave_setup_render(0, tex_width, 1024, tex_width, tex_width, 256, \
+    armwave_setup_render(0, 640, 1024, 1024, tex_width, 256, \
         AM_FLAG_GRAT_RENDER_FRAME | AM_FLAG_GRAT_RENDER_DIVS | AM_FLAG_GRAT_RENDER_XHAIR | AM_FLAG_GRAT_RENDER_SUBDIV);
     armwave_set_channel_colour(1, 255, 178, 25, 10.0f);
     armwave_prep_yuv_palette(PLT_RAINBOW_THERMAL, &g_armwave_state.ch1_color, &g_armwave_state.ch1_color);
