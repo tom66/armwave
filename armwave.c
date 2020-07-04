@@ -579,7 +579,7 @@ void armwave_set_graticule_colour(int r, int g, int b)
     r &= 0xff;
     g &= 0xff;
     b &= 0xff;
-    g_armwave_state.grat_colour_main = (b << 24) | (g << 16) | (r << 8);
+    g_armwave_state.grat_colour_main = (b << 16) | (g << 8) | r;
 }
     
 /*
@@ -932,12 +932,13 @@ void armwave_render_graticule()
     //printf("colour: %5d, %5d, %5d (0x%08x)\n", g_grat_colour.red, g_grat_colour.green, g_grat_colour.blue, g_grat_colour.pixel);
     
     if(g_armwave_state.flags & AM_FLAG_GRAT_RENDER_FRAME) {
-        XDrawLine(g_dpy, g_window, g_gc, mx, my,  w, my);
-        XDrawLine(g_dpy, g_window, g_gc, mx,  h,  w,  h);
-        XDrawLine(g_dpy, g_window, g_gc, mx, my, mx,  h);
-        XDrawLine(g_dpy, g_window, g_gc, w,  my,  w,  h);
+        XDrawLine(g_dpy, g_window, g_gc, mx, my, mx + w, my);
+        XDrawLine(g_dpy, g_window, g_gc, mx,  h, mx + w,  h);
+        XDrawLine(g_dpy, g_window, g_gc, mx, my, mx,     my + h);
+        XDrawLine(g_dpy, g_window, g_gc, w,  my,  w,     my + h);
     }
     
+#if 0
     if(g_armwave_state.flags & AM_FLAG_GRAT_RENDER_DIVS) {
         gr_size = (w / (float)g_armwave_state.n_hdiv);
         for(i = 0, p = mx + gr_size; i < g_armwave_state.n_hdiv; i++, p += gr_size) {
@@ -961,6 +962,7 @@ void armwave_render_graticule()
             XDrawLine(g_dpy, g_window, g_gc, my, p, w, p);
         }
     }
+#endif
     
     /*
     if(g_armwave_state.flags & AM_FLAG_GRAT_RENDER_SUBDIV) {
@@ -995,6 +997,7 @@ void armwave_render_frame_x11()
     g_canvas_dims.h = _h;
     
     if(g_canvas_dims_last.w != g_canvas_dims.w || g_canvas_dims_last.h != g_canvas_dims.h) {
+        printf("XClearWindow()\n");
         XClearWindow(g_dpy, g_window);
     }
     
