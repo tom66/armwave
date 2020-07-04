@@ -242,14 +242,16 @@ void armwave_prep_yuv_palette(int ch, int palette, struct armwave_color_mix_t *c
                 hsv2rgb(&hsv_temp, &rgb_temp);
                 rgb2yuv(&rgb_temp, &g_yuv_lut[ch][v]); 
                 
-                printf("%3d = [%3d, %3d, %3d] RGB: %3d, %3d, %3d\n", v, hsv_temp.h, hsv_temp.s, hsv_temp.v, rgb_temp.r, rgb_temp.g, rgb_temp.b);
+                //printf("%3d = [%3d, %3d, %3d] RGB: %3d, %3d, %3d\n", v, hsv_temp.h, hsv_temp.s, hsv_temp.v, rgb_temp.r, rgb_temp.g, rgb_temp.b);
             }
             break;
     }
     
+    /*
     for(v = 0; v < 256; v++) {
         printf("%3d = (%3d, %3d, %3d) ch%d\n", v, g_yuv_lut[ch][v].y, g_yuv_lut[ch][v].u, g_yuv_lut[ch][v].v, ch);
     }
+    */
 }
 
 /*
