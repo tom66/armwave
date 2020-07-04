@@ -916,7 +916,9 @@ void armwave_init_xvimage_shared(int tex_width, int tex_height)
 void armwave_render_graticule()
 {
     int w, h, i, j, mx, my, p, q, ch, cw, n_sub, hhalf, vhalf;
+    int x0, y0, x1, y1;
     float gr_size;
+    /*
     mx = g_armwave_state.frame_margin + g_armwave_state.draw_xoff;
     my = g_armwave_state.frame_margin + g_armwave_state.draw_yoff;
     w = g_armwave_state.draw_width - g_armwave_state.frame_margin;
@@ -926,16 +928,22 @@ void armwave_render_graticule()
     vhalf = g_armwave_state.n_vdiv / 2;
     cw = w - mx;
     ch = h - my;
+    */
+    
+    x0 = g_armwave_state.frame_margin + g_armwave_state.draw_xoff;
+    y0 = g_armwave_state.frame_margin + g_armwave_state.draw_yoff;
+    x1 = x0 + g_armwave_state.draw_width;
+    y1 = y0 + g_armwave_state.draw_height;
     
     XAllocColor(g_dpy, g_xswa.colormap, &g_grat_colour);
     XSetForeground(g_dpy, g_gc, g_armwave_state.grat_colour_main);
     //printf("colour: %5d, %5d, %5d (0x%08x)\n", g_grat_colour.red, g_grat_colour.green, g_grat_colour.blue, g_grat_colour.pixel);
     
     if(g_armwave_state.flags & AM_FLAG_GRAT_RENDER_FRAME) {
-        XDrawLine(g_dpy, g_window, g_gc, mx, my, mx + w, my);
-        XDrawLine(g_dpy, g_window, g_gc, mx,  h, mx + w,  h);
-        XDrawLine(g_dpy, g_window, g_gc, mx, my, mx,     my + h);
-        XDrawLine(g_dpy, g_window, g_gc, w,  my,  w,     my + h);
+        XDrawLine(g_dpy, g_window, g_gc, x0, y0, x1, y0);
+        XDrawLine(g_dpy, g_window, g_gc, x0, y1, x1, y1);
+        XDrawLine(g_dpy, g_window, g_gc, x0, y0, x0, y1);
+        XDrawLine(g_dpy, g_window, g_gc, x1, y0, x1, y1);
     }
     
 #if 0
