@@ -335,7 +335,7 @@ void fill_xvimage_scaled(XvImage *img)
     //uint32_t *out_buffer_base = out_buffer;
     uint32_t offset;
 
-    //printf("output buffer: 0x%08x\n", out_buffer);
+    printf("output buffer: 0x%08x\n", img);
 
     npix = g_armwave_state.target_width * g_armwave_state.bitdepth_height; 
     
@@ -943,6 +943,7 @@ void armwave_render_frame_x11()
     }
     
     printf("Canvas dims: %d x %d (margin: %d)\n", _w, _h, m);
+    printf("Test buf ptr: %d\n", g_frame_num % g_n_test_waves);
 
     g_canvas_dims_last = g_canvas_dims;
     
