@@ -247,11 +247,9 @@ void armwave_prep_yuv_palette(int palette, int ch, struct armwave_color_mix_t *c
             break;
     }
     
-    /*
     for(v = 0; v < 256; v++) {
-        printf("%3d = (%3d, %3d, %3d)\n", v, g_yuv_lut[ch][v].y, g_yuv_lut[ch][v].u, g_yuv_lut[ch][v].v);
+        printf("%3d = (%3d, %3d, %3d) ch%d\n", v, g_yuv_lut[ch][v].y, g_yuv_lut[ch][v].u, g_yuv_lut[ch][v].v, ch);
     }
-    */
 }
 
 /*
