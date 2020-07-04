@@ -54,7 +54,7 @@ const struct armwave_rgb_t g_fill_black = { 0, 0, 0 };
 struct armwave_canvas_dims_t g_canvas_dims;
 struct armwave_canvas_dims_t g_canvas_dims_last;
 
-int g_frame_num, g_n_test_waves;
+int g_frame_num = 0, g_n_test_waves = 8;
 Window g_window = 0;
 Display *g_dpy;
 int g_xv_port;
@@ -253,6 +253,7 @@ void armwave_prep_yuv_palette(int palette, struct armwave_color_mix_t *color0, s
 void armwave_init()
 {
     g_armwave_state.flags = 0;
+    g_armwave_state.frame_margin = 0;
 
     printf("armwave version: %s\n", ARMWAVE_VER);
     
@@ -690,14 +691,18 @@ void armwave_grab_xid(int id)
     XSelectInput(g_dpy, g_window, StructureNotifyMask);
     
     printf("Window done, mapping...\n");
-    
+
+#if 1	 
     XMapWindow(g_dpy, g_window);
-    
+
+#if 0    
     do {
         XNextEvent(g_dpy, &event);
     }
     while(event.type != MapNotify || event.xmap.event != g_window);
-    
+#endif
+#endif
+
     printf("All done in window\n");
 }
 
@@ -894,6 +899,8 @@ void armwave_render_frame_x11()
         XClearWindow(g_dpy, g_window);
     }
     
+    printf("Canvas dims: %d x %d (margin: %d)\n", _w, _h, m);
+
     g_canvas_dims_last = g_canvas_dims;
     
     XvShmPutImage(g_dpy, g_xv_port, g_window, g_gc, g_yuv_image,
@@ -901,6 +908,10 @@ void armwave_render_frame_x11()
         m, m, _w - (m * 2), _h - (m * 2), True);
     
     armwave_render_graticule();
+
+    XFlush(g_dpy);
+
+    g_frame_num++;
 }
 
 /*
@@ -986,7 +997,7 @@ int main()
     
     while (1) {
         armwave_render_frame_x11();
-        g_frame_num += 1;
+        //g_frame_num += 1;
         
         /* XFlush(g_dpy); */
          
