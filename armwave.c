@@ -195,7 +195,7 @@ void fill_rgb_xvimage(XvImage *img, struct armwave_rgb_t *rgb)
  * the default palette '0' is supported which is linear intensity with
  * given trace colour.
  */
-void armwave_prep_yuv_palette(int palette, int ch, struct armwave_color_mix_t *color0, struct armwave_color_mix_t *color1)
+void armwave_prep_yuv_palette(int ch, int palette, struct armwave_color_mix_t *color0, struct armwave_color_mix_t *color1)
 {
     int v;
     float h;
