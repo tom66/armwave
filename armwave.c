@@ -592,7 +592,7 @@ void armwave_set_graticule_colour(int r, int g, int b)
     g_grat_colour.blue = b * 255;
     g_grat_colour.flags = DoRed | DoGreen | DoBlue;
     XAllocColor(g_dpy, g_xswa.colormap, &g_grat_colour);
-    g_armwave_state.grat_colour_main = g_grat_colour.pixel;
+    //g_armwave_state.grat_colour_main = g_grat_colour.pixel;
 }
     
 /*
@@ -953,8 +953,10 @@ void armwave_render_graticule()
     x1 = g_armwave_state.draw_width - g_armwave_state.frame_margin + g_armwave_state.draw_xoff;
     y1 = g_armwave_state.draw_height - g_armwave_state.frame_margin + g_armwave_state.draw_yoff;
     
-    XAllocColor(g_dpy, g_xswa.colormap, &g_grat_colour);
-    XSetForeground(g_dpy, g_gc, g_armwave_state.grat_colour_main);
+    //XAllocColor(g_dpy, g_xswa.colormap, &g_grat_colour);
+    
+    XSetForeground(g_dpy, g_gc, g_grat_colour.pixel);
+    
     //printf("colour: %5d, %5d, %5d (0x%08x)\n", g_grat_colour.red, g_grat_colour.green, g_grat_colour.blue, g_grat_colour.pixel);
     printf("dims: %d,%d,%d,%d\n", x0, y0, x1, y1);
     
