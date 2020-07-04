@@ -14,6 +14,6 @@ clean:
 	-rm -f *.so *.o armwave_wrap.c
 
 armwave_test: armwave_test.c
-	cc -g -O2 -Wall -L/opt/vc/lib -I/opt/vc/include -lm armwave.c $< -o $@
+	cc -g -O3 -Wall -L/opt/vc/lib -I/opt/vc/include -lm -L/usr/X11R6/lib -lX11 -lXext -lXv armwave.c $< -o $@
 
 .PHONY: build clean

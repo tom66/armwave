@@ -9,8 +9,8 @@ from distutils.core import setup, Extension
 armwave_module = Extension('_armwave',
                           include_dirs=['/opt/vc/include'],
                           sources=['armwave_wrap.c', 'armwave.c'],
-                          libraries=[],
-                          library_dirs=['/opt/vc/lib'],
+                          libraries=['X11', 'Xv', 'Xext'],
+                          library_dirs=['/opt/vc/lib', '/usr/X11R6/lib'],
 )
 
 setup (name = 'armwave',

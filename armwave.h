@@ -163,11 +163,17 @@ void armwave_set_graticule_subcolour(int r, int g, int b);
 void armwave_set_graticule_dims(int marg, int n_hdiv, int n_vdiv, int n_subhdiv, int n_subvdiv, float subdiv_frac);
 void armwave_clear_buffer(uint32_t flags);
 
-void armwave_dump_ppm_debug(uint32_t *buffer, char *fn);
+//void armwave_dump_ppm_debug(uint32_t *buffer, char *fn);
 
 //void armwave_test_create_square(float noise_fraction);
 void armwave_test_buffer_alloc(int nsets);
 void armwave_test_create_am_sine(float mod, float noise_fraction, int sets);
+
+void armwave_render_frame_x11();
+void armwave_render_graticule();
+void armwave_init_xvimage_shared(int w, int h);
+void armwave_init_x11();
+void armwave_grab_xid(int id);
 
 void armwave_generate(void);
 void armwave_cleanup(void);
