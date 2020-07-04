@@ -580,12 +580,19 @@ void armwave_set_graticule_colour(int r, int g, int b)
     */
     printf("armwave_set_graticule_colour()\n");
     
+    /*
     r &= 0xff;
     g &= 0xff;
     b &= 0xff;
     g_armwave_state.grat_colour_main = 0xff000000 | (b << 16) | (g << 8) | r;
+    */
     
+    g_grat_colour.red = r * 255;
+    g_grat_colour.green = g * 255;
+    g_grat_colour.blue = b * 255;
+    g_grat_colour.flags = DoRed | DoGreen | DoBlue;
     XAllocColor(g_dpy, g_xswa.colormap, &g_grat_colour);
+    g_armwave_state.grat_colour_main = g_grat_colour.pixel;
 }
     
 /*
@@ -781,6 +788,11 @@ void armwave_grab_xid(int id)
     if(g_window != 0) {
         XUnmapWindow(g_dpy, g_window);
     }
+    
+    g_xswa.colormap = XCreateColormap(g_dpy, DefaultRootWindow(g_dpy), g_vinfo.visual, AllocNone);
+    g_xswa.event_mask = StructureNotifyMask | ExposureMask;
+    g_xswa.background_pixel = 0;
+    g_xswa.border_pixel = 0;
     
     g_window = id;
     
