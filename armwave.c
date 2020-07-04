@@ -242,7 +242,7 @@ void armwave_prep_yuv_palette(int palette, int ch, struct armwave_color_mix_t *c
                 hsv2rgb(&hsv_temp, &rgb_temp);
                 rgb2yuv(&rgb_temp, &g_yuv_lut[ch][v]); 
                 
-                //printf("%3d = [%3d, %3d, %3d] RGB: %3d, %3d, %3d\n", v, hsv_temp.h, hsv_temp.s, hsv_temp.v, rgb_temp.r, rgb_temp.g, rgb_temp.b);
+                printf("%3d = [%3d, %3d, %3d] RGB: %3d, %3d, %3d\n", v, hsv_temp.h, hsv_temp.s, hsv_temp.v, rgb_temp.r, rgb_temp.g, rgb_temp.b);
             }
             break;
     }
@@ -554,10 +554,10 @@ void armwave_set_channel_colour(int ch, int r, int g, int b, float i, int pri_se
  */
 void armwave_set_channel_palette(int ch, int palette)
 {
-    // Channels are 1-4 externally, 0-3 internally
     // Only 1ch supported for now
     switch(ch) {
         case 1:
+            // Channels are 1-4 externally, 0-3 internally (hence ch0, ch1, ... for yuv_palette)
             armwave_prep_yuv_palette(0, palette, &g_armwave_state.ch1_color_a, &g_armwave_state.ch1_color_b);
             break;
     }
