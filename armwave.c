@@ -213,7 +213,7 @@ void armwave_prep_yuv_palette(int ch, int palette, struct armwave_color_mix_t *c
                 rgb_temp.r = MIN((color0->r * v) >> 8, 255);
                 rgb_temp.g = MIN((color0->g * v) >> 8, 255);
                 rgb_temp.b = MIN((color0->b * v) >> 8, 255);
-                printf("%3d = [%3d, %3d, %3d]\n", v, rgb_temp.r, rgb_temp.g, rgb_temp.b);
+                //printf("%3d = [%3d, %3d, %3d]\n", v, rgb_temp.r, rgb_temp.g, rgb_temp.b);
                 rgb2yuv(&rgb_temp, &g_yuv_lut[ch][v]); 
             }
             break;
@@ -223,7 +223,7 @@ void armwave_prep_yuv_palette(int ch, int palette, struct armwave_color_mix_t *c
                 rgb_temp.r = MIN((color0->r * v) >> 8, 255);
                 rgb_temp.g = MIN((color0->g * v) >> 8, 255);
                 rgb_temp.b = MIN((color0->b * v) >> 8, 255);
-                printf("%3d = [%3d, %3d, %3d]\n", 255 - v, rgb_temp.r, rgb_temp.g, rgb_temp.b);
+                //printf("%3d = [%3d, %3d, %3d]\n", 255 - v, rgb_temp.r, rgb_temp.g, rgb_temp.b);
                 rgb2yuv(&rgb_temp, &g_yuv_lut[ch][255 - v]); 
             }
             break;
