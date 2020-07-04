@@ -649,18 +649,18 @@ void armwave_test_buffer_alloc(int nsets)
 void armwave_test_create_am_sine(float mod, float noise_fraction, int sets)
 {
     float v, noise, xnoise, mod_val;
-    float _1_waves_mod = mod * (1.0f / g_armwave_state.waves);
+    float _1_waves_mod = mod * (1.0f / g_armwave_state.waves_max);
     int s, set_offset = 0;
     int w, x;
 
-    g_armwave_state.test_wave_buffer_stride = (g_armwave_state.waves * g_armwave_state.wave_stride);
+    g_armwave_state.test_wave_buffer_stride = (g_armwave_state.waves_max * g_armwave_state.wave_stride);
     g_armwave_state.test_wave_buffer_nsets = sets;
     armwave_test_buffer_alloc(sets);
 
     for(s = 0; s < sets; s++) {
         printf("Calculating test set %d (length=%d)\n", s, g_armwave_state.wave_length);
     
-        for(w = 0; w < g_armwave_state.waves; w++) {
+        for(w = 0; w < g_armwave_state.waves_max; w++) {
             //mod_val = 0.5f + (((float)w / g_armwave_state.waves) * mod);
             mod_val = 0.5f * (sin((_1_waves_mod * w) * 6.28f) + 1.0f);
 
@@ -683,7 +683,7 @@ void armwave_test_create_am_sine(float mod, float noise_fraction, int sets)
             }
         }
 
-        set_offset += (g_armwave_state.waves * g_armwave_state.wave_stride);
+        set_offset += (g_armwave_state.waves_max * g_armwave_state.wave_stride);
     }
 }
 
@@ -910,45 +910,48 @@ void armwave_init_xvimage_shared(int tex_width, int tex_height)
  */
 void armwave_render_graticule()
 {
-    int w, h, i, j, m, p, q, ch, cw, n_sub, hhalf, vhalf;
+    int w, h, i, j, mx, my, p, q, ch, cw, n_sub, hhalf, vhalf;
     float gr_size;
-    m = g_armwave_state.frame_margin;
-    w = g_canvas_dims.w - m;
-    h = g_canvas_dims.h - m;
+    mx = g_armwave_state.frame_margin + g_armwave_state.draw_xoff;
+    my = g_armwave_state.frame_margin + g_armwave_state.draw_yoff;
+    w = g_armwave_state.draw_width; // - mx;
+    h = g_armwave_state.draw_height; // - my;
     n_sub = 1.0f / g_armwave_state.subdiv_frac;
     hhalf = g_armwave_state.n_hdiv / 2;
     vhalf = g_armwave_state.n_vdiv / 2;
-    ch = h - m;
-    cw = w - m;
+    cw = w - mx;
+    ch = h - my;
     
     XSetForeground(g_dpy, g_gc, g_grat_colour.pixel);
     
     if(g_armwave_state.flags & AM_FLAG_GRAT_RENDER_FRAME) {
-        XDrawLine(g_dpy, g_window, g_gc, m, m, w, m);
-        XDrawLine(g_dpy, g_window, g_gc, m, h, w, h);
-        XDrawLine(g_dpy, g_window, g_gc, m, m, m, h);
-        XDrawLine(g_dpy, g_window, g_gc, w, m, w, h);
+        XDrawLine(g_dpy, g_window, g_gc, mx, my, w, mx);
+        XDrawLine(g_dpy, g_window, g_gc, mx, h, w, h);
+        XDrawLine(g_dpy, g_window, g_gc, mx, my, mx, h);
+        XDrawLine(g_dpy, g_window, g_gc, w, my, w, h);
     }
     
     if(g_armwave_state.flags & AM_FLAG_GRAT_RENDER_DIVS) {
         gr_size = (w / (float)g_armwave_state.n_hdiv);
-        for(i = 0, p = m; i < g_armwave_state.n_hdiv; i++, p += gr_size) {
+        for(i = 0, p = mx; i < g_armwave_state.n_hdiv; i++, p += gr_size) {
             if(i > 0) {
-                XDrawLine(g_dpy, g_window, g_gc, p, m, p, h);
+                XDrawLine(g_dpy, g_window, g_gc, p, mx, p, h);
             }
             
+            /*
             if(g_armwave_state.flags & AM_FLAG_GRAT_RENDER_SUBDIV) {
                 for(j = 1; j < n_sub; j++) {
                     q = p + (gr_size * g_armwave_state.subdiv_frac * j);
                     //printf("%3d, %3d\n", q, p);
-                    XDrawLine(g_dpy, g_window, g_gc, q, ((m + h) / 2) - 8, q, ((m + h) / 2) + 8);
+                    XDrawLine(g_dpy, g_window, g_gc, q, ((mx + h) / 2) - 8, q, ((mx + h) / 2) + 8);
                 }
             }
+            */
         }
         
         gr_size = (h / (float)g_armwave_state.n_vdiv);
-        for(i = 1, p = m + gr_size; i < g_armwave_state.n_vdiv; i++, p += gr_size) {
-            XDrawLine(g_dpy, g_window, g_gc, m, p, w, p);
+        for(i = 1, p = my + gr_size; i < g_armwave_state.n_vdiv; i++, p += gr_size) {
+            XDrawLine(g_dpy, g_window, g_gc, my, p, w, p);
         }
     }
     
@@ -1000,7 +1003,7 @@ void armwave_render_frame_x11()
         g_armwave_state.draw_width - (m * 2), 
         g_armwave_state.draw_height - (m * 2), True);
     
-    //armwave_render_graticule();
+    armwave_render_graticule();
 
     //XFlush(g_dpy);
 
