@@ -922,7 +922,7 @@ void armwave_render_graticule()
     ch = h - my;
     
     XAllocColor(g_dpy, g_xswa.colormap, &g_grat_colour);
-    XSetForeground(g_dpy, g_gc, g_grat_colour.pixel);
+    XSetForeground(g_dpy, g_gc, 0xffffffff);
     printf("colour: %5d, %5d, %5d (0x%08x)\n", g_grat_colour.red, g_grat_colour.green, g_grat_colour.blue, g_grat_colour.pixel);
     
     if(g_armwave_state.flags & AM_FLAG_GRAT_RENDER_FRAME) {
