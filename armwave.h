@@ -137,6 +137,9 @@ struct armwave_state_t {
   struct armwave_color_mix_t ch3_color_b;
   struct armwave_color_mix_t ch4_color_a;
   struct armwave_color_mix_t ch4_color_b;
+  
+  uint32_t grat_colour_main;
+  uint32_t grat_colour_sub;
 
   // Look up table to map xcoord to xpixel, after scaling is applied.
   // This is probably suitable for up to ~100k points; beyond this RAM usage, and cache behaviour mean

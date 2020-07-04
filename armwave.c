@@ -570,10 +570,16 @@ void armwave_set_channel_palette(int ch, int palette)
  */
 void armwave_set_graticule_colour(int r, int g, int b)
 {
+    /*
     g_grat_colour.red = r * 255;
     g_grat_colour.green = g * 255;
     g_grat_colour.blue = b * 255;
     g_grat_colour.flags = DoRed | DoGreen | DoBlue;
+    */
+    r &= 0xff;
+    g &= 0xff;
+    b &= 0xff;
+    g_armwave_state.grat_colour_main = 0xff | (b << 16) | (g << 8) | r;
 }
     
 /*
@@ -922,8 +928,8 @@ void armwave_render_graticule()
     ch = h - my;
     
     XAllocColor(g_dpy, g_xswa.colormap, &g_grat_colour);
-    XSetForeground(g_dpy, g_gc, 0xffffffff);
-    printf("colour: %5d, %5d, %5d (0x%08x)\n", g_grat_colour.red, g_grat_colour.green, g_grat_colour.blue, g_grat_colour.pixel);
+    XSetForeground(g_dpy, g_gc, g_armwave_state.grat_colour_main);
+    //printf("colour: %5d, %5d, %5d (0x%08x)\n", g_grat_colour.red, g_grat_colour.green, g_grat_colour.blue, g_grat_colour.pixel);
     
     if(g_armwave_state.flags & AM_FLAG_GRAT_RENDER_FRAME) {
         XDrawLine(g_dpy, g_window, g_gc, mx, my, w, mx);
