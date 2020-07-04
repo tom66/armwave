@@ -41,7 +41,7 @@
 
 #include "armwave.h"
 
-#define ARMWAVE_VER  "v0.2.0"
+#define ARMWAVE_VER  "v0.2.4"
 
 struct armwave_state_t g_armwave_state;
 struct armwave_yuv_t g_yuv_lut[256];
@@ -674,6 +674,49 @@ void armwave_cleanup()
 }
 
 /*
+ * Create an XWindow for rendering onto a dedicated window plane.
+ * Seems to be necessary for GTK.
+ *
+ * Initial dimensions of 640x480 are assumed.  Window can be resized on demand 
+ * using armwave_resize_xwindow().
+ */
+void armwave_create_xwindow()
+{
+    Window window;
+    unsigned long mask;
+    
+    g_xswa.colormap = XCreateColormap(g_dpy, DefaultRootWindow(g_dpy), g_vinfo.visual, AllocNone);
+    g_xswa.event_mask = StructureNotifyMask | ExposureMask;
+    g_xswa.background_pixel = 0;
+    g_xswa.border_pixel = 0;
+    
+    mask = CWBackPixel | CWBorderPixel | CWColormap | CWEventMask;
+    
+    window = XCreateWindow(g_dpy, DefaultRootWindow(g_dpy),
+			 0, 0,
+			 yuv_width,
+			 yuv_height,
+			 0, g_vinfo.depth,
+			 InputOutput,
+			 g_vinfo.visual,
+			 mask, &g_xswa);
+    
+    printf("armwave: Created X11 Window: %d (0x%08x)\n", window, window);
+    
+    armwave_grab_xid(window);
+}
+
+/*
+ * Resize and position the active XWindow.  May not make sense if we do not own that window.
+ */
+void armwave_set_window_dims(int x, int y, int w, int h)
+{
+    printf("armwave: armwave_set_window_dims(%d,%d,%d,%d)\n", x, y, w, h);
+    
+    XMoveResizeWindow(g_dpy, g_window, x, y, w, h);
+}
+
+/*
  * Grab a given XWindow by ID.
  */
 void armwave_grab_xid(int id)
@@ -686,8 +729,8 @@ void armwave_grab_xid(int id)
     
     g_window = id;
     
-    XStoreName(g_dpy, g_window, "ArmWave");
-    XSetIconName(g_dpy, g_window, "ArmWave");
+    XStoreName(g_dpy, g_window, "ArmWave Render Buffer");
+    XSetIconName(g_dpy, g_window, "ArmWave Render Buffer");
     XSelectInput(g_dpy, g_window, StructureNotifyMask);
     
     printf("Window done, mapping...\n");
