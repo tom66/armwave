@@ -947,12 +947,11 @@ void armwave_render_graticule()
         XDrawLine(g_dpy, g_window, g_gc, x1, y0, x1, y1);
     }
     
-#if 0
     if(g_armwave_state.flags & AM_FLAG_GRAT_RENDER_DIVS) {
-        gr_size = (w / (float)g_armwave_state.n_hdiv);
-        for(i = 0, p = mx + gr_size; i < g_armwave_state.n_hdiv; i++, p += gr_size) {
+        gr_size = ((x1 - x0) / (float)g_armwave_state.n_hdiv);
+        for(i = 0, p = x0 + gr_size; i < g_armwave_state.n_hdiv; i++, p += gr_size) {
             if(i > 0) {
-                XDrawLine(g_dpy, g_window, g_gc, p, mx, p, h);
+                XDrawLine(g_dpy, g_window, g_gc, p, y0, p, y1);
             }
             
             /*
@@ -966,12 +965,11 @@ void armwave_render_graticule()
             */
         }
         
-        gr_size = (h / (float)g_armwave_state.n_vdiv);
-        for(i = 1, p = my + gr_size; i < g_armwave_state.n_vdiv; i++, p += gr_size) {
-            XDrawLine(g_dpy, g_window, g_gc, my, p, w, p);
+        gr_size = ((y1 - y0) / (float)g_armwave_state.n_vdiv);
+        for(i = 1, p = y0 + gr_size; i < g_armwave_state.n_vdiv; i++, p += gr_size) {
+            XDrawLine(g_dpy, g_window, g_gc, x0, p, x1, p);
         }
     }
-#endif
     
     /*
     if(g_armwave_state.flags & AM_FLAG_GRAT_RENDER_SUBDIV) {
