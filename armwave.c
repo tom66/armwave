@@ -1001,6 +1001,7 @@ void armwave_render_frame_x11()
     armwave_generate();
     fill_xvimage_scaled(g_yuv_image);
     
+    /*
     XGetGeometry(g_dpy, g_window, &_dw, &_d, &_d, &_w, &_h, &_d, &_d);
     g_canvas_dims.w = _w;
     g_canvas_dims.h = _h;
@@ -1012,8 +1013,9 @@ void armwave_render_frame_x11()
     
     printf("Canvas dims: %d x %d (margin: %d) (YUV image: %d x %d)\n", _w, _h, m, g_yuv_image->width, g_yuv_image->height);
     printf("Test buf ptr: %d\n", g_frame_num % g_n_test_waves);
-
+    
     g_canvas_dims_last = g_canvas_dims;
+    */
     
     XvShmPutImage(g_dpy, g_xv_port, g_window, g_gc, g_yuv_image,
         0, 0, g_yuv_image->width, g_yuv_image->height,
