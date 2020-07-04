@@ -580,6 +580,8 @@ void armwave_set_graticule_colour(int r, int g, int b)
     g &= 0xff;
     b &= 0xff;
     g_armwave_state.grat_colour_main = 0xff000000 | (b << 16) | (g << 8) | r;
+    
+    XAllocColor(g_dpy, g_xswa.colormap, &g_grat_colour);
 }
     
 /*
@@ -966,7 +968,7 @@ void armwave_render_graticule()
         }
         
         gr_size = ((y1 - y0) / (float)g_armwave_state.n_vdiv);
-        for(i = 1, p = y0 + gr_size; i < g_armwave_state.n_vdiv; i++, p += gr_size) {
+        for(i = 0, p = y0 + gr_size; i < g_armwave_state.n_vdiv; i++, p += gr_size) {
             XDrawLine(g_dpy, g_window, g_gc, x0, p, x1, p);
         }
     }
