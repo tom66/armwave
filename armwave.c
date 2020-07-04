@@ -938,6 +938,7 @@ void armwave_render_graticule()
     XAllocColor(g_dpy, g_xswa.colormap, &g_grat_colour);
     XSetForeground(g_dpy, g_gc, g_armwave_state.grat_colour_main);
     //printf("colour: %5d, %5d, %5d (0x%08x)\n", g_grat_colour.red, g_grat_colour.green, g_grat_colour.blue, g_grat_colour.pixel);
+    printf("dims: %d,%d,%d,%d\n", x0, y0, x1, y1);
     
     if(g_armwave_state.flags & AM_FLAG_GRAT_RENDER_FRAME) {
         XDrawLine(g_dpy, g_window, g_gc, x0, y0, x1, y0);
