@@ -574,9 +574,8 @@ void armwave_set_graticule_colour(int r, int g, int b)
     g_grat_colour.green = g * 255;
     g_grat_colour.blue = b * 255;
     g_grat_colour.flags = DoRed | DoGreen | DoBlue;
-    XAllocColor(g_dpy, g_xswa.colormap, &g_grat_colour);
 }
-
+    
 /*
  * Set the graticule sub colour.
  */
@@ -900,9 +899,9 @@ void armwave_init_xvimage_shared(int tex_width, int tex_height)
         XFreeGC(g_dpy, g_gc);
     }
     
-    //gc_values.line_width = 1;
-    //gc_values.cap_style = CapNotLast;
-    g_gc = XCreateGC(g_dpy, g_window, 0 /*GCLineWidth | GCCapStyle*/, &gc_values);
+    gc_values.line_width = 1;
+    gc_values.cap_style = CapNotLast;
+    g_gc = XCreateGC(g_dpy, g_window, GCLineWidth | GCCapStyle, &gc_values);
 }
 
 /*
@@ -922,6 +921,7 @@ void armwave_render_graticule()
     cw = w - mx;
     ch = h - my;
     
+    XAllocColor(g_dpy, g_xswa.colormap, &g_grat_colour);
     XSetForeground(g_dpy, g_gc, g_grat_colour.pixel);
     printf("colour: %5d, %5d, %5d\n", g_grat_colour.red, g_grat_colour.green, g_grat_colour.blue);
     
