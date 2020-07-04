@@ -849,7 +849,7 @@ void armwave_init_xvimage_shared(int tex_width, int tex_height)
         exit (-1);
     }
     
-    printf("%d bytes for XvImage, shmid %d, xv_port %d\n", g_yuv_image->data_size, g_yuv_shminfo.shmid, g_xv_port);
+    printf("%d bytes for XvImage, shmid %d, xv_port %d, buffer: 0x%08x\n", g_yuv_image->data_size, g_yuv_shminfo.shmid, g_xv_port, g_yuv_image);
     
     // Create the GC
     if(g_gc != NULL) {
@@ -944,7 +944,7 @@ void armwave_render_frame_x11()
         XClearWindow(g_dpy, g_window);
     }
     
-    printf("Canvas dims: %d x %d (margin: %d)\n", _w, _h, m);
+    printf("Canvas dims: %d x %d (margin: %d) (YUV image: %d x %d)\n", _w, _h, m, g_yuv_image->width, g_yuv_image->height);
     printf("Test buf ptr: %d\n", g_frame_num % g_n_test_waves);
 
     g_canvas_dims_last = g_canvas_dims;
