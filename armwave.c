@@ -579,7 +579,7 @@ void armwave_set_graticule_colour(int r, int g, int b)
     r &= 0xff;
     g &= 0xff;
     b &= 0xff;
-    g_armwave_state.grat_colour_main = (b << 16) | (g << 8) | r;
+    g_armwave_state.grat_colour_main = 0xff000000 | (b << 16) | (g << 8) | r;
 }
     
 /*
@@ -1026,7 +1026,7 @@ void armwave_render_frame_x11()
     
     armwave_render_graticule();
 
-    XFlush(g_dpy);
+    //XFlush(g_dpy);
 
     g_frame_num++;
 }
