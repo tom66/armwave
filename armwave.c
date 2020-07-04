@@ -856,9 +856,9 @@ void armwave_init_xvimage_shared(int tex_width, int tex_height)
         XFreeGC(g_dpy, g_gc);
     }
     
-    g_gc = XCreateGC(g_dpy, g_window, GCLineWidth | GCLineStyle, &gc_values);
     gc_values.line_width = 1;
     gc_values.cap_style = CapNotLast;
+    g_gc = XCreateGC(g_dpy, g_window, GCLineWidth | GCLineStyle, &gc_values);
 }
 
 /*
