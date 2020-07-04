@@ -7626,6 +7626,66 @@ fail:
 }
 
 
+SWIGINTERN PyObject *_wrap_create_xwindow(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  
+  if (!PyArg_ParseTuple(args,(char *)":create_xwindow")) SWIG_fail;
+  armwave_create_xwindow();
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_set_window_dims(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  int arg1 ;
+  int arg2 ;
+  int arg3 ;
+  int arg4 ;
+  int val1 ;
+  int ecode1 = 0 ;
+  int val2 ;
+  int ecode2 = 0 ;
+  int val3 ;
+  int ecode3 = 0 ;
+  int val4 ;
+  int ecode4 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  PyObject * obj3 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OOOO:set_window_dims",&obj0,&obj1,&obj2,&obj3)) SWIG_fail;
+  ecode1 = SWIG_AsVal_int(obj0, &val1);
+  if (!SWIG_IsOK(ecode1)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "set_window_dims" "', argument " "1"" of type '" "int""'");
+  } 
+  arg1 = (int)(val1);
+  ecode2 = SWIG_AsVal_int(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "set_window_dims" "', argument " "2"" of type '" "int""'");
+  } 
+  arg2 = (int)(val2);
+  ecode3 = SWIG_AsVal_int(obj2, &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "set_window_dims" "', argument " "3"" of type '" "int""'");
+  } 
+  arg3 = (int)(val3);
+  ecode4 = SWIG_AsVal_int(obj3, &val4);
+  if (!SWIG_IsOK(ecode4)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "set_window_dims" "', argument " "4"" of type '" "int""'");
+  } 
+  arg4 = (int)(val4);
+  armwave_set_window_dims(arg1,arg2,arg3,arg4);
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
 SWIGINTERN PyObject *_wrap_grab_xid(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
   int arg1 ;
@@ -7695,6 +7755,8 @@ static PyMethodDef SwigMethods[] = {
 	 { "render_graticule", _wrap_render_graticule, METH_VARARGS, NULL},
 	 { "init_xvimage_shared", _wrap_init_xvimage_shared, METH_VARARGS, NULL},
 	 { "init_x11", _wrap_init_x11, METH_VARARGS, NULL},
+	 { "create_xwindow", _wrap_create_xwindow, METH_VARARGS, NULL},
+	 { "set_window_dims", _wrap_set_window_dims, METH_VARARGS, NULL},
 	 { "grab_xid", _wrap_grab_xid, METH_VARARGS, NULL},
 	 { "generate", _wrap_generate, METH_VARARGS, NULL},
 	 { "cleanup", _wrap_cleanup, METH_VARARGS, NULL},
