@@ -44,7 +44,7 @@
 #define ARMWAVE_VER  "v0.2.4"
 
 struct armwave_state_t g_armwave_state;
-struct armwave_yuv_t g_yuv_lut[256];
+struct armwave_yuv_t g_yuv_lut[4][256];
 
 const struct armwave_rgb_t g_fill_black = { 0, 0, 0 };
 
@@ -195,12 +195,17 @@ void fill_rgb_xvimage(XvImage *img, struct armwave_rgb_t *rgb)
  * the default palette '0' is supported which is linear intensity with
  * given trace colour.
  */
-void armwave_prep_yuv_palette(int palette, struct armwave_color_mix_t *color0, struct armwave_color_mix_t *color1)
+void armwave_prep_yuv_palette(int palette, int ch, struct armwave_color_mix_t *color0, struct armwave_color_mix_t *color1)
 {
     int v;
     float h;
     struct armwave_rgb_t rgb_temp;
     struct armwave_hsv_t hsv_temp;
+    
+    if(ch < 0 || ch > 3) {
+        printf("armwave: error: palette channel out of range %d\n", ch);
+        return;
+    }
     
     switch(palette) {
         case PLT_SINGLE_COLOUR:
@@ -209,7 +214,7 @@ void armwave_prep_yuv_palette(int palette, struct armwave_color_mix_t *color0, s
                 rgb_temp.g = MIN((color0->g * v) >> 8, 255);
                 rgb_temp.b = MIN((color0->b * v) >> 8, 255);
                 printf("%3d = [%3d, %3d, %3d]\n", v, rgb_temp.r, rgb_temp.g, rgb_temp.b);
-                rgb2yuv(&rgb_temp, &g_yuv_lut[v]); 
+                rgb2yuv(&rgb_temp, &g_yuv_lut[ch][v]); 
             }
             break;
         
@@ -219,7 +224,7 @@ void armwave_prep_yuv_palette(int palette, struct armwave_color_mix_t *color0, s
                 rgb_temp.g = MIN((color0->g * v) >> 8, 255);
                 rgb_temp.b = MIN((color0->b * v) >> 8, 255);
                 printf("%3d = [%3d, %3d, %3d]\n", 255 - v, rgb_temp.r, rgb_temp.g, rgb_temp.b);
-                rgb2yuv(&rgb_temp, &g_yuv_lut[255 - v]); 
+                rgb2yuv(&rgb_temp, &g_yuv_lut[ch][255 - v]); 
             }
             break;
         
@@ -235,16 +240,18 @@ void armwave_prep_yuv_palette(int palette, struct armwave_color_mix_t *color0, s
                 }
                 
                 hsv2rgb(&hsv_temp, &rgb_temp);
-                rgb2yuv(&rgb_temp, &g_yuv_lut[v]); 
+                rgb2yuv(&rgb_temp, &g_yuv_lut[ch][v]); 
                 
-                printf("%3d = [%3d, %3d, %3d] RGB: %3d, %3d, %3d\n", v, hsv_temp.h, hsv_temp.s, hsv_temp.v, rgb_temp.r, rgb_temp.g, rgb_temp.b);
+                //printf("%3d = [%3d, %3d, %3d] RGB: %3d, %3d, %3d\n", v, hsv_temp.h, hsv_temp.s, hsv_temp.v, rgb_temp.r, rgb_temp.g, rgb_temp.b);
             }
             break;
     }
     
+    /*
     for(v = 0; v < 256; v++) {
-        printf("%3d = (%3d, %3d, %3d)\n", v, g_yuv_lut[v].y, g_yuv_lut[v].u, g_yuv_lut[v].v);
+        printf("%3d = (%3d, %3d, %3d)\n", v, g_yuv_lut[ch][v].y, g_yuv_lut[ch][v].u, g_yuv_lut[ch][v].v);
     }
+    */
 }
 
 /*
@@ -364,8 +371,9 @@ void fill_xvimage_scaled(XvImage *img)
                     xx = (nsub >> 8) / 2;
 
                     // FASTQ does not paint U/V for odd pixels; works OK for most purposes.
-                    //plot_pixel_yuv_fastq(img, xx, yy, &g_yuv_lut[MIN(value, 255)]);
-                    plot_pixel_yuv(img, xx, yy, &g_yuv_lut[MIN(value, 255)]);
+                    //plot_pixel_yuv_fastq(img, xx, yy, &g_yuv_lut[0][MIN(value, 255)]);
+                    // TODO: Index needs to change wrt to channel plotted...
+                    plot_pixel_yuv(img, xx, yy, &g_yuv_lut[0][MIN(value, 255)]);
                     painted++;
                 }
             }
@@ -523,16 +531,31 @@ void armwave_clear_buffer(uint32_t flags)
  * Set the render colour for a channel.  R/G/B may exceed 255 for saturation effects.  
  * `I` sets intensity multiplier for all colours.
  */
-void armwave_set_channel_colour(int ch, int r, int g, int b, float i)
+void armwave_set_channel_colour(int ch, int r, int g, int b, float i, int pri_sec)
 {
     // Only 1ch supported for now
     switch(ch) {
         case 1:
-            g_armwave_state.ch1_color.r = r * i;
-            g_armwave_state.ch1_color.g = g * i;
-            g_armwave_state.ch1_color.b = b * i;
+            if(pri_sec) {
+                g_armwave_state.ch1_color_a.r = r * i;
+                g_armwave_state.ch1_color_a.g = g * i;
+                g_armwave_state.ch1_color_a.b = b * i;
+            } else {
+                g_armwave_state.ch1_color_b.r = r * i;
+                g_armwave_state.ch1_color_b.g = g * i;
+                g_armwave_state.ch1_color_b.b = b * i;
+            }
             break;
     }
+}
+
+/*
+ * Set and recalculate a channel's palette.  Needs to be done after changing channel colours.
+ */
+void armwave_set_channel_palette(int ch, int palette)
+{
+    // Channels are 1-4 externally, 0-3 internally
+    armwave_prep_yuv_palette(ch - 1, palette);
 }
 
 /*
@@ -1005,8 +1028,9 @@ int main()
     printf("Preparing test waveforms...\n");
     armwave_setup_render(0, 1024, 1024, 1024, tex_width, 256, \
         AM_FLAG_GRAT_RENDER_FRAME | AM_FLAG_GRAT_RENDER_DIVS | AM_FLAG_GRAT_RENDER_XHAIR | AM_FLAG_GRAT_RENDER_SUBDIV);
-    armwave_set_channel_colour(1, 255, 178, 25, 10.0f);
-    armwave_prep_yuv_palette(PLT_RAINBOW_THERMAL, &g_armwave_state.ch1_color, &g_armwave_state.ch1_color);
+    armwave_set_channel_colour(1, 255, 178, 25, 10.0f, 1);
+    armwave_set_channel_palette(1, PLT_RAINBOW_THERMAL);
+    //armwave_prep_yuv_palette(PLT_RAINBOW_THERMAL, 0, &g_armwave_state.ch1_color, &g_armwave_state.ch1_color);
     armwave_test_create_am_sine(0.25, 1e-5, g_n_test_waves);
     printf("Done, starting XVideo...\n");
     

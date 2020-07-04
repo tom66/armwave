@@ -125,10 +125,14 @@ struct armwave_state_t {
   uint32_t row_mask;
   uint32_t *out_pixbuf;
 
-  struct armwave_color_mix_t ch1_color;
-  struct armwave_color_mix_t ch2_color;
-  struct armwave_color_mix_t ch3_color;
-  struct armwave_color_mix_t ch4_color;
+  struct armwave_color_mix_t ch1_color_a;
+  struct armwave_color_mix_t ch1_color_b;
+  struct armwave_color_mix_t ch2_color_a;
+  struct armwave_color_mix_t ch2_color_b;
+  struct armwave_color_mix_t ch3_color_a;
+  struct armwave_color_mix_t ch3_color_b;
+  struct armwave_color_mix_t ch4_color_a;
+  struct armwave_color_mix_t ch4_color_b;
 
   // Look up table to map xcoord to xpixel, after scaling is applied.
   // This is probably suitable for up to ~100k points; beyond this RAM usage, and cache behaviour mean
@@ -147,7 +151,7 @@ void hsv2rgb(struct armwave_hsv_t *hsv_in, struct armwave_rgb_t *rgb_out);
 
 void fill_rgb_xvimage(XvImage *img, struct armwave_rgb_t *rgb);
 
-void armwave_prep_yuv_palette(int palette, struct armwave_color_mix_t *color0, struct armwave_color_mix_t *color1);
+void armwave_prep_yuv_palette(int palette, int ch, struct armwave_color_mix_t *color0, struct armwave_color_mix_t *color1);
 
 void render_nonaa_to_buffer_1ch_slice(uint32_t slice_y, uint32_t height);
 void fill_xvimage_scaled(XvImage *img);
@@ -157,7 +161,8 @@ void armwave_setup_render(uint32_t start_point, uint32_t end_point, uint32_t wav
 void armwave_set_wave_pointer(uint8_t *wave_buffer);
 void armwave_set_wave_pointer_as_testbuf(int set);
 void armwave_set_wave_pointer_u32(uint32_t wave_buffer_ptr);
-void armwave_set_channel_colour(int ch, int r, int g, int b, float i);
+void armwave_set_channel_colour(int ch, int r, int g, int b, float i, int pri_sec);
+void armwave_set_channel_palette(int ch, int palette);
 void armwave_set_graticule_colour(int r, int g, int b);
 void armwave_set_graticule_subcolour(int r, int g, int b);
 void armwave_set_graticule_dims(int marg, int n_hdiv, int n_vdiv, int n_subhdiv, int n_subvdiv, float subdiv_frac);
