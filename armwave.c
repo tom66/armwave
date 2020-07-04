@@ -694,8 +694,8 @@ void armwave_create_xwindow()
     
     window = XCreateWindow(g_dpy, DefaultRootWindow(g_dpy),
 			 0, 0,
-			 yuv_width,
-			 yuv_height,
+			 640,
+			 480,
 			 0, g_vinfo.depth,
 			 InputOutput,
 			 g_vinfo.visual,
