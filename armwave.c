@@ -576,6 +576,8 @@ void armwave_set_graticule_colour(int r, int g, int b)
     g_grat_colour.blue = b * 255;
     g_grat_colour.flags = DoRed | DoGreen | DoBlue;
     */
+    printf("armwave_set_graticule_colour()\n");
+    
     r &= 0xff;
     g &= 0xff;
     b &= 0xff;
