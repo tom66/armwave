@@ -432,6 +432,10 @@ void armwave_setup_render(uint32_t start_point, uint32_t end_point, uint32_t wav
     g_armwave_state.target_height = target_height;
     g_armwave_state.wave_length = end_point - start_point;
     g_armwave_state.flags = render_flags;
+    g_armwave_state.draw_xoff = 0;
+    g_armwave_state.draw_yoff = 0;
+    g_armwave_state.draw_width = target_width;
+    g_armwave_state.draw_height = target_height;
 
     // Calculate compound scaler
     g_armwave_state.cmp_x_bitdepth_scale = \
@@ -740,6 +744,20 @@ void armwave_set_window_dims(int x, int y, int w, int h)
     printf("armwave: armwave_set_window_dims(%d,%d,%d,%d)\n", x, y, w, h);
     
     XMoveResizeWindow(g_dpy, g_window, x, y, w, h);
+    armwave_set_draw_dims(x, y, w, h);
+}
+
+/*
+ * Change the draw position and size for windows not owned by us.
+ */
+void armwave_set_draw_dims(int x, int y, int w, int h)
+{
+    printf("armwave: armwave_set_draw_dims(%d,%d,%d,%d)\n", x, y, w, h);
+    
+    g_armwave_state.draw_xoff = x;
+    g_armwave_state.draw_yoff = y;
+    g_armwave_state.draw_width = w;
+    g_armwave_state.draw_height = h;
 }
 
 /*
@@ -977,9 +995,12 @@ void armwave_render_frame_x11()
     
     XvShmPutImage(g_dpy, g_xv_port, g_window, g_gc, g_yuv_image,
         0, 0, g_yuv_image->width, g_yuv_image->height,
-        m, m, _w - (m * 2), _h - (m * 2), True);
+        m + g_armwave_state.draw_xoff, 
+        m + g_armwave_state.draw_yoff, 
+        g_armwave_state.draw_width - (m * 2), 
+        g_armwave_state.draw_height - (m * 2), True);
     
-    armwave_render_graticule();
+    //armwave_render_graticule();
 
     //XFlush(g_dpy);
 

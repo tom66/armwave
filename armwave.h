@@ -120,6 +120,10 @@ struct armwave_state_t {
 
   int target_width;
   int target_height;
+  int draw_xoff;
+  int draw_yoff;
+  int draw_width;
+  int draw_height;
 
   int row_shift;
   uint32_t row_mask;
@@ -181,6 +185,7 @@ void armwave_init_x11();
 
 void armwave_create_xwindow();
 void armwave_set_window_dims(int x, int y, int w, int h);
+void armwave_set_draw_dims(int x, int y, int w, int h);
 void armwave_grab_xid(int id);
 
 void armwave_generate(void);
