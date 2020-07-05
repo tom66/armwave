@@ -1047,7 +1047,7 @@ void armwave_render_frame_x11()
     int _d, _w, _h;
     int m = g_armwave_state.frame_margin; 
     
-    armwave_set_wave_pointer_as_testbuf(g_frame_num % g_n_test_waves);
+    //armwave_set_wave_pointer_as_testbuf(g_frame_num % g_n_test_waves);
     armwave_generate();
     fill_xvimage_scaled(g_yuv_image);
     
