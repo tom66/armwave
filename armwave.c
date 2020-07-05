@@ -797,7 +797,7 @@ void armwave_set_window_dims(int x, int y, int w, int h)
  */
 void armwave_set_draw_dims(int x, int y, int w, int h)
 {
-    printf("armwave: armwave_set_draw_dims(%d,%d,%d,%d)\n", x, y, w, h);
+    //printf("armwave: armwave_set_draw_dims(%d,%d,%d,%d)\n", x, y, w, h);
     
     g_armwave_state.draw_xoff = x;
     g_armwave_state.draw_yoff = y;
