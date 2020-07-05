@@ -287,7 +287,7 @@ void render_nonaa_to_buffer_1ch_slice(uint32_t slice_y, uint32_t height)
 
     //write_buffer_base = g_armwave_state.ch1_buffer + (slice_y * g_armwave_state.bitdepth_height);
     //write_buffer_base = g_armwave_state.ch1_buffer + (((slice_y * g_armwave_state.cmp_x_bitdepth_scale) >> AM_XCOORD_MULT_SHIFT) * 256 * sizeof(bufftyp_t));
-    write_buffer_base = g_armwave_state.ch1_buffer + ((int)(slice_y *  g_armwave_state.bitdepth_scale_fp) * 256 * sizeof(bufftyp_t));
+    write_buffer_base = g_armwave_state.ch1_buffer + ((int)((slice_y * g_armwave_state.bitdepth_scale_fp) + 0.5f) * 256 * sizeof(bufftyp_t));
     
     //printf("wb=0x%08x b=0x%08x ch1=0x%08x off=%d slice_y=%d height=%d scale=%d bitdepth_height=%d\n", \
         g_armwave_state.wave_buffer, write_buffer_base, g_armwave_state.ch1_buffer, \
@@ -326,6 +326,28 @@ void render_nonaa_to_buffer_1ch_slice(uint32_t slice_y, uint32_t height)
     }
 
     //printf("wb_end=%d\n", write_buffer - write_buffer_base);
+}
+
+/*
+ * Fill buffers with rendered waveform (only supports Ch1 so far.)
+ */
+void armwave_generate()
+{
+    uint32_t yy;
+    uint32_t xx_rem = g_armwave_state.wave_length, ypos = 0;
+
+    // Zero the buffer
+    memset(g_armwave_state.ch1_buffer, 0, g_armwave_state.ch_buff_size);
+
+    // Render the main slices
+    for(yy = 0; yy < (g_armwave_state.wave_length / g_armwave_state.slice_height); yy++) {
+        render_nonaa_to_buffer_1ch_slice(yy * g_armwave_state.slice_height, g_armwave_state.slice_height);
+        xx_rem -= g_armwave_state.slice_height;
+        ypos += g_armwave_state.slice_height;   
+    }
+
+    // Render whatever is left over
+    render_nonaa_to_buffer_1ch_slice(ypos, xx_rem);
 }
 
 /*
@@ -382,28 +404,6 @@ void fill_xvimage_scaled(XvImage *img)
     }
 
     //printf("...done paint %d pixels...\n", painted);
-}
-
-/*
- * Fill buffers with rendered waveform (only supports Ch1 so far.)
- */
-void armwave_generate()
-{
-    uint32_t yy;
-    uint32_t xx_rem = g_armwave_state.wave_length, ypos = 0;
-
-    // Zero the buffer
-    memset(g_armwave_state.ch1_buffer, 0, g_armwave_state.ch_buff_size);
-
-    // Render the main slices
-    for(yy = 0; yy < (g_armwave_state.wave_length / g_armwave_state.slice_height); yy++) {
-        render_nonaa_to_buffer_1ch_slice(yy * g_armwave_state.slice_height, g_armwave_state.slice_height);
-        xx_rem -= g_armwave_state.slice_height;
-        ypos += g_armwave_state.slice_height;   
-    }
-
-    // Render whatever is left over
-    render_nonaa_to_buffer_1ch_slice(ypos, xx_rem);
 }
 
 /*
