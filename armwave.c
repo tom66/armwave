@@ -493,7 +493,7 @@ void armwave_setup_render(uint32_t start_point, uint32_t end_point, uint32_t wav
     points_per_pixel = length / ((float)(target_width));
     g_armwave_state.slice_record_height = points_per_pixel * g_armwave_state.slice_height;
 
-    g_armwave_state.xcoord_to_xpixel = malloc(length * sizeof(uint16_t));
+    g_armwave_state.xcoord_to_xpixel = malloc(g_armwave_state.slice_height * sizeof(uint16_t));
 
     assert(g_armwave_state.xcoord_to_xpixel != NULL);
 
