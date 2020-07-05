@@ -475,7 +475,7 @@ void armwave_setup_render(uint32_t start_point, uint32_t end_point, uint32_t wav
     assert(g_armwave_state.xcoord_to_xpixel != NULL);
 
     for(xx = 0; xx < g_armwave_state.slice_height; xx++) {
-        g_armwave_state.xcoord_to_xpixel[xx] = (xx * g_armwave_state.bitdepth_scale_fp) << 8;
+        g_armwave_state.xcoord_to_xpixel[xx] = (int)(xx * g_armwave_state.bitdepth_scale_fp) << 8;
         printf("xcoord_to_xpixel[%5d] = %5d\n", xx, g_armwave_state.xcoord_to_xpixel[xx]);
     }
     
