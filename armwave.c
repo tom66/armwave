@@ -333,14 +333,14 @@ void render_nonaa_to_buffer_1ch_slice(uint32_t slice_y, uint32_t height)
                 
                 if(last != scale_value) {
                     if(last > scale_value) {
-                        a = last;
-                        b = scale_value;
-                    } else if(last < scale_value) {
                         a = scale_value;
                         b = last;
+                    } else if(last < scale_value) {
+                        a = last;
+                        b = scale_value;
                     }
                     
-                    for(i = a; i < b; i++) {
+                    for(i = a; i <= b; i++) {
                         *(write_buffer + i) += 1;
                     }
                 }
