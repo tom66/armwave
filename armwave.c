@@ -286,8 +286,9 @@ void render_nonaa_to_buffer_1ch_slice(uint32_t slice_y, uint32_t height)
     bufftyp_t *write_buffer;
 
     //write_buffer_base = g_armwave_state.ch1_buffer + (slice_y * g_armwave_state.bitdepth_height);
-    write_buffer_base = g_armwave_state.ch1_buffer + (((slice_y * g_armwave_state.cmp_x_bitdepth_scale) >> AM_XCOORD_MULT_SHIFT) * 256 * sizeof(bufftyp_t));
-
+    //write_buffer_base = g_armwave_state.ch1_buffer + (((slice_y * g_armwave_state.cmp_x_bitdepth_scale) >> AM_XCOORD_MULT_SHIFT) * 256 * sizeof(bufftyp_t));
+    write_buffer_base = g_armwave_state.ch1_buffer + ((slice_y *  g_armwave_state.bitdepth_scale_fp) * 256 * sizeof(bufftyp_t));
+    
     //printf("wb=0x%08x b=0x%08x ch1=0x%08x off=%d slice_y=%d height=%d scale=%d bitdepth_height=%d\n", \
         g_armwave_state.wave_buffer, write_buffer_base, g_armwave_state.ch1_buffer, \
         write_buffer_base - g_armwave_state.ch1_buffer, slice_y, height, g_armwave_state.cmp_x_bitdepth_scale, \
@@ -452,7 +453,7 @@ void armwave_setup_render(uint32_t start_point, uint32_t end_point, uint32_t wav
     // In 1ch mode, target 1024 x 16 render buffer, reading 16 bytes at a time from each wave, retaining as much as possible in L1/L2 cache
     // In 2ch mode, target two 1024 x 8 render buffers, reading 16 bytes at a time from each wave
     // In 4ch mode, target four 1024 x 4 render buffers, reading 16 bytes at a time from each wave
-    g_armwave_state.slice_height = 128; // 64;  
+    g_armwave_state.slice_height = 32; // 64;  
 
     if(g_armwave_state.ch1_buffer != NULL)
         free(g_armwave_state.ch1_buffer);
