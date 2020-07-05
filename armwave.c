@@ -884,6 +884,8 @@ void armwave_init_xvimage_shared(int tex_width, int tex_height)
     XGCValues gc_values;
     XvAdaptorInfo *ai;
     
+    tex_width = g_armwave_state.target_width;
+    
     printf("armwave_init_xvimage_shared(%d,%d)\n", tex_width, tex_height);
     
     /*
