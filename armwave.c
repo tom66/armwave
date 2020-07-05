@@ -311,6 +311,8 @@ void render_nonaa_to_buffer_1ch_slice(uint32_t slice_y, uint32_t height)
             
             for(ys = 0; ys < 4; ys++, yi++) {
                 scale_value = word & 0xff;
+                word >>= 8;
+                
                 //printf("%02x ", scale_value);
                 
 #if USE_ALU_XCOORD == 1
@@ -332,6 +334,7 @@ void render_nonaa_to_buffer_1ch_slice(uint32_t slice_y, uint32_t height)
 
                 *(write_buffer + scale_value) += 1;
                 
+#if 0
                 if(last != scale_value) {
                     if(last > scale_value) {
                         a = scale_value;
@@ -345,8 +348,8 @@ void render_nonaa_to_buffer_1ch_slice(uint32_t slice_y, uint32_t height)
                         *(write_buffer + i) += 1;
                     }
                 }
-                
-                word >>= 8;
+#endif
+
                 last = scale_value;
             }
         }
