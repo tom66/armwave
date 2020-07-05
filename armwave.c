@@ -524,6 +524,7 @@ void armwave_setup_render(uint32_t start_point, uint32_t end_point, uint32_t wav
 void armwave_set_wave_pointer(uint8_t *wave_buffer)
 {
     assert(wave_buffer != NULL);
+    printf("armwave_set_wave_pointer\n");
     g_armwave_state.wave_buffer = wave_buffer;
 }
 
@@ -538,6 +539,7 @@ void armwave_set_wave_pointer_as_testbuf(int set)
         return;
     }
 
+    printf("armwave_set_wave_pointer_as_testbuf = %d\n", set);
     g_armwave_state.wave_buffer = g_armwave_state.test_wave_buffer + (g_armwave_state.test_wave_buffer_stride * set);
 }
 
