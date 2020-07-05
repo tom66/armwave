@@ -416,7 +416,7 @@ void fill_xvimage_scaled(XvImage *img)
  */
 void armwave_setup_render(uint32_t start_point, uint32_t end_point, uint32_t waves_max, uint32_t wave_stride, uint32_t target_width, uint32_t target_height, uint32_t render_flags)
 {
-    uint32_t length, xx;
+    uint32_t length, tex_width = 0, xx, i;
     float points_per_pixel;
 
     printf("s=%d e=%d w=%d ws=%d tw=%d th=%d rf=0x%08x\n", start_point, end_point, waves_max, wave_stride, target_width, target_height, render_flags);
@@ -424,6 +424,25 @@ void armwave_setup_render(uint32_t start_point, uint32_t end_point, uint32_t wav
     if(start_point > end_point) {
         printf("Error: start point more than end point\n");
         return;
+    }
+    
+    /* 
+     * Compute best texture width.
+     * Requirements:
+     *  - At least AM_MIN_TEXTURE_WIDTH pixels across but no more than AM_MAX_TEXTURE_WIDTH pixels across
+     *  - As close a multiple of the waveform length
+     *  - The largest size is chosen.
+     */
+    length = end_point - start_point;
+    i = 1;
+    while(1) {
+        tex_width = length / i;
+        printf("Try tex_width %d pixel\r\n", tex_width);
+        if(tex_width > AM_MIN_TEXTURE_WIDTH && tex_width < AM_MAX_TEXTURE_WIDTH) {
+            target_width = tex_width;
+            break;
+        }
+        i *= 2;
     }
 
     // Calculate the size of each buffer.  Buffers are rotated by 90 degrees to improve cache coherency.
@@ -471,7 +490,6 @@ void armwave_setup_render(uint32_t start_point, uint32_t end_point, uint32_t wav
     }
 
     // Precompute the x-coord to pixel lookup to reduce ALU load
-    length = end_point - start_point;
     points_per_pixel = length / ((float)(target_width));
     g_armwave_state.slice_record_height = points_per_pixel * g_armwave_state.slice_height;
 

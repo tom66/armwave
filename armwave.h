@@ -59,6 +59,9 @@
 #define PLT_INVERT_SINGLE_COLOUR    1
 #define PLT_RAINBOW_THERMAL         2
 
+#define AM_MIN_TEXTURE_WIDTH        512
+#define AM_MAX_TEXTURE_WIDTH        1600
+
 // set to use ALU to do XCOORD mapping (instead of mapping table)
 #define USE_ALU_XCOORD              1
 
