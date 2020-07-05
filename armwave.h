@@ -60,7 +60,7 @@
 #define PLT_RAINBOW_THERMAL         2
 
 // set to use ALU to do XCOORD mapping (instead of mapping table)
-#define USE_ALU_XCOORD             0
+#define USE_ALU_XCOORD              1
 
 typedef uint16_t bufftyp_t;
 
