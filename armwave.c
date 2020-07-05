@@ -286,8 +286,8 @@ void render_nonaa_to_buffer_1ch_slice(uint32_t slice_y, uint32_t height)
     bufftyp_t *write_buffer;
 
     //write_buffer_base = g_armwave_state.ch1_buffer + (slice_y * g_armwave_state.bitdepth_height);
-    write_buffer_base = g_armwave_state.ch1_buffer + (((slice_y * g_armwave_state.cmp_x_bitdepth_scale) >> AM_XCOORD_MULT_SHIFT) * 256 * sizeof(bufftyp_t));
-    //write_buffer_base = g_armwave_state.ch1_buffer + ((int)((slice_y * g_armwave_state.bitdepth_scale_fp) + 0.5f) * 256 * sizeof(bufftyp_t));
+    //write_buffer_base = g_armwave_state.ch1_buffer + (((slice_y * g_armwave_state.cmp_x_bitdepth_scale) >> AM_XCOORD_MULT_SHIFT) * 256 * sizeof(bufftyp_t));
+    write_buffer_base = g_armwave_state.ch1_buffer + ((int)((slice_y * g_armwave_state.bitdepth_scale_fp) + 0.5f) * 256 * sizeof(bufftyp_t));
     
     //printf("wb=0x%08x b=0x%08x ch1=0x%08x off=%d slice_y=%d height=%d scale=%d bitdepth_height=%d\n", \
         g_armwave_state.wave_buffer, write_buffer_base, g_armwave_state.ch1_buffer, \
@@ -312,8 +312,13 @@ void render_nonaa_to_buffer_1ch_slice(uint32_t slice_y, uint32_t height)
                 // base coordinate.  The value of the point then informs us where to write in typically an 8-bit window.
                 // The bonus of this method is that we tend to hit accesses along a 256 byte line.  (512 byte lines if
                 // we set our accumulation buffer to 16 bits.)
+                /*
                 write_buffer = write_buffer_base + \
                     ((((yy + ys) * g_armwave_state.cmp_x_bitdepth_scale) >> AM_XCOORD_MULT_SHIFT) * 256 * sizeof(bufftyp_t));
+                */
+                
+                write_buffer = write_buffer_base + \
+                    ((int)((yy + ys) * g_armwave_state.bitdepth_scale_fp) * 256 * sizeof(bufftyp_t));
 #else
                 write_buffer = write_buffer_base + \
                     ((g_armwave_state.xcoord_to_xpixel[yi] >> 8) * 256 * sizeof(bufftyp_t));
