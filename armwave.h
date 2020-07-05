@@ -146,8 +146,6 @@ struct armwave_state_t {
   uint32_t grat_colour_sub;
 
   // Look up table to map xcoord to xpixel, after scaling is applied.
-  // This is probably suitable for up to ~100k points; beyond this RAM usage, and cache behaviour mean
-  // that using the ALU is probably less expensive.
   uint16_t *xcoord_to_xpixel;
 };
 

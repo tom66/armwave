@@ -499,7 +499,7 @@ void armwave_setup_render(uint32_t start_point, uint32_t end_point, uint32_t wav
 
     for(xx = 0; xx < g_armwave_state.slice_height; xx++) {
         g_armwave_state.xcoord_to_xpixel[xx] = (int)((xx * g_armwave_state.bitdepth_scale_fp) * 256.0f);
-        printf("xcoord_to_xpixel[%5d] = %5d\n", xx, g_armwave_state.xcoord_to_xpixel[xx]);
+        printf("xcoord_to_xpixel[%5d] = %5d (addr: 0x%08x)\n", xx, g_armwave_state.xcoord_to_xpixel[xx], &g_armwave_state.xcoord_to_xpixel[xx]);
     }
     
     g_armwave_state.out_pixbuf = malloc(sizeof(uint32_t) * g_armwave_state.size);
