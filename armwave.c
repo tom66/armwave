@@ -331,6 +331,7 @@ void render_nonaa_to_buffer_1ch_slice(uint32_t slice_y, uint32_t height)
 
                 *(write_buffer + scale_value) += 1;
                 
+                /*
                 if(last != scale_value) {
                     if(last > scale_value) {
                         a = scale_value;
@@ -344,6 +345,7 @@ void render_nonaa_to_buffer_1ch_slice(uint32_t slice_y, uint32_t height)
                         *(write_buffer + i) += 1;
                     }
                 }
+                */
                 
                 word >>= 8;
                 last = scale_value;
