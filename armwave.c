@@ -316,7 +316,7 @@ void render_nonaa_to_buffer_1ch_slice(uint32_t slice_y, uint32_t height)
                     ((((yy + ys) * g_armwave_state.cmp_x_bitdepth_scale) >> AM_XCOORD_MULT_SHIFT) * 256 * sizeof(bufftyp_t));
 #else
                 write_buffer = write_buffer_base + \
-                    (g_armwave_state.xcoord_to_xpixel[yi] * 256 * sizeof(bufftyp_t));
+                    ((g_armwave_state.xcoord_to_xpixel[yi] >> 8) * 256 * sizeof(bufftyp_t));
 #endif
 
                 *(write_buffer + scale_value) += 1;
@@ -475,7 +475,7 @@ void armwave_setup_render(uint32_t start_point, uint32_t end_point, uint32_t wav
     assert(g_armwave_state.xcoord_to_xpixel != NULL);
 
     for(xx = 0; xx < g_armwave_state.slice_height; xx++) {
-        g_armwave_state.xcoord_to_xpixel[xx] = (xx * g_armwave_state.bitdepth_scale_fp);
+        g_armwave_state.xcoord_to_xpixel[xx] = (xx * g_armwave_state.bitdepth_scale_fp) << 8;
         printf("xcoord_to_xpixel[%5d] = %5d\n", xx, g_armwave_state.xcoord_to_xpixel[xx]);
     }
     
