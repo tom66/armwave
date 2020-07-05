@@ -302,11 +302,11 @@ void render_nonaa_to_buffer_1ch_slice(uint32_t slice_y, uint32_t height)
         // buffer is rendered rotated by 90 degrees
         for(yy = 0, yi = 0; yy < height; yy += 4) {
             word = *(uint32_t*)(wave_base + yy);        // Read 4 bytes at once
-            __builtin_prefetch(wave_base + yy + 64);    // Advise CPU of our likely next intent
+            //__builtin_prefetch(wave_base + yy + 64);    // Advise CPU of our likely next intent
             
             for(ys = 0; ys < 4; ys++, yi++) {
                 scale_value = word & 0xff;
-                printf("%02x ", scale_value);
+                //printf("%02x ", scale_value);
                 
 #if USE_ALU_XCOORD == 1
                 // Keep math in integer where possible.  We compute the X scale and then multiply to get the correct 
