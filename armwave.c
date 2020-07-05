@@ -284,7 +284,7 @@ void render_nonaa_to_buffer_1ch_slice(uint32_t slice_y, uint32_t height)
     uint8_t *wave_base;
     bufftyp_t *write_buffer_base;
     bufftyp_t *write_buffer;
-    uint8_t last = *(g_armwave_state.wave_buffer + slice_y); // Assuming starting with zeroth byte for last byte
+    uint8_t last;
 
     //write_buffer_base = g_armwave_state.ch1_buffer + (slice_y * g_armwave_state.bitdepth_height);
     //write_buffer_base = g_armwave_state.ch1_buffer + (((slice_y * g_armwave_state.cmp_x_bitdepth_scale) >> AM_XCOORD_MULT_SHIFT) * 256 * sizeof(bufftyp_t));
@@ -300,6 +300,7 @@ void render_nonaa_to_buffer_1ch_slice(uint32_t slice_y, uint32_t height)
     // roll through each waveform
     for(w = 0; w < g_armwave_state.waves; w++) {
         wave_base = g_armwave_state.wave_buffer + slice_y + (w * g_armwave_state.wave_stride);
+        last = *wave_base; // Assuming starting with zeroth byte for last byte
         //printf("wb=0x%08x w=%d\n", wave_base, w);
 
         // roll through y and render the slice into the out buffer
