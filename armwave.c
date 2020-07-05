@@ -440,12 +440,13 @@ void armwave_setup_render(uint32_t start_point, uint32_t end_point, uint32_t wav
     g_armwave_state.draw_height = target_height;
 
     // Calculate compound scaler
+    g_armwave_state.bitdepth_scale_fp = ((g_armwave_state.target_width * (1.0f / g_armwave_state.wave_length)));
     g_armwave_state.cmp_x_bitdepth_scale = \
-        ((g_armwave_state.target_width * (1.0f / g_armwave_state.wave_length))) * (1 << AM_XCOORD_MULT_SHIFT);
+        (g_armwave_state.bitdepth_scale_fp * (1 << AM_XCOORD_MULT_SHIFT);
 
-    printf("ch_buff_size=%d, cmp_x_bitdepth_scale=%d (0x%08x), targ_width=%d, wave_length=%d, scaler=%d\n", \
-        g_armwave_state.ch_buff_size, g_armwave_state.cmp_x_bitdepth_scale, \
-        g_armwave_state.cmp_x_bitdepth_scale, g_armwave_state.target_width, g_armwave_state.wave_length,
+    printf("ch_buff_size=%d, cmp_x_bitdepth_scale=%d (0x%08x) (fp:%.3f), targ_width=%d, wave_length=%d, scaler=%d\n", \
+        g_armwave_state.ch_buff_size, g_armwave_state.cmp_x_bitdepth_scale, g_armwave_state.cmp_x_bitdepth_scale, 
+        g_armwave_state.bitdepth_scale_fp, g_armwave_state.target_width, g_armwave_state.wave_length,
         (1 << AM_XCOORD_MULT_SHIFT));
 
     // In 1ch mode, target 1024 x 16 render buffer, reading 16 bytes at a time from each wave, retaining as much as possible in L1/L2 cache
@@ -473,7 +474,7 @@ void armwave_setup_render(uint32_t start_point, uint32_t end_point, uint32_t wav
     assert(g_armwave_state.xcoord_to_xpixel != NULL);
 
     for(xx = 0; xx < g_armwave_state.slice_height; xx++) {
-        g_armwave_state.xcoord_to_xpixel[xx] = ((xx * g_armwave_state.cmp_x_bitdepth_scale) >> AM_XCOORD_MULT_SHIFT);
+        g_armwave_state.xcoord_to_xpixel[xx] = (xx * g_armwave_state.bitdepth_scale_fp);
         printf("xcoord_to_xpixel[%5d] = %5d\n", xx, g_armwave_state.xcoord_to_xpixel[xx]);
     }
     

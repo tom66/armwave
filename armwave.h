@@ -100,6 +100,7 @@ struct armwave_state_t {
   uint32_t test_wave_buffer_nsets;
 
   uint32_t cmp_x_bitdepth_scale;
+  float bitdepth_scale_fp;
 
   float vscale_frac;
 
