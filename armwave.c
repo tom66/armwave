@@ -306,6 +306,7 @@ void render_nonaa_to_buffer_1ch_slice(uint32_t slice_y, uint32_t height)
             
             for(ys = 0; ys < 4; ys++, yi++) {
                 scale_value = word & 0xff;
+                printf("%02x ", scale_value);
                 
 #if USE_ALU_XCOORD == 1
                 // Keep math in integer where possible.  We compute the X scale and then multiply to get the correct 
@@ -493,13 +494,13 @@ void armwave_setup_render(uint32_t start_point, uint32_t end_point, uint32_t wav
     points_per_pixel = length / ((float)(target_width));
     g_armwave_state.slice_record_height = points_per_pixel * g_armwave_state.slice_height;
 
-    g_armwave_state.xcoord_to_xpixel = malloc(g_armwave_state.slice_height * sizeof(uint16_t) * 100000);
+    g_armwave_state.xcoord_to_xpixel = malloc(g_armwave_state.slice_height * sizeof(uint16_t));
 
     assert(g_armwave_state.xcoord_to_xpixel != NULL);
 
     for(xx = 0; xx < g_armwave_state.slice_height; xx++) {
         g_armwave_state.xcoord_to_xpixel[xx] = (int)((xx * g_armwave_state.bitdepth_scale_fp) * 256.0f);
-        printf("xcoord_to_xpixel[%5d] = %5d (addr: 0x%08x)\n", xx, g_armwave_state.xcoord_to_xpixel[xx], &g_armwave_state.xcoord_to_xpixel[xx]);
+        //printf("xcoord_to_xpixel[%5d] = %5d (addr: 0x%08x)\n", xx, g_armwave_state.xcoord_to_xpixel[xx], &g_armwave_state.xcoord_to_xpixel[xx]);
     }
     
     g_armwave_state.out_pixbuf = malloc(sizeof(uint32_t) * g_armwave_state.size);
