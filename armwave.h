@@ -65,7 +65,7 @@
 // set to use ALU to do XCOORD mapping (instead of mapping table)
 #define USE_ALU_XCOORD              0
 
-typedef uint16_t bufftyp_t;
+typedef uint8_t bufftyp_t;
 
 struct armwave_color_mix_t {
     int16_t r, g, b;

@@ -409,14 +409,14 @@ void fill_xvimage_scaled(XvImage *img)
     fill_rgb_xvimage(img, &g_fill_black);
     
     //printf("iter...\n");
-
-    for(n = 0; n < npix; n += 2) {
+    
+    for(n = 0; n < npix; n += sizeof(bufftyp_t)) {
         wave_word = *base_32ptr++;
 
         if(COND_UNLIKELY(wave_word != 0)) {
-            for(w = 0; w < 2; w++) {
-                value = wave_word & 0xffff;
-                wave_word >>= 16;
+            for(w = 0; w < sizeof(bufftyp_t); w++) {
+                value = wave_word & ((1 >> (sizeof(bufftyp_t) * 8)) - 1);
+                wave_word >>= sizeof(bufftyp_t) * 8;
 
                 if(value != 0) {
                     // Plot the pixels
