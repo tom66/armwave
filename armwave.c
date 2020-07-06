@@ -433,6 +433,10 @@ void fill_xvimage_scaled(XvImage *img)
                         for(i = ey; i > sy; i--) {
                             plot_pixel_yuv(img, xx, i, &plot_col);
                         }
+                    } else {
+                        if(last_x != xx) {
+                            last_y = -1;
+                        }
                     }
                     
                     last_x = xx;
