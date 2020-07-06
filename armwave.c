@@ -333,7 +333,7 @@ void render_nonaa_to_buffer_1ch_slice(uint32_t slice_y, uint32_t height)
 #endif
 
                 read = *(write_buffer + scale_value);
-                if(read != ((1 << sizeof(bufftyp_t))) - 1) {
+                if(read != BUFFTYP_MASK) {
                     *(write_buffer + scale_value) = read + 1;
                 }
                 
@@ -418,7 +418,7 @@ void fill_xvimage_scaled(XvImage *img)
 
         if(COND_UNLIKELY(wave_word != 0)) {
             for(w = 0; w < (4 / sizeof(bufftyp_t)); w++) {
-                value = wave_word & ((1 << (sizeof(bufftyp_t) * 8)) - 1);
+                value = wave_word & BUFFTYP_MASK;
                 wave_word >>= sizeof(bufftyp_t) * 8;
 
                 if(value != 0) {
