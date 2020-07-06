@@ -385,7 +385,7 @@ void armwave_generate()
  */
 void fill_xvimage_scaled(XvImage *img)
 {
-    uint32_t xx, yy, ye, y, word, wave_word, painted = 0;
+    uint32_t xx, yy, ye, word, wave_word, painted = 0;
     // uint32_t ysub;
     int rr, gg, bb, n, nsub, npix, w, last_x = -1, last_y = -1, sy, ey, i;
     uint8_t r, g, b;
@@ -425,7 +425,7 @@ void fill_xvimage_scaled(XvImage *img)
                     xx = (nsub >> 8) / 2;
                     plot_col = g_yuv_lut[0][MIN(value, 255)];
                     
-                    if(last_x == xx && last_y != y) {
+                    if(last_x == xx && last_y != yy) {
                         if(last_y > yy) {
                             sy = yy;
                             ey = last_y;
