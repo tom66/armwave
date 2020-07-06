@@ -428,14 +428,14 @@ void fill_xvimage_scaled(XvImage *img)
                     if(last_x == xx && last_y != yy) {
                         //printf("%4d %4d %4d %4d\n")
                         if(last_y > yy) {
-                            sy = last_y;
-                            ey = yy;
-                        } else {
                             sy = yy;
                             ey = last_y;
+                        } else {
+                            sy = last_y;
+                            ey = yy;
                         }
                         
-                        for(i = sy; i < ey; i++) {
+                        for(i = ey; i > sy; i--) {
                             plot_pixel_yuv(img, xx, i, &plot_col);
                         }
                     }
