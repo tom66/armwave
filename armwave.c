@@ -422,7 +422,7 @@ void fill_xvimage_scaled(XvImage *img)
                     // Plot the pixels
                     nsub = n + w;
                     yy = (nsub & 0xff); 
-                    xx = (nsub >> 8) / 2;
+                    xx = (nsub >> 8) / sizeof(bufftyp_t);
                     plot_col = g_yuv_lut[0][MIN(value, 255)];
                     
 #if 0
