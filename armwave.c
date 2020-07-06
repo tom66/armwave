@@ -410,7 +410,7 @@ void fill_xvimage_scaled(XvImage *img)
     
     //printf("iter...\n");
     
-    for(n = 0; n < npix; n += sizeof(bufftyp_t)) {
+    for(n = 0; n < npix; n += (4 / sizeof(bufftyp_t))) {
         wave_word = *base_32ptr++;
 
         if(COND_UNLIKELY(wave_word != 0)) {
