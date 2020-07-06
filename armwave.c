@@ -425,13 +425,13 @@ void fill_xvimage_scaled(XvImage *img)
                     xx = (nsub >> 8) / 2;
                     plot_col = g_yuv_lut[0][MIN(value, 255)];
                     
-                    if(last_x == x && last_y != y) {
-                        if(last_y > y) {
-                            sy = y;
+                    if(last_x == xx && last_y != y) {
+                        if(last_y > yy) {
+                            sy = yy;
                             ey = last_y;
                         } else {
                             sy = last_y;
-                            ey = y;
+                            ey = yy;
                         }
                         
                         for(i = sy; i < ey; i++) {
