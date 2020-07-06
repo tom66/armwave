@@ -279,7 +279,7 @@ void armwave_init()
  */
 void render_nonaa_to_buffer_1ch_slice(uint32_t slice_y, uint32_t height)
 {
-    int yy, ys, yi, w, scale_value, i, a, b;
+    int yy, ys, yi, w, scale_value, i, a, b, read;
     uint32_t value, word;
     uint8_t *wave_base;
     bufftyp_t *write_buffer_base;
@@ -332,7 +332,10 @@ void render_nonaa_to_buffer_1ch_slice(uint32_t slice_y, uint32_t height)
                     ((g_armwave_state.xcoord_to_xpixel[yi] >> 8) * 256 * sizeof(bufftyp_t));
 #endif
 
-                *(write_buffer + scale_value) += 1;
+                read = *(write_buffer + scale_value);
+                if(read != ((1 << sizeof(bufftyp_t))) - 1) {
+                    *(write_buffer + scale_value) = read + 1;
+                }
                 
 #if 0
                 if(last != scale_value) {
