@@ -307,7 +307,7 @@ void render_nonaa_to_buffer_1ch_slice(uint32_t slice_y, uint32_t height)
         // buffer is rendered rotated by 90 degrees
         for(yy = 0, yi = 0; yy < height; yy += 4) {
             word = *(uint32_t*)(wave_base + yy);        // Read 4 bytes at once
-            //__builtin_prefetch(wave_base + yy + 64);    // Advise CPU of our likely next intent
+            __builtin_prefetch(wave_base + yy + 64);    // Advise CPU of our likely next intent
             
             for(ys = 0; ys < 4; ys++, yi++) {
                 scale_value = word & 0xff;
@@ -387,13 +387,14 @@ void fill_xvimage_scaled(XvImage *img)
 {
     uint32_t xx, yy, ye, y, word, wave_word, painted = 0;
     // uint32_t ysub;
-    int rr, gg, bb, n, nsub, npix, w;
+    int rr, gg, bb, n, nsub, npix, w, last_x, last_y, sy, ey, i;
     uint8_t r, g, b;
     int value; 
     // uint8_t row;
     uint32_t *base_32ptr = (uint32_t*)g_armwave_state.ch1_buffer;
     //uint32_t *out_buffer_base = out_buffer;
     uint32_t offset;
+    struct armwave_yuv_t plot_col;
 
     printf("output buffer: 0x%08x\n", img);
 
@@ -422,11 +423,29 @@ void fill_xvimage_scaled(XvImage *img)
                     nsub = n + w;
                     yy = (nsub & 0xff); 
                     xx = (nsub >> 8) / 2;
+                    plot_col = g_yuv_lut[0][MIN(value, 255)];
+                    
+                    if(last_x == x && last_y != y) {
+                        if(last_y > y) {
+                            sy = y;
+                            ey = last_y;
+                        } else {
+                            sy = last_y;
+                            ey = y;
+                        }
+                        
+                        for(i = sy; i < ey; i++) {
+                            plot_pixel_yuv(img, xx, yy, &plot_col);
+                        }
+                    }
+                    
+                    last_x = xx;
+                    last_y = yy;
 
                     // FASTQ does not paint U/V for odd pixels; works OK for most purposes.
                     //plot_pixel_yuv_fastq(img, xx, yy, &g_yuv_lut[0][MIN(value, 255)]);
                     // TODO: Index needs to change wrt to channel plotted...
-                    plot_pixel_yuv(img, xx, yy, &g_yuv_lut[0][MIN(value, 255)]);
+                    plot_pixel_yuv(img, xx, yy, &plot_col);
                     painted++;
                 }
             }
