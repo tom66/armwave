@@ -425,7 +425,7 @@ void fill_xvimage_scaled(XvImage *img)
                     xx = (nsub >> 8) / 2;
                     plot_col = g_yuv_lut[0][MIN(value, 255)];
                     
-                    if(last_x == (xx - 1) && yy > last_y && last_y > 0) {
+                    if(last_x == (xx + 1) && yy > last_y && last_y > 0) {
                         sy = last_y;
                         ey = yy;
                         
