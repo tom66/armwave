@@ -387,7 +387,7 @@ void fill_xvimage_scaled(XvImage *img)
 {
     uint32_t xx, yy, ye, y, word, wave_word, painted = 0;
     // uint32_t ysub;
-    int rr, gg, bb, n, nsub, npix, w, last_x, last_y, sy, ey, i;
+    int rr, gg, bb, n, nsub, npix, w, last_x = -1, last_y = -1, sy, ey, i;
     uint8_t r, g, b;
     int value; 
     // uint8_t row;
