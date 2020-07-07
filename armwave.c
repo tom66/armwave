@@ -333,7 +333,7 @@ void render_nonaa_to_buffer_1ch_slice(uint32_t slice_y, uint32_t height)
 #endif
 
                 read = *(write_buffer + scale_value);
-                if(read != BUFFTYP_MASK) {
+                if(COND_UNLIKELY(read != BUFFTYP_MASK)) {
                     *(write_buffer + scale_value) = read + 1;
                 }
                 
