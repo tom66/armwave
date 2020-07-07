@@ -428,6 +428,10 @@ void fill_xvimage_scaled(XvImage *img)
                     xx = (nsub >> 8) / sizeof(bufftyp_t);
                     plot_col = g_yuv_lut[0][MIN(value, 255)];
                     
+                    // avoid plotting zeroth pixel (reasons will become clear later)
+                    if(yy == 0)
+                        continue;
+                    
 #if 0
                     if(yy > last_y && last_y > 0) {
                         sy = last_y;
