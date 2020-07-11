@@ -424,12 +424,12 @@ void fill_xvimage_scaled(XvImage *img)
                 if(value != 0) {
                     // Plot the pixels
                     nsub = n + w;
-                    yy = (nsub & 0xff); 
+                    yy = 255 - (nsub & 0xff); 
                     xx = (nsub >> 8) / sizeof(bufftyp_t);
                     plot_col = g_yuv_lut[0][MIN(value, 255)];
                     
-                    // avoid plotting zeroth pixel (reasons will become clear later)
-                    if(yy == 0)
+                    // avoid plotting zero value (reasons will become clear later)
+                    if(yy == 255)
                         continue;
                     
 #if 0
@@ -1122,7 +1122,7 @@ void armwave_render_frame_x11()
         m + g_armwave_state.draw_xoff + 1, 
         m + g_armwave_state.draw_yoff + 1, 
         g_armwave_state.draw_width - (m * 2) - 2, 
-        g_armwave_state.draw_height - (m * 2) - 2, True);
+        g_armwave_state.draw_height - (m * 2) - 2, False);
     
     armwave_render_graticule();
 
