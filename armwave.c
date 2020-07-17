@@ -301,12 +301,12 @@ void render_nonaa_to_buffer_1ch_slice(uint32_t slice_y, uint32_t height)
     // roll through each waveform
     for(w = 0; w < g_armwave_state.waves; w++) {
         wave_base = g_armwave_state.wave_buffer + slice_y + (w * g_armwave_state.wave_stride);
-        trig_off = *(g_armwave_state.trig_corr_buff + w);
+        trig_value = *(g_armwave_state.trig_corr_buff + w);
         last = *wave_base; // Assuming starting with zeroth byte for last byte
 
-        //printf("Off=0x%08x w=%4d/%4d\r\n", trig_off, w, g_armwave_state.waves);
-        if(trig_off & 0xf0ffffff) {
-            printf("ERR: Trigger pointer out of bounds... (0x%08x)?\r\n", trig_off);
+        //printf("Off=0x%08x w=%4d/%4d\r\n", trig_value, w, g_armwave_state.waves);
+        if(trig_value & 0xf0ffffff) {
+            printf("ERR: Trigger pointer out of bounds... (0x%08x)?\r\n", trig_value);
             break;
         }
 
@@ -314,7 +314,7 @@ void render_nonaa_to_buffer_1ch_slice(uint32_t slice_y, uint32_t height)
         trig_value &= 0x07;
         toff = trig_value - 4;
 
-        //printf("offset=%d\r\n", trig_off);
+        //printf("offset=%d\r\n", trig_value);
 
         // roll through y and render the slice into the out buffer
         // buffer is rendered rotated by 90 degrees
