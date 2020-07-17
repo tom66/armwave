@@ -312,6 +312,7 @@ void render_nonaa_to_buffer_1ch_slice(uint32_t slice_y, uint32_t height)
 
         trig_off >>= 24;
         trig_off &= 0x07;
+        trig_off = 8 - trig_off;
 
         //printf("offset=%d\r\n", trig_off);
 
