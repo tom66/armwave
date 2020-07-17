@@ -312,6 +312,8 @@ void render_nonaa_to_buffer_1ch_slice(uint32_t slice_y, uint32_t height)
         trig_off >>= 24;
         trig_off &= 0x07;
 
+        printf("offset=%d\r\n", trig_off);
+
         // roll through y and render the slice into the out buffer
         // buffer is rendered rotated by 90 degrees
         for(yy = 0, yi = 0; yy < height; yy += 4) {
