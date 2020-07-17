@@ -597,7 +597,7 @@ void armwave_set_wave_pointer_u32(uint32_t wave_buffer_ptr)
 void armwave_set_trig_corr_buffer_u32(uint32_t trig_corr_buff_ptr)
 {
     assert(trig_corr_buff_ptr != 0);
-    printf("armwave_set_trig_corr_buffer_u32 = 0x%08x\n", wave_buffer_ptr);
+    printf("armwave_set_trig_corr_buffer_u32 = 0x%08x\n", trig_corr_buff_ptr);
     g_armwave_state.trig_corr_buff = trig_corr_buff_ptr;
 }
 
