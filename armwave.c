@@ -333,7 +333,7 @@ void render_nonaa_to_buffer_1ch_slice(uint32_t slice_y, uint32_t height)
                     ((int)((yy + ys) * g_armwave_state.bitdepth_scale_fp) * 256 * sizeof(bufftyp_t));
 #else
                 write_buffer = write_buffer_base + \
-                    ((g_armwave_state.xcoord_to_xpixel[yi * 8] >> 8) * 256 * sizeof(bufftyp_t));
+                    ((g_armwave_state.xcoord_to_xpixel[(yi * 8) + trig_off] >> 8) * 256 * sizeof(bufftyp_t));
 #endif
 
                 read = *(write_buffer + scale_value);
