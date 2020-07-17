@@ -175,7 +175,6 @@ void armwave_set_wave_pointer(uint8_t *wave_buffer);
 void armwave_set_wave_pointer_as_testbuf(int set);
 void armwave_set_wave_pointer_u32(uint32_t wave_buffer_ptr);
 void armwave_set_trig_corr_buffer_u32(uint32_t trig_corr_buff_ptr);
-void armwave_set_channel_colour(int ch, int r, int g, int b);
 void armwave_set_channel_colour(int ch, int r, int g, int b, float i, int pri_sec);
 void armwave_set_channel_palette(int ch, int palette);
 void armwave_set_graticule_colour(int r, int g, int b);

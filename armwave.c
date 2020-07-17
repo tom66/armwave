@@ -107,7 +107,7 @@ void hsv2rgb(struct armwave_hsv_t *hsv_in, struct armwave_rgb_t *rgb_out)
 {
     unsigned char region, remainder, p, q, t;
 
-    if (hsv_in->s == 
+    if (hsv_in->s == 0)
     {
         rgb_out->r = hsv_in->v;
         rgb_out->g = hsv_in->v;
