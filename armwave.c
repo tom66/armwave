@@ -304,7 +304,8 @@ void render_nonaa_to_buffer_1ch_slice(uint32_t slice_y, uint32_t height)
         trig_off = *(g_armwave_state.trig_corr_buff + w);
         last = *wave_base; // Assuming starting with zeroth byte for last byte
 
-        printf("Off=0x%08x w=%4d/%4d\r\n", trig_off, w, g_armwave_state.waves);
+        //printf("Off=0x%08x w=%4d/%4d\r\n", trig_off, w, g_armwave_state.waves);
+        trig_off >>= 24;
 
         // roll through y and render the slice into the out buffer
         // buffer is rendered rotated by 90 degrees
@@ -332,7 +333,7 @@ void render_nonaa_to_buffer_1ch_slice(uint32_t slice_y, uint32_t height)
                     ((int)((yy + ys) * g_armwave_state.bitdepth_scale_fp) * 256 * sizeof(bufftyp_t));
 #else
                 write_buffer = write_buffer_base + \
-                    ((g_armwave_state.xcoord_to_xpixel[yi] >> 8) * 256 * sizeof(bufftyp_t));
+                    ((g_armwave_state.xcoord_to_xpixel[yi * 8] >> 8) * 256 * sizeof(bufftyp_t));
 #endif
 
                 read = *(write_buffer + scale_value);
@@ -538,8 +539,8 @@ void armwave_setup_render(uint32_t start_point, uint32_t end_point, uint32_t wav
 
     assert(g_armwave_state.xcoord_to_xpixel != NULL);
 
-    for(xx = 0; xx < g_armwave_state.slice_height; xx++) {
-        g_armwave_state.xcoord_to_xpixel[xx] = (int)((xx * g_armwave_state.bitdepth_scale_fp) * 256.0f);
+    for(xx = 0; xx < g_armwave_state.slice_height * 8; xx++) {
+        g_armwave_state.xcoord_to_xpixel[xx] = (int)((xx * 0.125f * g_armwave_state.bitdepth_scale_fp) * 256.0f);
         //printf("xcoord_to_xpixel[%5d] = %5d (addr: 0x%08x)\n", xx, g_armwave_state.xcoord_to_xpixel[xx], &g_armwave_state.xcoord_to_xpixel[xx]);
     }
     
