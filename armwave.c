@@ -41,7 +41,7 @@
 
 #include "armwave.h"
 
-#define ARMWAVE_VER  "v0.2.4"
+#define ARMWAVE_VER  "v0.3.0"
 
 struct armwave_state_t g_armwave_state;
 struct armwave_yuv_t g_yuv_lut[4][256];
