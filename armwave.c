@@ -312,7 +312,7 @@ void render_nonaa_to_buffer_1ch_slice(uint32_t slice_y, uint32_t height)
         trig_off >>= 24;
         trig_off &= 0x07;
 
-        printf("offset=%d\r\n", trig_off);
+        //printf("offset=%d\r\n", trig_off);
 
         // roll through y and render the slice into the out buffer
         // buffer is rendered rotated by 90 degrees
@@ -547,7 +547,7 @@ void armwave_setup_render(uint32_t start_point, uint32_t end_point, uint32_t wav
 
     for(xx = 0; xx < g_armwave_state.slice_height * 8; xx++) {
         g_armwave_state.xcoord_to_xpixel[xx] = (int)((xx * 0.125f * g_armwave_state.bitdepth_scale_fp) * 256.0f);
-        //printf("xcoord_to_xpixel[%5d] = %5d (addr: 0x%08x)\n", xx, g_armwave_state.xcoord_to_xpixel[xx], &g_armwave_state.xcoord_to_xpixel[xx]);
+        printf("xcoord_to_xpixel[%5d] = %5d (addr: 0x%08x)\n", xx, g_armwave_state.xcoord_to_xpixel[xx], &g_armwave_state.xcoord_to_xpixel[xx]);
     }
     
     g_armwave_state.out_pixbuf = malloc(sizeof(uint32_t) * g_armwave_state.size);
