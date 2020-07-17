@@ -647,27 +647,13 @@ void armwave_set_channel_palette(int ch, int palette)
  */
 void armwave_set_graticule_colour(int r, int g, int b)
 {
-    /*
-    g_grat_colour.red = r * 255;
-    g_grat_colour.green = g * 255;
-    g_grat_colour.blue = b * 255;
-    g_grat_colour.flags = DoRed | DoGreen | DoBlue;
-    */
     printf("armwave_set_graticule_colour()\n");
-    
-    /*
-    r &= 0xff;
-    g &= 0xff;
-    b &= 0xff;
-    g_armwave_state.grat_colour_main = 0xff000000 | (b << 16) | (g << 8) | r;
-    */
     
     g_grat_colour.red = r * 255;
     g_grat_colour.green = g * 255;
     g_grat_colour.blue = b * 255;
     g_grat_colour.flags = DoRed | DoGreen | DoBlue;
     XAllocColor(g_dpy, g_xswa.colormap, &g_grat_colour);
-    //g_armwave_state.grat_colour_main = g_grat_colour.pixel;
 }
     
 /*
