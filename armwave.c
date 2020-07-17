@@ -304,7 +304,7 @@ void render_nonaa_to_buffer_1ch_slice(uint32_t slice_y, uint32_t height)
         trig_off = *(g_armwave_state.trig_corr_buff + w);
         last = *wave_base; // Assuming starting with zeroth byte for last byte
 
-        printf("Off=0x%08x\r\n", trig_off);
+        printf("Off=0x%08x w=%4d/%4d\r\n", trig_off, w, g_armwave_state.waves);
 
         // roll through y and render the slice into the out buffer
         // buffer is rendered rotated by 90 degrees
