@@ -284,6 +284,7 @@ void render_nonaa_to_buffer_1ch_slice(uint32_t slice_y, uint32_t height)
     uint8_t *wave_base;
     bufftyp_t *write_buffer_base;
     bufftyp_t *write_buffer;
+    uint32_t trig_off;
     uint8_t last;
 
     //write_buffer_base = g_armwave_state.ch1_buffer + (slice_y * g_armwave_state.bitdepth_height);
