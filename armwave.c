@@ -306,7 +306,7 @@ void render_nonaa_to_buffer_1ch_slice(uint32_t slice_y, uint32_t height)
 
         //printf("Off=0x%08x w=%4d/%4d\r\n", trig_off, w, g_armwave_state.waves);
         if(trig_off & 0xf0ffffff) {
-            printf("Trigger pointer out of bounds... (0x%08x)?", trig_off);
+            printf("Trigger pointer out of bounds... (0x%08x)?\r\n", trig_off);
         }
 
         trig_off >>= 24;
