@@ -279,12 +279,12 @@ void armwave_init()
  */
 void render_nonaa_to_buffer_1ch_slice(uint32_t slice_y, uint32_t height)
 {
-    int yy, ys, yi, w, scale_value, i, a, b, read;
+    int yy, ys, yi, w, scale_value, i, a, b, read, toff;
     uint32_t value, word;
     uint8_t *wave_base;
     bufftyp_t *write_buffer_base;
     bufftyp_t *write_buffer;
-    uint32_t trig_off;
+    uint32_t trig_value;
     uint8_t last;
 
     //write_buffer_base = g_armwave_state.ch1_buffer + (slice_y * g_armwave_state.bitdepth_height);
@@ -310,9 +310,9 @@ void render_nonaa_to_buffer_1ch_slice(uint32_t slice_y, uint32_t height)
             break;
         }
 
-        trig_off >>= 24;
-        trig_off &= 0x07;
-        trig_off = 8 - trig_off;
+        trig_value >>= 24;
+        trig_value &= 0x07;
+        toff = trig_value - 4;
 
         //printf("offset=%d\r\n", trig_off);
 
@@ -342,7 +342,7 @@ void render_nonaa_to_buffer_1ch_slice(uint32_t slice_y, uint32_t height)
                     ((int)((yy + ys) * g_armwave_state.bitdepth_scale_fp) * 256 * sizeof(bufftyp_t));
 #else
                 write_buffer = write_buffer_base + \
-                    ((g_armwave_state.xcoord_to_xpixel[(yi * 8) + trig_off] >> 8) * 256 * sizeof(bufftyp_t));
+                    ((g_armwave_state.xcoord_to_xpixel[(yi * 8) + toff] >> 8) * 256 * sizeof(bufftyp_t));
 #endif
 
                 //printf("A=%4d offs=%3d R=%6d\r\n", (yi * 8) + trig_off, trig_off, g_armwave_state.xcoord_to_xpixel[(yi * 8) + trig_off]);
