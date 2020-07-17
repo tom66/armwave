@@ -62,7 +62,7 @@ void armwave_init()
 void render_nonaa_to_buffer_1ch_slice(uint32_t slice_y, uint32_t height)
 {
     int yy, ys, w, scale_value;
-    uint32_t value, word;
+    uint32_t value, word, trig_off;
     uint8_t *wave_base;
     bufftyp_t *write_buffer_base;
     bufftyp_t *write_buffer;
@@ -78,6 +78,9 @@ void render_nonaa_to_buffer_1ch_slice(uint32_t slice_y, uint32_t height)
     // roll through each waveform
     for(w = 0; w < g_armwave_state.waves; w++) {
         wave_base = g_armwave_state.wave_buffer + slice_y + (w * g_armwave_state.wave_stride);
+        trig_off = *(g_armwave_state.trig_corr_buff + w);
+
+        printf("trig_off=0x%08x\n", trig_off);
 
         // roll through y and render the slice into the out buffer
         // buffer is rendered rotated by 90 degrees
@@ -264,7 +267,8 @@ void armwave_setup_render(uint32_t start_point, uint32_t end_point, uint32_t wav
     g_armwave_state.ch_buff_size = (g_armwave_state.bitdepth_height + 4) * (target_width + 4) * sizeof(bufftyp_t);  // Add word padding too
     g_armwave_state.target_width = target_width;
     g_armwave_state.target_height = target_height;
-    g_armwave_state.wave_length = end_point - start_point;
+    g_armwave_state.wave_length = end_point - start_point;g
+    g_armwave_state.trig_corr_buff = NULL;
 
     // Calculate compound scaler
     g_armwave_state.cmp_x_bitdepth_scale = \
@@ -350,6 +354,15 @@ void armwave_set_wave_pointer_u32(uint32_t wave_buffer_ptr)
 {
     assert(wave_buffer_ptr != 0);
     g_armwave_state.wave_buffer = (uint8_t*)wave_buffer_ptr;
+}
+
+/*
+ * Set the trigger correction buffer pointer from a 32-bit unit.
+ */
+void armwave_set_trig_corr_buffer_u32(uint32_t trig_corr_buff_ptr)
+{
+    assert(trig_corr_buff_ptr != 0);
+    g_armwave_state.trig_corr_buff = trig_corr_buff_ptr;
 }
 
 /*
