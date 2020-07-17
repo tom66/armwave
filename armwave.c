@@ -344,6 +344,8 @@ void render_nonaa_to_buffer_1ch_slice(uint32_t slice_y, uint32_t height)
                     ((g_armwave_state.xcoord_to_xpixel[(yi * 8) + trig_off] >> 8) * 256 * sizeof(bufftyp_t));
 #endif
 
+                printf("A=%4d offs=%3d R=%6d\r\n", (yi * 8) + trig_off, trig_off, g_armwave_state.xcoord_to_xpixel[(yi * 8) + trig_off]);
+
                 read = *(write_buffer + scale_value);
                 if(COND_UNLIKELY(read != BUFFTYP_MASK)) {
                     *(write_buffer + scale_value) = read + 1;
