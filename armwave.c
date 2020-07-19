@@ -331,7 +331,7 @@ void render_nonaa_to_buffer_1ch_slice(uint32_t slice_y, uint32_t height)
         trig_value &= 0x07;
         toff = trig_value;
 
-        if(toff != (test_toff / 50)) {
+        if(toff != (test_toff / 500)) {
             continue;
         }
 
@@ -434,8 +434,8 @@ void render_nonaa_to_buffer_1ch_slice(uint32_t slice_y, uint32_t height)
     }
 
     test_toff++;
-    test_toff %= (50 * 8);
-    printf("test_toff=%d\n", test_toff / 50);
+    test_toff %= (500 * 8);
+    printf("test_toff=%d\n", test_toff / 500);
 
     //printf("wb_end=%d\n", write_buffer - write_buffer_base);
 }
