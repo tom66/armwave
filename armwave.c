@@ -315,7 +315,7 @@ void render_nonaa_to_buffer_1ch_slice(uint32_t slice_y, uint32_t height)
         toff = trig_value;
 
         if(w < 20) {
-            c = (g_armwave_state.wave_length / 2) - 4 - 20;
+            c = (g_armwave_state.wave_length / 2) - 4 + 20;
 
             printf("%6d (%6d): ", w, c);
 
