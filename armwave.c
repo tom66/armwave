@@ -334,8 +334,8 @@ void render_nonaa_to_buffer_1ch_slice(uint32_t slice_y, uint32_t height)
         if(toff != (test_toff / 50)) {
             continue;
         }
-        
-        write_buffer_base = write_buffer_root;
+
+        write_buffer_base = write_buffer_root - (20 * 512);
 
 #if 0
         if(toff > 3) {
