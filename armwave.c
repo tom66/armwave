@@ -374,7 +374,7 @@ void render_nonaa_to_buffer_1ch_slice(uint32_t slice_y, uint32_t height)
 
         // roll through y and render the slice into the out buffer
         // buffer is rendered rotated by 90 degrees
-        for(yy = 0, yi = 0; yy < height; yy += 4) {
+        for(yy = 0, yi = toff; yy < height; yy += 4) {
             word = *(uint32_t*)(wave_base + yy);        // Read 4 bytes at once
             __builtin_prefetch(wave_base + yy + 64);    // Advise CPU of our likely next intent
             //word = rotr32(word, rotate);
@@ -383,7 +383,9 @@ void render_nonaa_to_buffer_1ch_slice(uint32_t slice_y, uint32_t height)
                 scale_value = word & 0xff;
                 word >>= 8;
                 
-                printf("yi=%d h=%d\r\n", yi, height);
+                if(w == 0) {
+                    printf("yi=%d h=%d\r\n", yi, height);
+                }
 
                 //printf("%02x ", scale_value);
                 
@@ -608,7 +610,7 @@ void armwave_setup_render(uint32_t start_point, uint32_t end_point, uint32_t wav
     g_armwave_state.xcoord_to_xpixel = malloc(g_armwave_state.slice_height * sizeof(uint16_t) * 8);
     assert(g_armwave_state.xcoord_to_xpixel != NULL);
 
-    for(xx = 0; xx < g_armwave_state.slice_height * 8; xx++) {
+    for(xx = 0; xx < (g_armwave_state.slice_height + 2) * 8; xx++) {
         g_armwave_state.xcoord_to_xpixel[xx] = (int)((xx * 0.125f * g_armwave_state.bitdepth_scale_fp) * 256.0f);
         printf("xcoord_to_xpixel[%5d] = %5d (addr: 0x%08x)\n", xx, g_armwave_state.xcoord_to_xpixel[xx], &g_armwave_state.xcoord_to_xpixel[xx]);
     }
