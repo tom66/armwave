@@ -328,7 +328,7 @@ void render_nonaa_to_buffer_1ch_slice(uint32_t slice_y, uint32_t height)
         trig_value &= 0x07;
         toff = trig_value;
 
-        if(toff != 0)
+        if(toff != 7)
             continue;
 
 #if 0
