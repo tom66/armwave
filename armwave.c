@@ -328,6 +328,9 @@ void render_nonaa_to_buffer_1ch_slice(uint32_t slice_y, uint32_t height)
         trig_value &= 0x07;
         toff = trig_value;
 
+        if(toff != 0)
+            continue;
+
 #if 0
         if(toff > 3) {
             wave_base++;
@@ -382,7 +385,7 @@ void render_nonaa_to_buffer_1ch_slice(uint32_t slice_y, uint32_t height)
             for(ys = 0; ys < 4; ys++, yi += 8) {
                 scale_value = word & 0xff;
                 word >>= 8;
-                
+
                 if(w == 0) {
                     printf("yi=%d h=%d\r\n", yi, height);
                 }
