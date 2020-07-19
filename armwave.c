@@ -298,6 +298,7 @@ void render_nonaa_to_buffer_1ch_slice(uint32_t slice_y, uint32_t height)
     int yy, ys, yi, w, scale_value, i, c, j, a, b, read, toff, rotate;
     uint32_t value, word;
     uint8_t *wave_base;
+    bufftyp_t *write_buffer_root;
     bufftyp_t *write_buffer_base;
     bufftyp_t *write_buffer;
     uint32_t trig_value;
@@ -305,7 +306,7 @@ void render_nonaa_to_buffer_1ch_slice(uint32_t slice_y, uint32_t height)
 
     //write_buffer_base = g_armwave_state.ch1_buffer + (slice_y * g_armwave_state.bitdepth_height);
     //write_buffer_base = g_armwave_state.ch1_buffer + (((slice_y * g_armwave_state.cmp_x_bitdepth_scale) >> AM_XCOORD_MULT_SHIFT) * 256 * sizeof(bufftyp_t));
-    write_buffer_base = g_armwave_state.ch1_buffer + ((int)((slice_y * g_armwave_state.bitdepth_scale_fp) + 0.0f) * 256 * sizeof(bufftyp_t));
+    write_buffer_root = g_armwave_state.ch1_buffer + ((int)((slice_y * g_armwave_state.bitdepth_scale_fp) + 0.0f) * 256 * sizeof(bufftyp_t));
     
     /*
     printf("wb=0x%08x b=0x%08x ch1=0x%08x off=%d slice_y=%d height=%d scale=%d bitdepth_height=%d wlen=%d\n", \
@@ -333,6 +334,8 @@ void render_nonaa_to_buffer_1ch_slice(uint32_t slice_y, uint32_t height)
         if(toff != (test_toff / 50)) {
             continue;
         }
+        
+        write_buffer_base = write_buffer_root;
 
 #if 0
         if(toff > 3) {
