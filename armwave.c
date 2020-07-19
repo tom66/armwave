@@ -389,9 +389,11 @@ void render_nonaa_to_buffer_1ch_slice(uint32_t slice_y, uint32_t height)
                 scale_value = word & 0xff;
                 word >>= 8;
 
+                /*
                 if(w == 0) {
                     printf("yi=%d h=%d\r\n", yi, height);
                 }
+                */
 
                 //printf("%02x ", scale_value);
                 
