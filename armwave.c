@@ -333,15 +333,16 @@ void render_nonaa_to_buffer_1ch_slice(uint32_t slice_y, uint32_t height)
 #endif
 
         if(w == 0) {
-            for(c = 0; c <= g_armwave_state.wave_length; c += 8) {
-                printf("%6d: ", c);
+            //for(c = 0; c <= g_armwave_state.wave_length; c += 8) {
+            c = (g_armwave_state.wave_length / 2) + 40;
+            printf("%6d: ", c);
 
-                for(i = 0; i < 8; i++) {
-                    printf("%02x ", *(g_armwave_state.wave_buffer + (w * g_armwave_state.wave_stride) + c + i));
-                }
-
-                printf("(tp:%d)\n", toff);
+            for(i = 0; i < 8; i++) {
+                printf("%02x ", *(g_armwave_state.wave_buffer + (w * g_armwave_state.wave_stride) + c + i));
             }
+
+            printf("(tp:%d)\n", toff);
+            //}
         }
 
         //printf("offset=%d\r\n", trig_value);
