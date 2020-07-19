@@ -332,7 +332,7 @@ void render_nonaa_to_buffer_1ch_slice(uint32_t slice_y, uint32_t height)
             wave_base++;
         }
 
-        rotate = (toff & 0x03) * 8;
+        //rotate = (toff & 0x03) * 8;
 
 #if 0
         if(w < 20) {
@@ -375,7 +375,7 @@ void render_nonaa_to_buffer_1ch_slice(uint32_t slice_y, uint32_t height)
         for(yy = 0, yi = 0; yy < height; yy += 4) {
             word = *(uint32_t*)(wave_base + yy);        // Read 4 bytes at once
             __builtin_prefetch(wave_base + yy + 64);    // Advise CPU of our likely next intent
-            word = rotr32(word, rotate);
+            //word = rotr32(word, rotate);
             
             for(ys = 0; ys < 4; ys++, yi += 8) {
                 scale_value = word & 0xff;
