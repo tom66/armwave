@@ -321,9 +321,9 @@ void render_nonaa_to_buffer_1ch_slice(uint32_t slice_y, uint32_t height)
 
             for(i = 0; i < 8; i++) {
                 if(i == toff) {
-                    printf("[%02x] ", *(g_armwave_state.wave_buffer + c + i));
+                    printf("[%02x] ", *(g_armwave_state.wave_buffer + (w * g_armwave_state.wave_stride) + c + i));
                 } else {
-                    printf(" %02x  ", *(g_armwave_state.wave_buffer + c + i));
+                    printf(" %02x  ", *(g_armwave_state.wave_buffer + (w * g_armwave_state.wave_stride) + c + i));
                 }   
             }
 
