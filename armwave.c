@@ -279,7 +279,7 @@ void armwave_init()
  */
 void render_nonaa_to_buffer_1ch_slice(uint32_t slice_y, uint32_t height)
 {
-    int yy, ys, yi, w, scale_value, i, a, b, read, toff;
+    int yy, ys, yi, w, scale_value, i, c, a, b, read, toff;
     uint32_t value, word;
     uint8_t *wave_base;
     bufftyp_t *write_buffer_base;
@@ -313,6 +313,21 @@ void render_nonaa_to_buffer_1ch_slice(uint32_t slice_y, uint32_t height)
         trig_value >>= 24;
         trig_value &= 0x07;
         toff = trig_value;
+
+        if(w < 20) {
+            printf("%6d: ", w);
+
+            c = (g_armwave_state.wave_length / 2) - 4;
+            for(i = 0; i < 8; i++) {
+                if(i == toff) {
+                    printf("[%02x] ", *(wave_base + c + i));
+                } else {
+                    printf(" %02x  ", *(wave_base + c + i));
+                }   
+            }
+
+            printf("(tp:%d)\n", toff);
+        }
 
         //printf("offset=%d\r\n", trig_value);
 
