@@ -328,9 +328,11 @@ void render_nonaa_to_buffer_1ch_slice(uint32_t slice_y, uint32_t height)
         trig_value &= 0x07;
         toff = trig_value;
 
+#if 0
         if(toff > 3) {
             wave_base++;
         }
+#endif
 
         //rotate = (toff & 0x03) * 8;
 
@@ -397,7 +399,7 @@ void render_nonaa_to_buffer_1ch_slice(uint32_t slice_y, uint32_t height)
                     ((int)((yy + ys) * g_armwave_state.bitdepth_scale_fp) * 256 * sizeof(bufftyp_t));
 #else
                 write_buffer = write_buffer_base + \
-                    ((g_armwave_state.xcoord_to_xpixel[yi] >> 8) * 256 * sizeof(bufftyp_t));
+                    ((g_armwave_state.xcoord_to_xpixel[MAX(yi + 100, 640)] >> 8) * 256 * sizeof(bufftyp_t));
 #endif
 
                 //printf("A=%4d offs=%3d R=%6d\r\n", (yi * 8) + trig_off, trig_off, g_armwave_state.xcoord_to_xpixel[(yi * 8) + trig_off]);
