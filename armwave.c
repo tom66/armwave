@@ -279,7 +279,7 @@ void armwave_init()
  */
 void render_nonaa_to_buffer_1ch_slice(uint32_t slice_y, uint32_t height)
 {
-    int yy, ys, yi, w, scale_value, i, c, a, b, read, toff;
+    int yy, ys, yi, w, scale_value, i, c, j, a, b, read, toff;
     uint32_t value, word;
     uint8_t *wave_base;
     bufftyp_t *write_buffer_base;
@@ -334,14 +334,17 @@ void render_nonaa_to_buffer_1ch_slice(uint32_t slice_y, uint32_t height)
 
         if(w == 0 && slice_y == 0) {
             //for(c = 0; c <= g_armwave_state.wave_length; c += 8) {
-            c = ((g_armwave_state.wave_length / 2) & ~0x7) + 32;
-            printf("%6d: ", c);
+            c = ((g_armwave_state.wave_length / 2) & ~0x7) - 16;
 
-            for(i = 0; i < 8; i++) {
-                printf("%02x ", *(g_armwave_state.wave_buffer + (w * g_armwave_state.wave_stride) + c + i));
+            for(j = 0; j < 64; j += 8, c += 8) {
+                printf("%6d: ", c);
+
+                for(i = 0; i < 8; i++) {
+                    printf("%02x ", *(g_armwave_state.wave_buffer + (w * g_armwave_state.wave_stride) + c + i));
+                }
+
+                printf("(tp:%d)\n", toff);
             }
-
-            printf("(tp:%d)\n", toff);
             //}
         }
 
