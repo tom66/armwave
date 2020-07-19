@@ -333,7 +333,7 @@ void render_nonaa_to_buffer_1ch_slice(uint32_t slice_y, uint32_t height)
 #endif
 
         if(w < 10) {
-            for(c = 0; c < g_armwave_state.wave_length; c += 8) {
+            for(c = 0; c <= g_armwave_state.wave_length; c += 8) {
                 printf("%6d: ", c);
 
                 for(i = 0; i < 8; i++) {
