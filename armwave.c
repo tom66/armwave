@@ -89,6 +89,20 @@ static void plot_pixel_yuv(XvImage *img, int x, int y, struct armwave_yuv_t *yuv
 static void plot_pixel_yuv_fastq(XvImage *img, int x, int y, struct armwave_yuv_t *yuv_in);
 
 /*
+ * Helper function to infer a rotate instruction.
+ *
+ * https://stackoverflow.com/questions/776508/best-practices-for-circular-shift-rotate-operations-in-c
+ */
+static inline uint32_t rotr32(uint32_t n, unsigned int c)
+{
+    const unsigned int mask = (CHAR_BIT * sizeof(n) - 1);
+    assert(c >= 0 && c <= 31);
+
+    c &= mask;
+    return (n >> c) | (n << ((-c) & mask));
+}
+
+/*
  * Helper function to convert 8-bit RGB to 8-bit YUV values.
  */
 void rgb2yuv(struct armwave_rgb_t *rgb_in, struct armwave_yuv_t *yuv_out)
@@ -279,7 +293,7 @@ void armwave_init()
  */
 void render_nonaa_to_buffer_1ch_slice(uint32_t slice_y, uint32_t height)
 {
-    int yy, ys, yi, w, scale_value, i, c, j, a, b, read, toff;
+    int yy, ys, yi, w, scale_value, i, c, j, a, b, read, toff, rotate;
     uint32_t value, word;
     uint8_t *wave_base;
     bufftyp_t *write_buffer_base;
@@ -300,7 +314,7 @@ void render_nonaa_to_buffer_1ch_slice(uint32_t slice_y, uint32_t height)
       
     // roll through each waveform
     for(w = 0; w < (g_armwave_state.waves - 1); w++) {
-        wave_base = g_armwave_state.wave_buffer + slice_y + (w * g_armwave_state.wave_stride) - 48;
+        wave_base = g_armwave_state.wave_buffer + slice_y + (w * g_armwave_state.wave_stride) - 40;
         trig_value = *(g_armwave_state.trig_corr_buff + w);
         last = *wave_base; // Assuming starting with zeroth byte for last byte
 
@@ -313,6 +327,12 @@ void render_nonaa_to_buffer_1ch_slice(uint32_t slice_y, uint32_t height)
         trig_value >>= 24;
         trig_value &= 0x07;
         toff = trig_value;
+
+        if(toff > 3) {
+            wave_base++;
+        }
+
+        rotate = (toff & 0x03) * 8;
 
 #if 0
         if(w < 20) {
@@ -355,6 +375,7 @@ void render_nonaa_to_buffer_1ch_slice(uint32_t slice_y, uint32_t height)
         for(yy = 0, yi = 0; yy < height; yy += 4) {
             word = *(uint32_t*)(wave_base + yy);        // Read 4 bytes at once
             __builtin_prefetch(wave_base + yy + 64);    // Advise CPU of our likely next intent
+            word = rotr32(word, rotate);
             
             for(ys = 0; ys < 4; ys++, yi += 8) {
                 scale_value = word & 0xff;
