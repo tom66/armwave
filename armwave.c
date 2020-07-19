@@ -293,6 +293,8 @@ void armwave_init()
  */
 void render_nonaa_to_buffer_1ch_slice(uint32_t slice_y, uint32_t height)
 {
+    static int test_toff = 0;
+
     int yy, ys, yi, w, scale_value, i, c, j, a, b, read, toff, rotate;
     uint32_t value, word;
     uint8_t *wave_base;
@@ -328,8 +330,9 @@ void render_nonaa_to_buffer_1ch_slice(uint32_t slice_y, uint32_t height)
         trig_value &= 0x07;
         toff = trig_value;
 
-        if(toff != 7)
+        if(toff != (test_toff / 1000)) {
             continue;
+        }
 
 #if 0
         if(toff > 3) {
@@ -420,6 +423,9 @@ void render_nonaa_to_buffer_1ch_slice(uint32_t slice_y, uint32_t height)
             }
         }
     }
+
+    test_toff++;
+    printf("test_toff=%d\n", test_toff / 1000);
 
     //printf("wb_end=%d\n", write_buffer - write_buffer_base);
 }
