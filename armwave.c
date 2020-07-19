@@ -312,17 +312,17 @@ void render_nonaa_to_buffer_1ch_slice(uint32_t slice_y, uint32_t height)
 
         trig_value >>= 24;
         trig_value &= 0x07;
-        toff = trig_value * 10;
+        toff = trig_value;
 
         //printf("offset=%d\r\n", trig_value);
 
         // roll through y and render the slice into the out buffer
         // buffer is rendered rotated by 90 degrees
-        for(yy = 0, yi = 0; yy < height; yy += 4) {
+        for(yy = 0, yi = toff; yy < height; yy += 4) {
             word = *(uint32_t*)(wave_base + yy);        // Read 4 bytes at once
             __builtin_prefetch(wave_base + yy + 64);    // Advise CPU of our likely next intent
             
-            for(ys = 0; ys < 4; ys++, yi++) {
+            for(ys = 0; ys < 4; ys++, yi += 8) {
                 scale_value = word & 0xff;
                 word >>= 8;
                 
@@ -342,7 +342,7 @@ void render_nonaa_to_buffer_1ch_slice(uint32_t slice_y, uint32_t height)
                     ((int)((yy + ys) * g_armwave_state.bitdepth_scale_fp) * 256 * sizeof(bufftyp_t));
 #else
                 write_buffer = write_buffer_base + \
-                    ((g_armwave_state.xcoord_to_xpixel[(yi * 8) + toff] >> 8) * 256 * sizeof(bufftyp_t));
+                    ((g_armwave_state.xcoord_to_xpixel[yi] >> 8) * 256 * sizeof(bufftyp_t));
 #endif
 
                 //printf("A=%4d offs=%3d R=%6d\r\n", (yi * 8) + trig_off, trig_off, g_armwave_state.xcoord_to_xpixel[(yi * 8) + trig_off]);
