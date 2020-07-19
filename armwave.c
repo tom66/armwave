@@ -299,8 +299,8 @@ void render_nonaa_to_buffer_1ch_slice(uint32_t slice_y, uint32_t height)
     */
       
     // roll through each waveform
-    for(w = 0; w < g_armwave_state.waves; w++) {
-        wave_base = g_armwave_state.wave_buffer + slice_y + (w * g_armwave_state.wave_stride);
+    for(w = 0; w < (g_armwave_state.waves - 1); w++) {
+        wave_base = g_armwave_state.wave_buffer + slice_y + (w * g_armwave_state.wave_stride) + 48;
         trig_value = *(g_armwave_state.trig_corr_buff + w);
         last = *wave_base; // Assuming starting with zeroth byte for last byte
 
@@ -352,7 +352,7 @@ void render_nonaa_to_buffer_1ch_slice(uint32_t slice_y, uint32_t height)
 
         // roll through y and render the slice into the out buffer
         // buffer is rendered rotated by 90 degrees
-        for(yy = 0, yi = -64; yy < height; yy += 4) {
+        for(yy = 0, yi = 0; yy < height; yy += 4) {
             word = *(uint32_t*)(wave_base + yy);        // Read 4 bytes at once
             __builtin_prefetch(wave_base + yy + 64);    // Advise CPU of our likely next intent
             
