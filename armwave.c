@@ -312,7 +312,7 @@ void render_nonaa_to_buffer_1ch_slice(uint32_t slice_y, uint32_t height)
 
         trig_value >>= 24;
         trig_value &= 0x07;
-        toff = trig_value - 4;
+        toff = trig_value;
 
         //printf("offset=%d\r\n", trig_value);
 
