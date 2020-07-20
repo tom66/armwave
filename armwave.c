@@ -294,6 +294,7 @@ void armwave_init()
 void render_nonaa_to_buffer_1ch_slice(uint32_t slice_y, uint32_t height)
 {
     static int test_toff = 0;
+    const int8_t trig_corr[8] = { 0, 0, 0, 0, 0, 0, 0, 0 };
 
     int yy, ys, yi, w, scale_value, i, c, j, a, b, read, toff, rotate;
     uint32_t value, word;
@@ -335,7 +336,7 @@ void render_nonaa_to_buffer_1ch_slice(uint32_t slice_y, uint32_t height)
             continue;
         }
 
-        write_buffer_base = write_buffer_root; // + (toff * 512);
+        write_buffer_base = write_buffer_root + (trig_corr[toff] * 512);
         if(write_buffer_base < g_armwave_state.ch1_buffer) {
             printf("skip\r\n");
             continue;
