@@ -394,6 +394,8 @@ void render_nonaa_to_buffer_1ch_slice(uint32_t slice_y, uint32_t height)
             word = *(uint32_t*)(wave_base + yy);        // Read 4 bytes at once
             __builtin_prefetch(wave_base + yy + 64);    // Advise CPU of our likely next intent
             //word = rotr32(word, rotate);
+
+            word = 0xc040c040;
             
             for(ys = 0; ys < 4; ys++, yi += 8) {
                 scale_value = word & 0xff;
