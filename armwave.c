@@ -332,9 +332,11 @@ void render_nonaa_to_buffer_1ch_slice(uint32_t slice_y, uint32_t height)
         trig_value &= 0x07;
         toff = trig_value;
 
+        /*
         if(toff != (test_toff / 500)) {
             continue;
         }
+        */
 
         //write_buffer_base = write_buffer_root + ((test_toff / 64) * 256);
         write_buffer_base = write_buffer_root + (trig_corr[toff] * 256);
