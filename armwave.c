@@ -338,7 +338,8 @@ void render_nonaa_to_buffer_1ch_slice(uint32_t slice_y, uint32_t height)
         }
         */
 
-        write_buffer_base = write_buffer_root + ((test_toff / 64) * 256);
+        //write_buffer_base = write_buffer_root + ((test_toff / 64) * 256);
+        write_buffer_base = write_buffer_root + (toff * 256);
         if(write_buffer_base < g_armwave_state.ch1_buffer) {
             printf("skip\r\n");
             continue;
