@@ -294,7 +294,7 @@ void armwave_init()
 void render_nonaa_to_buffer_1ch_slice(uint32_t slice_y, uint32_t height)
 {
     static int test_toff = 0;
-    const int8_t trig_corr[8] = { 2, 1, 6, 5, 4, 5, 0, 0 };
+    const int8_t trig_corr[8] = { 1, 0, 6, 5, 4, 5, 2, 3 };
 
     int yy, ys, yi, w, scale_value, i, c, j, a, b, read, toff, rotate;
     uint32_t value, word;
