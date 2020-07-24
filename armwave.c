@@ -1139,7 +1139,7 @@ void armwave_render_frame_x11()
     */
     
     XvShmPutImage(g_dpy, g_xv_port, g_window, g_gc, g_yuv_image,
-        8, 0, g_yuv_image->width, g_yuv_image->height,  // 8 pixel trigger offset spacing
+        8, 0, g_yuv_image->width - 8, g_yuv_image->height,  // 8 pixel trigger offset spacing
         m + g_armwave_state.draw_xoff + 1, 
         m + g_armwave_state.draw_yoff + 1, 
         g_armwave_state.draw_width - (m * 2) - 2, 
