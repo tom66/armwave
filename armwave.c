@@ -295,7 +295,6 @@ void render_nonaa_to_buffer_1ch_slice(uint32_t slice_y, uint32_t height)
 {
     static int test_toff = 0;
     const int8_t trig_corr[8] = { 1, 0, 6, 5, 4, 5, 2, 3 };
-    const int8_t trig_extra_corr = -8;
 
     int yy, ys, yi, w, scale_value, i, c, j, a, b, read, toff, rotate;
     uint32_t value, word;
@@ -341,20 +340,9 @@ void render_nonaa_to_buffer_1ch_slice(uint32_t slice_y, uint32_t height)
         }
         */
 
-        //write_buffer_base = write_buffer_root + ((test_toff / 64) * 256);
-        //write_buffer_base = write_buffer_root + ((g_armwave_state.xcoord_to_xpixel[trig_corr[toff]] >> 8) * 256); // + (trig_extra_corr * 256);
-        //write_buffer_offset = ((int)((trig_corr[toff] + trig_extra_corr) * g_armwave_state.bitdepth_scale_fp) * 256);
-        //write_buffer_base = write_buffer_root + write_buffer_offset; // + (trig_extra_corr * 256);
-
         // g_armwave_state.bitdepth_scale_fp
-
-        xoff = 0;
-        do {
-            write_buffer_offset = ((int)((trig_corr[toff] + trig_extra_corr + xoff) * g_armwave_state.bitdepth_scale_fp) * 256);
-            write_buffer_base = write_buffer_root + write_buffer_offset;
-            wave_base++;
-            xoff += 4;
-        } while(write_buffer_base < g_armwave_state.ch1_buffer);
+        write_buffer_offset = ((int)((trig_corr[toff] + xoff) * g_armwave_state.bitdepth_scale_fp) * 256);
+        write_buffer_base = write_buffer_root + write_buffer_offset;
 
         // roll through y and render the slice into the out buffer
         // buffer is rendered rotated by 90 degrees
@@ -483,23 +471,6 @@ void fill_xvimage_scaled(XvImage *img)
                     // avoid plotting zero value (reasons will become clear later)
                     if(yy == 255)
                         continue;
-                    
-#if 0
-                    if(yy > last_y && last_y > 0) {
-                        sy = last_y;
-                        ey = yy;
-                        
-                        printf("%4d %4d %4d\n", xx, sy, ey);
-                        
-                        for(i = ey; i > sy; i--) {
-                            plot_pixel_yuv(img, xx, i, &plot_col);
-                        }
-                    } else {
-                        if(last_x != xx) {
-                            last_y = -1;
-                        }
-                    }
-#endif
                
                     last_x = xx;
                     last_y = yy;
@@ -560,7 +531,7 @@ void armwave_setup_render(uint32_t start_point, uint32_t end_point, uint32_t wav
     g_armwave_state.waves = waves_max;  // Need a function to be able to change this on the fly
     g_armwave_state.size = target_height * target_width;
     g_armwave_state.bitdepth_height = 256 * sizeof(bufftyp_t);  // Always 256 possible levels in 8-bit mode
-    g_armwave_state.ch_buff_size = (g_armwave_state.bitdepth_height + 4) * (target_width + 4) * sizeof(bufftyp_t);  // Add word padding too
+    g_armwave_state.ch_buff_size = (g_armwave_state.bitdepth_height + 8) * (target_width + 8) * sizeof(bufftyp_t);  // Add word padding too
     g_armwave_state.target_width = target_width;
     g_armwave_state.target_height = target_height;
     g_armwave_state.wave_length = end_point - start_point;
