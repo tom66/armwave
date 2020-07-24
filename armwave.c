@@ -522,6 +522,9 @@ void armwave_setup_render(uint32_t start_point, uint32_t end_point, uint32_t wav
         i *= 2;
     }
 
+    // Add 8 pixels to texture width to account for trigger offset
+    target_width += 8;
+
     // Calculate the size of each buffer.  Buffers are rotated by 90 degrees to improve cache coherency.
     g_armwave_state.xstride = target_height;
     g_armwave_state.vscale_frac = target_height / 255.0f;
@@ -531,7 +534,7 @@ void armwave_setup_render(uint32_t start_point, uint32_t end_point, uint32_t wav
     g_armwave_state.waves = waves_max;  // Need a function to be able to change this on the fly
     g_armwave_state.size = target_height * target_width;
     g_armwave_state.bitdepth_height = 256 * sizeof(bufftyp_t);  // Always 256 possible levels in 8-bit mode
-    g_armwave_state.ch_buff_size = (g_armwave_state.bitdepth_height + 8) * (target_width + 8) * sizeof(bufftyp_t);  // Add word padding too
+    g_armwave_state.ch_buff_size = (g_armwave_state.bitdepth_height + 8) * target_width * sizeof(bufftyp_t);  // Add word padding too
     g_armwave_state.target_width = target_width;
     g_armwave_state.target_height = target_height;
     g_armwave_state.wave_length = end_point - start_point;
