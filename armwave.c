@@ -295,6 +295,7 @@ void render_nonaa_to_buffer_1ch_slice(uint32_t slice_y, uint32_t height)
 {
     static int test_toff = 0;
     const int8_t trig_corr[8] = { 1, 0, 6, 5, 4, 5, 2, 3 };
+    const int8_t trig_extra_corr = 4;
 
     int yy, ys, yi, w, scale_value, i, c, j, a, b, read, toff, rotate;
     uint32_t value, word;
@@ -318,7 +319,7 @@ void render_nonaa_to_buffer_1ch_slice(uint32_t slice_y, uint32_t height)
       
     // roll through each waveform
     for(w = 0; w < (g_armwave_state.waves - 1); w++) {
-        wave_base = g_armwave_state.wave_buffer + slice_y + (w * g_armwave_state.wave_stride) - 4;
+        wave_base = g_armwave_state.wave_buffer + slice_y + (w * g_armwave_state.wave_stride);
         trig_value = *(g_armwave_state.trig_corr_buff + w);
         last = *wave_base; // Assuming starting with zeroth byte for last byte
 
@@ -339,7 +340,7 @@ void render_nonaa_to_buffer_1ch_slice(uint32_t slice_y, uint32_t height)
         */
 
         //write_buffer_base = write_buffer_root + ((test_toff / 64) * 256);
-        write_buffer_base = write_buffer_root + (trig_corr[toff] * 256);
+        write_buffer_base = write_buffer_root + (trig_corr[toff] * 256) + (trig_extra_corr * 256);
         if(write_buffer_base < g_armwave_state.ch1_buffer) {
             printf("skip\r\n");
             continue;
