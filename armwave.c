@@ -318,7 +318,7 @@ void render_nonaa_to_buffer_1ch_slice(uint32_t slice_y, uint32_t height)
       
     // roll through each waveform
     for(w = 0; w < (g_armwave_state.waves - 1); w++) {
-        wave_base = g_armwave_state.wave_buffer + slice_y + (w * g_armwave_state.wave_stride) + 4;
+        wave_base = g_armwave_state.wave_buffer + slice_y + (w * g_armwave_state.wave_stride) - 4;
         trig_value = *(g_armwave_state.trig_corr_buff + w);
         last = *wave_base; // Assuming starting with zeroth byte for last byte
 
