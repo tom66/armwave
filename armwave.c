@@ -341,7 +341,7 @@ void render_nonaa_to_buffer_1ch_slice(uint32_t slice_y, uint32_t height)
 
         //write_buffer_base = write_buffer_root + ((test_toff / 64) * 256);
         //write_buffer_base = write_buffer_root + ((g_armwave_state.xcoord_to_xpixel[trig_corr[toff]] >> 8) * 256); // + (trig_extra_corr * 256);
-        write_buffer_base = write_buffer_root + ((int)(trig_corr[toff] * g_armwave_state.bitdepth_scale_fp) * 256); // + (trig_extra_corr * 256);
+        write_buffer_base = write_buffer_root + ((int)((trig_corr[toff] + trig_extra_corr) * g_armwave_state.bitdepth_scale_fp) * 256); // + (trig_extra_corr * 256);
 
         // g_armwave_state.bitdepth_scale_fp
 
@@ -376,6 +376,7 @@ void render_nonaa_to_buffer_1ch_slice(uint32_t slice_y, uint32_t height)
         }
 #endif
 
+#if 0
         if(w == 0 && slice_y == 0) {
             //for(c = 0; c <= g_armwave_state.wave_length; c += 8) {
             c = ((g_armwave_state.wave_length / 2) & ~0x7) - 64;
@@ -391,6 +392,7 @@ void render_nonaa_to_buffer_1ch_slice(uint32_t slice_y, uint32_t height)
             }
             //}
         }
+#endif
 
         //printf("offset=%d\r\n", trig_value);
 
