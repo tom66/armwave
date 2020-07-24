@@ -302,7 +302,7 @@ void render_nonaa_to_buffer_1ch_slice(uint32_t slice_y, uint32_t height)
     uint8_t *wave_base;
     bufftyp_t *write_buffer_root;
     bufftyp_t *write_buffer_base;
-    bufftyp_t *write_buffer_offset;
+    int write_buffer_offset;
     bufftyp_t *write_buffer;
     uint32_t trig_value;
     uint8_t last;
@@ -343,18 +343,18 @@ void render_nonaa_to_buffer_1ch_slice(uint32_t slice_y, uint32_t height)
 
         //write_buffer_base = write_buffer_root + ((test_toff / 64) * 256);
         //write_buffer_base = write_buffer_root + ((g_armwave_state.xcoord_to_xpixel[trig_corr[toff]] >> 8) * 256); // + (trig_extra_corr * 256);
-        write_buffer_offset = ((int)((trig_corr[toff] + trig_extra_corr) * g_armwave_state.bitdepth_scale_fp) * 256);
-        write_buffer_base = write_buffer_root + write_buffer_offset; // + (trig_extra_corr * 256);
+        //write_buffer_offset = ((int)((trig_corr[toff] + trig_extra_corr) * g_armwave_state.bitdepth_scale_fp) * 256);
+        //write_buffer_base = write_buffer_root + write_buffer_offset; // + (trig_extra_corr * 256);
 
         // g_armwave_state.bitdepth_scale_fp
 
         xoff = 0;
-        while(write_buffer_base < g_armwave_state.ch1_buffer) {
+        do {
             write_buffer_offset = ((int)((trig_corr[toff] + trig_extra_corr + xoff) * g_armwave_state.bitdepth_scale_fp) * 256);
             write_buffer_base = write_buffer_root + write_buffer_offset;
             wave_base++;
             xoff += 4;
-        }
+        } while(write_buffer_base < g_armwave_state.ch1_buffer);
 
         // roll through y and render the slice into the out buffer
         // buffer is rendered rotated by 90 degrees
