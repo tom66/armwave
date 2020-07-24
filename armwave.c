@@ -340,8 +340,8 @@ void render_nonaa_to_buffer_1ch_slice(uint32_t slice_y, uint32_t height)
         */
 
         //write_buffer_base = write_buffer_root + ((test_toff / 64) * 256);
-        write_buffer_base = write_buffer_root + ((g_armwave_state.xcoord_to_xpixel[trig_corr[toff]] >> 8) * 256); // + (trig_extra_corr * 256);
-        write_buffer_base = write_buffer_root + (int)(trig_corr[toff] * g_armwave_state.bitdepth_scale_fp * 256); // + (trig_extra_corr * 256);
+        //write_buffer_base = write_buffer_root + ((g_armwave_state.xcoord_to_xpixel[trig_corr[toff]] >> 8) * 256); // + (trig_extra_corr * 256);
+        write_buffer_base = write_buffer_root + ((int)(trig_corr[toff] * g_armwave_state.bitdepth_scale_fp) * 256); // + (trig_extra_corr * 256);
 
         // g_armwave_state.bitdepth_scale_fp
 
