@@ -410,7 +410,7 @@ void fill_xvimage_scaled(XvImage *img)
     // uint32_t ysub;
     int rr, gg, bb, n, nsub, npix, w, last_x = -1, last_y = -1, sy, ey, i;
     uint8_t r, g, b;
-    int value; 
+    int value, scale;
     // uint8_t row;
     uint32_t *base_32ptr = (uint32_t*)g_armwave_state.ch1_buffer;
     //uint32_t *out_buffer_base = out_buffer;
@@ -430,7 +430,11 @@ void fill_xvimage_scaled(XvImage *img)
     fill_rgb_xvimage(img, &g_fill_black);
     
     //printf("iter...\n");
-    
+
+    //calc_intensity = 255.0f * (1.0f - ((g_armwave_state.waves_max - g_armwave_state.waves) / g_armwave_state.waves_max));
+
+    scale = (g_armwave_state.waves_max * 255) / g_armwave_state.waves;
+
     for(n = 0; n < npix; n += (4 / sizeof(bufftyp_t))) {
         wave_word = *base_32ptr++;
 
@@ -444,6 +448,7 @@ void fill_xvimage_scaled(XvImage *img)
                     nsub = n + w;
                     yy = (nsub & 0xff); 
                     xx = (nsub >> 8) / sizeof(bufftyp_t);
+                    value = (value * scale) >> 8;
                     plot_col = g_yuv_lut[0][255][MIN(value, 255)];
                     
                     // avoid plotting zero value (reasons will become clear later)
