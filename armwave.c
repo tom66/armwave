@@ -44,7 +44,7 @@
 #define ARMWAVE_VER  "v0.3.0"
 
 struct armwave_state_t g_armwave_state;
-struct armwave_yuv_t g_yuv_lut[4][256];
+struct armwave_yuv_t g_yuv_lut[4][256][256];
 
 const struct armwave_rgb_t g_fill_black = { 0, 0, 0 };
 
@@ -211,7 +211,7 @@ void fill_rgb_xvimage(XvImage *img, struct armwave_rgb_t *rgb)
  */
 void armwave_prep_yuv_palette(int ch, int palette, struct armwave_color_mix_t *color0, struct armwave_color_mix_t *color1)
 {
-    int v;
+    int v, i;
     float h;
     struct armwave_rgb_t rgb_temp;
     struct armwave_hsv_t hsv_temp;
@@ -223,49 +223,47 @@ void armwave_prep_yuv_palette(int ch, int palette, struct armwave_color_mix_t *c
     
     switch(palette) {
         case PLT_SINGLE_COLOUR:
-            for(v = 0; v < 256; v++) {
-                rgb_temp.r = MIN((color0->r * v) >> 8, 255);
-                rgb_temp.g = MIN((color0->g * v) >> 8, 255);
-                rgb_temp.b = MIN((color0->b * v) >> 8, 255);
-                //printf("%3d = [%3d, %3d, %3d]\n", v, rgb_temp.r, rgb_temp.g, rgb_temp.b);
-                rgb2yuv(&rgb_temp, &g_yuv_lut[ch][v]); 
+            for(i = 0; i < 256; i++) {
+                for(v = 0; v < 256; v++) {
+                    rgb_temp.r = MIN((color0->r * v * i) >> 16, 255);
+                    rgb_temp.g = MIN((color0->g * v * i) >> 16, 255);
+                    rgb_temp.b = MIN((color0->b * v * i) >> 16, 255);
+                    //printf("%3d = [%3d, %3d, %3d]\n", v, rgb_temp.r, rgb_temp.g, rgb_temp.b);
+                    rgb2yuv(&rgb_temp, &g_yuv_lut[ch][i][v]); 
+                }
             }
             break;
         
         case PLT_INVERT_SINGLE_COLOUR:
-            for(v = 0; v < 256; v++) {
-                rgb_temp.r = MIN((color0->r * v) >> 8, 255);
-                rgb_temp.g = MIN((color0->g * v) >> 8, 255);
-                rgb_temp.b = MIN((color0->b * v) >> 8, 255);
-                //printf("%3d = [%3d, %3d, %3d]\n", 255 - v, rgb_temp.r, rgb_temp.g, rgb_temp.b);
-                rgb2yuv(&rgb_temp, &g_yuv_lut[ch][255 - v]); 
+            for(i = 0; i < 256; i++) {
+                for(v = 0; v < 256; v++) {
+                    rgb_temp.r = MIN((color0->r * (255 - v) * i) >> 16, 255);
+                    rgb_temp.g = MIN((color0->g * (255 - v) * i) >> 16, 255);
+                    rgb_temp.b = MIN((color0->b * (255 - v) * i) >> 16, 255);
+                    //printf("%3d = [%3d, %3d, %3d]\n", 255 - v, rgb_temp.r, rgb_temp.g, rgb_temp.b);
+                    rgb2yuv(&rgb_temp, &g_yuv_lut[ch][i][v]); 
+                }
             }
             break;
         
         case PLT_RAINBOW_THERMAL:
-            for(v = 0; v < 256; v++) {
-                hsv_temp.h = v;
-                hsv_temp.s = 255;
-                
-                if(v < 20) {
-                    hsv_temp.v = (255 / 20.0f) * v;
-                } else {
-                    hsv_temp.v = 255;
+            for(i = 0; i < 256; i++) {
+                for(v = 0; v < 256; v++) {
+                    hsv_temp.h = v;
+                    hsv_temp.s = 255;
+                    
+                    if(v < 20) {
+                        hsv_temp.v = ((255 / (20.0f * 256)) * v) * i;
+                    } else {
+                        hsv_temp.v = i;
+                    }
+                    
+                    hsv2rgb(&hsv_temp, &rgb_temp);
+                    rgb2yuv(&rgb_temp, &g_yuv_lut[ch][i][v]); 
                 }
-                
-                hsv2rgb(&hsv_temp, &rgb_temp);
-                rgb2yuv(&rgb_temp, &g_yuv_lut[ch][v]); 
-                
-                //printf("%3d = [%3d, %3d, %3d] RGB: %3d, %3d, %3d\n", v, hsv_temp.h, hsv_temp.s, hsv_temp.v, rgb_temp.r, rgb_temp.g, rgb_temp.b);
             }
             break;
     }
-    
-    /*
-    for(v = 0; v < 256; v++) {
-        printf("%3d = (%3d, %3d, %3d) ch%d\n", v, g_yuv_lut[ch][v].y, g_yuv_lut[ch][v].u, g_yuv_lut[ch][v].v, ch);
-    }
-    */
 }
 
 /*
@@ -334,12 +332,6 @@ void render_nonaa_to_buffer_1ch_slice(uint32_t slice_y, uint32_t height)
         trig_value &= 0x07;
         toff = trig_value;
 
-        /*
-        if(toff != (test_toff / 500)) {
-            continue;
-        }
-        */
-
         // g_armwave_state.bitdepth_scale_fp
         write_buffer_offset = ((int)((trig_corr[toff] + xoff) * g_armwave_state.bitdepth_scale_fp) * 256);
         write_buffer_base = write_buffer_root + write_buffer_offset;
@@ -356,14 +348,6 @@ void render_nonaa_to_buffer_1ch_slice(uint32_t slice_y, uint32_t height)
             for(ys = 0; ys < 4; ys++, yi += 8) {
                 scale_value = word & 0xff;
                 word >>= 8;
-
-                /*
-                if(w == 0) {
-                    printf("yi=%d h=%d\r\n", yi, height);
-                }
-                */
-
-                //printf("%02x ", scale_value);
                 
 #if USE_ALU_XCOORD == 1
                 // Keep math in integer where possible.  We compute the X scale and then multiply to get the correct 
@@ -393,12 +377,6 @@ void render_nonaa_to_buffer_1ch_slice(uint32_t slice_y, uint32_t height)
             }
         }
     }
-
-    //test_toff++;
-    //test_toff %= (500 * 8);
-    //printf("test_toff=%d\n", test_toff / 500);
-
-    //printf("wb_end=%d\n", write_buffer - write_buffer_base);
 }
 
 /*
@@ -466,7 +444,7 @@ void fill_xvimage_scaled(XvImage *img)
                     nsub = n + w;
                     yy = (nsub & 0xff); 
                     xx = (nsub >> 8) / sizeof(bufftyp_t);
-                    plot_col = g_yuv_lut[0][MIN(value, 255)];
+                    plot_col = g_yuv_lut[0][255][MIN(value, 255)];
                     
                     // avoid plotting zero value (reasons will become clear later)
                     if(yy == 255)
