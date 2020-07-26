@@ -422,6 +422,10 @@ void fill_xvimage_scaled(XvImage *img)
     // we don't really want to be doing this if possible; perhaps we can use a syscall (madvise?)
     fill_rgb_xvimage(img, &g_fill_black);
     
+    // There's no point rendering zero waves!
+    if(g_armwave_state.waves == 0) 
+        return;
+
     scale = (g_armwave_state.waves_max * 255) / g_armwave_state.waves;
     printf("output buffer: 0x%08x,  scale: %d\n", img, scale);
 
