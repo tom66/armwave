@@ -436,7 +436,12 @@ void fill_xvimage_scaled(XvImage *img)
                 if(value != 0) {
                     // Plot the pixels
                     nsub = n + w;
-                    yy = (nsub & 0xff); 
+                    yy = (nsub & 0xff);
+
+                    // topmost row not painted
+                    if(COND_UNLIKELY(yy) == 0)
+                        continue;
+
                     xx = (nsub >> 8) / sizeof(bufftyp_t);
                     value = (value * scale) >> 8;
                     plot_col = g_yuv_lut[0][255][MIN(value, 255)];
