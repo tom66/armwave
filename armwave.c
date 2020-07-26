@@ -531,7 +531,7 @@ void armwave_setup_render(uint32_t start_point, uint32_t end_point, uint32_t wav
     g_armwave_state.vscale = (int)g_armwave_state.vscale_frac;
     g_armwave_state.wave_stride = wave_stride;
     g_armwave_state.waves_max = waves_max;
-    g_armwave_state.waves = waves_max;  // Need a function to be able to change this on the fly
+    g_armwave_state.waves = waves_max; 
     g_armwave_state.size = target_height * target_width;
     g_armwave_state.bitdepth_height = 256 * sizeof(bufftyp_t);  // Always 256 possible levels in 8-bit mode
     g_armwave_state.ch_buff_size = (g_armwave_state.bitdepth_height + 8) * target_width * sizeof(bufftyp_t);  // Add word padding too
@@ -590,6 +590,18 @@ void armwave_setup_render(uint32_t start_point, uint32_t end_point, uint32_t wav
         (uint32_t)g_armwave_state.test_wave_buffer);
 
      //malloc_stats();
+}
+
+/*
+ * Inform the ArmWave engine of how many waveforms are to be rendered.
+ */
+void armwave_inform_waves(int waves)
+{
+    if(waves < g_armwave_state.waves_max) {
+        g_armwave_state.waves = waves;
+    } else {
+        printf("ERROR: armwave_inform_waves(%d) more than set limit %d", waves, g_armwave_state.waves_max);
+    }
 }
 
 /*
