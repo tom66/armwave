@@ -427,7 +427,7 @@ void fill_xvimage_scaled(XvImage *img)
         return;
 
     scale = (g_armwave_state.waves_max * 255) / g_armwave_state.waves;
-    printf("output buffer: 0x%08x,  scale: %d\n", img, scale);
+    printf("output buffer: 0x%08x,  scale: %d,  SCALE_MAX: 0x%08x\n", img, scale, SCALE_MAX);
 
     for(n = 0; n < npix; n += (4 / sizeof(bufftyp_t))) {
         wave_word = *base_32ptr++;

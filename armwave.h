@@ -66,6 +66,7 @@
 #define USE_ALU_XCOORD              0
 
 #define BUFFTYP_MASK                ((1 << (sizeof(bufftyp_t) * 8)) - 1)
+#define SCALE_MAX                   (0xffffffff - BUFFTYP_MASK)
 
 typedef uint8_t bufftyp_t;
 
