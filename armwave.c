@@ -305,9 +305,7 @@ void render_nonaa_to_buffer_1ch_slice(uint32_t slice_y, uint32_t height)
     uint8_t last;
     int xoff = 0;
 
-    //write_buffer_base = g_armwave_state.ch1_buffer + (slice_y * g_armwave_state.bitdepth_height);
-    //write_buffer_base = g_armwave_state.ch1_buffer + (((slice_y * g_armwave_state.cmp_x_bitdepth_scale) >> AM_XCOORD_MULT_SHIFT) * 256 * sizeof(bufftyp_t));
-    write_buffer_root = g_armwave_state.ch1_buffer + ((int)((slice_y * g_armwave_state.bitdepth_scale_fp) + 0.0f) * 256 * sizeof(bufftyp_t));
+    write_buffer_root = g_armwave_state.ch1_buffer + ((int)(slice_y * g_armwave_state.bitdepth_scale_fp) * 256 * sizeof(bufftyp_t));
     
     /*
     printf("wb=0x%08x b=0x%08x ch1=0x%08x off=%d slice_y=%d height=%d scale=%d bitdepth_height=%d wlen=%d\n", \
@@ -324,7 +322,7 @@ void render_nonaa_to_buffer_1ch_slice(uint32_t slice_y, uint32_t height)
 
         //printf("Off=0x%08x w=%4d/%4d\r\n", trig_value, w, g_armwave_state.waves);
         if(trig_value & 0xf0ffffff) {
-            printf("ERR: Trigger pointer out of bounds... (0x%08x)?\r\n", trig_value);
+            printf("ERR: Trigger pointer out of bounds... (0x%08x, w:%d)?\r\n", trig_value, w);
             break;
         }
 
@@ -341,10 +339,7 @@ void render_nonaa_to_buffer_1ch_slice(uint32_t slice_y, uint32_t height)
         for(yy = 0, yi = 0; yy < height; yy += 4) {
             word = *(uint32_t*)(wave_base + yy);        // Read 4 bytes at once
             __builtin_prefetch(wave_base + yy + 64);    // Advise CPU of our likely next intent
-            //word = rotr32(word, rotate);
 
-            //word = 0xc040c040;
-            
             for(ys = 0; ys < 4; ys++, yi += 8) {
                 scale_value = word & 0xff;
                 word >>= 8;
@@ -402,19 +397,14 @@ void armwave_generate()
 }
 
 /*
- * Render buffer to an XvImage canvas.
+ * Render buffer to an XvImage canvas.  This presently only supports 1 channel render.
  */
 void fill_xvimage_scaled(XvImage *img)
 {
-    uint32_t xx, yy, ye, word, wave_word, painted = 0;
-    // uint32_t ysub;
-    int rr, gg, bb, n, nsub, npix, w, last_x = -1, last_y = -1, sy, ey, i;
-    uint8_t r, g, b;
-    int value, scale;
-    // uint8_t row;
+    uint32_t xx, yy, ye, word, wave_word, painted = 0, offset;
+    int n, nsub, npix, w, last_x = -1, last_y = -1, value, scale;
+    uint8_t r, g, b, intensity;
     uint32_t *base_32ptr = (uint32_t*)g_armwave_state.ch1_buffer;
-    //uint32_t *out_buffer_base = out_buffer;
-    uint32_t offset;
     struct armwave_yuv_t plot_col;
 
     npix = g_armwave_state.target_width * g_armwave_state.bitdepth_height; 
@@ -431,7 +421,9 @@ void fill_xvimage_scaled(XvImage *img)
     if(scale > SCALE_MAX)
         scale = SCALE_MAX;
 
-    printf("output buffer: 0x%08x,  scale: %d,  SCALE_MAX: 0x%08x\n", img, scale, SCALE_MAX);
+    intensity = g_armwave_state.ch_ro_intensity[0];
+
+    // printf("output buffer: 0x%08x,  scale: %d,  SCALE_MAX: 0x%08x\n", img, scale, SCALE_MAX);
 
     for(n = 0; n < npix; n += (4 / sizeof(bufftyp_t))) {
         wave_word = *base_32ptr++;
@@ -452,7 +444,7 @@ void fill_xvimage_scaled(XvImage *img)
 
                     xx = (nsub >> 8) / sizeof(bufftyp_t);
                     value = (value * scale) >> 8;
-                    plot_col = g_yuv_lut[0][255][MIN(value, 255)];
+                    plot_col = g_yuv_lut[0][intensity][MIN(value, 255)];
                     
                     // avoid plotting zero value (reasons will become clear later)
                     if(yy == 255)
@@ -530,6 +522,12 @@ void armwave_setup_render(uint32_t start_point, uint32_t end_point, uint32_t wav
     g_armwave_state.draw_width = target_width;
     g_armwave_state.draw_height = target_height;
 
+    // Default intensity
+    g_armwave_state.ch_ro_intensity[0] = 255;
+    g_armwave_state.ch_ro_intensity[1] = 255;
+    g_armwave_state.ch_ro_intensity[2] = 255;
+    g_armwave_state.ch_ro_intensity[3] = 255;
+
     // Calculate compound scaler
     g_armwave_state.bitdepth_scale_fp = ((g_armwave_state.target_width * (1.0f / g_armwave_state.wave_length)));
     g_armwave_state.cmp_x_bitdepth_scale = \
@@ -540,10 +538,10 @@ void armwave_setup_render(uint32_t start_point, uint32_t end_point, uint32_t wav
         g_armwave_state.bitdepth_scale_fp, g_armwave_state.target_width, g_armwave_state.wave_length,
         (1 << AM_XCOORD_MULT_SHIFT));
 
-    // In 1ch mode, target 1024 x 16 render buffer, reading 16 bytes at a time from each wave, retaining as much as possible in L1/L2 cache
-    // In 2ch mode, target two 1024 x 8 render buffers, reading 16 bytes at a time from each wave
-    // In 4ch mode, target four 1024 x 4 render buffers, reading 16 bytes at a time from each wave
-    g_armwave_state.slice_height = 64; // 64;  
+    // This value affects performance and cache behaviour.  Adjust it carefully!  A larger value means that we
+    // will miss the cache more often, but we will need to loop and branch more.  64 seems to be a reasonable balance
+    // on 1 ch mode at least.
+    g_armwave_state.slice_height = 64;
 
     if(g_armwave_state.ch1_buffer != NULL)
         free(g_armwave_state.ch1_buffer);
@@ -644,6 +642,21 @@ void armwave_clear_buffer(uint32_t flags)
 {
     // Flags ignored, only one buffer cleared
     memset(g_armwave_state.ch1_buffer, 0, g_armwave_state.ch_buff_size);
+}
+
+/*
+ * Set the render-out intensity for a given channel.  This differs from the
+ * armwave_set_channel_colour function as this can be changed dynamically
+ * without recalculating the palette or colour.
+ */
+void armwave_set_channel_render_intensity(int ch, uint8_t ints)
+{
+    if(ch < 0 || ch > 3) {
+        printf("armwave: error: intensity channel out of range %d\n", ch);
+        return;
+    }
+
+    g_armwave_state.ch_ro_intensity[ch] = ints;
 }
 
 /*
