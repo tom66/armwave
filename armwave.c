@@ -656,6 +656,7 @@ void armwave_set_channel_render_intensity(int ch, uint8_t ints)
         return;
     }
 
+    printf("armwave_set_channel_render_intensity(%d, %d)\n", ch, ints);
     g_armwave_state.ch_ro_intensity[ch] = ints;
 }
 
