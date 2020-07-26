@@ -431,7 +431,7 @@ void fill_xvimage_scaled(XvImage *img)
     if(scale > SCALE_MAX)
         scale = SCALE_MAX;
 
-    //printf("output buffer: 0x%08x,  scale: %d,  SCALE_MAX: 0x%08x\n", img, scale, SCALE_MAX);
+    printf("output buffer: 0x%08x,  scale: %d,  SCALE_MAX: 0x%08x\n", img, scale, SCALE_MAX);
 
     for(n = 0; n < npix; n += (4 / sizeof(bufftyp_t))) {
         wave_word = *base_32ptr++;
