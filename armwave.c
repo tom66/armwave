@@ -417,23 +417,13 @@ void fill_xvimage_scaled(XvImage *img)
     uint32_t offset;
     struct armwave_yuv_t plot_col;
 
-    printf("output buffer: 0x%08x\n", img);
-
     npix = g_armwave_state.target_width * g_armwave_state.bitdepth_height; 
-    
-    //printf("memset %d bytes, npix %d, chbuff sz %d, base32_ptr 0x%08x, dest_buffer 0x%08x, stack ~0x%08x\n", \
-        g_armwave_state.target_width * g_armwave_state.target_height * 4, npix, \
-        g_armwave_state.ch_buff_size, base_32ptr, out_buffer_base, &w);
 
-    // we don't really want to be doing this if possible;  os.madvise may be a better option
-    //memset(out_buffer, 0x00, g_armwave_state.target_width * g_armwave_state.target_height * 4);
+    // we don't really want to be doing this if possible; perhaps we can use a syscall (madvise?)
     fill_rgb_xvimage(img, &g_fill_black);
     
-    //printf("iter...\n");
-
-    //calc_intensity = 255.0f * (1.0f - ((g_armwave_state.waves_max - g_armwave_state.waves) / g_armwave_state.waves_max));
-
     scale = (g_armwave_state.waves_max * 255) / g_armwave_state.waves;
+    printf("output buffer: 0x%08x,  scale: %d\n", img, scale);
 
     for(n = 0; n < npix; n += (4 / sizeof(bufftyp_t))) {
         wave_word = *base_32ptr++;
