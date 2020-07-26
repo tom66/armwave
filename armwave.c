@@ -579,10 +579,10 @@ void armwave_setup_render(uint32_t start_point, uint32_t end_point, uint32_t wav
  */
 void armwave_inform_waves(int waves)
 {
-    if(waves < g_armwave_state.waves_max) {
+    if(waves <= g_armwave_state.waves_max) {
         g_armwave_state.waves = waves;
     } else {
-        printf("ERROR: armwave_inform_waves(%d) more than set limit %d", waves, g_armwave_state.waves_max);
+        printf("ERROR: armwave_inform_waves(%d) more than set limit %d\n", waves, g_armwave_state.waves_max);
     }
 }
 
