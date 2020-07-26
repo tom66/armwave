@@ -171,6 +171,7 @@ void fill_xvimage_scaled(XvImage *img);
 
 void armwave_init(void);
 void armwave_setup_render(uint32_t start_point, uint32_t end_point, uint32_t waves_max, uint32_t wave_stride, uint32_t target_width, uint32_t target_height, uint32_t render_flags);
+void armwave_inform_waves(int waves);
 void armwave_set_wave_pointer(uint8_t *wave_buffer);
 void armwave_set_wave_pointer_as_testbuf(int set);
 void armwave_set_wave_pointer_u32(uint32_t wave_buffer_ptr);
