@@ -274,6 +274,12 @@ void armwave_init()
     g_armwave_state.flags = 0;
     g_armwave_state.frame_margin = 0;
 
+    // Default intensity
+    g_armwave_state.ch_ro_intensity[0] = 255;
+    g_armwave_state.ch_ro_intensity[1] = 255;
+    g_armwave_state.ch_ro_intensity[2] = 255;
+    g_armwave_state.ch_ro_intensity[3] = 255;
+
     printf("armwave version: %s\n", ARMWAVE_VER);
     
 #ifndef NO_PYTHON
@@ -521,12 +527,6 @@ void armwave_setup_render(uint32_t start_point, uint32_t end_point, uint32_t wav
     g_armwave_state.draw_yoff = 0;
     g_armwave_state.draw_width = target_width;
     g_armwave_state.draw_height = target_height;
-
-    // Default intensity
-    g_armwave_state.ch_ro_intensity[0] = 255;
-    g_armwave_state.ch_ro_intensity[1] = 255;
-    g_armwave_state.ch_ro_intensity[2] = 255;
-    g_armwave_state.ch_ro_intensity[3] = 255;
 
     // Calculate compound scaler
     g_armwave_state.bitdepth_scale_fp = ((g_armwave_state.target_width * (1.0f / g_armwave_state.wave_length)));
