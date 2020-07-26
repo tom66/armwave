@@ -241,7 +241,7 @@ void armwave_prep_yuv_palette(int ch, int palette, struct armwave_color_mix_t *c
                     rgb_temp.g = MIN((color0->g * (255 - v) * i) >> 16, 255);
                     rgb_temp.b = MIN((color0->b * (255 - v) * i) >> 16, 255);
                     //printf("%3d = [%3d, %3d, %3d]\n", 255 - v, rgb_temp.r, rgb_temp.g, rgb_temp.b);
-                    rgb2yuv(&rgb_temp, &g_yuv_lut[ch][i][v]); 
+                    rgb2yuv(&rgb_temp, &g_yuv_lut[ch][i][v]);  
                 }
             }
             break;
@@ -454,7 +454,7 @@ void fill_xvimage_scaled(XvImage *img)
                     last_y = yy;
 
                     // FASTQ does not paint U/V for odd pixels; works OK for most purposes.
-                    //plot_pixel_yuv_fastq(img, xx, yy, &g_yuv_lut[0][MIN(value, 255)]);
+                    //plot_pixel_yuv_fastq(img, xx, yy, &g_yuv_lut[0][255][MIN(value, 255)]);
                     // TODO: Index needs to change wrt to channel plotted...
                     plot_pixel_yuv(img, xx, yy, &plot_col);
                     painted++;
