@@ -658,13 +658,14 @@ void armwave_clear_buffer(uint32_t flags)
  */
 void armwave_set_channel_render_intensity(int ch, uint8_t ints)
 {
-    if(ch < 0 || ch > 3) {
+    if(ch < 1 || ch > 4) {
         printf("armwave: error: intensity channel out of range %d\n", ch);
         return;
     }
 
+    // Channels 1-4 externally, 0-3 internally
     printf("armwave_set_channel_render_intensity(%d, %d)\n", ch, ints);
-    g_armwave_state.ch_ro_intensity[ch] = ints;
+    g_armwave_state.ch_ro_intensity[ch - 1] = ints;
 }
 
 /*
