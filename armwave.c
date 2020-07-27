@@ -229,7 +229,7 @@ void armwave_prep_yuv_palette(int ch, int palette, struct armwave_color_mix_t *c
                     if(palette == PLT_SINGLE_COLOUR) {
                         vv = v;
                     } else {
-                        vv = 63 + ((v * 192) >> 8);
+                        vv = 31 + ((v * 224) >> 8);
                     }
 
                     rgb_temp.r = MIN((color0->r * vv * i) >> 16, 255);
