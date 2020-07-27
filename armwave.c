@@ -211,7 +211,7 @@ void fill_rgb_xvimage(XvImage *img, struct armwave_rgb_t *rgb)
  */
 void armwave_prep_yuv_palette(int ch, int palette, struct armwave_color_mix_t *color0, struct armwave_color_mix_t *color1)
 {
-    int v, i;
+    int v, vv, i;
     float h;
     struct armwave_rgb_t rgb_temp;
     struct armwave_hsv_t hsv_temp;
@@ -223,11 +223,18 @@ void armwave_prep_yuv_palette(int ch, int palette, struct armwave_color_mix_t *c
     
     switch(palette) {
         case PLT_SINGLE_COLOUR:
+        case PLT_SINGLE_COLOUR_COMPRESS:   // Single colour but brightness offset for improved visibility
             for(i = 0; i < 256; i++) {
                 for(v = 0; v < 256; v++) {
-                    rgb_temp.r = MIN((color0->r * v * i) >> 16, 255);
-                    rgb_temp.g = MIN((color0->g * v * i) >> 16, 255);
-                    rgb_temp.b = MIN((color0->b * v * i) >> 16, 255);
+                    if(palette == PLT_SINGLE_COLOUR) {
+                        vv = v;
+                    } else {
+                        vv = 63 + ((v * 192) >> 8);
+                    }
+
+                    rgb_temp.r = MIN((color0->r * vv * i) >> 16, 255);
+                    rgb_temp.g = MIN((color0->g * vv * i) >> 16, 255);
+                    rgb_temp.b = MIN((color0->b * vv * i) >> 16, 255);
                     //printf("%3d = [%3d, %3d, %3d]\n", v, rgb_temp.r, rgb_temp.g, rgb_temp.b);
                     rgb2yuv(&rgb_temp, &g_yuv_lut[ch][i][v]); 
                 }

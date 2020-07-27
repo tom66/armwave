@@ -56,8 +56,9 @@
 #define GUID_YUV12_PLANAR           0x32315659      // FOURCC for YUV12 format
 
 #define PLT_SINGLE_COLOUR           0
-#define PLT_INVERT_SINGLE_COLOUR    1
-#define PLT_RAINBOW_THERMAL         2
+#define PLT_SINGLE_COLOUR_COMPRESS  1
+#define PLT_INVERT_SINGLE_COLOUR    2
+#define PLT_RAINBOW_THERMAL         3
 
 #define AM_MIN_TEXTURE_WIDTH        512
 #define AM_MAX_TEXTURE_WIDTH        1900
