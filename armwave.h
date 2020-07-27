@@ -60,6 +60,8 @@
 #define PLT_INVERT_SINGLE_COLOUR    2
 #define PLT_RAINBOW_THERMAL         3
 
+#define PLT_COMPRESS_RANGE          8
+
 #define AM_MIN_TEXTURE_WIDTH        512
 #define AM_MAX_TEXTURE_WIDTH        1900
 
