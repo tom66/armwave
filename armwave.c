@@ -628,7 +628,7 @@ void armwave_set_wave_pointer_as_testbuf(int set)
 void armwave_set_wave_pointer_u32(uint32_t wave_buffer_ptr)
 {
     assert(wave_buffer_ptr != 0);
-    printf("armwave_set_wave_pointer_u32 = 0x%08x\n", wave_buffer_ptr);
+    //printf("armwave_set_wave_pointer_u32 = 0x%08x\n", wave_buffer_ptr);
     g_armwave_state.wave_buffer = (uint8_t*)wave_buffer_ptr;
 }
 
@@ -638,7 +638,7 @@ void armwave_set_wave_pointer_u32(uint32_t wave_buffer_ptr)
 void armwave_set_trig_corr_buffer_u32(uint32_t trig_corr_buff_ptr)
 {
     assert(trig_corr_buff_ptr != 0);
-    printf("armwave_set_trig_corr_buffer_u32 = 0x%08x\n", trig_corr_buff_ptr);
+    //printf("armwave_set_trig_corr_buffer_u32 = 0x%08x\n", trig_corr_buff_ptr);
     g_armwave_state.trig_corr_buff = trig_corr_buff_ptr;
 }
 
@@ -709,8 +709,9 @@ void armwave_set_channel_palette(int ch, int palette)
  */
 void armwave_set_graticule_colour(int r, int g, int b)
 {
-    printf("armwave_set_graticule_colour()\n");
+    //printf("armwave_set_graticule_colour()\n");
     
+    // X11 colours are 16-bit: scale them
     g_grat_colour.red = r * 255;
     g_grat_colour.green = g * 255;
     g_grat_colour.blue = b * 255;
@@ -723,6 +724,7 @@ void armwave_set_graticule_colour(int r, int g, int b)
  */
 void armwave_set_graticule_subcolour(int r, int g, int b)
 {
+    // X11 colours are 16-bit: scale them
     g_grat_subcolour.red = r * 255;
     g_grat_subcolour.green = g * 255;
     g_grat_subcolour.blue = b * 255;
